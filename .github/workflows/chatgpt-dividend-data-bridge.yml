@@ -1,0 +1,1188 @@
+name: ChatGPT Dividend Data Bridge
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_year:
+        description: "保留数据起始年份；2011回测需要至少从2006开始"
+        required: true
+        default: "2006"
+        type: string
+
+      end_year:
+        description: "数据截止年份"
+        required: true
+        default: "2026"
+        type: string
+
+      download_market_data:
+        description: "是否下载全A日线必要行情/估值字段"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chatgpt-dividend-data-bridge-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  HF_REPO: yifishbossman/financial-analyst-data-full
+  BRIDGE_ROOT: _chatgpt_dividend_bridge
+  PYTHONUNBUFFERED: "1"
+  HF_HUB_DISABLE_TELEMETRY: "1"
+
+jobs:
+  build-bridge:
+    name: Build A-share dividend backtest dataset
+    runs-on: ubuntu-latest
+
+    # full 数据源较大，给足时间，但我们不会下载完整 14GB
+    timeout-minutes: 120
+
+    steps:
+      # ------------------------------------------------------------
+      # 01. 环境
+      # ------------------------------------------------------------
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Show runner disk
+        shell: bash
+        run: |
+          echo "===== Disk before ====="
+          df -h
+          echo
+          echo "===== Memory ====="
+          free -h || true
+
+      - name: Install bridge dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+
+          python -m pip install \
+            "huggingface_hub>=0.25" \
+            "pandas>=2.2" \
+            "pyarrow>=17" \
+            "numpy>=1.26" \
+            "zstandard>=0.23"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          rm -rf "${BRIDGE_ROOT}"
+
+          mkdir -p "${BRIDGE_ROOT}/raw"
+          mkdir -p "${BRIDGE_ROOT}/normalized"
+          mkdir -p "${BRIDGE_ROOT}/out"
+          mkdir -p "${BRIDGE_ROOT}/reports"
+
+      # ------------------------------------------------------------
+      # 02. Hugging Face 数据集探针
+      # ------------------------------------------------------------
+
+      - name: Inspect Hugging Face dataset
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from huggingface_hub import HfApi
+
+          repo = os.environ["HF_REPO"]
+          root = Path(os.environ["BRIDGE_ROOT"])
+          report_dir = root / "reports"
+
+          api = HfApi()
+
+          print(f"Inspecting dataset: {repo}")
+
+          files = api.list_repo_files(
+              repo_id=repo,
+              repo_type="dataset",
+          )
+
+          print(f"Total files in HF repo: {len(files):,}")
+
+          (report_dir / "hf_all_files.txt").write_text(
+              "\n".join(files),
+              encoding="utf-8",
+          )
+
+          categories = {
+              "financial": [],
+              "stock_basic": [],
+              "dividend": [],
+              "xdxr": [],
+              "audit": [],
+              "indicator": [],
+              "namechange": [],
+              "qlib_day": [],
+              "other_parquet": [],
+          }
+
+          for f in files:
+              low = f.lower()
+
+              if low.startswith("parquet/financial/"):
+                  categories["financial"].append(f)
+
+              elif "stock_basic" in low and low.endswith(".parquet"):
+                  categories["stock_basic"].append(f)
+
+              elif "dividend" in low and low.endswith(".parquet"):
+                  categories["dividend"].append(f)
+
+              elif "xdxr" in low and low.endswith(".parquet"):
+                  categories["xdxr"].append(f)
+
+              elif "audit" in low and low.endswith(".parquet"):
+                  categories["audit"].append(f)
+
+              elif (
+                  ("fina_indicator" in low or "financial_indicator" in low)
+                  and low.endswith(".parquet")
+              ):
+                  categories["indicator"].append(f)
+
+              elif (
+                  ("namechange" in low or "name_change" in low)
+                  and low.endswith(".parquet")
+              ):
+                  categories["namechange"].append(f)
+
+              elif low.startswith("cn_data/") and low.endswith(".day.bin"):
+                  categories["qlib_day"].append(f)
+
+              elif low.endswith(".parquet"):
+                  categories["other_parquet"].append(f)
+
+          inventory = {
+              "repo": repo,
+              "total_files": len(files),
+              "category_counts": {
+                  k: len(v)
+                  for k, v in categories.items()
+              },
+              "categories": categories,
+          }
+
+          with open(
+              report_dir / "hf_inventory.json",
+              "w",
+              encoding="utf-8",
+          ) as fp:
+              json.dump(
+                  inventory,
+                  fp,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          print()
+          print("===== Dataset inventory =====")
+
+          for key, vals in categories.items():
+              print(f"{key:20s}: {len(vals):,}")
+
+          print()
+          print("===== Financial / dividend candidates =====")
+
+          for key in [
+              "financial",
+              "stock_basic",
+              "indicator",
+              "dividend",
+              "xdxr",
+              "audit",
+              "namechange",
+          ]:
+              print(f"\n[{key}]")
+
+              for f in categories[key][:100]:
+                  print(" ", f)
+
+          print("\nHF_PROBE_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 03. 下载基本面/分红数据
+      #
+      # 只下载相关 parquet，不下载 F10、5分钟线、新闻等巨大目录
+      # ------------------------------------------------------------
+
+      - name: Download fundamental and dividend data
+        shell: bash
+        run: |
+          python <<'PY'
+          import os
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+
+          repo = os.environ["HF_REPO"]
+          root = Path(os.environ["BRIDGE_ROOT"])
+          raw = root / "raw"
+
+          patterns = [
+              # 财务三表
+              "parquet/financial/*.parquet",
+
+              # 股票基本信息
+              "parquet/*stock_basic*.parquet",
+              "parquet/**/*stock_basic*.parquet",
+
+              # 财务指标
+              "parquet/*fina_indicator*.parquet",
+              "parquet/**/*fina_indicator*.parquet",
+              "parquet/*financial_indicator*.parquet",
+              "parquet/**/*financial_indicator*.parquet",
+
+              # 分红
+              "parquet/*dividend*.parquet",
+              "parquet/**/*dividend*.parquet",
+
+              # 除权除息
+              "parquet/*xdxr*.parquet",
+              "parquet/**/*xdxr*.parquet",
+
+              # 审计
+              "parquet/*audit*.parquet",
+              "parquet/**/*audit*.parquet",
+
+              # 历史名称/ST
+              "parquet/*namechange*.parquet",
+              "parquet/**/*namechange*.parquet",
+              "parquet/*name_change*.parquet",
+              "parquet/**/*name_change*.parquet",
+          ]
+
+          print("Downloading fundamental subset...")
+          print("Repo:", repo)
+
+          snapshot_download(
+              repo_id=repo,
+              repo_type="dataset",
+              local_dir=str(raw),
+              allow_patterns=patterns,
+              max_workers=8,
+          )
+
+          print("FUNDAMENTAL_DOWNLOAD_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 04. 下载日频行情和估值
+      #
+      # 这里直接从 financial-analyst-data-full 的 Qlib day 数据中
+      # 选择字段，不碰 5min。
+      # ------------------------------------------------------------
+
+      - name: Download daily market and valuation fields
+        if: ${{ inputs.download_market_data }}
+        shell: bash
+        run: |
+          python <<'PY'
+          import os
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+
+          repo = os.environ["HF_REPO"]
+          root = Path(os.environ["BRIDGE_ROOT"])
+          raw = root / "raw"
+
+          #
+          # 我们的红利回测真正需要的日频字段
+          #
+          # price:
+          #   open/high/low/close
+          #
+          # liquidity:
+          #   volume/amount/turnover_rate
+          #
+          # valuation:
+          #   pe_ttm/pb/ps_ttm/dv_ttm
+          #
+          # size:
+          #   total_mv/circ_mv
+          #
+          feature_names = [
+              "open",
+              "high",
+              "low",
+              "close",
+
+              "volume",
+              "amount",
+
+              "pe_ttm",
+              "pb",
+              "ps_ttm",
+              "dv_ttm",
+
+              "total_mv",
+              "circ_mv",
+              "turnover_rate",
+
+              # 如果数据源存在调整因子，则一起取
+              "factor",
+              "adj_factor",
+          ]
+
+          patterns = [
+              "cn_data/calendars/day.txt",
+              "cn_data/instruments/all.txt",
+          ]
+
+          for field in feature_names:
+              patterns.append(
+                  f"cn_data/features/*/{field}.day.bin"
+              )
+
+          print(
+              "Downloading selected daily Qlib fields..."
+          )
+
+          snapshot_download(
+              repo_id=repo,
+              repo_type="dataset",
+              local_dir=str(raw),
+              allow_patterns=patterns,
+              max_workers=12,
+          )
+
+          print("MARKET_DOWNLOAD_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 05. 清洗 Parquet
+      #
+      # 不假设数据表结构完全固定。
+      # 自动读取 schema，只保留我们研究可能用到的字段。
+      # ------------------------------------------------------------
+
+      - name: Normalize parquet data
+        shell: bash
+        env:
+          START_YEAR: ${{ inputs.start_year }}
+          END_YEAR: ${{ inputs.end_year }}
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+          import pyarrow.parquet as pq
+
+          root = Path(os.environ["BRIDGE_ROOT"])
+          raw = root / "raw"
+          normalized = root / "normalized"
+          reports = root / "reports"
+
+          start_year = int(os.environ["START_YEAR"])
+          end_year = int(os.environ["END_YEAR"])
+
+          start_date = int(f"{start_year}0101")
+          end_date = int(f"{end_year}1231")
+
+          print(
+              f"Normalize date range: "
+              f"{start_date} -> {end_date}"
+          )
+
+          #
+          # 最终模型允许保留的字段集合。
+          #
+          # 多写一些别名：
+          # 不同 Tushare/TDX 转换版本字段名可能略有差异。
+          #
+          KEEP_COLUMNS = {
+              # identity
+              "ts_code",
+              "symbol",
+              "code",
+              "name",
+              "fullname",
+              "industry",
+              "market",
+              "exchange",
+              "area",
+              "list_status",
+              "list_date",
+              "delist_date",
+
+              # PIT
+              "ann_date",
+              "f_ann_date",
+              "actual_date",
+              "end_date",
+              "report_type",
+              "comp_type",
+
+              # income
+              "revenue",
+              "total_revenue",
+              "operate_profit",
+              "oper_profit",
+              "total_profit",
+              "n_income",
+              "n_income_attr_p",
+              "net_profit",
+              "profit_dedt",
+              "deductedprofit",
+              "basic_eps",
+              "diluted_eps",
+              "ebit",
+              "ebitda",
+
+              # balance sheet
+              "total_assets",
+              "total_liab",
+              "total_hldr_eqy_exc_min_int",
+              "total_hldr_eqy_inc_min_int",
+              "money_cap",
+              "cash_reser_cb",
+              "total_cur_assets",
+              "total_cur_liab",
+              "lt_borr",
+              "st_borr",
+              "bond_payable",
+              "notes_payable",
+              "acct_payable",
+              "accounts_receiv",
+              "inventories",
+
+              # cashflow
+              "n_cashflow_act",
+              "n_cashflow_inv_act",
+              "n_cash_flows_fnc_act",
+              "free_cashflow",
+              "c_pay_acq_const_fiolta",
+              "c_pay_acq_const_fiolta_intan",
+
+              # financial indicator
+              "roe",
+              "roe_dt",
+              "roe_waa",
+              "roe_yearly",
+              "roa",
+              "roic",
+              "grossprofit_margin",
+              "netprofit_margin",
+              "netprofit_yoy",
+              "or_yoy",
+              "debt_to_assets",
+              "debt_to_eqt",
+              "interestdebt",
+              "netdebt",
+              "ebit_to_interest",
+              "ebitda_to_debt",
+
+              # dividend
+              "div_proc",
+              "stk_div",
+              "stk_bo_rate",
+              "stk_co_rate",
+              "cash_div",
+              "cash_div_tax",
+              "record_date",
+              "ex_date",
+              "pay_date",
+              "imp_ann_date",
+              "base_date",
+              "base_share",
+
+              # xdxr
+              "category",
+              "fenhong",
+              "peigu",
+              "peigujia",
+              "songzhuangu",
+              "shares_after",
+
+              # audit / governance
+              "audit_result",
+              "audit_agency",
+              "audit_sign",
+              "audit_fees",
+              "audit_opinion",
+
+              # history name / ST
+              "start_date",
+              "change_reason",
+          }
+
+          DATE_COLUMNS = [
+              "trade_date",
+              "ann_date",
+              "f_ann_date",
+              "actual_date",
+              "end_date",
+              "record_date",
+              "ex_date",
+              "pay_date",
+              "imp_ann_date",
+              "base_date",
+              "list_date",
+              "delist_date",
+              "start_date",
+          ]
+
+          parquet_files = list(
+              raw.rglob("*.parquet")
+          )
+
+          print(
+              f"Found {len(parquet_files)} parquet files"
+          )
+
+          schema_report = []
+          output_report = []
+
+          def normalize_date_scalar(v):
+              if pd.isna(v):
+                  return None
+
+              s = str(v).strip()
+
+              # 2024-04-30
+              s = re.sub(r"[^0-9]", "", s)
+
+              if len(s) >= 8:
+                  return s[:8]
+
+              return None
+
+          for src in parquet_files:
+              rel = src.relative_to(raw)
+
+              print()
+              print("Processing:", rel)
+
+              try:
+                  schema = pq.read_schema(src)
+
+                  schema_report.append(
+                      {
+                          "file": str(rel),
+                          "columns": schema.names,
+                      }
+                  )
+
+                  df = pd.read_parquet(src)
+
+              except Exception as exc:
+                  print(
+                      "READ_FAILED:",
+                      rel,
+                      repr(exc),
+                  )
+                  continue
+
+              original_rows = len(df)
+
+              #
+              # 日期过滤：
+              # 优先 end_date，再 ann_date。
+              #
+              date_filter_col = None
+
+              for c in [
+                  "end_date",
+                  "trade_date",
+                  "ann_date",
+              ]:
+                  if c in df.columns:
+                      date_filter_col = c
+                      break
+
+              if date_filter_col:
+                  ds = (
+                      df[date_filter_col]
+                      .map(normalize_date_scalar)
+                  )
+
+                  numeric_ds = pd.to_numeric(
+                      ds,
+                      errors="coerce",
+                  )
+
+                  #
+                  # stock_basic 需要保留历史上市时间，
+                  # 所以 stock_basic 不按报告期删除。
+                  #
+                  if "stock_basic" not in str(rel).lower():
+                      mask = (
+                          numeric_ds.isna()
+                          |
+                          (
+                              (numeric_ds >= start_date)
+                              & (numeric_ds <= end_date)
+                          )
+                      )
+
+                      df = df.loc[mask].copy()
+
+              #
+              # 字段裁剪：
+              # 只要模型用得到的字段。
+              #
+              keep = [
+                  c
+                  for c in df.columns
+                  if c in KEEP_COLUMNS
+              ]
+
+              #
+              # 如果因为未知 schema 导致没有命中，
+              # 不要静默丢数据：
+              # 保留完整表，并在报告中标记。
+              #
+              if keep:
+                  df = df[keep].copy()
+                  unknown_schema = False
+              else:
+                  unknown_schema = True
+
+              #
+              # 为防止 parquet dtype 混乱，
+              # 常见日期字段统一保存成 string。
+              #
+              for c in DATE_COLUMNS:
+                  if c in df.columns:
+                      df[c] = (
+                          df[c]
+                          .astype("string")
+                      )
+
+              out_name = (
+                  str(rel)
+                  .replace("/", "__")
+                  .replace("\\", "__")
+              )
+
+              out = (
+                  normalized
+                  / out_name
+              )
+
+              out.parent.mkdir(
+                  parents=True,
+                  exist_ok=True,
+              )
+
+              df.to_parquet(
+                  out,
+                  index=False,
+                  compression="zstd",
+              )
+
+              output_report.append(
+                  {
+                      "source": str(rel),
+                      "output": out.name,
+                      "rows_before": original_rows,
+                      "rows_after": len(df),
+                      "columns_after": list(df.columns),
+                      "unknown_schema": unknown_schema,
+                      "size_bytes": out.stat().st_size,
+                  }
+              )
+
+              print(
+                  f"rows {original_rows:,}"
+                  f" -> {len(df):,}; "
+                  f"cols={len(df.columns)}"
+              )
+
+          with open(
+              reports / "parquet_schema.json",
+              "w",
+              encoding="utf-8",
+          ) as fp:
+              json.dump(
+                  schema_report,
+                  fp,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          with open(
+              reports / "normalized_files.json",
+              "w",
+              encoding="utf-8",
+          ) as fp:
+              json.dump(
+                  output_report,
+                  fp,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          print()
+          print("NORMALIZE_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 06. 数据质量检查
+      # ------------------------------------------------------------
+
+      - name: Validate bridge data
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import pandas as pd
+          import pyarrow.parquet as pq
+
+          root = Path(os.environ["BRIDGE_ROOT"])
+          raw = root / "raw"
+          normalized = root / "normalized"
+          reports = root / "reports"
+
+          errors = []
+          warnings = []
+
+          #
+          # 1. Qlib核心结构
+          #
+          cal = raw / "cn_data/calendars/day.txt"
+          inst = raw / "cn_data/instruments/all.txt"
+
+          if cal.exists():
+              calendar = [
+                  x.strip()
+                  for x in cal.read_text(
+                      encoding="utf-8"
+                  ).splitlines()
+                  if x.strip()
+              ]
+
+              print(
+                  "Calendar:",
+                  len(calendar),
+                  calendar[0] if calendar else None,
+                  "->",
+                  calendar[-1] if calendar else None,
+              )
+
+          else:
+              warnings.append(
+                  "Missing cn_data/calendars/day.txt"
+              )
+
+          if inst.exists():
+              instruments = [
+                  x.strip()
+                  for x in inst.read_text(
+                      encoding="utf-8"
+                  ).splitlines()
+                  if x.strip()
+              ]
+
+              print(
+                  "Instruments:",
+                  len(instruments),
+              )
+
+          else:
+              warnings.append(
+                  "Missing cn_data/instruments/all.txt"
+              )
+
+          #
+          # 2. 是否有 close
+          #
+          close_bins = list(
+              raw.glob(
+                  "cn_data/features/*/close.day.bin"
+              )
+          )
+
+          print(
+              "close.day.bin:",
+              len(close_bins),
+          )
+
+          if not close_bins:
+              warnings.append(
+                  "No close.day.bin found"
+              )
+
+          #
+          # 3. 财务文件
+          #
+          normalized_files = list(
+              normalized.glob("*.parquet")
+          )
+
+          print(
+              "Normalized parquet files:",
+              len(normalized_files),
+          )
+
+          #
+          # 至少应该存在若干财务文件
+          #
+          if not normalized_files:
+              errors.append(
+                  "No normalized parquet data"
+              )
+
+          #
+          # 搜索关键字段覆盖
+          #
+          required_signal_fields = {
+              "ts_code": False,
+              "ann_date": False,
+              "end_date": False,
+              "n_cashflow_act": False,
+              "roe": False,
+              "cash_div_tax": False,
+          }
+
+          schemas = {}
+
+          for f in normalized_files:
+              try:
+                  schema = pq.read_schema(f)
+                  cols = set(schema.names)
+
+                  schemas[f.name] = schema.names
+
+                  for key in required_signal_fields:
+                      if key in cols:
+                          required_signal_fields[key] = True
+
+              except Exception:
+                  pass
+
+          for k, present in required_signal_fields.items():
+              if not present:
+                  warnings.append(
+                      f"Field not found in downloaded subset: {k}"
+                  )
+
+          validation = {
+              "errors": errors,
+              "warnings": warnings,
+              "signal_fields": required_signal_fields,
+              "normalized_schemas": schemas,
+              "close_bin_count": len(close_bins),
+          }
+
+          with open(
+              reports / "validation.json",
+              "w",
+              encoding="utf-8",
+          ) as fp:
+              json.dump(
+                  validation,
+                  fp,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          print()
+          print("===== Validation =====")
+
+          print(
+              json.dumps(
+                  validation,
+                  ensure_ascii=False,
+                  indent=2,
+              )[:15000]
+          )
+
+          if errors:
+              raise SystemExit(
+                  "VALIDATION_FAILED: "
+                  + "; ".join(errors)
+              )
+
+          print()
+          print("VALIDATION_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 07. 行情目录打包
+      #
+      # GitHub Artifact 对数万小文件处理很慢，
+      # 所以先 tar.gz。
+      # ------------------------------------------------------------
+
+      - name: Pack selected Qlib daily data
+        if: ${{ inputs.download_market_data }}
+        shell: bash
+        run: |
+          set -e
+
+          cd "${BRIDGE_ROOT}/raw"
+
+          if [ -d "cn_data" ]; then
+
+            echo "Packing Qlib day data..."
+
+            tar \
+              -czf \
+              "../out/qlib_day_selected.tar.gz" \
+              cn_data
+
+            echo "Qlib archive created."
+
+            ls -lh \
+              "../out/qlib_day_selected.tar.gz"
+
+          else
+
+            echo \
+              "cn_data does not exist; skip Qlib packaging."
+
+          fi
+
+      # ------------------------------------------------------------
+      # 08. 财务数据输出
+      # ------------------------------------------------------------
+
+      - name: Copy normalized fundamentals to output
+        shell: bash
+        run: |
+          mkdir -p \
+            "${BRIDGE_ROOT}/out/fundamentals"
+
+          cp -av \
+            "${BRIDGE_ROOT}/normalized/"*.parquet \
+            "${BRIDGE_ROOT}/out/fundamentals/" \
+            2>/dev/null || true
+
+          cp -av \
+            "${BRIDGE_ROOT}/reports/" \
+            "${BRIDGE_ROOT}/out/reports"
+
+      # ------------------------------------------------------------
+      # 09. README + manifest
+      # ------------------------------------------------------------
+
+      - name: Create bridge manifest
+        shell: bash
+        env:
+          START_YEAR: ${{ inputs.start_year }}
+          END_YEAR: ${{ inputs.end_year }}
+        run: |
+          python <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          from datetime import datetime, timezone
+
+          root = Path(os.environ["BRIDGE_ROOT"])
+          out = root / "out"
+
+          def sha256(path: Path):
+              h = hashlib.sha256()
+
+              with path.open("rb") as fp:
+                  while True:
+                      chunk = fp.read(
+                          1024 * 1024
+                      )
+
+                      if not chunk:
+                          break
+
+                      h.update(chunk)
+
+              return h.hexdigest()
+
+          files = []
+
+          for p in sorted(
+              x
+              for x in out.rglob("*")
+              if x.is_file()
+          ):
+              files.append(
+                  {
+                      "path": str(
+                          p.relative_to(out)
+                      ),
+                      "size_bytes": p.stat().st_size,
+                      "sha256": sha256(p),
+                  }
+              )
+
+          manifest = {
+              "dataset": os.environ["HF_REPO"],
+              "created_at_utc": datetime.now(
+                  timezone.utc
+              ).isoformat(),
+
+              "requested_start_year":
+                  os.environ.get("START_YEAR"),
+
+              "requested_end_year":
+                  os.environ.get("END_YEAR"),
+
+              "purpose":
+                  "A-share dividend quality "
+                  "Point-in-Time backtest bridge",
+
+              "files": files,
+          }
+
+          with open(
+              out / "bridge_manifest.json",
+              "w",
+              encoding="utf-8",
+          ) as fp:
+              json.dump(
+                  manifest,
+                  fp,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+
+          readme = f"""
+          # ChatGPT Dividend Data Bridge
+
+          Source:
+          {os.environ["HF_REPO"]}
+
+          Backtest target:
+          A-share dividend quality model.
+
+          Intended research period:
+          {os.environ.get("START_YEAR")}
+          -
+          {os.environ.get("END_YEAR")}
+
+          ## Contents
+
+          - fundamentals/
+            - normalized financial statements
+            - dividend / xdxr data if available
+            - stock basic data if available
+            - financial indicators if available
+            - audit / name-change data if available
+
+          - qlib_day_selected.tar.gz
+            - daily calendar
+            - historical instruments
+            - OHLC
+            - volume / amount
+            - PE/PB/PS
+            - dividend yield
+            - market cap
+            - turnover rate
+            - adjustment factors if present
+
+          - reports/
+            - Hugging Face inventory
+            - raw schemas
+            - normalized output report
+            - validation report
+
+          - bridge_manifest.json
+            - size
+            - SHA256
+            - provenance
+
+          ## Important
+
+          Financial factor construction MUST use:
+
+              available_date <= rebalance_date
+
+          Prefer:
+
+              f_ann_date
+
+          otherwise:
+
+              ann_date
+
+          Never use future financial statements.
+
+          """.strip()
+
+          (
+              out / "README.md"
+          ).write_text(
+              readme,
+              encoding="utf-8",
+          )
+
+          print()
+          print("===== Output manifest =====")
+
+          for f in files:
+              print(
+                  f"{f['size_bytes']/1024/1024:10.2f} MB  "
+                  f"{f['path']}"
+              )
+
+          PY
+
+      # ------------------------------------------------------------
+      # 10. 最终体积
+      # ------------------------------------------------------------
+
+      - name: Show final bridge size
+        shell: bash
+        run: |
+          echo
+          echo "===== Final output ====="
+
+          du -sh \
+            "${BRIDGE_ROOT}/out"
+
+          echo
+
+          find \
+            "${BRIDGE_ROOT}/out" \
+            -maxdepth 3 \
+            -type f \
+            -printf "%12s  %p\n" \
+            | sort -n
+
+          echo
+          echo "===== Runner disk after ====="
+
+          df -h
+
+      # ------------------------------------------------------------
+      # 11. 上传 Artifact
+      #
+      # 我后续可以通过 GitHub Connector 直接读取这个 artifact。
+      # ------------------------------------------------------------
+
+      - name: Upload dividend research bridge artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: a-share-dividend-bridge-${{ github.run_id }}
+          path: |
+            ${{ env.BRIDGE_ROOT }}/out/
+          if-no-files-found: error
+
+          # 数据只是中转，没必要永久占 GitHub 空间
+          retention-days: 7
+
+          # qlib已经gzip；parquet本身也压缩过，
+          # Artifact再高压缩意义不大。
+          compression-level: 1
