@@ -1,0 +1,428 @@
+name: ChatGPT TDX Historical Financial Backfill
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HF_REPO: yifishbossman/financial-analyst-data-full
+  OUT_DIR: _chatgpt_tdx_backfill
+
+jobs:
+  recover-tdx-history:
+    name: Recover TDX historical stock identifiers
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "huggingface_hub>=0.25" \
+            "pandas>=2.2" \
+            "pyarrow>=17" \
+            "numpy>=1.26"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          rm -rf "${OUT_DIR}"
+          mkdir -p "${OUT_DIR}/raw" "${OUT_DIR}/out" "${OUT_DIR}/reports"
+
+      - name: Download TDX historical financial tables
+        shell: bash
+        run: |
+          python <<'PY'
+          import os
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+
+          repo = os.environ["HF_REPO"]
+          root = Path(os.environ["OUT_DIR"])
+          raw = root / "raw"
+
+          allow = [
+              "parquet/financial/tdx_financial.parquet",
+              "parquet/financial/tdx_financial_temp.parquet",
+              "parquet/tushare_stock_basic.parquet",
+              "parquet/financial/profit_sheet.parquet",
+              "parquet/financial/balance_sheet.parquet",
+              "parquet/financial/cash_flow.parquet",
+          ]
+
+          snapshot_download(
+              repo_id=repo,
+              repo_type="dataset",
+              local_dir=str(raw),
+              allow_patterns=allow,
+              max_workers=8,
+          )
+
+          required = [
+              "parquet/financial/tdx_financial.parquet",
+              "parquet/tushare_stock_basic.parquet",
+          ]
+          missing = [p for p in required if not (raw / p).exists()]
+          if missing:
+              raise SystemExit(f"Missing required files: {missing}")
+
+          print("DOWNLOAD_OK")
+          PY
+
+      - name: Recover index / stock code and build backfill
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+          import pyarrow.parquet as pq
+
+          root = Path(os.environ["OUT_DIR"])
+          raw = root / "raw"
+          out = root / "out"
+          reports = root / "reports"
+
+          stock = pd.read_parquet(raw / "parquet/tushare_stock_basic.parquet").copy()
+
+          if "ts_code" not in stock.columns:
+              raise SystemExit("stock_basic has no ts_code")
+
+          stock["ts_code"] = stock["ts_code"].astype("string")
+          stock["code6"] = stock["ts_code"].str.extract(r"(\d{6})", expand=False)
+
+          # Six-digit code -> ts_code. If duplicates ever exist, do not guess.
+          code_counts = stock.groupby("code6")["ts_code"].nunique()
+          unique_codes = set(code_counts[code_counts == 1].index)
+
+          code_map = (
+              stock[stock["code6"].isin(unique_codes)]
+              .drop_duplicates("code6")
+              .set_index("code6")["ts_code"]
+              .to_dict()
+          )
+
+          tdx_core = [
+              "report_date", "period",
+              "eps", "eps_deducted", "bvps",
+              "capital_reserve_ps", "undist_profit_ps", "ocfps",
+              "total_revenue", "operating_profit", "profit_before_tax",
+              "net_profit", "np_deducted", "ocf",
+              "total_assets", "current_assets", "fixed_assets",
+              "intangible_assets", "total_liabilities",
+              "current_liabilities", "lt_liabilities",
+              "total_equity", "total_shares", "float_shares",
+              "roe", "rev_yoy", "np_yoy",
+              "gross_margin", "net_margin", "debt_ratio",
+              "inventory_turnover", "ar_turnover",
+              "current_ratio", "quick_ratio",
+          ]
+
+          def code_score(series):
+              s = series.astype("string").str.strip()
+              s = s.str.replace(r"\.0$", "", regex=True)
+
+              patterns = [
+                  r"^\d{6}$",
+                  r"^(SH|SZ|BJ)\d{6}$",
+                  r"^\d{6}\.(SH|SZ|BJ)$",
+              ]
+              matched = pd.Series(False, index=s.index)
+              for pat in patterns:
+                  matched |= s.str.upper().str.match(pat, na=False)
+
+              return float(matched.mean()), int(s.nunique(dropna=True))
+
+          def normalize_code(v):
+              if pd.isna(v):
+                  return None
+
+              s = str(v).strip().upper()
+              s = re.sub(r"\.0$", "", s)
+
+              m = re.search(r"(\d{6})", s)
+              return m.group(1) if m else None
+
+          audit = {
+              "stock_basic_rows": int(len(stock)),
+              "stock_basic_unique_code6": int(stock["code6"].nunique()),
+              "tables": {},
+          }
+
+          outputs = []
+
+          for fname in [
+              "tdx_financial.parquet",
+              "tdx_financial_temp.parquet",
+          ]:
+              path = raw / "parquet/financial" / fname
+              if not path.exists():
+                  continue
+
+              print(f"\n===== {fname} =====")
+
+              df = pd.read_parquet(path)
+              original_index = df.index
+
+              table_audit = {
+                  "rows": int(len(df)),
+                  "columns_before": list(df.columns),
+                  "index_class": type(original_index).__name__,
+                  "index_name": original_index.name,
+                  "index_names": list(original_index.names)
+                      if hasattr(original_index, "names") else [],
+                  "index_sample": [str(x) for x in list(original_index[:20])],
+                  "index_nunique": int(original_index.nunique())
+                      if not isinstance(original_index, pd.MultiIndex) else None,
+              }
+
+              # Preserve ALL index levels before any column filtering.
+              restored = df.reset_index()
+
+              candidate_scores = {}
+              for c in restored.columns:
+                  # Avoid scanning obvious financial value columns unless necessary.
+                  if c in tdx_core:
+                      continue
+                  try:
+                      score, nunique = code_score(restored[c])
+                      candidate_scores[c] = {
+                          "match_ratio": score,
+                          "nunique": nunique,
+                      }
+                  except Exception:
+                      pass
+
+              table_audit["identifier_candidate_scores"] = candidate_scores
+
+              # Pick strongest candidate with substantial coverage and many unique codes.
+              ranked = sorted(
+                  candidate_scores.items(),
+                  key=lambda kv: (kv[1]["match_ratio"], kv[1]["nunique"]),
+                  reverse=True,
+              )
+
+              code_col = None
+              for c, stats in ranked:
+                  if stats["match_ratio"] >= 0.80 and stats["nunique"] >= 500:
+                      code_col = c
+                      break
+
+              if code_col is None:
+                  # Keep the report, but fail loudly rather than inventing identifiers.
+                  audit["tables"][fname] = table_audit
+                  (reports / "tdx_index_audit.json").write_text(
+                      json.dumps(audit, ensure_ascii=False, indent=2),
+                      encoding="utf-8",
+                  )
+                  raise SystemExit(
+                      f"Could not recover a reliable stock-code field from {fname}. "
+                      f"Candidates={candidate_scores}"
+                  )
+
+              restored["code6"] = restored[code_col].map(normalize_code)
+              restored["ts_code"] = restored["code6"].map(code_map)
+
+              mapped_ratio = float(restored["ts_code"].notna().mean())
+              table_audit["selected_identifier_column"] = code_col
+              table_audit["mapped_to_ts_code_ratio"] = mapped_ratio
+              table_audit["mapped_unique_ts_code"] = int(
+                  restored["ts_code"].nunique(dropna=True)
+              )
+
+              # Keep only useful fields plus the recovered identifier.
+              cols = ["ts_code", "code6", code_col]
+              cols += [c for c in tdx_core if c in restored.columns]
+              cols = list(dict.fromkeys(cols))
+
+              clean = restored[cols].copy()
+
+              for c in ["report_date", "period"]:
+                  if c in clean.columns:
+                      clean[c] = pd.to_numeric(clean[c], errors="coerce").astype("Int64")
+
+              out_name = fname.replace(".parquet", "_with_code.csv.gz")
+              out_path = out / out_name
+              clean.to_csv(out_path, index=False, compression="gzip")
+
+              # Annual coverage report.
+              date_col = "report_date" if "report_date" in clean.columns else "period"
+              annual = clean[
+                  clean[date_col].astype("string").str.endswith("1231", na=False)
+              ].copy()
+
+              annual["year"] = (
+                  annual[date_col]
+                  .astype("string")
+                  .str.slice(0, 4)
+              )
+
+              coverage = (
+                  annual.groupby("year")["ts_code"]
+                  .nunique()
+                  .reset_index(name="stocks")
+              )
+
+              coverage_path = out / fname.replace(
+                  ".parquet", "_annual_coverage.csv"
+              )
+              coverage.to_csv(coverage_path, index=False)
+
+              table_audit["annual_coverage_2000_2025"] = (
+                  coverage[
+                      coverage["year"].between("2000", "2025")
+                  ].to_dict("records")
+              )
+
+              audit["tables"][fname] = table_audit
+              outputs.append(str(out_path))
+
+              print(
+                  f"Recovered identifier={code_col}; "
+                  f"mapped ratio={mapped_ratio:.4%}; "
+                  f"unique ts_code={table_audit['mapped_unique_ts_code']}"
+              )
+
+          # Strong validation on main table.
+          main = audit["tables"].get("tdx_financial.parquet")
+          if not main:
+              raise SystemExit("Main tdx_financial.parquet was not processed")
+
+          if main["mapped_to_ts_code_ratio"] < 0.95:
+              raise SystemExit(
+                  "TDX identifier mapping coverage <95%; refusing to use as backfill"
+              )
+
+          if main["mapped_unique_ts_code"] < 3000:
+              raise SystemExit(
+                  "TDX identifier mapping has too few unique stocks"
+              )
+
+          # Overlap diagnostics with exact-PIT Tushare statements.
+          # This does NOT make TDX announcement-versioned; it only checks value consistency.
+          tdx_path = out / "tdx_financial_with_code.csv.gz"
+          tdx = pd.read_csv(tdx_path)
+
+          profit_path = raw / "parquet/financial/profit_sheet.parquet"
+          if profit_path.exists():
+              pit = pd.read_parquet(profit_path).copy()
+
+              if all(c in pit.columns for c in ["ts_code", "end_date"]):
+                  pit["ts_code"] = pit["ts_code"].astype("string")
+                  pit["end_date"] = pd.to_numeric(
+                      pit["end_date"], errors="coerce"
+                  ).astype("Int64")
+
+                  # Annual-only overlap, 2015-2024.
+                  tdx_a = tdx[
+                      tdx["report_date"]
+                      .astype("string")
+                      .str.endswith("1231", na=False)
+                  ].copy()
+
+                  tdx_a["report_date"] = pd.to_numeric(
+                      tdx_a["report_date"], errors="coerce"
+                  ).astype("Int64")
+
+                  tdx_a = tdx_a[
+                      tdx_a["report_date"].between(20151231, 20241231)
+                  ]
+
+                  pit_a = pit[
+                      pit["end_date"].between(20151231, 20241231)
+                  ].copy()
+
+                  # Deduplicate PIT by latest available statement row for diagnostic only.
+                  sort_cols = [
+                      c for c in ["ts_code", "end_date", "f_ann_date", "ann_date"]
+                      if c in pit_a.columns
+                  ]
+                  if sort_cols:
+                      pit_a = pit_a.sort_values(sort_cols)
+
+                  pit_a = pit_a.drop_duplicates(
+                      ["ts_code", "end_date"], keep="last"
+                  )
+
+                  merged = tdx_a.merge(
+                      pit_a,
+                      left_on=["ts_code", "report_date"],
+                      right_on=["ts_code", "end_date"],
+                      how="inner",
+                      suffixes=("_tdx", "_pit"),
+                  )
+
+                  diag = {
+                      "overlap_rows": int(len(merged)),
+                  }
+
+                  pairs = [
+                      ("total_revenue", "revenue"),
+                      ("operating_profit", "operate_profit"),
+                      ("profit_before_tax", "total_profit"),
+                      ("net_profit", "n_income"),
+                  ]
+
+                  for left, right in pairs:
+                      if left not in merged.columns or right not in merged.columns:
+                          continue
+
+                      a = pd.to_numeric(merged[left], errors="coerce")
+                      b = pd.to_numeric(merged[right], errors="coerce")
+                      mask = a.notna() & b.notna()
+
+                      if mask.sum() < 100:
+                          continue
+
+                      aa = a[mask]
+                      bb = b[mask]
+
+                      scale = np.maximum(np.abs(bb), 1.0)
+                      rel = np.abs(aa - bb) / scale
+
+                      diag[f"{left}_vs_{right}"] = {
+                          "n": int(mask.sum()),
+                          "median_relative_diff": float(np.nanmedian(rel)),
+                          "p90_relative_diff": float(np.nanpercentile(rel, 90)),
+                          "correlation": float(np.corrcoef(aa, bb)[0, 1]),
+                      }
+
+                  audit["tushare_overlap_diagnostic"] = diag
+
+          (reports / "tdx_index_audit.json").write_text(
+              json.dumps(audit, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          print(json.dumps(audit, ensure_ascii=False, indent=2)[:25000])
+          print("TDX_BACKFILL_RECOVERY_OK")
+          PY
+
+      - name: Show output files
+        shell: bash
+        run: |
+          find "${OUT_DIR}" -maxdepth 3 -type f -printf "%12s  %p\n" | sort -n
+
+      - name: Upload TDX historical backfill
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdx-historical-financial-backfill-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/
+            ${{ env.OUT_DIR }}/reports/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
