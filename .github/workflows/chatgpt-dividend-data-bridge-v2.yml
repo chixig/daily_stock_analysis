@@ -1,0 +1,459 @@
+name: ChatGPT Dividend Data Bridge V2
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chatgpt-dividend-data-bridge-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BRIDGE_ROOT: _chatgpt_dividend_bridge_v2
+  HF_REPO: yifishbossman/financial-analyst-data-full
+  QLIB_RELEASE_TAG: "2026-09-05"
+  QLIB_URL: "https://github.com/chenditc/investment_data/releases/download/2026-09-05/qlib_bin.tar.gz"
+  QLIB_MANIFEST_URL: "https://github.com/chenditc/investment_data/releases/download/2026-09-05/qlib_bin.manifest.json"
+  QLIB_EXPECTED_SHA256: "11866b2eaa627b758da43ce075667716598611546fddea981422e5c06a3956f1"
+  PYTHONUNBUFFERED: "1"
+  HF_HUB_DISABLE_TELEMETRY: "1"
+
+jobs:
+  build-bridge-v2:
+    name: Build complete A-share research bridge V2
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "huggingface_hub>=0.25" \
+            "pandas>=2.2" \
+            "pyarrow>=17" \
+            "numpy>=1.26"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "${BRIDGE_ROOT}"
+          mkdir -p "${BRIDGE_ROOT}/hf_raw"
+          mkdir -p "${BRIDGE_ROOT}/fundamentals_csv"
+          mkdir -p "${BRIDGE_ROOT}/market"
+          mkdir -p "${BRIDGE_ROOT}/market_extract"
+          mkdir -p "${BRIDGE_ROOT}/reports"
+
+      # ------------------------------------------------------------
+      # 1. Full-A daily market data from chenditc/investment_data
+      # ------------------------------------------------------------
+      - name: Download canonical full-A Qlib market archive
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Downloading ${QLIB_URL}"
+          curl -fL \
+            --retry 6 \
+            --retry-delay 5 \
+            --retry-all-errors \
+            --connect-timeout 30 \
+            -o "${BRIDGE_ROOT}/market/qlib_bin.tar.gz" \
+            "${QLIB_URL}"
+
+          curl -fL \
+            --retry 6 \
+            --retry-delay 3 \
+            --retry-all-errors \
+            --connect-timeout 30 \
+            -o "${BRIDGE_ROOT}/market/qlib_bin.manifest.json" \
+            "${QLIB_MANIFEST_URL}"
+
+          echo "Archive size:"
+          ls -lh "${BRIDGE_ROOT}/market/qlib_bin.tar.gz"
+
+          ACTUAL_SHA256="$(sha256sum "${BRIDGE_ROOT}/market/qlib_bin.tar.gz" | awk '{print $1}')"
+          echo "Expected SHA256: ${QLIB_EXPECTED_SHA256}"
+          echo "Actual   SHA256: ${ACTUAL_SHA256}"
+
+          if [ "${ACTUAL_SHA256}" != "${QLIB_EXPECTED_SHA256}" ]; then
+            echo "ERROR: qlib archive SHA256 mismatch" >&2
+            exit 1
+          fi
+
+          echo "QLIB_SHA256_OK"
+
+      - name: Extract Qlib archive for validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          tar -xzf "${BRIDGE_ROOT}/market/qlib_bin.tar.gz" \
+            -C "${BRIDGE_ROOT}/market_extract"
+
+          echo "Top-level extracted paths:"
+          find "${BRIDGE_ROOT}/market_extract" -maxdepth 2 -type d | head -50
+
+      - name: Audit full-A Qlib coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import json
+          import os
+          import struct
+          from pathlib import Path
+
+          import numpy as np
+
+          root = Path(os.environ["BRIDGE_ROOT"])
+          extract = root / "market_extract"
+          reports = root / "reports"
+
+          # release contains qlib_bin/...
+          candidates = [
+              extract / "qlib_bin",
+              extract,
+          ]
+          qlib = None
+          for c in candidates:
+              if (c / "calendars" / "day.txt").exists() and (c / "features").exists():
+                  qlib = c
+                  break
+          if qlib is None:
+              raise SystemExit("Cannot locate extracted Qlib root")
+
+          calendar = [
+              x.strip()
+              for x in (qlib / "calendars" / "day.txt").read_text(encoding="utf-8").splitlines()
+              if x.strip()
+          ]
+
+          inst_file = qlib / "instruments" / "all.txt"
+          instruments = []
+          if inst_file.exists():
+              instruments = [
+                  x.strip()
+                  for x in inst_file.read_text(encoding="utf-8").splitlines()
+                  if x.strip()
+              ]
+
+          feature_dirs = [p for p in (qlib / "features").iterdir() if p.is_dir()]
+          fields = {}
+          for d in feature_dirs:
+              for f in d.glob("*.day.bin"):
+                  stem = f.name[:-len(".day.bin")]
+                  fields[stem] = fields.get(stem, 0) + 1
+
+          # exchange coverage based on feature directory names
+          exchange_counts = {"SH": 0, "SZ": 0, "BJ": 0, "OTHER": 0}
+          for d in feature_dirs:
+              name = d.name.upper().replace(".", "")
+              if name.startswith("SH"):
+                  exchange_counts["SH"] += 1
+              elif name.startswith("SZ"):
+                  exchange_counts["SZ"] += 1
+              elif name.startswith("BJ"):
+                  exchange_counts["BJ"] += 1
+              else:
+                  exchange_counts["OTHER"] += 1
+
+          required = ["open", "high", "low", "close", "volume", "amount", "factor", "adjclose"]
+          required_counts = {k: fields.get(k, 0) for k in required}
+
+          audit = {
+              "qlib_root": str(qlib),
+              "calendar_count": len(calendar),
+              "calendar_start": calendar[0] if calendar else None,
+              "calendar_end": calendar[-1] if calendar else None,
+              "instrument_rows": len(instruments),
+              "feature_directories": len(feature_dirs),
+              "exchange_counts": exchange_counts,
+              "required_field_counts": required_counts,
+              "all_field_counts": dict(sorted(fields.items())),
+          }
+
+          (reports / "qlib_full_audit.json").write_text(
+              json.dumps(audit, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          print(json.dumps(audit, ensure_ascii=False, indent=2)[:20000])
+
+          close_count = required_counts.get("close", 0)
+          if close_count < 4000:
+              raise SystemExit(
+                  f"Full-A market coverage validation failed: close files={close_count}, expected >=4000"
+              )
+
+          print("QLIB_FULL_A_COVERAGE_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 2. Raw fundamentals/dividend/capital-change data from HF
+      # ------------------------------------------------------------
+      - name: Download raw fundamental parquet tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import os
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+
+          repo = os.environ["HF_REPO"]
+          root = Path(os.environ["BRIDGE_ROOT"])
+          raw = root / "hf_raw"
+
+          allow = [
+              "parquet/tushare_stock_basic.parquet",
+              "parquet/xdxr/gbbq.parquet",
+              "parquet/financial/profit_sheet.parquet",
+              "parquet/financial/balance_sheet.parquet",
+              "parquet/financial/cash_flow.parquet",
+              "parquet/financial/tdx_financial.parquet",
+          ]
+
+          snapshot_download(
+              repo_id=repo,
+              repo_type="dataset",
+              local_dir=str(raw),
+              allow_patterns=allow,
+              max_workers=8,
+          )
+
+          missing = [p for p in allow if not (raw / p).exists()]
+          if missing:
+              raise SystemExit(f"Missing required HF files: {missing}")
+
+          print("HF_RAW_DOWNLOAD_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 3. Convert parquet -> gzip CSV so ChatGPT local Python can
+      #    read everything without pyarrow.
+      # ------------------------------------------------------------
+      - name: Convert fundamentals to portable CSV.GZ
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["BRIDGE_ROOT"])
+          raw = root / "hf_raw"
+          out = root / "fundamentals_csv"
+          reports = root / "reports"
+
+          out.mkdir(parents=True, exist_ok=True)
+
+          specs = {
+              "stock_basic": raw / "parquet/tushare_stock_basic.parquet",
+              "profit_sheet": raw / "parquet/financial/profit_sheet.parquet",
+              "balance_sheet": raw / "parquet/financial/balance_sheet.parquet",
+              "cash_flow": raw / "parquet/financial/cash_flow.parquet",
+              "gbbq": raw / "parquet/xdxr/gbbq.parquet",
+              "tdx_financial": raw / "parquet/financial/tdx_financial.parquet",
+          }
+
+          tdx_core = [
+              "report_date", "col1", "eps", "eps_deducted", "bvps",
+              "capital_reserve_ps", "undist_profit_ps", "ocfps",
+              "total_revenue", "operating_profit", "profit_before_tax",
+              "net_profit", "np_deducted", "ocf", "total_assets",
+              "current_assets", "fixed_assets", "intangible_assets",
+              "total_liabilities", "current_liabilities", "lt_liabilities",
+              "total_equity", "total_shares", "float_shares", "roe",
+              "rev_yoy", "np_yoy", "gross_margin", "net_margin",
+              "debt_ratio", "inventory_turnover", "ar_turnover",
+              "current_ratio", "quick_ratio", "period",
+          ]
+
+          audit = {}
+
+          for name, path in specs.items():
+              print(f"Reading {name}: {path}")
+              df = pd.read_parquet(path)
+              before = len(df)
+
+              if name == "tdx_financial":
+                  cols = [c for c in tdx_core if c in df.columns]
+                  df = df[cols].copy()
+
+              # Keep complete GBBQ semantics. Do NOT drop any of the 8 fields.
+              if name == "gbbq":
+                  required = [
+                      "market", "code", "datetime", "category",
+                      "hongli_panqianliutong",
+                      "peigujia_qianzongguben",
+                      "songgu_qianzongguben",
+                      "peigu_houzongguben",
+                  ]
+                  missing = [c for c in required if c not in df.columns]
+                  if missing:
+                      raise SystemExit(f"GBBQ missing fields: {missing}")
+                  df = df[required].copy()
+
+              # Normalize code-like columns to strings without scientific notation.
+              for c in ["ts_code", "code", "col1"]:
+                  if c in df.columns:
+                      if c == "col1":
+                          # Leave raw value available, but stringify deterministically.
+                          df[c] = df[c].astype("string")
+                      else:
+                          df[c] = df[c].astype("string")
+
+              # No aggressive date filtering here; we retain older history for
+              # factor windows and auditability.
+              csv_path = out / f"{name}.csv.gz"
+              df.to_csv(csv_path, index=False, compression="gzip")
+
+              audit[name] = {
+                  "rows": int(len(df)),
+                  "rows_before": int(before),
+                  "columns": list(df.columns),
+                  "size_bytes": int(csv_path.stat().st_size),
+              }
+
+              print(
+                  f"{name}: rows={len(df):,}, cols={len(df.columns)}, "
+                  f"csv.gz={csv_path.stat().st_size/1024/1024:.2f} MB"
+              )
+
+          # Critical source-level checks
+          if audit["stock_basic"]["rows"] < 5000:
+              raise SystemExit("stock_basic unexpectedly small")
+          if audit["profit_sheet"]["rows"] < 150000:
+              raise SystemExit("profit_sheet unexpectedly small")
+          if audit["gbbq"]["rows"] < 150000:
+              raise SystemExit("gbbq unexpectedly small")
+
+          (reports / "fundamentals_audit.json").write_text(
+              json.dumps(audit, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+
+          print(json.dumps(audit, ensure_ascii=False, indent=2)[:20000])
+          print("FUNDAMENTALS_CSV_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 4. Create provenance / notes
+      # ------------------------------------------------------------
+      - name: Create V2 bridge manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import hashlib
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root = Path(os.environ["BRIDGE_ROOT"])
+          reports = root / "reports"
+
+          files = []
+          for base in [root / "market", root / "fundamentals_csv", reports]:
+              for p in sorted(base.rglob("*")):
+                  if not p.is_file():
+                      continue
+                  h = hashlib.sha256()
+                  with p.open("rb") as f:
+                      while True:
+                          b = f.read(1024 * 1024)
+                          if not b:
+                              break
+                          h.update(b)
+                  files.append({
+                      "path": str(p.relative_to(root)),
+                      "size_bytes": p.stat().st_size,
+                      "sha256": h.hexdigest(),
+                  })
+
+          manifest = {
+              "created_at_utc": datetime.now(timezone.utc).isoformat(),
+              "purpose": "Full-A Point-in-Time dividend-stock backtest bridge V2",
+              "market_source": {
+                  "repo": "chenditc/investment_data",
+                  "release_tag": os.environ["QLIB_RELEASE_TAG"],
+                  "archive_expected_sha256": os.environ["QLIB_EXPECTED_SHA256"],
+              },
+              "fundamental_source": os.environ["HF_REPO"],
+              "notes": [
+                  "Market archive is the canonical chenditc Qlib release, not the incomplete HF Qlib subset.",
+                  "Fundamental tables preserve announcement dates for PIT filtering.",
+                  "GBBQ preserves all dividend/capital-change fields.",
+                  "Historical ST and audit-opinion data are not present in these source tables and must be treated as a later validation layer.",
+              ],
+              "files": files,
+          }
+
+          (root / "bridge_v2_manifest.json").write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Show final sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "===== Market ====="
+          du -sh "${BRIDGE_ROOT}/market"
+          ls -lh "${BRIDGE_ROOT}/market"
+          echo
+          echo "===== Fundamentals CSV ====="
+          du -sh "${BRIDGE_ROOT}/fundamentals_csv"
+          ls -lh "${BRIDGE_ROOT}/fundamentals_csv"
+          echo
+          echo "===== Reports ====="
+          ls -lh "${BRIDGE_ROOT}/reports"
+          echo
+          df -h
+
+      # ------------------------------------------------------------
+      # 5. Split artifacts: easier and safer to download into ChatGPT.
+      # ------------------------------------------------------------
+      - name: Upload full-A market artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: a-share-full-market-qlib-${{ github.run_id }}
+          path: |
+            ${{ env.BRIDGE_ROOT }}/market/qlib_bin.tar.gz
+            ${{ env.BRIDGE_ROOT }}/market/qlib_bin.manifest.json
+            ${{ env.BRIDGE_ROOT }}/reports/qlib_full_audit.json
+            ${{ env.BRIDGE_ROOT }}/bridge_v2_manifest.json
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload full-A fundamentals artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: a-share-full-fundamentals-${{ github.run_id }}
+          path: |
+            ${{ env.BRIDGE_ROOT }}/fundamentals_csv/
+            ${{ env.BRIDGE_ROOT }}/reports/fundamentals_audit.json
+            ${{ env.BRIDGE_ROOT }}/bridge_v2_manifest.json
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
