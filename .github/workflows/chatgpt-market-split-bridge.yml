@@ -1,0 +1,86 @@
+name: ChatGPT Market Split Bridge
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  QLIB_URL: https://github.com/chenditc/investment_data/releases/download/2026-09-05/qlib_bin.tar.gz
+  QLIB_SHA256: 11866b2eaa627b758da43ce075667716598611546fddea981422e5c06a3956f1
+
+jobs:
+  split-market:
+    name: Split full-A Qlib market archive
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Download canonical full-A Qlib archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --retry 5 --retry-delay 2 \
+            -o qlib_bin.tar.gz \
+            "${QLIB_URL}"
+
+          echo "${QLIB_SHA256}  qlib_bin.tar.gz" | sha256sum -c -
+          ls -lh qlib_bin.tar.gz
+
+      - name: Split archive into connector-safe chunks
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # 190 MiB each -> 3 chunks for the current ~538 MiB archive.
+          split -b 190M -d -a 2 \
+            qlib_bin.tar.gz \
+            qlib_bin.tar.gz.part-
+
+          ls -lh qlib_bin.tar.gz.part-*
+
+          COUNT="$(find . -maxdepth 1 -name 'qlib_bin.tar.gz.part-*' | wc -l)"
+          if [ "${COUNT}" -ne 3 ]; then
+            echo "Expected exactly 3 chunks, got ${COUNT}"
+            exit 1
+          fi
+
+          sha256sum qlib_bin.tar.gz.part-* > chunk_sha256.txt
+          cat chunk_sha256.txt
+
+      - name: Upload market chunk 00
+        uses: actions/upload-artifact@v4
+        with:
+          name: qlib-market-part-00-${{ github.run_id }}
+          path: qlib_bin.tar.gz.part-00
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload market chunk 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: qlib-market-part-01-${{ github.run_id }}
+          path: qlib_bin.tar.gz.part-01
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload market chunk 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: qlib-market-part-02-${{ github.run_id }}
+          path: qlib_bin.tar.gz.part-02
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload chunk manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: qlib-market-manifest-${{ github.run_id }}
+          path: chunk_sha256.txt
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 9
