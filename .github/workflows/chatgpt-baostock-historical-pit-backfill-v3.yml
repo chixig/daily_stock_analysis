@@ -1,0 +1,1231 @@
+name: ChatGPT BaoStock Historical PIT Backfill V3
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OUT_DIR: _chatgpt_baostock_pit
+  QLIB_URL: https://github.com/chenditc/investment_data/releases/download/2026-09-05/qlib_bin.tar.gz
+  QLIB_SHA256: 11866b2eaa627b758da43ce075667716598611546fddea981422e5c06a3956f1
+  HF_REPO: yifishbossman/financial-analyst-data-full
+
+jobs:
+  build-pit:
+    name: Build strict historical PIT fundamentals
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "baostock>=0.8.9" \
+            "pandas>=2.2" \
+            "numpy>=1.26" \
+            "pyarrow>=17" \
+            "huggingface_hub>=0.25"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          rm -rf "${OUT_DIR}"
+          mkdir -p \
+            "${OUT_DIR}/qlib" \
+            "${OUT_DIR}/hf" \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports"
+
+      # ------------------------------------------------------------
+      # 1. Canonical full-A market history
+      # ------------------------------------------------------------
+
+      - name: Download and verify full-A Qlib market data
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L --retry 5 --retry-delay 2 \
+            -o "${OUT_DIR}/qlib_bin.tar.gz" \
+            "${QLIB_URL}"
+
+          echo "${QLIB_SHA256}  ${OUT_DIR}/qlib_bin.tar.gz" \
+            | sha256sum -c -
+
+          tar -xzf "${OUT_DIR}/qlib_bin.tar.gz" \
+            -C "${OUT_DIR}/qlib"
+
+          echo "QLIB_OK"
+          echo "===== Qlib extracted top-level ====="
+          # Do not pipe find into head under `set -o pipefail`;
+          # head closes the pipe early and makes `find` exit with SIGPIPE.
+          find "${OUT_DIR}/qlib" -maxdepth 2 -type d -print || true
+
+      # ------------------------------------------------------------
+      # 2. Dividend history + 2015+ PIT statements for overlap QA
+      # ------------------------------------------------------------
+
+      - name: Download dividend history and overlap reference
+        shell: bash
+        run: |
+          python <<'PY'
+          import os
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+
+          root = Path(os.environ["OUT_DIR"]) / "hf"
+
+          allow = [
+              "parquet/xdxr/gbbq.parquet",
+              "parquet/tushare_stock_basic.parquet",
+              "parquet/financial/profit_sheet.parquet",
+              "parquet/financial/balance_sheet.parquet",
+              "parquet/financial/cash_flow.parquet",
+          ]
+
+          snapshot_download(
+              repo_id=os.environ["HF_REPO"],
+              repo_type="dataset",
+              local_dir=str(root),
+              allow_patterns=allow,
+              max_workers=8,
+          )
+
+          for p in allow:
+              if not (root / p).exists():
+                  raise SystemExit(f"missing {p}")
+
+          print("HF_REFERENCE_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 3. Build a broad, PIT-safe candidate plan BEFORE financial calls
+      #
+      # Final model uses:
+      #   yield >= 2.5%
+      #   avg amount >= 50,000 in this Qlib package's amount units
+      #
+      # Here deliberately use looser 2.0% / 30,000 so the financial
+      # download cannot accidentally pre-delete final candidates.
+      # ------------------------------------------------------------
+
+      - name: Build historical candidate and query plan
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          qlib_extract = root / "qlib"
+          hf = root / "hf"
+
+          # Qlib release archives may unpack either directly as:
+          #   qlib/calendars, qlib/instruments, qlib/features
+          # or with an extra cn_data layer:
+          #   qlib/cn_data/calendars, ...
+          # Detect the real provider root instead of hard-coding one layout.
+          qlib_candidates = [
+              qlib_extract / "qlib_bin",
+              qlib_extract / "cn_data",
+              qlib_extract,
+          ]
+
+          qlib = next(
+              (
+                  p for p in qlib_candidates
+                  if (p / "calendars/day.txt").exists()
+                  and (p / "instruments/all.txt").exists()
+                  and (p / "features").exists()
+              ),
+              None,
+          )
+
+          if qlib is None:
+              # Last-resort recursive discovery for future archive layout changes.
+              matches = list(
+                  qlib_extract.rglob("calendars/day.txt")
+              )
+              for m in matches:
+                  candidate = m.parent.parent
+                  if (
+                      (candidate / "instruments/all.txt").exists()
+                      and (candidate / "features").exists()
+                  ):
+                      qlib = candidate
+                      break
+
+          if qlib is None:
+              print("Qlib extracted tree (first 200 paths):")
+              for p in list(qlib_extract.rglob("*"))[:200]:
+                  print(" ", p)
+              raise SystemExit(
+                  "Could not locate Qlib provider root containing "
+                  "calendars/day.txt + instruments/all.txt + features/"
+              )
+
+          print(f"QLIB_PROVIDER_ROOT={qlib}", flush=True)
+
+          calendar = pd.to_datetime(
+              pd.read_csv(
+                  qlib / "calendars/day.txt",
+                  header=None,
+              )[0]
+          )
+
+          cal_index = {
+              d: i for i, d in enumerate(calendar)
+          }
+
+          instruments = pd.read_csv(
+              qlib / "instruments/all.txt",
+              sep="\t",
+              header=None,
+              names=["qlib_code", "start", "end"],
+          )
+
+          instruments["start"] = pd.to_datetime(
+              instruments["start"]
+          )
+          instruments["end"] = pd.to_datetime(
+              instruments["end"]
+          )
+
+          instruments = instruments[
+              instruments["qlib_code"].str.match(
+                  r"^(SH|SZ)\d{6}$"
+              )
+          ].copy()
+
+          instruments["ts_code"] = (
+              instruments["qlib_code"].str[2:]
+              + "."
+              + instruments["qlib_code"].str[:2]
+          )
+
+          gbbq = pd.read_parquet(
+              hf / "parquet/xdxr/gbbq.parquet"
+          )
+
+          div_groups = {}
+
+          cash_rows = gbbq[
+              pd.to_numeric(
+                  gbbq["category"],
+                  errors="coerce",
+              ).eq(1)
+          ].copy()
+
+          for (market, code), grp in cash_rows.groupby(
+              ["market", "code"],
+              sort=False,
+          ):
+              arr = grp[
+                  ["datetime", "hongli_panqianliutong"]
+              ].copy()
+
+              arr["datetime"] = pd.to_numeric(
+                  arr["datetime"],
+                  errors="coerce",
+              )
+
+              arr["hongli_panqianliutong"] = (
+                  pd.to_numeric(
+                      arr["hongli_panqianliutong"],
+                      errors="coerce",
+                  )
+              )
+
+              arr = arr.dropna().sort_values("datetime")
+
+              div_groups[
+                  (int(market), int(code))
+              ] = arr.to_numpy()
+
+          def market_code(qlib_code):
+              ex = qlib_code[:2]
+              code = int(qlib_code[2:])
+              return {"SZ": 0, "SH": 1}[ex], code
+
+          bin_cache = {}
+
+          def read_bin(code, field):
+              key = (code, field)
+              if key in bin_cache:
+                  return bin_cache[key]
+
+              path = (
+                  qlib
+                  / "features"
+                  / code.lower()
+                  / f"{field}.day.bin"
+              )
+
+              if not path.exists():
+                  bin_cache[key] = (None, None)
+                  return None, None
+
+              arr = np.fromfile(
+                  path,
+                  dtype="<f4",
+              )
+
+              if len(arr) < 2:
+                  bin_cache[key] = (None, None)
+                  return None, None
+
+              value = (int(arr[0]), arr[1:])
+              bin_cache[key] = value
+              return value
+
+          def value_at(code, field, idx):
+              start, values = read_bin(code, field)
+              if values is None:
+                  return np.nan
+
+              j = idx - start
+
+              if j < 0 or j >= len(values):
+                  return np.nan
+
+              return float(values[j])
+
+          def window_mean(code, field, idx, n=60):
+              start, values = read_bin(code, field)
+              if values is None:
+                  return np.nan
+
+              j = idx - start
+              hi = min(j, len(values))
+              lo = max(0, hi - n)
+
+              if hi <= lo:
+                  return np.nan
+
+              block = values[lo:hi]
+
+              if not np.isfinite(block).any():
+                  return np.nan
+
+              return float(np.nanmean(block))
+
+          def dividend_metrics(code, signal_date):
+              market, num = market_code(code)
+
+              arr = div_groups.get(
+                  (market, num)
+              )
+
+              if arr is None:
+                  return 0, 0.0
+
+              dates = arr[:, 0].astype(int)
+              cash = (
+                  arr[:, 1].astype(float)
+                  / 10.0
+              )
+
+              signal_int = int(
+                  signal_date.strftime("%Y%m%d")
+              )
+
+              one_year_ago = int(
+                  (
+                      signal_date
+                      - pd.DateOffset(years=1)
+                  ).strftime("%Y%m%d")
+              )
+
+              ttm_mask = (
+                  (dates <= signal_int)
+                  & (dates > one_year_ago)
+              )
+
+              dps_ttm = float(
+                  np.nansum(cash[ttm_mask])
+              )
+
+              eligible = dates <= signal_int
+
+              annual = {}
+              for yy in np.unique(
+                  dates[eligible] // 10000
+              ):
+                  annual[int(yy)] = float(
+                      np.nansum(
+                          cash[
+                              eligible
+                              & ((dates // 10000) == yy)
+                          ]
+                      )
+                  )
+
+              # continuous paid-dividend years ending previous calendar year
+              yy = signal_date.year - 1
+              continuous = 0
+
+              while annual.get(yy, 0.0) > 0:
+                  continuous += 1
+                  yy -= 1
+
+              return continuous, dps_ttm
+
+          signal_rows = []
+          pair_rows = []
+
+          for year in range(2012, 2020):
+              may = calendar[
+                  (calendar.dt.year == year)
+                  & (calendar.dt.month == 5)
+              ]
+
+              if len(may) < 2:
+                  raise RuntimeError(
+                      f"missing May calendar for {year}"
+                  )
+
+              signal_date = may.iloc[0]
+              idx = cal_index[signal_date]
+
+              # must have been listed for five full years
+              active = instruments[
+                  (
+                      instruments["start"]
+                      <= (
+                          signal_date
+                          - pd.DateOffset(years=5)
+                      )
+                  )
+                  & (
+                      instruments["end"]
+                      >= signal_date
+                  )
+              ]
+
+              count = 0
+
+              for row in active.itertuples():
+                  cont, dps_ttm = dividend_metrics(
+                      row.qlib_code,
+                      signal_date,
+                  )
+
+                  if cont < 5 or dps_ttm <= 0:
+                      continue
+
+                  close = value_at(
+                      row.qlib_code,
+                      "close",
+                      idx,
+                  )
+
+                  factor = value_at(
+                      row.qlib_code,
+                      "factor",
+                      idx,
+                  )
+
+                  if (
+                      not np.isfinite(close)
+                      or not np.isfinite(factor)
+                      or factor == 0
+                  ):
+                      continue
+
+                  # This Qlib package stores normalised close.
+                  raw_price = close / factor
+
+                  if (
+                      not np.isfinite(raw_price)
+                      or raw_price <= 0
+                  ):
+                      continue
+
+                  dy = dps_ttm / raw_price
+
+                  avg_amount = window_mean(
+                      row.qlib_code,
+                      "amount",
+                      idx,
+                      60,
+                  )
+
+                  # intentionally broad prefilter
+                  if (
+                      dy < 0.020
+                      or not np.isfinite(avg_amount)
+                      or avg_amount < 30000
+                  ):
+                      continue
+
+                  signal_rows.append({
+                      "signal_year": year,
+                      "signal_date": signal_date.strftime(
+                          "%Y-%m-%d"
+                      ),
+                      "ts_code": row.ts_code,
+                      "qlib_code": row.qlib_code,
+                      "list_start": row.start.strftime(
+                          "%Y-%m-%d"
+                      ),
+                      "continuous_dividend_years": cont,
+                      "dps_ttm": dps_ttm,
+                      "raw_price": raw_price,
+                      "dy_ttm": dy,
+                      "avg_amount_60d": avg_amount,
+                  })
+
+                  # Exact five annual financial years needed by that signal.
+                  for financial_year in range(
+                      year - 5,
+                      year,
+                  ):
+                      pair_rows.append({
+                          "ts_code": row.ts_code,
+                          "financial_year": financial_year,
+                      })
+
+                  count += 1
+
+              print(
+                  f"{year}: broad candidates={count}",
+                  flush=True,
+              )
+
+          candidates = pd.DataFrame(signal_rows)
+
+          pairs = (
+              pd.DataFrame(pair_rows)
+              .drop_duplicates()
+              .sort_values(
+                  ["ts_code", "financial_year"]
+              )
+              .reset_index(drop=True)
+          )
+
+          candidates.to_csv(
+              root / "out/candidate_plan.csv",
+              index=False,
+          )
+
+          pairs.to_csv(
+              root / "out/financial_query_plan.csv",
+              index=False,
+          )
+
+          report = {
+              "candidate_rows": int(len(candidates)),
+              "candidate_unique_stocks": int(
+                  candidates["ts_code"].nunique()
+              ),
+              "financial_code_year_pairs": int(
+                  len(pairs)
+              ),
+              "candidate_count_by_signal_year": (
+                  candidates.groupby("signal_year")
+                  ["ts_code"]
+                  .nunique()
+                  .astype(int)
+                  .to_dict()
+              ),
+          }
+
+          (
+              root
+              / "reports/candidate_plan.json"
+          ).write_text(
+              json.dumps(
+                  report,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          print(json.dumps(
+              report,
+              ensure_ascii=False,
+              indent=2,
+          ))
+
+          if len(candidates) < 500:
+              raise SystemExit(
+                  "Candidate plan unexpectedly small"
+              )
+
+          if len(pairs) < 1000:
+              raise SystemExit(
+                  "Financial query plan unexpectedly small"
+              )
+
+          print("CANDIDATE_PLAN_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 4. Strict historical financial data from BaoStock
+      #
+      # BaoStock's quarterly financial APIs explicitly return:
+      #   pubDate = company financial-report publication date
+      #   statDate = report period end
+      # and provide 2007-present data.
+      # ------------------------------------------------------------
+
+      - name: Fetch BaoStock annual PIT fundamentals
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import time
+          from pathlib import Path
+
+          import baostock as bs
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          plan = pd.read_csv(
+              out / "financial_query_plan.csv",
+              dtype={"ts_code": "string"},
+          )
+
+          def to_baostock_code(ts_code):
+              code, exchange = ts_code.split(".")
+              return f"{exchange.lower()}.{code}"
+
+          def collect(rs):
+              rows = []
+
+              if rs.error_code != "0":
+                  raise RuntimeError(
+                      f"{rs.error_code}: {rs.error_msg}"
+                  )
+
+              while rs.next():
+                  rows.append(
+                      rs.get_row_data()
+                  )
+
+              return pd.DataFrame(
+                  rows,
+                  columns=rs.fields,
+              )
+
+          login = bs.login()
+
+          if login.error_code != "0":
+              raise SystemExit(
+                  f"BaoStock login failed: "
+                  f"{login.error_code} {login.error_msg}"
+              )
+
+          print(
+              f"BaoStock login OK; pairs={len(plan):,}",
+              flush=True,
+          )
+
+          result = {
+              "profit": [],
+              "balance": [],
+              "cashflow": [],
+          }
+
+          failures = []
+
+          def query_once(kind, code, year):
+              if kind == "profit":
+                  rs = bs.query_profit_data(
+                      code=code,
+                      year=int(year),
+                      quarter=4,
+                  )
+              elif kind == "balance":
+                  rs = bs.query_balance_data(
+                      code=code,
+                      year=int(year),
+                      quarter=4,
+                  )
+              elif kind == "cashflow":
+                  rs = bs.query_cash_flow_data(
+                      code=code,
+                      year=int(year),
+                      quarter=4,
+                  )
+              else:
+                  raise ValueError(kind)
+
+              return collect(rs)
+
+          def query_with_retry(kind, code, year):
+              last = None
+
+              for attempt in range(1, 5):
+                  try:
+                      df = query_once(
+                          kind,
+                          code,
+                          year,
+                      )
+                      return df
+                  except Exception as exc:
+                      last = exc
+                      print(
+                          f"retry {kind} {code} {year} "
+                          f"{attempt}/4: {exc}",
+                          flush=True,
+                      )
+
+                      # BaoStock socket can recover after reconnect.
+                      try:
+                          bs.logout()
+                      except Exception:
+                          pass
+
+                      time.sleep(
+                          min(6, attempt * 1.5)
+                      )
+
+                      lg = bs.login()
+
+                      if lg.error_code != "0":
+                          print(
+                              "relogin failed:",
+                              lg.error_code,
+                              lg.error_msg,
+                              flush=True,
+                          )
+
+              raise RuntimeError(last)
+
+          # query code-year pairs once; each provides three annual factor blocks
+          for i, row in enumerate(
+              plan.itertuples(index=False),
+              start=1,
+          ):
+              ts_code = str(row.ts_code)
+              year = int(row.financial_year)
+              code = to_baostock_code(ts_code)
+
+              for kind in [
+                  "profit",
+                  "balance",
+                  "cashflow",
+              ]:
+                  try:
+                      df = query_with_retry(
+                          kind,
+                          code,
+                          year,
+                      )
+                  except Exception as exc:
+                      failures.append({
+                          "kind": kind,
+                          "ts_code": ts_code,
+                          "financial_year": year,
+                          "error": repr(exc),
+                      })
+                      continue
+
+                  if df.empty:
+                      continue
+
+                  df["ts_code"] = ts_code
+                  df["financial_year_requested"] = year
+
+                  result[kind].append(df)
+
+              if i % 100 == 0 or i == len(plan):
+                  print(
+                      f"progress {i:,}/{len(plan):,}; "
+                      f"failures={len(failures)}",
+                      flush=True,
+                  )
+
+          try:
+              bs.logout()
+          except Exception:
+              pass
+
+          coverage = {}
+
+          for kind, frames in result.items():
+              if frames:
+                  df = pd.concat(
+                      frames,
+                      ignore_index=True,
+                      sort=False,
+                  )
+              else:
+                  df = pd.DataFrame()
+
+              # Normalise dates and retain raw values.
+              for c in ["pubDate", "statDate"]:
+                  if c in df.columns:
+                      df[c] = pd.to_datetime(
+                          df[c],
+                          errors="coerce",
+                      )
+
+              if not df.empty:
+                  # Only annual records actually corresponding to year-end.
+                  if "statDate" in df.columns:
+                      df = df[
+                          df["statDate"].dt.month.eq(12)
+                          & df["statDate"].dt.day.eq(31)
+                      ].copy()
+
+                  # If multiple rows somehow occur, keep earliest publication.
+                  if all(
+                      c in df.columns
+                      for c in ["ts_code", "statDate", "pubDate"]
+                  ):
+                      df = df.sort_values(
+                          [
+                              "ts_code",
+                              "statDate",
+                              "pubDate",
+                          ]
+                      ).drop_duplicates(
+                          ["ts_code", "statDate"],
+                          keep="first",
+                      )
+
+                  for c in ["pubDate", "statDate"]:
+                      if c in df.columns:
+                          df[c] = df[c].dt.strftime(
+                              "%Y-%m-%d"
+                          )
+
+                  df.to_csv(
+                      out / f"baostock_{kind}_annual.csv.gz",
+                      index=False,
+                      compression="gzip",
+                  )
+
+              coverage[kind] = {
+                  "rows": int(len(df)),
+                  "stocks": int(
+                      df["ts_code"].nunique()
+                  ) if "ts_code" in df.columns else 0,
+                  "pubdate_nonnull": int(
+                      df["pubDate"].notna().sum()
+                  ) if "pubDate" in df.columns else 0,
+              }
+
+          (
+              reports / "baostock_failures.json"
+          ).write_text(
+              json.dumps(
+                  failures,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          (
+              reports / "baostock_coverage.json"
+          ).write_text(
+              json.dumps(
+                  coverage,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          print(
+              json.dumps(
+                  coverage,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+          )
+
+          failure_rate = (
+              len(failures)
+              / max(1, len(plan) * 3)
+          )
+
+          print(
+              f"failure_rate={failure_rate:.4%}"
+          )
+
+          if failure_rate > 0.03:
+              raise SystemExit(
+                  "BaoStock failure rate >3%"
+              )
+
+          for kind in [
+              "profit",
+              "balance",
+              "cashflow",
+          ]:
+              if coverage[kind]["rows"] < 1000:
+                  raise SystemExit(
+                      f"{kind} coverage too small"
+                  )
+
+          print("BAOSTOCK_DOWNLOAD_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 5. Strict PIT coverage test and overlap QA against 2015+ Tushare
+      # ------------------------------------------------------------
+
+      - name: Validate strict PIT coverage and overlap
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          hf = root / "hf"
+          reports = root / "reports"
+
+          candidates = pd.read_csv(
+              out / "candidate_plan.csv"
+          )
+
+          tables = {}
+
+          for kind in [
+              "profit",
+              "balance",
+              "cashflow",
+          ]:
+              path = (
+                  out
+                  / f"baostock_{kind}_annual.csv.gz"
+              )
+
+              if not path.exists():
+                  raise SystemExit(
+                      f"missing {path}"
+                  )
+
+              df = pd.read_csv(
+                  path,
+                  low_memory=False,
+              )
+
+              df["pubDate"] = pd.to_datetime(
+                  df["pubDate"],
+                  errors="coerce",
+              )
+
+              df["statDate"] = pd.to_datetime(
+                  df["statDate"],
+                  errors="coerce",
+              )
+
+              df["financial_year"] = (
+                  df["statDate"].dt.year
+              )
+
+              tables[kind] = df
+
+          pit_rows = []
+
+          for signal_year, grp in candidates.groupby(
+              "signal_year"
+          ):
+              signal_date = pd.Timestamp(
+                  grp["signal_date"].iloc[0]
+              )
+
+              codes = set(grp["ts_code"])
+
+              complete_sets = []
+
+              for kind, df in tables.items():
+                  sub = df[
+                      df["ts_code"].isin(codes)
+                      & df["financial_year"].between(
+                          signal_year - 5,
+                          signal_year - 1,
+                      )
+                      & (
+                          df["pubDate"]
+                          <= signal_date
+                      )
+                  ]
+
+                  count = sub.groupby(
+                      "ts_code"
+                  )["financial_year"].nunique()
+
+                  complete = set(
+                      count[count >= 5].index
+                  )
+
+                  complete_sets.append(
+                      complete
+                  )
+
+              complete_all = set.intersection(
+                  *complete_sets
+              )
+
+              pit_rows.append({
+                  "signal_year": int(signal_year),
+                  "broad_candidates": int(
+                      grp["ts_code"].nunique()
+                  ),
+                  "complete_5y_pit": int(
+                      len(complete_all)
+                  ),
+                  "coverage_ratio": float(
+                      len(complete_all)
+                      / max(
+                          1,
+                          grp["ts_code"].nunique(),
+                      )
+                  ),
+              })
+
+          pit_cov = pd.DataFrame(pit_rows)
+
+          pit_cov.to_csv(
+              reports / "strict_pit_coverage.csv",
+              index=False,
+          )
+
+          print(
+              "\n===== Strict PIT coverage ====="
+          )
+          print(
+              pit_cov.to_string(index=False)
+          )
+
+          # --------------------------------------------------------
+          # 2015-2018 overlap diagnostic against the exact PIT
+          # Tushare statements in the full data package.
+          # --------------------------------------------------------
+          profit_ref = pd.read_parquet(
+              hf / "parquet/financial/profit_sheet.parquet"
+          )
+
+          profit_ref["end_date"] = pd.to_numeric(
+              profit_ref["end_date"],
+              errors="coerce",
+          )
+
+          ref = profit_ref[
+              profit_ref["end_date"].between(
+                  20151231,
+                  20181231,
+              )
+              & (
+                  profit_ref["end_date"] % 10000
+                  == 1231
+              )
+          ].copy()
+
+          sort_cols = [
+              c for c in [
+                  "ts_code",
+                  "end_date",
+                  "f_ann_date",
+                  "ann_date",
+              ]
+              if c in ref.columns
+          ]
+
+          ref = (
+              ref.sort_values(sort_cols)
+              .drop_duplicates(
+                  ["ts_code", "end_date"],
+                  keep="first",
+              )
+          )
+
+          bprofit = tables["profit"].copy()
+
+          bprofit = bprofit[
+              bprofit["financial_year"].between(
+                  2015,
+                  2018,
+              )
+          ].copy()
+
+          bprofit["end_date"] = (
+              bprofit["financial_year"] * 10000
+              + 1231
+          )
+
+          merged = bprofit.merge(
+              ref,
+              on=["ts_code", "end_date"],
+              how="inner",
+              suffixes=("_bao", "_tushare"),
+          )
+
+          diag = {
+              "overlap_rows": int(len(merged)),
+          }
+
+          # netProfit in BaoStock is expected to be close to reported net income.
+          if (
+              "netProfit" in merged.columns
+              and "n_income" in merged.columns
+          ):
+              a = pd.to_numeric(
+                  merged["netProfit"],
+                  errors="coerce",
+              )
+              b = pd.to_numeric(
+                  merged["n_income"],
+                  errors="coerce",
+              )
+
+              mask = (
+                  a.notna()
+                  & b.notna()
+                  & (b.abs() > 1e6)
+              )
+
+              if mask.sum() > 100:
+                  aa = a[mask]
+                  bb = b[mask]
+
+                  # BaoStock documentation reports netProfit in raw yuan.
+                  rel = (
+                      (aa - bb).abs()
+                      / bb.abs()
+                  )
+
+                  diag["netProfit_vs_n_income"] = {
+                      "n": int(mask.sum()),
+                      "correlation": float(
+                          np.corrcoef(
+                              aa,
+                              bb,
+                          )[0, 1]
+                      ),
+                      "median_relative_diff": float(
+                          np.nanmedian(rel)
+                      ),
+                      "p90_relative_diff": float(
+                          np.nanpercentile(
+                              rel,
+                              90,
+                          )
+                      ),
+                  }
+
+          # pubDate versus announcement date
+          ann_col = (
+              "f_ann_date"
+              if "f_ann_date" in merged.columns
+              else "ann_date"
+          )
+
+          if ann_col in merged.columns:
+              bao_date = pd.to_datetime(
+                  merged["pubDate"],
+                  errors="coerce",
+              )
+
+              ts_date = pd.to_datetime(
+                  merged[ann_col]
+                  .astype("Int64")
+                  .astype("string"),
+                  format="%Y%m%d",
+                  errors="coerce",
+              )
+
+              delta = (
+                  bao_date - ts_date
+              ).dt.days.abs()
+
+              diag["announcement_date_delta_days"] = {
+                  "n": int(delta.notna().sum()),
+                  "median": float(
+                      delta.median()
+                  ),
+                  "p90": float(
+                      delta.quantile(0.90)
+                  ),
+              }
+
+          (
+              reports / "overlap_diagnostic.json"
+          ).write_text(
+              json.dumps(
+                  diag,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          print(
+              "\n===== Overlap diagnostic ====="
+          )
+          print(
+              json.dumps(
+                  diag,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+          )
+
+          # At least 60% of the broad candidates should have a full
+          # five-year strict PIT window. This broad candidate plan is
+          # intentionally looser than the final screen.
+          if (
+              pit_cov["coverage_ratio"].min()
+              < 0.60
+          ):
+              raise SystemExit(
+                  "Strict PIT financial coverage "
+                  "below 60% in at least one year"
+              )
+
+          print("STRICT_PIT_VALIDATION_OK")
+          PY
+
+      - name: Show final files
+        shell: bash
+        run: |
+          find "${OUT_DIR}/out" "${OUT_DIR}/reports" \
+            -type f \
+            -printf "%12s  %p\n" \
+            | sort -n
+
+          du -sh "${OUT_DIR}/out" "${OUT_DIR}/reports"
+
+      - name: Upload BaoStock PIT backfill
+        uses: actions/upload-artifact@v4
+        with:
+          name: baostock-historical-pit-backfill-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/
+            ${{ env.OUT_DIR }}/reports/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
