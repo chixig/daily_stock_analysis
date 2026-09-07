@@ -1,0 +1,514 @@
+name: ChatGPT Eastmoney Historical PIT Backfill
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OUT_DIR: _chatgpt_eastmoney_pit_backfill
+  START_YEAR: "2006"
+  END_YEAR: "2019"
+
+jobs:
+  fetch-history:
+    name: Fetch Eastmoney annual PIT financial history
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "pandas>=2.2" \
+            "numpy>=1.26" \
+            "requests>=2.32"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          rm -rf "${OUT_DIR}"
+          mkdir -p "${OUT_DIR}/raw" "${OUT_DIR}/out" "${OUT_DIR}/reports"
+
+      - name: Fetch annual financial statements with announcement dates
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import time
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+          import requests
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+
+          root = Path(os.environ["OUT_DIR"])
+          raw_dir = root / "raw"
+          out_dir = root / "out"
+          reports_dir = root / "reports"
+
+          start_year = int(os.environ["START_YEAR"])
+          end_year = int(os.environ["END_YEAR"])
+
+          BASE_URL = "https://datacenter-web.eastmoney.com/api/data/v1/get"
+
+          session = requests.Session()
+          retries = Retry(
+              total=6,
+              connect=6,
+              read=6,
+              backoff_factor=1.0,
+              status_forcelist=[429, 500, 502, 503, 504],
+              allowed_methods=["GET"],
+          )
+          session.mount("https://", HTTPAdapter(max_retries=retries))
+
+          # Raw Eastmoney report names used by AKShare's current implementation.
+          REPORTS = {
+              "income": {
+                  "reportName": "RPT_DMSK_FN_INCOME",
+                  "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field": "REPORT_DATE",
+                  "notice_candidates": ["NOTICE_DATE", "UPDATE_DATE"],
+                  "base_filter": '(SECURITY_TYPE_CODE in ("058001001","058001008"))'
+                                 '(TRADE_MARKET_CODE!="069001017")',
+              },
+              "balance": {
+                  "reportName": "RPT_DMSK_FN_BALANCE",
+                  "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field": "REPORT_DATE",
+                  "notice_candidates": ["NOTICE_DATE", "UPDATE_DATE"],
+                  "base_filter": '(SECURITY_TYPE_CODE in ("058001001","058001008"))'
+                                 '(TRADE_MARKET_CODE!="069001017")',
+              },
+              "cashflow": {
+                  "reportName": "RPT_DMSK_FN_CASHFLOW",
+                  "sortColumns": "NOTICE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field": "REPORT_DATE",
+                  "notice_candidates": ["NOTICE_DATE", "UPDATE_DATE"],
+                  "base_filter": '(SECURITY_TYPE_CODE in ("058001001","058001008"))'
+                                 '(TRADE_MARKET_CODE!="069001017")',
+              },
+              # Performance report contains ROE/EPS/OCFPS and industry.
+              "performance": {
+                  "reportName": "RPT_LICO_FN_CPD",
+                  "sortColumns": "UPDATE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field": "REPORTDATE",
+                  "notice_candidates": ["UPDATE_DATE", "NOTICE_DATE"],
+                  "base_filter": "",
+              },
+          }
+
+          def iso_date(yyyymmdd: str) -> str:
+              return f"{yyyymmdd[:4]}-{yyyymmdd[4:6]}-{yyyymmdd[6:8]}"
+
+          def request_json(params):
+              last_error = None
+              for attempt in range(1, 7):
+                  try:
+                      r = session.get(
+                          BASE_URL,
+                          params=params,
+                          timeout=30,
+                          headers={
+                              "User-Agent": (
+                                  "Mozilla/5.0 (X11; Linux x86_64) "
+                                  "AppleWebKit/537.36 Chrome/130 Safari/537.36"
+                              ),
+                              "Referer": "https://data.eastmoney.com/",
+                          },
+                      )
+                      r.raise_for_status()
+                      payload = r.json()
+
+                      # Eastmoney may return success=false without HTTP failure.
+                      if not payload.get("success", True):
+                          raise RuntimeError(
+                              f"Eastmoney success=false: {payload.get('message')}"
+                          )
+
+                      return payload
+                  except Exception as exc:
+                      last_error = exc
+                      print(
+                          f"request failed attempt={attempt}/6: {exc}",
+                          flush=True,
+                      )
+                      time.sleep(min(8, 1.5 * attempt))
+
+              raise RuntimeError(f"Eastmoney request failed: {last_error}")
+
+          def fetch_one(report_key: str, cfg: dict, report_date: str):
+              date_iso = iso_date(report_date)
+
+              date_filter = f"({cfg['date_field']}='{date_iso}')"
+              full_filter = cfg["base_filter"] + date_filter
+
+              params = {
+                  "sortColumns": cfg["sortColumns"],
+                  "sortTypes": cfg["sortTypes"],
+                  "pageSize": "500",
+                  "pageNumber": "1",
+                  "reportName": cfg["reportName"],
+                  "columns": "ALL",
+                  "filter": full_filter,
+              }
+
+              first = request_json(params)
+              result = first.get("result")
+
+              if not result:
+                  return pd.DataFrame()
+
+              pages = int(result.get("pages") or 0)
+              if pages == 0:
+                  return pd.DataFrame()
+
+              frames = []
+
+              for page in range(1, pages + 1):
+                  params["pageNumber"] = str(page)
+                  payload = first if page == 1 else request_json(params)
+                  result = payload.get("result") or {}
+                  data = result.get("data") or []
+
+                  if data:
+                      frames.append(pd.DataFrame(data))
+
+                  if page % 5 == 0 or page == pages:
+                      print(
+                          f"{report_key} {report_date}: page {page}/{pages}",
+                          flush=True,
+                      )
+
+                  # Be polite to public endpoint.
+                  if page != pages:
+                      time.sleep(0.12)
+
+              if not frames:
+                  return pd.DataFrame()
+
+              df = pd.concat(frames, ignore_index=True, sort=False)
+              df["__report_date"] = report_date
+              df["__source_report"] = report_key
+
+              # Normalise security code as a 6-digit string.
+              code_col = None
+              for c in ["SECURITY_CODE", "SECUCODE", "SECURITYCODE"]:
+                  if c in df.columns:
+                      code_col = c
+                      break
+
+              if code_col:
+                  df["code6"] = (
+                      df[code_col]
+                      .astype("string")
+                      .str.extract(r"(\d{6})", expand=False)
+                  )
+              else:
+                  df["code6"] = pd.NA
+
+              # Preserve a deterministic available_date for PIT.
+              notice_col = None
+              for c in cfg["notice_candidates"]:
+                  if c in df.columns:
+                      notice_col = c
+                      break
+
+              if notice_col:
+                  df["available_date"] = pd.to_datetime(
+                      df[notice_col],
+                      errors="coerce",
+                  ).dt.strftime("%Y%m%d")
+              else:
+                  df["available_date"] = pd.NA
+
+              return df
+
+          coverage = {}
+          all_tables = {}
+
+          years = list(range(start_year, end_year + 1))
+          report_dates = [f"{y}1231" for y in years]
+
+          for key, cfg in REPORTS.items():
+              print(f"\n===== {key} =====", flush=True)
+              frames = []
+              coverage[key] = []
+
+              for report_date in report_dates:
+                  print(f"fetch {key} {report_date}", flush=True)
+
+                  try:
+                      df = fetch_one(key, cfg, report_date)
+                  except Exception as exc:
+                      coverage[key].append({
+                          "report_date": report_date,
+                          "error": repr(exc),
+                          "rows": 0,
+                          "stocks": 0,
+                      })
+                      print(
+                          f"ERROR {key} {report_date}: {exc}",
+                          flush=True,
+                      )
+                      continue
+
+                  if df.empty:
+                      coverage[key].append({
+                          "report_date": report_date,
+                          "rows": 0,
+                          "stocks": 0,
+                          "available_date_nonnull": 0,
+                      })
+                      print(
+                          f"EMPTY {key} {report_date}",
+                          flush=True,
+                      )
+                      continue
+
+                  # Deduplicate exact duplicate API rows only.
+                  df = df.drop_duplicates().copy()
+
+                  frames.append(df)
+
+                  coverage[key].append({
+                      "report_date": report_date,
+                      "rows": int(len(df)),
+                      "stocks": int(df["code6"].nunique(dropna=True)),
+                      "available_date_nonnull": int(
+                          df["available_date"].notna().sum()
+                      ),
+                      "available_date_min": (
+                          str(df["available_date"].dropna().min())
+                          if df["available_date"].notna().any()
+                          else None
+                      ),
+                      "available_date_max": (
+                          str(df["available_date"].dropna().max())
+                          if df["available_date"].notna().any()
+                          else None
+                      ),
+                  })
+
+                  print(
+                      f"{key} {report_date}: rows={len(df):,}, "
+                      f"stocks={df['code6'].nunique():,}",
+                      flush=True,
+                  )
+
+              if frames:
+                  full = pd.concat(frames, ignore_index=True, sort=False)
+              else:
+                  full = pd.DataFrame()
+
+              all_tables[key] = full
+
+              if not full.empty:
+                  out_path = out_dir / f"eastmoney_{key}_annual_raw.csv.gz"
+                  full.to_csv(
+                      out_path,
+                      index=False,
+                      compression="gzip",
+                  )
+                  print(
+                      f"saved {out_path}: rows={len(full):,}, "
+                      f"cols={len(full.columns):,}",
+                      flush=True,
+                  )
+
+          # ------------------------------
+          # Build compact PIT core table
+          # ------------------------------
+          # Do not guess financial field names here. Preserve raw tables and only
+          # merge identifiers + announcement dates. The current local backtest
+          # environment will map raw English fields after inspecting real schemas.
+          skeleton_parts = []
+
+          for key, df in all_tables.items():
+              if df.empty:
+                  continue
+
+              keep = [
+                  c for c in [
+                      "code6",
+                      "__report_date",
+                      "available_date",
+                      "SECURITY_CODE",
+                      "SECURITY_NAME_ABBR",
+                      "SECUCODE",
+                  ]
+                  if c in df.columns
+              ]
+
+              temp = df[keep].copy()
+              temp = temp.rename(
+                  columns={
+                      "available_date": f"{key}_available_date",
+                  }
+              )
+
+              # one row per stock/report date; keep latest announcement if repeated
+              avail = f"{key}_available_date"
+              if avail in temp.columns:
+                  temp = temp.sort_values(
+                      ["code6", "__report_date", avail],
+                      na_position="first",
+                  )
+
+              temp = temp.drop_duplicates(
+                  ["code6", "__report_date"],
+                  keep="last",
+              )
+
+              skeleton_parts.append((key, temp))
+
+          if skeleton_parts:
+              key0, core = skeleton_parts[0]
+              for key, temp in skeleton_parts[1:]:
+                  common = ["code6", "__report_date"]
+                  extra = [
+                      c for c in temp.columns
+                      if c not in common
+                      and c not in core.columns
+                  ]
+                  core = core.merge(
+                      temp[common + extra],
+                      on=common,
+                      how="outer",
+                  )
+
+              avail_cols = [
+                  c for c in core.columns
+                  if c.endswith("_available_date")
+              ]
+
+              for c in avail_cols:
+                  core[c] = pd.to_numeric(
+                      core[c],
+                      errors="coerce",
+                  )
+
+              # Conservative PIT date: all used statement blocks must have been
+              # publicly available, so use the latest announcement date.
+              core["available_date_conservative"] = (
+                  core[avail_cols].max(axis=1, skipna=True)
+                  if avail_cols
+                  else np.nan
+              )
+
+              core["available_date_conservative"] = (
+                  core["available_date_conservative"]
+                  .round()
+                  .astype("Int64")
+              )
+
+              core.to_csv(
+                  out_dir / "eastmoney_annual_pit_skeleton.csv.gz",
+                  index=False,
+                  compression="gzip",
+              )
+
+          # Coverage / schema report
+          schema_report = {
+              key: list(df.columns)
+              for key, df in all_tables.items()
+              if not df.empty
+          }
+
+          (reports_dir / "coverage.json").write_text(
+              json.dumps(
+                  coverage,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          (reports_dir / "schemas.json").write_text(
+              json.dumps(
+                  schema_report,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          # Validation:
+          # We need 2010-2019 to recover a 5-year window from 2015.
+          # 2006-2009 are probed opportunistically for the desired 2011 start.
+          fatal = []
+
+          for key in ["income", "balance", "cashflow"]:
+              cov = coverage.get(key, [])
+              by_date = {
+                  x["report_date"]: x
+                  for x in cov
+              }
+
+              for y in range(2010, 2020):
+                  d = f"{y}1231"
+                  item = by_date.get(d, {})
+                  if int(item.get("stocks", 0) or 0) < 1000:
+                      fatal.append(
+                          f"{key} {d} has only "
+                          f"{item.get('stocks', 0)} stocks"
+                      )
+
+          if fatal:
+              print("\nVALIDATION FAILED:")
+              for x in fatal:
+                  print(" -", x)
+              raise SystemExit(
+                  "Historical PIT coverage insufficient for 2010-2019"
+              )
+
+          print("\n===== Historical coverage summary =====")
+          for key, rows in coverage.items():
+              print(f"\n[{key}]")
+              for x in rows:
+                  print(
+                      x["report_date"],
+                      "stocks=", x.get("stocks", 0),
+                      "rows=", x.get("rows", 0),
+                  )
+
+          print("\nEASTMONEY_HISTORICAL_PIT_OK")
+          PY
+
+      - name: Show output files
+        shell: bash
+        run: |
+          echo "===== Files ====="
+          find "${OUT_DIR}" -maxdepth 3 -type f \
+            -printf "%12s  %p\n" | sort -n
+
+          echo
+          echo "===== Total ====="
+          du -sh "${OUT_DIR}"
+
+      - name: Upload historical PIT backfill
+        uses: actions/upload-artifact@v4
+        with:
+          name: eastmoney-historical-pit-backfill-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/
+            ${{ env.OUT_DIR }}/reports/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
