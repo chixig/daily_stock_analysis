@@ -1,0 +1,3130 @@
+name: ChatGPT Bank Dividend Model Backtest V3
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OUT_DIR: _chatgpt_bank_model
+  QLIB_URL: https://github.com/chenditc/investment_data/releases/download/2026-09-05/qlib_bin.tar.gz
+  QLIB_SHA256: 11866b2eaa627b758da43ce075667716598611546fddea981422e5c06a3956f1
+  HF_REPO: yifishbossman/financial-analyst-data-full
+
+jobs:
+  backtest-bank-model:
+    name: Build and backtest A-share bank dividend model
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "pandas>=2.2" \
+            "numpy>=1.26" \
+            "scipy>=1.13" \
+            "requests>=2.32" \
+            "huggingface_hub>=0.25" \
+            "pyarrow>=17" \
+            "baostock>=0.8.9" \
+            "tabulate>=0.9"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          rm -rf "${OUT_DIR}"
+          mkdir -p \
+            "${OUT_DIR}/qlib" \
+            "${OUT_DIR}/hf" \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports"
+
+      # ------------------------------------------------------------
+      # 1) Full-A adjusted market history
+      # ------------------------------------------------------------
+
+      - name: Download and verify Qlib history
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L --retry 5 --retry-delay 2 \
+            -o "${OUT_DIR}/qlib_bin.tar.gz" \
+            "${QLIB_URL}"
+
+          echo "${QLIB_SHA256}  ${OUT_DIR}/qlib_bin.tar.gz" \
+            | sha256sum -c -
+
+          tar -xzf "${OUT_DIR}/qlib_bin.tar.gz" \
+            -C "${OUT_DIR}/qlib"
+
+          echo "QLIB_OK"
+
+      - name: Download historical cash-dividend events
+        shell: bash
+        run: |
+          python <<'PY'
+          import os
+          from pathlib import Path
+          from huggingface_hub import snapshot_download
+
+          root = Path(os.environ["OUT_DIR"]) / "hf"
+
+          snapshot_download(
+              repo_id=os.environ["HF_REPO"],
+              repo_type="dataset",
+              local_dir=str(root),
+              allow_patterns=[
+                  "parquet/xdxr/gbbq.parquet",
+              ],
+              max_workers=4,
+          )
+
+          fp = root / "parquet/xdxr/gbbq.parquet"
+
+          if not fp.exists():
+              raise SystemExit(
+                  "Missing gbbq dividend parquet"
+              )
+
+          print("DIVIDEND_DATA_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 2) Eastmoney F10 bank-specific history
+      #
+      # Historical major-financial endpoint provides:
+      # NOTICE_DATE, ROE, ROA, BPS,
+      # NPL ratio, CET1, NIM, provision coverage, etc.
+      # ------------------------------------------------------------
+
+      - name: Fetch bank-specific historical fundamentals
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import time
+          from pathlib import Path
+
+          import pandas as pd
+          import requests
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          # Current 42 A-share banks.
+          # Historical universe is later restricted by Qlib listing dates,
+          # so banks listed after a given signal date cannot enter.
+          BANKS = {
+              "000001":"平安银行",
+              "002142":"宁波银行",
+              "002807":"江阴银行",
+              "002839":"张家港行",
+              "002936":"郑州银行",
+              "002948":"青岛银行",
+              "002958":"青农商行",
+              "002966":"苏州银行",
+              "600000":"浦发银行",
+              "600015":"华夏银行",
+              "600016":"民生银行",
+              "600036":"招商银行",
+              "600908":"无锡银行",
+              "600919":"江苏银行",
+              "600926":"杭州银行",
+              "600928":"西安银行",
+              "601009":"南京银行",
+              "601077":"渝农商行",
+              "601128":"常熟银行",
+              "601166":"兴业银行",
+              "601169":"北京银行",
+              "601187":"厦门银行",
+              "601229":"上海银行",
+              "601288":"农业银行",
+              "601328":"交通银行",
+              "601398":"工商银行",
+              "601528":"瑞丰银行",
+              "601577":"长沙银行",
+              "601658":"邮储银行",
+              "601665":"齐鲁银行",
+              "601818":"光大银行",
+              "601825":"沪农商行",
+              "601838":"成都银行",
+              "601860":"紫金银行",
+              "601916":"浙商银行",
+              "601939":"建设银行",
+              "601963":"重庆银行",
+              "601988":"中国银行",
+              "601997":"贵阳银行",
+              "601998":"中信银行",
+              "603323":"苏农银行",
+              "001227":"兰州银行",
+          }
+
+          BASE = (
+              "https://datacenter.eastmoney.com/"
+              "securities/api/data/get"
+          )
+
+          session = requests.Session()
+
+          retry = Retry(
+              total=6,
+              connect=6,
+              read=6,
+              backoff_factor=1.0,
+              status_forcelist=[
+                  429, 500, 502, 503, 504
+              ],
+              allowed_methods=["GET"],
+          )
+
+          session.mount(
+              "https://",
+              HTTPAdapter(max_retries=retry),
+          )
+
+          HEADERS = {
+              "accept": "*/*",
+              "origin":
+                  "https://emweb.securities.eastmoney.com",
+              "referer":
+                  "https://emweb.securities.eastmoney.com/",
+              "user-agent":
+                  "Mozilla/5.0 (X11; Linux x86_64) "
+                  "AppleWebKit/537.36 "
+                  "Chrome/130 Safari/537.36",
+          }
+
+          def exchange(code):
+              return (
+                  "SH"
+                  if code.startswith("6")
+                  else "SZ"
+              )
+
+          def fetch_bank(code):
+              secucode = f"{code}.{exchange(code)}"
+
+              params = {
+                  "type":
+                      "RPT_F10_FINANCE_MAINFINADATA",
+                  "sty":
+                      "APP_F10_MAINFINADATA",
+                  "quoteColumns": "",
+                  "filter":
+                      f'(SECUCODE="{secucode}")',
+                  "p": 1,
+                  "ps": 300,
+                  "sr": -1,
+                  "st": "REPORT_DATE",
+                  "source": "HSF10",
+                  "client": "PC",
+              }
+
+              last = None
+
+              for attempt in range(1, 7):
+                  try:
+                      r = session.get(
+                          BASE,
+                          params=params,
+                          headers=HEADERS,
+                          timeout=30,
+                      )
+
+                      r.raise_for_status()
+                      payload = r.json()
+                      data = (
+                          (
+                              payload.get("result")
+                              or {}
+                          ).get("data")
+                          or []
+                      )
+
+                      return pd.DataFrame(data)
+
+                  except Exception as exc:
+                      last = exc
+
+                      print(
+                          f"{code} attempt "
+                          f"{attempt}/6 failed: {exc}",
+                          flush=True,
+                      )
+
+                      time.sleep(
+                          min(8, attempt * 1.5)
+                      )
+
+              raise RuntimeError(last)
+
+          frames = []
+          coverage = []
+
+          for i, (code, name) in enumerate(
+              BANKS.items(),
+              start=1,
+          ):
+              df = fetch_bank(code)
+
+              if df.empty:
+                  coverage.append({
+                      "code": code,
+                      "name": name,
+                      "rows": 0,
+                      "annual_rows": 0,
+                  })
+                  continue
+
+              df["code6"] = code
+              df["bank_name"] = name
+
+              # Normalize key dates.
+              for c in [
+                  "REPORT_DATE",
+                  "NOTICE_DATE",
+                  "UPDATE_DATE",
+              ]:
+                  if c in df.columns:
+                      df[c] = pd.to_datetime(
+                          df[c],
+                          errors="coerce",
+                      )
+
+              annual = df[
+                  df["REPORT_DATE"].dt.month.eq(12)
+                  & df["REPORT_DATE"].dt.day.eq(31)
+              ].copy()
+
+              coverage.append({
+                  "code": code,
+                  "name": name,
+                  "rows": int(len(df)),
+                  "annual_rows": int(len(annual)),
+                  "annual_min":
+                      (
+                          annual["REPORT_DATE"]
+                          .min()
+                          .strftime("%Y-%m-%d")
+                          if len(annual)
+                          else None
+                      ),
+                  "annual_max":
+                      (
+                          annual["REPORT_DATE"]
+                          .max()
+                          .strftime("%Y-%m-%d")
+                          if len(annual)
+                          else None
+                      ),
+              })
+
+              frames.append(df)
+
+              print(
+                  f"{i:02d}/{len(BANKS)} "
+                  f"{code} {name}: "
+                  f"rows={len(df)}, "
+                  f"annual={len(annual)}",
+                  flush=True,
+              )
+
+              time.sleep(0.15)
+
+          if not frames:
+              raise SystemExit(
+                  "No bank F10 data returned"
+              )
+
+          full = pd.concat(
+              frames,
+              ignore_index=True,
+              sort=False,
+          )
+
+          # Preserve raw API response for auditability.
+          full.to_csv(
+              out / "bank_f10_main_raw.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          key_cols = [
+              "code6",
+              "bank_name",
+              "SECUCODE",
+              "REPORT_DATE",
+              "NOTICE_DATE",
+              "UPDATE_DATE",
+              "REPORT_TYPE",
+              "BPS",
+              "PARENTNETPROFIT",
+              "ROEJQ",
+              "ZZCJLL",
+              "BLDKBBL",
+              "NONPERLOAN",
+              "HXYJBCZL",
+              "FIRST_ADEQUACY_RATIO",
+              "NEWCAPITALADER",
+              "NET_INTEREST_MARGIN",
+              "NET_INTEREST_SPREAD",
+              "LOAN_PROVISION_RATIO",
+              "TOTALDEPOSITS",
+              "GROSSLOANS",
+              "LTDRR",
+          ]
+
+          keep = [
+              c for c in key_cols
+              if c in full.columns
+          ]
+
+          compact = full[keep].copy()
+
+          compact.to_csv(
+              out / "bank_f10_main_compact.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          report = {
+              "bank_count_requested":
+                  len(BANKS),
+              "banks_with_data":
+                  int(
+                      pd.Series(
+                          [
+                              x["annual_rows"] > 0
+                              for x in coverage
+                          ]
+                      ).sum()
+                  ),
+              "coverage": coverage,
+              "columns":
+                  list(full.columns),
+              "key_columns_present":
+                  keep,
+          }
+
+          (
+              reports
+              / "bank_f10_coverage.json"
+          ).write_text(
+              json.dumps(
+                  report,
+                  ensure_ascii=False,
+                  indent=2,
+                  default=str,
+              ),
+              encoding="utf-8",
+          )
+
+          # Require the core fields needed for the model.
+          mandatory = [
+              "REPORT_DATE",
+              "NOTICE_DATE",
+              "BPS",
+              "ROEJQ",
+              "BLDKBBL",
+          ]
+
+          missing = [
+              c for c in mandatory
+              if c not in full.columns
+          ]
+
+          if missing:
+              raise SystemExit(
+                  f"Missing mandatory F10 "
+                  f"bank fields: {missing}"
+              )
+
+          if report[
+              "banks_with_data"
+          ] < 35:
+              raise SystemExit(
+                  "Too few banks returned "
+                  "historical F10 data"
+              )
+
+          print("BANK_F10_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 3) Point-in-Time QA versus BaoStock on selected historical banks
+      # ------------------------------------------------------------
+
+      - name: Cross-check historical publication dates and ROE
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import baostock as bs
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          f10 = pd.read_csv(
+              out / "bank_f10_main_compact.csv.gz",
+              dtype={"code6": "string"},
+              low_memory=False,
+          )
+
+          f10["REPORT_DATE"] = pd.to_datetime(
+              f10["REPORT_DATE"],
+              errors="coerce",
+          )
+
+          f10["NOTICE_DATE"] = pd.to_datetime(
+              f10["NOTICE_DATE"],
+              errors="coerce",
+          )
+
+          for c in [
+              "ROEJQ",
+              "PARENTNETPROFIT",
+          ]:
+              if c in f10.columns:
+                  f10[c] = pd.to_numeric(
+                      f10[c],
+                      errors="coerce",
+                  )
+
+          samples = {
+              "600036":"招商银行",
+              "601166":"兴业银行",
+              "601398":"工商银行",
+              "601939":"建设银行",
+              "601988":"中国银行",
+          }
+
+          lg = bs.login()
+
+          if lg.error_code != "0":
+              raise SystemExit(
+                  "BaoStock login failed"
+              )
+
+          rows = []
+
+          for code, name in samples.items():
+              bs_code = (
+                  f"sh.{code}"
+                  if code.startswith("6")
+                  else f"sz.{code}"
+              )
+
+              for year in range(
+                  2012,
+                  2019,
+              ):
+                  rs = bs.query_profit_data(
+                      code=bs_code,
+                      year=year,
+                      quarter=4,
+                  )
+
+                  if rs.error_code != "0":
+                      continue
+
+                  vals = []
+
+                  while rs.next():
+                      vals.append(
+                          rs.get_row_data()
+                      )
+
+                  if not vals:
+                      continue
+
+                  bao = pd.DataFrame(
+                      vals,
+                      columns=rs.fields,
+                  )
+
+                  bao["statDate"] = (
+                      pd.to_datetime(
+                          bao["statDate"],
+                          errors="coerce",
+                      )
+                  )
+
+                  bao = bao[
+                      bao["statDate"].dt.year
+                      .eq(year)
+                  ]
+
+                  if bao.empty:
+                      continue
+
+                  b = bao.iloc[0]
+
+                  ff = f10[
+                      f10["code6"].eq(code)
+                      & f10["REPORT_DATE"].dt.year
+                      .eq(year)
+                      & f10["REPORT_DATE"].dt.month
+                      .eq(12)
+                  ].copy()
+
+                  if ff.empty:
+                      continue
+
+                  ff = ff.sort_values(
+                      "NOTICE_DATE"
+                  )
+
+                  e = ff.iloc[0]
+
+                  bao_pub = pd.to_datetime(
+                      b["pubDate"],
+                      errors="coerce",
+                  )
+
+                  bao_roe = pd.to_numeric(
+                      b["roeAvg"],
+                      errors="coerce",
+                  )
+
+                  f10_roe = pd.to_numeric(
+                      e.get("ROEJQ"),
+                      errors="coerce",
+                  )
+
+                  # BaoStock ROE is often decimal while Eastmoney
+                  # is percent. Normalize to percent.
+                  if (
+                      pd.notna(bao_roe)
+                      and abs(bao_roe) <= 2
+                  ):
+                      bao_roe *= 100
+
+                  rows.append({
+                      "code6": code,
+                      "name": name,
+                      "year": year,
+                      "eastmoney_notice":
+                          e["NOTICE_DATE"],
+                      "baostock_pub":
+                          bao_pub,
+                      "date_diff_days":
+                          (
+                              abs(
+                                  (
+                                      e["NOTICE_DATE"]
+                                      - bao_pub
+                                  ).days
+                              )
+                              if (
+                                  pd.notna(
+                                      e["NOTICE_DATE"]
+                                  )
+                                  and pd.notna(
+                                      bao_pub
+                                  )
+                              )
+                              else np.nan
+                          ),
+                      "eastmoney_roe":
+                          f10_roe,
+                      "baostock_roe":
+                          bao_roe,
+                      "roe_diff_pp":
+                          (
+                              abs(
+                                  f10_roe
+                                  - bao_roe
+                              )
+                              if (
+                                  pd.notna(f10_roe)
+                                  and pd.notna(bao_roe)
+                              )
+                              else np.nan
+                          ),
+                  })
+
+          try:
+              bs.logout()
+          except Exception:
+              pass
+
+          qa = pd.DataFrame(rows)
+
+          qa.to_csv(
+              reports
+              / "pit_crosscheck.csv",
+              index=False,
+          )
+
+          summary = {
+              "n": int(len(qa)),
+              "date_diff_median":
+                  float(
+                      qa[
+                          "date_diff_days"
+                      ].median()
+                  ),
+              "date_diff_p90":
+                  float(
+                      qa[
+                          "date_diff_days"
+                      ].quantile(0.90)
+                  ),
+              "roe_diff_median_pp":
+                  float(
+                      qa[
+                          "roe_diff_pp"
+                      ].median()
+                  ),
+              "roe_diff_p90_pp":
+                  float(
+                      qa[
+                          "roe_diff_pp"
+                      ].quantile(0.90)
+                  ),
+          }
+
+          (
+              reports
+              / "pit_crosscheck_summary.json"
+          ).write_text(
+              json.dumps(
+                  summary,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          print(
+              json.dumps(
+                  summary,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+          )
+
+          # Announcement-date mismatch is the key PIT guard.
+          if (
+              summary[
+                  "date_diff_p90"
+              ] > 7
+          ):
+              raise SystemExit(
+                  "Eastmoney/BaoStock "
+                  "announcement dates differ "
+                  "too much for strict PIT use"
+              )
+
+          print("PIT_CROSSCHECK_OK")
+          PY
+
+      - name: Upload raw bank-data checkpoint
+        uses: actions/upload-artifact@v4
+        with:
+          name: bank-model-raw-checkpoint-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/bank_f10_main_raw.csv.gz
+            ${{ env.OUT_DIR }}/out/bank_f10_main_compact.csv.gz
+            ${{ env.OUT_DIR }}/reports/bank_f10_coverage.json
+            ${{ env.OUT_DIR }}/reports/pit_crosscheck.csv
+            ${{ env.OUT_DIR }}/reports/pit_crosscheck_summary.json
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
+
+      # ------------------------------------------------------------
+      # 4) Construct annual PIT bank panel + factors
+      # ------------------------------------------------------------
+
+      - name: Build bank PIT factor panel
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          hf = root / "hf"
+          qextract = root / "qlib"
+          reports = root / "reports"
+
+          # Locate Qlib root.
+          qlib = None
+
+          for p in [
+              qextract / "qlib_bin",
+              qextract / "cn_data",
+              qextract,
+          ]:
+              if (
+                  (p / "calendars/day.txt").exists()
+                  and (
+                      p
+                      / "instruments/all.txt"
+                  ).exists()
+                  and (p / "features").exists()
+              ):
+                  qlib = p
+                  break
+
+          if qlib is None:
+              raise SystemExit(
+                  "Qlib provider root not found"
+              )
+
+          calendar = pd.to_datetime(
+              pd.read_csv(
+                  qlib
+                  / "calendars/day.txt",
+                  header=None,
+              )[0]
+          )
+
+          cal_pos = {
+              d: i
+              for i, d
+              in enumerate(calendar)
+          }
+
+          instruments = pd.read_csv(
+              qlib
+              / "instruments/all.txt",
+              sep="\t",
+              header=None,
+              names=[
+                  "qlib_code",
+                  "list_start",
+                  "list_end",
+              ],
+          )
+
+          instruments[
+              "list_start"
+          ] = pd.to_datetime(
+              instruments["list_start"],
+              errors="coerce",
+          )
+
+          instruments[
+              "list_end"
+          ] = pd.to_datetime(
+              instruments["list_end"],
+              errors="coerce",
+          )
+
+          inst = instruments.set_index(
+              "qlib_code"
+          )
+
+          f10 = pd.read_csv(
+              out
+              / "bank_f10_main_compact.csv.gz",
+              dtype={"code6": "string"},
+              low_memory=False,
+          )
+
+          for c in [
+              "REPORT_DATE",
+              "NOTICE_DATE",
+              "UPDATE_DATE",
+          ]:
+              if c in f10.columns:
+                  f10[c] = pd.to_datetime(
+                      f10[c],
+                      errors="coerce",
+                  )
+
+          numeric_cols = [
+              "BPS",
+              "PARENTNETPROFIT",
+              "ROEJQ",
+              "ZZCJLL",
+              "BLDKBBL",
+              "NONPERLOAN",
+              "HXYJBCZL",
+              "FIRST_ADEQUACY_RATIO",
+              "NEWCAPITALADER",
+              "NET_INTEREST_MARGIN",
+              "NET_INTEREST_SPREAD",
+              "LOAN_PROVISION_RATIO",
+              "TOTALDEPOSITS",
+              "GROSSLOANS",
+              "LTDRR",
+          ]
+
+          for c in numeric_cols:
+              if c in f10.columns:
+                  f10[c] = pd.to_numeric(
+                      f10[c],
+                      errors="coerce",
+                  )
+
+          # Annual only.
+          f10 = f10[
+              f10["REPORT_DATE"].dt.month
+              .eq(12)
+              & f10["REPORT_DATE"].dt.day
+              .eq(31)
+          ].copy()
+
+          gbbq = pd.read_parquet(
+              hf
+              / "parquet/xdxr/gbbq.parquet"
+          )
+
+          cash = gbbq[
+              pd.to_numeric(
+                  gbbq["category"],
+                  errors="coerce",
+              ).eq(1)
+          ].copy()
+
+          cash["datetime"] = pd.to_numeric(
+              cash["datetime"],
+              errors="coerce",
+          )
+
+          cash[
+              "cash_per_share"
+          ] = (
+              pd.to_numeric(
+                  cash[
+                      "hongli_panqianliutong"
+                  ],
+                  errors="coerce",
+              )
+              / 10.0
+          )
+
+          div_groups = {}
+
+          for (market, code), grp in cash.groupby(
+              ["market", "code"],
+              sort=False,
+          ):
+              arr = grp[
+                  [
+                      "datetime",
+                      "cash_per_share",
+                  ]
+              ].dropna().sort_values(
+                  "datetime"
+              ).to_numpy()
+
+              div_groups[
+                  (int(market), int(code))
+              ] = arr
+
+          cache = {}
+
+          def qcode(code6):
+              return (
+                  f"SH{code6}"
+                  if code6.startswith("6")
+                  else f"SZ{code6}"
+              )
+
+          def qfield(code, field):
+              key = (code, field)
+
+              if key in cache:
+                  return cache[key]
+
+              fp = (
+                  qlib
+                  / "features"
+                  / code.lower()
+                  / f"{field}.day.bin"
+              )
+
+              if not fp.exists():
+                  cache[key] = (
+                      None,
+                      None,
+                  )
+                  return cache[key]
+
+              arr = np.fromfile(
+                  fp,
+                  dtype="<f4",
+              )
+
+              if len(arr) < 2:
+                  cache[key] = (
+                      None,
+                      None,
+                  )
+                  return cache[key]
+
+              cache[key] = (
+                  int(arr[0]),
+                  arr[1:],
+              )
+
+              return cache[key]
+
+          def val_at(
+              code,
+              field,
+              idx,
+          ):
+              start, vals = qfield(
+                  code,
+                  field,
+              )
+
+              if vals is None:
+                  return np.nan
+
+              j = idx - start
+
+              if j < 0 or j >= len(vals):
+                  return np.nan
+
+              return float(vals[j])
+
+          def mean_window(
+              code,
+              field,
+              idx,
+              n,
+          ):
+              start, vals = qfield(
+                  code,
+                  field,
+              )
+
+              if vals is None:
+                  return np.nan
+
+              j = idx - start
+              hi = min(
+                  j + 1,
+                  len(vals),
+              )
+              lo = max(
+                  0,
+                  hi - n,
+              )
+
+              if hi <= lo:
+                  return np.nan
+
+              b = vals[lo:hi]
+
+              return (
+                  float(
+                      np.nanmean(b)
+                  )
+                  if np.isfinite(b).any()
+                  else np.nan
+              )
+
+          def dividend_metrics(
+              code6,
+              signal,
+          ):
+              market = (
+                  1
+                  if code6.startswith("6")
+                  else 0
+              )
+
+              arr = div_groups.get(
+                  (
+                      market,
+                      int(code6),
+                  )
+              )
+
+              if arr is None:
+                  return {
+                      "dps_ttm": 0.0,
+                      "continuous_dividend_years":
+                          0,
+                      "dps_cagr_5y":
+                          np.nan,
+                      "dps_max_cut_5y":
+                          np.nan,
+                  }
+
+              dates = arr[:, 0].astype(
+                  int
+              )
+              dps = arr[:, 1].astype(
+                  float
+              )
+
+              sig_int = int(
+                  signal.strftime("%Y%m%d")
+              )
+
+              one_year = int(
+                  (
+                      signal
+                      - pd.DateOffset(
+                          years=1
+                      )
+                  ).strftime("%Y%m%d")
+              )
+
+              ttm = (
+                  (dates <= sig_int)
+                  & (dates > one_year)
+              )
+
+              dps_ttm = float(
+                  np.nansum(
+                      dps[ttm]
+                  )
+              )
+
+              # Calendar-year paid dividends.
+              eligible = dates <= sig_int
+
+              annual = {}
+
+              for yy in np.unique(
+                  dates[eligible] // 10000
+              ):
+                  annual[int(yy)] = float(
+                      np.nansum(
+                          dps[
+                              eligible
+                              & (
+                                  dates
+                                  // 10000
+                                  == yy
+                              )
+                          ]
+                      )
+                  )
+
+              prev = signal.year - 1
+              cont = 0
+
+              while (
+                  annual.get(
+                      prev,
+                      0.0,
+                  ) > 0
+              ):
+                  cont += 1
+                  prev -= 1
+
+              ys = [
+                  signal.year - i
+                  for i in range(
+                      5,
+                      0,
+                      -1,
+                  )
+              ]
+
+              vals = [
+                  annual.get(
+                      yy,
+                      np.nan,
+                  )
+                  for yy in ys
+              ]
+
+              if (
+                  np.isfinite(vals[0])
+                  and vals[0] > 0
+                  and np.isfinite(vals[-1])
+                  and vals[-1] > 0
+              ):
+                  cagr = (
+                      (
+                          vals[-1]
+                          / vals[0]
+                      ) ** (1 / 4)
+                      - 1
+                  )
+              else:
+                  cagr = np.nan
+
+              cuts = []
+
+              for a, b in zip(
+                  vals[:-1],
+                  vals[1:],
+              ):
+                  if (
+                      np.isfinite(a)
+                      and a > 0
+                      and np.isfinite(b)
+                  ):
+                      cuts.append(
+                          b / a - 1
+                      )
+
+              max_cut = (
+                  float(min(cuts))
+                  if cuts
+                  else np.nan
+              )
+
+              return {
+                  "dps_ttm":
+                      dps_ttm,
+                  "continuous_dividend_years":
+                      cont,
+                  "dps_cagr_5y":
+                      cagr,
+                  "dps_max_cut_5y":
+                      max_cut,
+              }
+
+          rows = []
+
+          bank_codes = sorted(
+              f10["code6"]
+              .dropna()
+              .unique()
+          )
+
+          # Annual backtest signals.
+          # 2012 requires 2007-2011 five-year financial history.
+          for year in range(
+              2012,
+              2026,
+          ):
+              may = calendar[
+                  (calendar.dt.year == year)
+                  & (calendar.dt.month == 5)
+              ]
+
+              if len(may) < 2:
+                  continue
+
+              signal = pd.Timestamp(
+                  may.iloc[0]
+              )
+              execute = pd.Timestamp(
+                  may.iloc[1]
+              )
+              idx = cal_pos[signal]
+
+              for code6 in bank_codes:
+                  qc = qcode(code6)
+
+                  if qc not in inst.index:
+                      continue
+
+                  ir = inst.loc[qc]
+
+                  if (
+                      ir["list_start"]
+                      > (
+                          signal
+                          - pd.DateOffset(
+                              years=5
+                          )
+                      )
+                      or ir["list_end"]
+                      < signal
+                  ):
+                      continue
+
+                  hist = f10[
+                      f10["code6"].eq(
+                          code6
+                      )
+                      & f10[
+                          "REPORT_DATE"
+                      ].dt.year.between(
+                          year - 5,
+                          year - 1,
+                      )
+                      & (
+                          f10[
+                              "NOTICE_DATE"
+                          ] <= signal
+                      )
+                  ].copy()
+
+                  # One PIT annual row per year:
+                  # keep earliest historical publication
+                  # if duplicate report variants exist.
+                  hist[
+                      "financial_year"
+                  ] = hist[
+                      "REPORT_DATE"
+                  ].dt.year
+
+                  hist = (
+                      hist.sort_values(
+                          [
+                              "financial_year",
+                              "NOTICE_DATE",
+                          ]
+                      )
+                      .drop_duplicates(
+                          "financial_year",
+                          keep="first",
+                      )
+                      .sort_values(
+                          "financial_year"
+                      )
+                  )
+
+                  if (
+                      hist[
+                          "financial_year"
+                      ].nunique()
+                      < 5
+                  ):
+                      continue
+
+                  latest = hist[
+                      hist[
+                          "financial_year"
+                      ].eq(
+                          year - 1
+                      )
+                  ]
+
+                  if latest.empty:
+                      continue
+
+                  latest = latest.iloc[0]
+
+                  close = val_at(
+                      qc,
+                      "close",
+                      idx,
+                  )
+
+                  factor = val_at(
+                      qc,
+                      "factor",
+                      idx,
+                  )
+
+                  if (
+                      not np.isfinite(close)
+                      or not np.isfinite(
+                          factor
+                      )
+                      or factor == 0
+                  ):
+                      continue
+
+                  price = close / factor
+
+                  avg_amount = mean_window(
+                      qc,
+                      "amount",
+                      idx,
+                      60,
+                  )
+
+                  dm = dividend_metrics(
+                      code6,
+                      signal,
+                  )
+
+                  bps = latest.get(
+                      "BPS",
+                      np.nan,
+                  )
+
+                  pb = (
+                      price / bps
+                      if (
+                          pd.notna(bps)
+                          and bps > 0
+                      )
+                      else np.nan
+                  )
+
+                  dy = (
+                      dm["dps_ttm"]
+                      / price
+                      if price > 0
+                      else np.nan
+                  )
+
+                  def med(col):
+                      if col not in hist:
+                          return np.nan
+                      return float(
+                          pd.to_numeric(
+                              hist[col],
+                              errors="coerce",
+                          ).median()
+                      )
+
+                  def std(col):
+                      if col not in hist:
+                          return np.nan
+                      x = pd.to_numeric(
+                          hist[col],
+                          errors="coerce",
+                      )
+                      return float(
+                          x.std(ddof=1)
+                      )
+
+                  roe = med("ROEJQ")
+                  roe_std = std("ROEJQ")
+                  roa = med("ZZCJLL")
+
+                  npl = pd.to_numeric(
+                      latest.get(
+                          "BLDKBBL",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  cet1 = pd.to_numeric(
+                      latest.get(
+                          "HXYJBCZL",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  tier1 = pd.to_numeric(
+                      latest.get(
+                          "FIRST_ADEQUACY_RATIO",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  cap = pd.to_numeric(
+                      latest.get(
+                          "NEWCAPITALADER",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  provision = pd.to_numeric(
+                      latest.get(
+                          "LOAN_PROVISION_RATIO",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  nim = pd.to_numeric(
+                      latest.get(
+                          "NET_INTEREST_MARGIN",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  # 3-year NIM trend in percentage points/year.
+                  if (
+                      "NET_INTEREST_MARGIN"
+                      in hist.columns
+                  ):
+                      nh = hist.tail(3)
+                      nx = pd.to_numeric(
+                          nh[
+                              "NET_INTEREST_MARGIN"
+                          ],
+                          errors="coerce",
+                      ).to_numpy(
+                          dtype=float
+                      )
+
+                      if np.isfinite(nx).sum() >= 2:
+                          xx = np.arange(
+                              len(nx)
+                          )[
+                              np.isfinite(nx)
+                          ]
+
+                          yy = nx[
+                              np.isfinite(nx)
+                          ]
+
+                          nim_trend = float(
+                              np.polyfit(
+                                  xx,
+                                  yy,
+                                  1,
+                              )[0]
+                          )
+                      else:
+                          nim_trend = np.nan
+                  else:
+                      nim_trend = np.nan
+
+                  net_profit = pd.to_numeric(
+                      latest.get(
+                          "PARENTNETPROFIT",
+                          np.nan,
+                      ),
+                      errors="coerce",
+                  )
+
+                  rows.append({
+                      "year": year,
+                      "signal_date":
+                          signal.strftime(
+                              "%Y-%m-%d"
+                          ),
+                      "exec_date":
+                          execute.strftime(
+                              "%Y-%m-%d"
+                          ),
+                      "code6": code6,
+                      "ts_code":
+                          f"{code6}."
+                          + (
+                              "SH"
+                              if code6.startswith(
+                                  "6"
+                              )
+                              else "SZ"
+                          ),
+                      "bank_name":
+                          latest.get(
+                              "bank_name"
+                          ),
+                      "price":
+                          price,
+                      "avg_amount_60d":
+                          avg_amount,
+                      "pb":
+                          pb,
+                      "dy_ttm":
+                          dy,
+                      "continuous_dividend_years":
+                          dm[
+                              "continuous_dividend_years"
+                          ],
+                      "dps_cagr_5y":
+                          dm[
+                              "dps_cagr_5y"
+                          ],
+                      "dps_max_cut_5y":
+                          dm[
+                              "dps_max_cut_5y"
+                          ],
+                      "roe_median_5y":
+                          roe,
+                      "roe_std_5y":
+                          roe_std,
+                      "roa_median_5y":
+                          roa,
+                      "npl_latest":
+                          npl,
+                      "cet1_latest":
+                          cet1,
+                      "tier1_latest":
+                          tier1,
+                      "capital_adequacy_latest":
+                          cap,
+                      "provision_latest":
+                          provision,
+                      "nim_latest":
+                          nim,
+                      "nim_trend_3y":
+                          nim_trend,
+                      "net_profit_latest":
+                          net_profit,
+                  })
+
+          panel = pd.DataFrame(rows)
+
+          # Main research eligibility.
+          panel[
+              "eligible_base"
+          ] = (
+              panel[
+                  "continuous_dividend_years"
+              ].ge(5)
+              & panel[
+                  "dy_ttm"
+              ].ge(0.025)
+              & panel[
+                  "avg_amount_60d"
+              ].ge(50000)
+              & panel[
+                  "net_profit_latest"
+              ].gt(0)
+              & panel["pb"].gt(0)
+          )
+
+          # Bank safety gate deliberately broad.
+          # Avoid hard-coding a narrow Basel-era optimum.
+          panel[
+              "safety_gate"
+          ] = (
+              (
+                  panel[
+                      "npl_latest"
+                  ].isna()
+                  | panel[
+                      "npl_latest"
+                  ].le(2.5)
+              )
+              & (
+                  panel[
+                      "cet1_latest"
+                  ].isna()
+                  | panel[
+                      "cet1_latest"
+                  ].ge(7.0)
+              )
+          )
+
+          panel["eligible"] = (
+              panel[
+                  "eligible_base"
+              ]
+              & panel[
+                  "safety_gate"
+              ]
+          )
+
+          def pct_rank(
+              s,
+              higher=True,
+          ):
+              x = (
+                  s
+                  if higher
+                  else -s
+              )
+
+              return x.rank(
+                  pct=True,
+                  method="average",
+              ) * 100
+
+          scored = []
+
+          for year, g in panel.groupby(
+              "year"
+          ):
+              gg = g.copy()
+              # Filter rows by the eligibility boolean mask.
+              # V2 accidentally selected the boolean column itself,
+              # turning eligible into a Series and breaking row-wise scoring.
+              eligible = gg.loc[
+                  gg["eligible"].fillna(False).astype(bool)
+              ].copy()
+
+              factor_defs = [
+                  (
+                      "roe_median_5y",
+                      True,
+                      "q_roe",
+                  ),
+                  (
+                      "roe_std_5y",
+                      False,
+                      "q_roe_stability",
+                  ),
+                  (
+                      "roa_median_5y",
+                      True,
+                      "q_roa",
+                  ),
+                  (
+                      "npl_latest",
+                      False,
+                      "q_npl",
+                  ),
+                  (
+                      "provision_latest",
+                      True,
+                      "q_provision",
+                  ),
+                  (
+                      "cet1_latest",
+                      True,
+                      "q_cet1",
+                  ),
+                  (
+                      "nim_latest",
+                      True,
+                      "q_nim",
+                  ),
+                  (
+                      "nim_trend_3y",
+                      True,
+                      "q_nim_trend",
+                  ),
+                  (
+                      "pb",
+                      False,
+                      "v_pb",
+                  ),
+                  (
+                      "dy_ttm",
+                      True,
+                      "v_dy",
+                  ),
+                  (
+                      "continuous_dividend_years",
+                      True,
+                      "d_years",
+                  ),
+                  (
+                      "dps_cagr_5y",
+                      True,
+                      "d_growth",
+                  ),
+                  (
+                      "dps_max_cut_5y",
+                      True,
+                      "d_stability",
+                  ),
+              ]
+
+              for col, higher, newcol in factor_defs:
+                  if col not in eligible:
+                      eligible[newcol] = np.nan
+                      continue
+
+                  eligible[
+                      newcol
+                  ] = pct_rank(
+                      eligible[col],
+                      higher=higher,
+                  )
+
+              qcols = [
+                  "q_roe",
+                  "q_roe_stability",
+                  "q_roa",
+                  "q_npl",
+                  "q_provision",
+                  "q_cet1",
+                  "q_nim",
+                  "q_nim_trend",
+              ]
+
+              vcols = [
+                  "v_pb",
+                  "v_dy",
+              ]
+
+              dcols = [
+                  "d_years",
+                  "d_growth",
+                  "d_stability",
+              ]
+
+              eligible[
+                  "QualityScore"
+              ] = eligible[
+                  qcols
+              ].mean(
+                  axis=1,
+                  skipna=True,
+              )
+
+              eligible[
+                  "ValuationScore"
+              ] = eligible[
+                  vcols
+              ].mean(
+                  axis=1,
+                  skipna=True,
+              )
+
+              eligible[
+                  "DividendScore"
+              ] = eligible[
+                  dcols
+              ].mean(
+                  axis=1,
+                  skipna=True,
+              )
+
+              # Fixed ex-ante bank models.
+              eligible[
+                  "BankCore"
+              ] = (
+                  0.50
+                  * eligible[
+                      "QualityScore"
+                  ]
+                  + 0.30
+                  * eligible[
+                      "ValuationScore"
+                  ]
+                  + 0.20
+                  * eligible[
+                      "DividendScore"
+                  ]
+              )
+
+              eligible[
+                  "BankQV"
+              ] = (
+                  0.65
+                  * eligible[
+                      "QualityScore"
+                  ]
+                  + 0.35
+                  * eligible[
+                      "ValuationScore"
+                  ]
+              )
+
+              # Direct test of the user's hypothesis:
+              # high ROE + low NPL + strong CET1
+              # + low PB + high DY.
+              simple_cols = [
+                  "q_roe",
+                  "q_npl",
+                  "q_cet1",
+                  "v_pb",
+                  "v_dy",
+              ]
+
+              eligible[
+                  "HighQualityLowValue"
+              ] = eligible[
+                  simple_cols
+              ].mean(
+                  axis=1,
+                  skipna=True,
+              )
+
+              # Quality-only and value-only controls.
+              eligible[
+                  "BankQualityOnly"
+              ] = eligible[
+                  "QualityScore"
+              ]
+
+              eligible[
+                  "BankValueOnly"
+              ] = eligible[
+                  "ValuationScore"
+              ]
+
+              scored.append(
+                  eligible
+              )
+
+          scored = pd.concat(
+              scored,
+              ignore_index=True,
+          )
+
+          scored.to_csv(
+              out
+              / "bank_factor_panel.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          panel.to_csv(
+              out
+              / "bank_raw_panel.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          cov = (
+              scored.groupby(
+                  "year"
+              )
+              .agg(
+                  eligible_banks=(
+                      "code6",
+                      "nunique",
+                  ),
+                  median_dy=(
+                      "dy_ttm",
+                      "median",
+                  ),
+                  median_pb=(
+                      "pb",
+                      "median",
+                  ),
+              )
+              .reset_index()
+          )
+
+          cov.to_csv(
+              reports
+              / "annual_universe_coverage.csv",
+              index=False,
+          )
+
+          print(
+              cov.to_string(
+                  index=False
+              )
+          )
+
+          if (
+              cov[
+                  "eligible_banks"
+              ].min()
+              < 5
+          ):
+              raise SystemExit(
+                  "Too few eligible banks "
+                  "in at least one year"
+              )
+
+          print("BANK_PANEL_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 5) Historical factor scan + OOS model backtest
+      # ------------------------------------------------------------
+
+      - name: Run bank model backtest
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+          from scipy.stats import spearmanr
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+          qextract = root / "qlib"
+
+          scored = pd.read_csv(
+              out
+              / "bank_factor_panel.csv.gz",
+              dtype={"code6": "string"},
+          )
+
+          scored[
+              "exec_date"
+          ] = pd.to_datetime(
+              scored["exec_date"]
+          )
+
+          # Qlib setup.
+          qlib = None
+
+          for p in [
+              qextract / "qlib_bin",
+              qextract / "cn_data",
+              qextract,
+          ]:
+              if (
+                  (p / "calendars/day.txt").exists()
+                  and (p / "features").exists()
+              ):
+                  qlib = p
+                  break
+
+          if qlib is None:
+              raise SystemExit(
+                  "Qlib root not found"
+              )
+
+          calendar = pd.to_datetime(
+              pd.read_csv(
+                  qlib
+                  / "calendars/day.txt",
+                  header=None,
+              )[0]
+          )
+
+          cache = {}
+
+          def qcode(code6):
+              return (
+                  f"SH{code6}"
+                  if code6.startswith("6")
+                  else f"SZ{code6}"
+              )
+
+          def qseries(
+              code,
+              field,
+          ):
+              key = (code, field)
+
+              if key in cache:
+                  return cache[key]
+
+              fp = (
+                  qlib
+                  / "features"
+                  / code.lower()
+                  / f"{field}.day.bin"
+              )
+
+              if not fp.exists():
+                  cache[key] = pd.Series(
+                      dtype=float
+                  )
+                  return cache[key]
+
+              arr = np.fromfile(
+                  fp,
+                  dtype="<f4",
+              )
+
+              if len(arr) < 2:
+                  cache[key] = pd.Series(
+                      dtype=float
+                  )
+                  return cache[key]
+
+              start = int(arr[0])
+              vals = arr[1:]
+              idx = calendar.iloc[
+                  start:
+                  start + len(vals)
+              ]
+
+              cache[key] = pd.Series(
+                  vals,
+                  index=pd.DatetimeIndex(
+                      idx
+                  ),
+              )
+
+              return cache[key]
+
+          # Execute on 2nd May trading day; exit on next year's 2nd May open.
+          exec_dates = (
+              scored.groupby(
+                  "year"
+              )["exec_date"]
+              .first()
+              .to_dict()
+          )
+
+          def second_may(year):
+              may = calendar[
+                  (calendar.dt.year == year)
+                  & (
+                      calendar.dt.month == 5
+                  )
+              ]
+              return pd.Timestamp(
+                  may.iloc[1]
+              )
+
+          exit_dates = {
+              y: exec_dates.get(
+                  y + 1,
+                  second_may(
+                      y + 1
+                  ),
+              )
+              for y in range(
+                  2012,
+                  2026,
+              )
+          }
+
+          def holding_return(
+              code6,
+              year,
+          ):
+              code = qcode(code6)
+
+              entry = pd.Timestamp(
+                  exec_dates[year]
+              )
+
+              exitd = pd.Timestamp(
+                  exit_dates[year]
+              )
+
+              op = qseries(
+                  code,
+                  "open",
+              )
+
+              if entry not in op.index:
+                  after = op[
+                      (op.index >= entry)
+                      & (
+                          op.index
+                          < exitd
+                      )
+                  ].dropna()
+
+                  if after.empty:
+                      return np.nan
+
+                  entry_val = float(
+                      after.iloc[0]
+                  )
+              else:
+                  entry_val = float(
+                      op.loc[entry]
+                  )
+
+              if exitd in op.index:
+                  exit_val = float(
+                      op.loc[exitd]
+                  )
+              else:
+                  cl = qseries(
+                      code,
+                      "close",
+                  )
+
+                  prev = cl[
+                      cl.index <= exitd
+                  ].dropna()
+
+                  if prev.empty:
+                      return np.nan
+
+                  exit_val = float(
+                      prev.iloc[-1]
+                  )
+
+              if (
+                  not np.isfinite(
+                      entry_val
+                  )
+                  or entry_val <= 0
+                  or not np.isfinite(
+                      exit_val
+                  )
+              ):
+                  return np.nan
+
+              return (
+                  exit_val
+                  / entry_val
+                  - 1
+              )
+
+          scored[
+              "fwd_return"
+          ] = [
+              holding_return(
+                  str(code),
+                  int(year),
+              )
+              for code, year
+              in zip(
+                  scored["code6"],
+                  scored["year"],
+              )
+          ]
+
+          scored.to_csv(
+              out
+              / "bank_scored_with_returns.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          # --------------------------------------------------------
+          # Single factor scan
+          # --------------------------------------------------------
+          factors = {
+              "roe_median_5y":
+                  1,
+              "roe_std_5y":
+                  -1,
+              "roa_median_5y":
+                  1,
+              "npl_latest":
+                  -1,
+              "provision_latest":
+                  1,
+              "cet1_latest":
+                  1,
+              "nim_latest":
+                  1,
+              "nim_trend_3y":
+                  1,
+              "pb":
+                  -1,
+              "dy_ttm":
+                  1,
+              "continuous_dividend_years":
+                  1,
+              "dps_cagr_5y":
+                  1,
+              "dps_max_cut_5y":
+                  1,
+          }
+
+          scan_rows = []
+
+          for factor, direction in factors.items():
+              for start, end, period in [
+                  (
+                      2012,
+                      2018,
+                      "train",
+                  ),
+                  (
+                      2019,
+                      2025,
+                      "validation",
+                  ),
+                  (
+                      2012,
+                      2025,
+                      "full",
+                  ),
+              ]:
+                  ics = []
+                  spreads = []
+
+                  for year, g in scored[
+                      scored[
+                          "year"
+                      ].between(
+                          start,
+                          end,
+                      )
+                  ].groupby(
+                      "year"
+                  ):
+                      z = g[
+                          [
+                              factor,
+                              "fwd_return",
+                          ]
+                      ].dropna()
+
+                      if len(z) < 5:
+                          continue
+
+                      x = (
+                          z[factor]
+                          * direction
+                      )
+
+                      rho = spearmanr(
+                          x,
+                          z[
+                              "fwd_return"
+                          ],
+                      ).statistic
+
+                      if np.isfinite(rho):
+                          ics.append(rho)
+
+                      rank = x.rank(
+                          method="first"
+                      )
+
+                      hi = rank > rank.median()
+
+                      spreads.append(
+                          z.loc[
+                              hi,
+                              "fwd_return",
+                          ].mean()
+                          - z.loc[
+                              ~hi,
+                              "fwd_return",
+                          ].mean()
+                      )
+
+                  scan_rows.append({
+                      "factor":
+                          factor,
+                      "period":
+                          period,
+                      "years":
+                          len(ics),
+                      "mean_ic":
+                          (
+                              float(
+                                  np.mean(ics)
+                              )
+                              if ics
+                              else np.nan
+                          ),
+                      "positive_ic_year_rate":
+                          (
+                              float(
+                                  np.mean(
+                                      np.asarray(
+                                          ics
+                                      ) > 0
+                                  )
+                              )
+                              if ics
+                              else np.nan
+                          ),
+                      "median_split_spread":
+                          (
+                              float(
+                                  np.nanmean(
+                                      spreads
+                                  )
+                              )
+                              if spreads
+                              else np.nan
+                          ),
+                      "positive_spread_year_rate":
+                          (
+                              float(
+                                  np.mean(
+                                      np.asarray(
+                                          spreads
+                                      ) > 0
+                                  )
+                              )
+                              if spreads
+                              else np.nan
+                          ),
+                  })
+
+          pd.DataFrame(
+              scan_rows
+          ).to_csv(
+              out
+              / "bank_single_factor_scan.csv",
+              index=False,
+          )
+
+          # --------------------------------------------------------
+          # Portfolio models
+          # --------------------------------------------------------
+          models = [
+              "BankCore",
+              "BankQV",
+              "HighQualityLowValue",
+              "BankQualityOnly",
+              "BankValueOnly",
+          ]
+
+          annual_rows = []
+          holdings_rows = []
+
+          # Internal bank-universe baseline.
+          for year, g in scored.groupby(
+              "year"
+          ):
+              annual_rows.append({
+                  "year":
+                      int(year),
+                  "model":
+                      "EligibleBankEW",
+                  "topN":
+                      len(g),
+                  "return":
+                      float(
+                          g[
+                              "fwd_return"
+                          ].mean()
+                      ),
+              })
+
+          for model in models:
+              for topn in [
+                  1,
+                  3,
+                  5,
+              ]:
+                  for year, g in scored.groupby(
+                      "year"
+                  ):
+                      sel = (
+                          g.dropna(
+                              subset=[
+                                  model,
+                                  "fwd_return",
+                              ]
+                          )
+                          .sort_values(
+                              model,
+                              ascending=False,
+                          )
+                          .head(topn)
+                          .copy()
+                      )
+
+                      if sel.empty:
+                          continue
+
+                      annual_rows.append({
+                          "year":
+                              int(year),
+                          "model":
+                              model,
+                          "topN":
+                              topn,
+                          "return":
+                              float(
+                                  sel[
+                                      "fwd_return"
+                                  ].mean()
+                              ),
+                      })
+
+                      sel[
+                          "model"
+                      ] = model
+
+                      sel["topN"] = topn
+
+                      sel[
+                          "rank"
+                      ] = np.arange(
+                          1,
+                          len(sel) + 1,
+                      )
+
+                      holdings_rows.append(
+                          sel[
+                              [
+                                  "year",
+                                  "model",
+                                  "topN",
+                                  "rank",
+                                  "code6",
+                                  "bank_name",
+                                  model,
+                                  "fwd_return",
+                                  "QualityScore",
+                                  "ValuationScore",
+                                  "DividendScore",
+                                  "pb",
+                                  "dy_ttm",
+                                  "roe_median_5y",
+                                  "npl_latest",
+                                  "cet1_latest",
+                                  "provision_latest",
+                                  "nim_latest",
+                              ]
+                          ]
+                      )
+
+          annual = pd.DataFrame(
+              annual_rows
+          )
+
+          annual.to_csv(
+              out
+              / "bank_annual_returns.csv",
+              index=False,
+          )
+
+          if holdings_rows:
+              pd.concat(
+                  holdings_rows,
+                  ignore_index=True,
+              ).to_csv(
+                  out
+                  / "bank_holdings.csv.gz",
+                  index=False,
+                  compression="gzip",
+              )
+
+          def metric(
+              df,
+              start,
+              end,
+          ):
+              x = (
+                  df[
+                      df["year"]
+                      .between(
+                          start,
+                          end,
+                      )
+                  ]
+                  .sort_values(
+                      "year"
+                  )
+              )
+
+              r = x[
+                  "return"
+              ].dropna().to_numpy()
+
+              if len(r) == 0:
+                  return {
+                      "years": 0,
+                      "CAGR": np.nan,
+                      "worst_year":
+                          np.nan,
+                      "positive_year_rate":
+                          np.nan,
+                  }
+
+              return {
+                  "years":
+                      len(r),
+                  "CAGR":
+                      float(
+                          np.prod(
+                              1 + r
+                          ) ** (
+                              1 / len(r)
+                          ) - 1
+                      ),
+                  "avg_return":
+                      float(
+                          np.mean(r)
+                      ),
+                  "worst_year":
+                      float(
+                          np.min(r)
+                      ),
+                  "positive_year_rate":
+                      float(
+                          np.mean(
+                              r > 0
+                          )
+                      ),
+              }
+
+          summary_rows = []
+
+          groups = (
+              annual[
+                  annual["model"]
+                  .ne(
+                      "EligibleBankEW"
+                  )
+              ][
+                  [
+                      "model",
+                      "topN",
+                  ]
+              ]
+              .drop_duplicates()
+              .itertuples(
+                  index=False
+              )
+          )
+
+          for row in groups:
+              sub = annual[
+                  annual["model"]
+                  .eq(row.model)
+                  & annual["topN"]
+                  .eq(row.topN)
+              ]
+
+              tr = metric(
+                  sub,
+                  2012,
+                  2018,
+              )
+
+              va = metric(
+                  sub,
+                  2019,
+                  2025,
+              )
+
+              fu = metric(
+                  sub,
+                  2012,
+                  2025,
+              )
+
+              summary_rows.append({
+                  "model":
+                      row.model,
+                  "topN":
+                      int(row.topN),
+                  "train_CAGR":
+                      tr["CAGR"],
+                  "validation_CAGR":
+                      va["CAGR"],
+                  "full_CAGR":
+                      fu["CAGR"],
+                  "validation_worst_year":
+                      va["worst_year"],
+                  "validation_positive_year_rate":
+                      va[
+                          "positive_year_rate"
+                      ],
+              })
+
+          bankbase = annual[
+              annual["model"]
+              .eq(
+                  "EligibleBankEW"
+              )
+          ]
+
+          btr = metric(
+              bankbase,
+              2012,
+              2018,
+          )
+
+          bva = metric(
+              bankbase,
+              2019,
+              2025,
+          )
+
+          bfu = metric(
+              bankbase,
+              2012,
+              2025,
+          )
+
+          summary_rows.append({
+              "model":
+                  "EligibleBankEW",
+              "topN":
+                  np.nan,
+              "train_CAGR":
+                  btr["CAGR"],
+              "validation_CAGR":
+                  bva["CAGR"],
+              "full_CAGR":
+                  bfu["CAGR"],
+              "validation_worst_year":
+                  bva[
+                      "worst_year"
+                  ],
+              "validation_positive_year_rate":
+                  bva[
+                      "positive_year_rate"
+                  ],
+          })
+
+          summary = pd.DataFrame(
+              summary_rows
+          ).sort_values(
+              [
+                  "validation_CAGR",
+                  "full_CAGR",
+              ],
+              ascending=False,
+          )
+
+          summary.to_csv(
+              out
+              / "bank_model_summary.csv",
+              index=False,
+          )
+
+          # --------------------------------------------------------
+          # Parameter robustness: yield / div years / quality-value weights
+          # --------------------------------------------------------
+          raw = pd.read_csv(
+              out
+              / "bank_raw_panel.csv.gz",
+              dtype={"code6":"string"},
+          )
+
+          sens_rows = []
+
+          for dy_cut in [
+              0.015,
+              0.020,
+              0.025,
+              0.030,
+              0.040,
+          ]:
+              for div_years in [
+                  3,
+                  5,
+                  7,
+              ]:
+                  sub = raw[
+                      raw[
+                          "continuous_dividend_years"
+                      ].ge(div_years)
+                      & raw[
+                          "dy_ttm"
+                      ].ge(dy_cut)
+                      & raw[
+                          "avg_amount_60d"
+                      ].ge(50000)
+                      & raw[
+                          "net_profit_latest"
+                      ].gt(0)
+                      & raw[
+                          "pb"
+                      ].gt(0)
+                  ].copy()
+
+                  # Join precomputed model score only where main eligibility exists.
+                  ss = scored[
+                      [
+                          "year",
+                          "code6",
+                          "BankCore",
+                          "fwd_return",
+                      ]
+                  ]
+
+                  sub = sub.merge(
+                      ss,
+                      on=[
+                          "year",
+                          "code6",
+                      ],
+                      how="inner",
+                  )
+
+                  rets = []
+
+                  for year, g in sub.groupby(
+                      "year"
+                  ):
+                      sel = (
+                          g.dropna(
+                              subset=[
+                                  "BankCore",
+                                  "fwd_return",
+                              ]
+                          )
+                          .sort_values(
+                              "BankCore",
+                              ascending=False,
+                          )
+                          .head(3)
+                      )
+
+                      if len(sel):
+                          rets.append({
+                              "year":
+                                  int(year),
+                              "return":
+                                  float(
+                                      sel[
+                                          "fwd_return"
+                                      ].mean()
+                                  ),
+                          })
+
+                  aa = pd.DataFrame(
+                      rets
+                  )
+
+                  tr = metric(
+                      aa,
+                      2012,
+                      2018,
+                  )
+
+                  va = metric(
+                      aa,
+                      2019,
+                      2025,
+                  )
+
+                  sens_rows.append({
+                      "dy_cut":
+                          dy_cut,
+                      "dividend_years":
+                          div_years,
+                      "train_CAGR":
+                          tr["CAGR"],
+                      "validation_CAGR":
+                          va["CAGR"],
+                  })
+
+          pd.DataFrame(
+              sens_rows
+          ).to_csv(
+              out
+              / "bank_parameter_sensitivity.csv",
+              index=False,
+          )
+
+          print(
+              summary.to_string(
+                  index=False
+              )
+          )
+
+          print("BANK_BACKTEST_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 6)招商银行专项 + current 2026 bank ranking
+      # ------------------------------------------------------------
+
+      - name: Build CMB historical record and 2026 ranking
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          scored = pd.read_csv(
+              out
+              / "bank_scored_with_returns.csv.gz",
+              dtype={"code6":"string"},
+          )
+
+          for model in [
+              "BankCore",
+              "BankQV",
+              "HighQualityLowValue",
+          ]:
+              scored[
+                  f"rank_{model}"
+              ] = scored.groupby(
+                  "year"
+              )[model].rank(
+                  ascending=False,
+                  method="min",
+              )
+
+          cmb = scored[
+              scored[
+                  "code6"
+              ].eq("600036")
+          ].copy()
+
+          cmb.to_csv(
+              out
+              / "cmb_historical_bank_model.csv",
+              index=False,
+          )
+
+          cmb_summary = {
+              "years_eligible":
+                  int(len(cmb)),
+              "BankCore_top1_years":
+                  int(
+                      (
+                          cmb[
+                              "rank_BankCore"
+                          ] <= 1
+                      ).sum()
+                  ),
+              "BankCore_top3_years":
+                  int(
+                      (
+                          cmb[
+                              "rank_BankCore"
+                          ] <= 3
+                      ).sum()
+                  ),
+              "BankCore_top5_years":
+                  int(
+                      (
+                          cmb[
+                              "rank_BankCore"
+                          ] <= 5
+                      ).sum()
+                  ),
+              "median_BankCore_rank":
+                  float(
+                      cmb[
+                          "rank_BankCore"
+                      ].median()
+                  ),
+          }
+
+          # Continuous CMB holding return across annual May-to-May windows.
+          rr = (
+              cmb.sort_values(
+                  "year"
+              )["fwd_return"]
+              .dropna()
+              .to_numpy()
+          )
+
+          if len(rr):
+              cmb_summary[
+                  "CMB_annual_window_CAGR"
+              ] = float(
+                  np.prod(
+                      1 + rr
+                  ) ** (
+                      1 / len(rr)
+                  ) - 1
+              )
+
+              cmb_summary[
+                  "CMB_positive_year_rate"
+              ] = float(
+                  np.mean(
+                      rr > 0
+                  )
+              )
+
+              cmb_summary[
+                  "CMB_worst_year"
+              ] = float(
+                  np.min(rr)
+              )
+
+          (
+              reports
+              / "cmb_summary.json"
+          ).write_text(
+              json.dumps(
+                  cmb_summary,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          # Latest available historical model year is 2025 signal.
+          # Create a latest-bank ranking snapshot for comparison.
+          latest_year = int(
+              scored["year"].max()
+          )
+
+          latest = (
+              scored[
+                  scored[
+                      "year"
+                  ].eq(latest_year)
+              ]
+              .sort_values(
+                  "BankCore",
+                  ascending=False,
+              )
+              .copy()
+          )
+
+          latest[
+              "BankCoreRank"
+          ] = np.arange(
+              1,
+              len(latest) + 1,
+          )
+
+          latest.to_csv(
+              out
+              / "latest_bank_model_ranking.csv",
+              index=False,
+          )
+
+          print(
+              json.dumps(
+                  cmb_summary,
+                  ensure_ascii=False,
+                  indent=2,
+              )
+          )
+
+          print(
+              latest[
+                  [
+                      "BankCoreRank",
+                      "code6",
+                      "bank_name",
+                      "BankCore",
+                      "QualityScore",
+                      "ValuationScore",
+                      "DividendScore",
+                      "pb",
+                      "dy_ttm",
+                      "roe_median_5y",
+                      "npl_latest",
+                      "cet1_latest",
+                      "provision_latest",
+                      "nim_latest",
+                  ]
+              ]
+              .head(15)
+              .to_string(
+                  index=False
+              )
+          )
+
+          print("CMB_ANALYSIS_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 7) README / final artifact
+      # ------------------------------------------------------------
+
+      - name: Build research README
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          summary = pd.read_csv(
+              out
+              / "bank_model_summary.csv"
+          )
+
+          cmb = json.loads(
+              (
+                  reports
+                  / "cmb_summary.json"
+              ).read_text(
+                  encoding="utf-8"
+              )
+          )
+
+          pit = json.loads(
+              (
+                  reports
+                  / "pit_crosscheck_summary.json"
+              ).read_text(
+                  encoding="utf-8"
+              )
+          )
+
+          top = summary.head(12)
+
+          md_lines = [
+              "# A股银行专用红利模型回测",
+              "",
+              "## 研究问题",
+              "",
+              "验证：",
+              "",
+              "> 高质量银行 + 持续分红 + 低估值",
+              "",
+              "在A股历史上是否具有可重复的组合效果，",
+              "以及招商银行是否长期稳定地处于这一类银行的前列。",
+              "",
+              "## 防前视",
+              "",
+              "- 财务指标使用 Eastmoney F10 的 `NOTICE_DATE`；",
+              "- 每年5月第一个交易日形成信号；",
+              "- 仅使用当时已披露的前5个完整年度；",
+              "- 第二个5月交易日开盘执行；",
+              "- 2012–2018训练/研究；",
+              "- 2019–2025验证；",
+              f"- 历史公告日期与BaoStock交叉校验：P90日期差 = {pit.get('date_diff_p90')}天；ROE差异中位数 = {pit.get('roe_diff_median_pp')}pct",
+              "",
+              "## 银行专用因子",
+              "",
+              "### Quality",
+              "- 5Y median ROE",
+              "- ROE stability",
+              "- 5Y median ROA",
+              "- NPL ratio",
+              "- Provision coverage",
+              "- CET1",
+              "- NIM",
+              "- NIM trend",
+              "",
+              "### Valuation",
+              "- PB",
+              "- TTM dividend yield",
+              "",
+              "### Dividend",
+              "- continuous dividend years",
+              "- DPS CAGR",
+              "- DPS max cut",
+              "",
+              "### 主模型",
+              "",
+              "`BankCore = 50% Quality + 30% Valuation + 20% Dividend`",
+              "",
+              "另测试：",
+              "- BankQV",
+              "- HighQualityLowValue",
+              "- Quality-only",
+              "- Value-only",
+              "",
+              "## 招商银行专项",
+              "",
+              f"- Eligible years: {cmb.get('years_eligible')}",
+              f"- BankCore Top1 years: {cmb.get('BankCore_top1_years')}",
+              f"- BankCore Top3 years: {cmb.get('BankCore_top3_years')}",
+              f"- BankCore Top5 years: {cmb.get('BankCore_top5_years')}",
+              f"- Median BankCore rank: {cmb.get('median_BankCore_rank')}",
+              f"- May-to-May historical CAGR: {cmb.get('CMB_annual_window_CAGR')}",
+              "",
+              "## 模型汇总",
+              "",
+              top.to_markdown(index=False),
+              "",
+              "## 注意",
+              "",
+              "1. 银行横截面远小于全A，早期年份样本尤其小；",
+              "2. F10历史监管指标仍可能存在极少量后续数据修订风险；",
+              "3. 因此判断重点是训练/验证一致性与参数平台，而不是某个最高CAGR；",
+              "4. Top1仍然不能仅由排名机械决定。",
+          ]
+
+          md = "\n".join(md_lines)
+
+          (
+              out / "README.md"
+          ).write_text(
+              md,
+              encoding="utf-8",
+          )
+
+          print(md[:12000])
+          PY
+
+      - name: Show files
+        shell: bash
+        run: |
+          find \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports" \
+            -type f \
+            -printf "%12s  %p\n" \
+            | sort -n
+
+          du -sh \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports"
+
+      - name: Upload bank-model backtest artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bank-dividend-model-backtest-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/
+            ${{ env.OUT_DIR }}/reports/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
