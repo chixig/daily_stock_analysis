@@ -1,0 +1,1065 @@
+name: ChatGPT Dividend Production Snapshot 2026
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OUT_DIR: _chatgpt_dividend_2026
+  QLIB_URL: https://github.com/chenditc/investment_data/releases/download/2026-09-05/qlib_bin.tar.gz
+  QLIB_SHA256: 11866b2eaa627b758da43ce075667716598611546fddea981422e5c06a3956f1
+
+jobs:
+  build-current-snapshot:
+    name: Build current A-share dividend research snapshot
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "pandas>=2.2" \
+            "numpy>=1.26" \
+            "requests>=2.32"
+
+      - name: Prepare directories
+        shell: bash
+        run: |
+          rm -rf "${OUT_DIR}"
+          mkdir -p \
+            "${OUT_DIR}/qlib" \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports"
+
+      # ------------------------------------------------------------
+      # 1) Full-A market snapshot as of latest Qlib trading day
+      # ------------------------------------------------------------
+
+      - name: Download and verify Qlib market data
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L --retry 5 --retry-delay 2 \
+            -o "${OUT_DIR}/qlib_bin.tar.gz" \
+            "${QLIB_URL}"
+
+          echo "${QLIB_SHA256}  ${OUT_DIR}/qlib_bin.tar.gz" \
+            | sha256sum -c -
+
+          tar -xzf "${OUT_DIR}/qlib_bin.tar.gz" \
+            -C "${OUT_DIR}/qlib"
+
+          echo "QLIB_DOWNLOAD_OK"
+
+      - name: Build compact current market snapshot
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          extract = root / "qlib"
+          out = root / "out"
+          reports = root / "reports"
+
+          candidates = [
+              extract / "qlib_bin",
+              extract / "cn_data",
+              extract,
+          ]
+
+          qlib = next(
+              (
+                  p for p in candidates
+                  if (p / "calendars/day.txt").exists()
+                  and (p / "instruments/all.txt").exists()
+                  and (p / "features").exists()
+              ),
+              None,
+          )
+
+          if qlib is None:
+              for m in extract.rglob("calendars/day.txt"):
+                  p = m.parent.parent
+                  if (
+                      (p / "instruments/all.txt").exists()
+                      and (p / "features").exists()
+                  ):
+                      qlib = p
+                      break
+
+          if qlib is None:
+              raise SystemExit("Could not find Qlib provider root")
+
+          print("QLIB_ROOT =", qlib)
+
+          calendar = pd.to_datetime(
+              pd.read_csv(
+                  qlib / "calendars/day.txt",
+                  header=None,
+              )[0]
+          )
+
+          latest_date = pd.Timestamp(calendar.iloc[-1])
+
+          instruments = pd.read_csv(
+              qlib / "instruments/all.txt",
+              sep="\t",
+              header=None,
+              names=["qlib_code", "start", "end"],
+          )
+
+          instruments["start"] = pd.to_datetime(
+              instruments["start"],
+              errors="coerce",
+          )
+          instruments["end"] = pd.to_datetime(
+              instruments["end"],
+              errors="coerce",
+          )
+
+          # Current A-share common-stock-like codes.
+          current = instruments[
+              instruments["qlib_code"].str.match(
+                  r"^(SH|SZ|BJ)\d{6}$",
+                  na=False,
+              )
+              & (instruments["start"] <= latest_date)
+              & (instruments["end"] >= latest_date)
+          ].copy()
+
+          def read_field(code, field):
+              fp = (
+                  qlib
+                  / "features"
+                  / code.lower()
+                  / f"{field}.day.bin"
+              )
+
+              if not fp.exists():
+                  return None, None
+
+              arr = np.fromfile(
+                  fp,
+                  dtype="<f4",
+              )
+
+              if len(arr) < 2:
+                  return None, None
+
+              return int(arr[0]), arr[1:]
+
+          rows = []
+
+          for i, row in enumerate(
+              current.itertuples(index=False),
+              start=1,
+          ):
+              code = row.qlib_code
+
+              fields = {}
+
+              for field in [
+                  "close",
+                  "open",
+                  "factor",
+                  "amount",
+              ]:
+                  fields[field] = read_field(
+                      code,
+                      field,
+                  )
+
+              start_close, close = fields["close"]
+              start_factor, factor = fields["factor"]
+              start_amount, amount = fields["amount"]
+
+              if (
+                  close is None
+                  or factor is None
+                  or amount is None
+              ):
+                  continue
+
+              latest_idx = len(calendar) - 1
+
+              def value_at(start, arr, idx):
+                  j = idx - start
+                  if j < 0 or j >= len(arr):
+                      return np.nan
+                  return float(arr[j])
+
+              c = value_at(
+                  start_close,
+                  close,
+                  latest_idx,
+              )
+              f = value_at(
+                  start_factor,
+                  factor,
+                  latest_idx,
+              )
+
+              if (
+                  not np.isfinite(c)
+                  or not np.isfinite(f)
+                  or f == 0
+              ):
+                  continue
+
+              raw_price = c / f
+
+              # 60-day average amount.
+              j_amt = latest_idx - start_amount
+              lo_amt = max(0, j_amt - 59)
+
+              if (
+                  j_amt < 0
+                  or j_amt >= len(amount)
+              ):
+                  avg_amount_60d = np.nan
+              else:
+                  block = amount[
+                      lo_amt : j_amt + 1
+                  ]
+                  avg_amount_60d = (
+                      float(np.nanmean(block))
+                      if np.isfinite(block).any()
+                      else np.nan
+                  )
+
+              # 252d adjusted/normalised close return series.
+              j_close = latest_idx - start_close
+              lo_close = max(0, j_close - 251)
+
+              block = close[
+                  lo_close : j_close + 1
+              ].astype(float)
+
+              block = block[np.isfinite(block)]
+
+              if len(block) >= 20:
+                  daily_ret = (
+                      pd.Series(block)
+                      .pct_change()
+                      .dropna()
+                  )
+
+                  volatility_1y = (
+                      float(
+                          daily_ret.std(ddof=1)
+                          * np.sqrt(252)
+                      )
+                      if len(daily_ret) >= 20
+                      else np.nan
+                  )
+
+                  nav = pd.Series(block)
+                  dd = nav / nav.cummax() - 1
+                  maxdd_1y = float(dd.min())
+
+                  return_1y = (
+                      float(block[-1] / block[0] - 1)
+                      if block[0] != 0
+                      else np.nan
+                  )
+              else:
+                  volatility_1y = np.nan
+                  maxdd_1y = np.nan
+                  return_1y = np.nan
+
+              ex = code[:2]
+              code6 = code[2:]
+
+              rows.append({
+                  "trade_date": latest_date.strftime(
+                      "%Y-%m-%d"
+                  ),
+                  "qlib_code": code,
+                  "code6": code6,
+                  "exchange": ex,
+                  "ts_code": f"{code6}.{ex}",
+                  "list_date": (
+                      row.start.strftime("%Y-%m-%d")
+                      if pd.notna(row.start)
+                      else None
+                  ),
+                  "raw_price": raw_price,
+                  "avg_amount_60d": avg_amount_60d,
+                  "volatility_1y": volatility_1y,
+                  "maxdd_1y": maxdd_1y,
+                  "return_1y": return_1y,
+              })
+
+              if i % 1000 == 0:
+                  print(
+                      f"market snapshot progress "
+                      f"{i}/{len(current)}"
+                  )
+
+          market = pd.DataFrame(rows)
+
+          market.to_csv(
+              out / "market_snapshot_latest.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          report = {
+              "latest_trade_date": latest_date.strftime(
+                  "%Y-%m-%d"
+              ),
+              "current_instruments": int(len(current)),
+              "market_rows": int(len(market)),
+              "SH": int(
+                  (market["exchange"] == "SH").sum()
+              ),
+              "SZ": int(
+                  (market["exchange"] == "SZ").sum()
+              ),
+              "BJ": int(
+                  (market["exchange"] == "BJ").sum()
+              ),
+          }
+
+          (
+              reports / "market_snapshot.json"
+          ).write_text(
+              json.dumps(
+                  report,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          print(json.dumps(
+              report,
+              ensure_ascii=False,
+              indent=2,
+          ))
+
+          print("MARKET_SNAPSHOT_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 2) Current/restated financial history:
+      #    2021-2025 annual + 2026H1 risk-review
+      #
+      # For a CURRENT decision, restated history is acceptable because
+      # all revisions are known now. Historical PIT backtest remains
+      # BaoStock/Tushare based and is not replaced by this snapshot.
+      # ------------------------------------------------------------
+
+      - name: Fetch Eastmoney current financial and dividend snapshot
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          import time
+          from pathlib import Path
+
+          import pandas as pd
+          import requests
+          from requests.adapters import HTTPAdapter
+          from urllib3.util.retry import Retry
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          BASE_URL = (
+              "https://datacenter-web.eastmoney.com/"
+              "api/data/v1/get"
+          )
+
+          session = requests.Session()
+
+          retry = Retry(
+              total=6,
+              connect=6,
+              read=6,
+              backoff_factor=1.0,
+              status_forcelist=[
+                  429,
+                  500,
+                  502,
+                  503,
+                  504,
+              ],
+              allowed_methods=["GET"],
+          )
+
+          session.mount(
+              "https://",
+              HTTPAdapter(max_retries=retry),
+          )
+
+          headers = {
+              "User-Agent": (
+                  "Mozilla/5.0 "
+                  "(X11; Linux x86_64) "
+                  "AppleWebKit/537.36 "
+                  "Chrome/130 Safari/537.36"
+              ),
+              "Referer": (
+                  "https://data.eastmoney.com/"
+              ),
+          }
+
+          REPORTS = {
+              "income": {
+                  "reportName":
+                      "RPT_DMSK_FN_INCOME",
+                  "sortColumns":
+                      "NOTICE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field":
+                      "REPORT_DATE",
+              },
+              "balance": {
+                  "reportName":
+                      "RPT_DMSK_FN_BALANCE",
+                  "sortColumns":
+                      "NOTICE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field":
+                      "REPORT_DATE",
+              },
+              "cashflow": {
+                  "reportName":
+                      "RPT_DMSK_FN_CASHFLOW",
+                  "sortColumns":
+                      "NOTICE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field":
+                      "REPORT_DATE",
+              },
+              "performance": {
+                  "reportName":
+                      "RPT_LICO_FN_CPD",
+                  "sortColumns":
+                      "UPDATE_DATE,SECURITY_CODE",
+                  "sortTypes": "-1,-1",
+                  "date_field":
+                      "REPORTDATE",
+              },
+          }
+
+          FIN_DATES = [
+              "20211231",
+              "20221231",
+              "20231231",
+              "20241231",
+              "20251231",
+              "20260630",
+          ]
+
+          DIV_DATES = [
+              "20211231",
+              "20220630",
+              "20221231",
+              "20230630",
+              "20231231",
+              "20240630",
+              "20241231",
+              "20250630",
+              "20251231",
+              "20260630",
+          ]
+
+          def iso_date(s):
+              return (
+                  f"{s[:4]}-{s[4:6]}-{s[6:8]}"
+              )
+
+          def get_json(params):
+              last = None
+
+              for attempt in range(1, 7):
+                  try:
+                      r = session.get(
+                          BASE_URL,
+                          params=params,
+                          headers=headers,
+                          timeout=30,
+                      )
+                      r.raise_for_status()
+
+                      payload = r.json()
+
+                      if not payload.get(
+                          "success",
+                          True,
+                      ):
+                          raise RuntimeError(
+                              payload.get("message")
+                          )
+
+                      return payload
+
+                  except Exception as exc:
+                      last = exc
+                      print(
+                          f"attempt {attempt}/6 "
+                          f"failed: {exc}",
+                          flush=True,
+                      )
+                      time.sleep(
+                          min(8, attempt * 1.5)
+                      )
+
+              raise RuntimeError(last)
+
+          def fetch_report(
+              report_name,
+              sort_columns,
+              sort_types,
+              filter_expr,
+          ):
+              params = {
+                  "sortColumns":
+                      sort_columns,
+                  "sortTypes":
+                      sort_types,
+                  "pageSize":
+                      "500",
+                  "pageNumber":
+                      "1",
+                  "reportName":
+                      report_name,
+                  "columns":
+                      "ALL",
+                  "filter":
+                      filter_expr,
+              }
+
+              first = get_json(params)
+              result = first.get("result")
+
+              if not result:
+                  return pd.DataFrame()
+
+              pages = int(
+                  result.get("pages") or 0
+              )
+
+              frames = []
+
+              for page in range(
+                  1,
+                  pages + 1,
+              ):
+                  params["pageNumber"] = str(
+                      page
+                  )
+
+                  payload = (
+                      first
+                      if page == 1
+                      else get_json(params)
+                  )
+
+                  data = (
+                      (
+                          payload.get("result")
+                          or {}
+                      ).get("data")
+                      or []
+                  )
+
+                  if data:
+                      frames.append(
+                          pd.DataFrame(data)
+                      )
+
+                  if page % 5 == 0:
+                      print(
+                          f"{report_name}: "
+                          f"{page}/{pages}",
+                          flush=True,
+                      )
+
+                  if page != pages:
+                      time.sleep(0.10)
+
+              return (
+                  pd.concat(
+                      frames,
+                      ignore_index=True,
+                      sort=False,
+                  )
+                  if frames
+                  else pd.DataFrame()
+              )
+
+          coverage = {}
+          schemas = {}
+
+          # Financial statements
+          for key, cfg in REPORTS.items():
+              frames = []
+              coverage[key] = []
+
+              for d in FIN_DATES:
+                  field = cfg["date_field"]
+
+                  df = fetch_report(
+                      cfg["reportName"],
+                      cfg["sortColumns"],
+                      cfg["sortTypes"],
+                      f"({field}='{iso_date(d)}')",
+                  )
+
+                  if not df.empty:
+                      df["__requested_report_date"] = d
+
+                      # Keep only 6-digit A-share-like securities.
+                      code_col = (
+                          "SECURITY_CODE"
+                          if "SECURITY_CODE"
+                          in df.columns
+                          else None
+                      )
+
+                      if code_col:
+                          df["code6"] = (
+                              df[code_col]
+                              .astype("string")
+                              .str.extract(
+                                  r"(\d{6})",
+                                  expand=False,
+                              )
+                          )
+
+                          df = df[
+                              df["code6"].notna()
+                          ].copy()
+
+                      frames.append(df)
+
+                  coverage[key].append({
+                      "report_date": d,
+                      "rows": int(len(df)),
+                      "stocks": (
+                          int(
+                              df["code6"]
+                              .nunique()
+                          )
+                          if (
+                              not df.empty
+                              and "code6"
+                              in df.columns
+                          )
+                          else 0
+                      ),
+                  })
+
+                  print(
+                      key,
+                      d,
+                      len(df),
+                      flush=True,
+                  )
+
+              full = (
+                  pd.concat(
+                      frames,
+                      ignore_index=True,
+                      sort=False,
+                  )
+                  if frames
+                  else pd.DataFrame()
+              )
+
+              if not full.empty:
+                  full.to_csv(
+                      out
+                      / f"eastmoney_{key}_current.csv.gz",
+                      index=False,
+                      compression="gzip",
+                  )
+
+                  schemas[key] = list(
+                      full.columns
+                  )
+
+          # Dividend / distribution plans
+          div_frames = []
+          coverage["dividend"] = []
+
+          for d in DIV_DATES:
+              df = fetch_report(
+                  "RPT_SHAREBONUS_DET",
+                  "PLAN_NOTICE_DATE",
+                  "-1",
+                  (
+                      "(REPORT_DATE="
+                      f"'{iso_date(d)}')"
+                  ),
+              )
+
+              if not df.empty:
+                  if "SECURITY_CODE" in df.columns:
+                      df["code6"] = (
+                          df["SECURITY_CODE"]
+                          .astype("string")
+                          .str.extract(
+                              r"(\d{6})",
+                              expand=False,
+                          )
+                      )
+
+                  df["__requested_report_date"] = d
+                  div_frames.append(df)
+
+              coverage["dividend"].append({
+                  "report_date": d,
+                  "rows": int(len(df)),
+                  "stocks": (
+                      int(
+                          df["code6"]
+                          .nunique()
+                      )
+                      if (
+                          not df.empty
+                          and "code6"
+                          in df.columns
+                      )
+                      else 0
+                  ),
+              })
+
+              print(
+                  "dividend",
+                  d,
+                  len(df),
+                  flush=True,
+              )
+
+          dividends = (
+              pd.concat(
+                  div_frames,
+                  ignore_index=True,
+                  sort=False,
+              )
+              if div_frames
+              else pd.DataFrame()
+          )
+
+          if not dividends.empty:
+              dividends.to_csv(
+                  out
+                  / "eastmoney_dividend_current.csv.gz",
+                  index=False,
+                  compression="gzip",
+              )
+
+              schemas["dividend"] = list(
+                  dividends.columns
+              )
+
+          (
+              reports / "eastmoney_coverage.json"
+          ).write_text(
+              json.dumps(
+                  coverage,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          (
+              reports / "eastmoney_schemas.json"
+          ).write_text(
+              json.dumps(
+                  schemas,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          # Hard minimum coverage checks for 2025 annual
+          for key in [
+              "income",
+              "balance",
+              "cashflow",
+              "performance",
+          ]:
+              item = next(
+                  x
+                  for x in coverage[key]
+                  if x["report_date"]
+                  == "20251231"
+              )
+
+              if item["stocks"] < 4000:
+                  raise SystemExit(
+                      f"{key} 2025 annual "
+                      f"coverage too small: "
+                      f"{item['stocks']}"
+                  )
+
+          d2025 = next(
+              x
+              for x in coverage["dividend"]
+              if x["report_date"]
+              == "20251231"
+          )
+
+          if d2025["stocks"] < 2000:
+              raise SystemExit(
+                  "2025 annual dividend "
+                  "coverage unexpectedly small"
+              )
+
+          print("EASTMONEY_CURRENT_OK")
+          PY
+
+      # ------------------------------------------------------------
+      # 3) Build a compact 2026 research universe manifest
+      # ------------------------------------------------------------
+
+      - name: Build current universe join and flags
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import pandas as pd
+
+          root = Path(os.environ["OUT_DIR"])
+          out = root / "out"
+          reports = root / "reports"
+
+          market = pd.read_csv(
+              out
+              / "market_snapshot_latest.csv.gz",
+              dtype={"code6": "string"},
+          )
+
+          perf = pd.read_csv(
+              out
+              / "eastmoney_performance_current.csv.gz",
+              dtype={"code6": "string"},
+              low_memory=False,
+          )
+
+          # Latest 2026H1 row is useful for names / industries / risk review.
+          perf["REPORTDATE"] = pd.to_datetime(
+              perf["REPORTDATE"],
+              errors="coerce",
+          )
+
+          latest = (
+              perf.sort_values(
+                  ["code6", "REPORTDATE"]
+              )
+              .drop_duplicates(
+                  "code6",
+                  keep="last",
+              )
+          )
+
+          keep = [
+              c
+              for c in [
+                  "code6",
+                  "SECURITY_NAME_ABBR",
+                  "PUBLISHNAME",
+                  "BOARD_NAME",
+                  "REPORTDATE",
+                  "WEIGHTAVG_ROE",
+                  "BASIC_EPS",
+                  "TOTAL_OPERATE_INCOME",
+                  "PARENT_NETPROFIT",
+              ]
+              if c in latest.columns
+          ]
+
+          joined = market.merge(
+              latest[keep],
+              on="code6",
+              how="left",
+          )
+
+          name_col = (
+              "SECURITY_NAME_ABBR"
+              if "SECURITY_NAME_ABBR"
+              in joined.columns
+              else None
+          )
+
+          if name_col:
+              joined["current_st_flag"] = (
+                  joined[name_col]
+                  .astype("string")
+                  .str.contains(
+                      r"\*?ST",
+                      case=False,
+                      regex=True,
+                      na=False,
+                  )
+              )
+          else:
+              joined["current_st_flag"] = False
+
+          # Coarse sector routing only.
+          industry = (
+              joined["PUBLISHNAME"]
+              .astype("string")
+              if "PUBLISHNAME"
+              in joined.columns
+              else pd.Series(
+                  pd.NA,
+                  index=joined.index,
+                  dtype="string",
+              )
+          )
+
+          text = (
+              (
+                  joined[name_col]
+                  .astype("string")
+                  if name_col
+                  else ""
+              )
+              + " "
+              + industry
+          )
+
+          joined["industry_model"] = "S"
+
+          joined.loc[
+              text.str.contains(
+                  "银行",
+                  na=False,
+              ),
+              "industry_model",
+          ] = "B"
+
+          joined.loc[
+              text.str.contains(
+                  "保险",
+                  na=False,
+              ),
+              "industry_model",
+          ] = "I"
+
+          joined.loc[
+              text.str.contains(
+                  (
+                      "煤炭|钢铁|有色|石油|化工|"
+                      "航运|地产|水泥|玻璃|造纸"
+                  ),
+                  regex=True,
+                  na=False,
+              ),
+              "industry_model",
+          ] = "C"
+
+          joined.loc[
+              text.str.contains(
+                  (
+                      "电力|水务|燃气|高速|"
+                      "公路|电信|通信运营"
+                  ),
+                  regex=True,
+                  na=False,
+              ),
+              "industry_model",
+          ] = "U"
+
+          joined.to_csv(
+              out / "current_universe_routing.csv.gz",
+              index=False,
+              compression="gzip",
+          )
+
+          report = {
+              "rows": int(len(joined)),
+              "ST_current": int(
+                  joined["current_st_flag"].sum()
+              ),
+              "model_counts": (
+                  joined["industry_model"]
+                  .value_counts(dropna=False)
+                  .to_dict()
+              ),
+              "note": (
+                  "This is routing only. "
+                  "Final bank/insurance/cycle "
+                  "due diligence is performed "
+                  "after shortlist generation."
+              ),
+          }
+
+          (
+              reports / "current_universe_routing.json"
+          ).write_text(
+              json.dumps(
+                  report,
+                  ensure_ascii=False,
+                  indent=2,
+              ),
+              encoding="utf-8",
+          )
+
+          print(json.dumps(
+              report,
+              ensure_ascii=False,
+              indent=2,
+          ))
+
+          print("CURRENT_ROUTING_OK")
+          PY
+
+      - name: Show final files
+        shell: bash
+        run: |
+          echo "===== Output ====="
+
+          find \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports" \
+            -type f \
+            -printf "%12s  %p\n" \
+            | sort -n
+
+          echo
+          du -sh \
+            "${OUT_DIR}/out" \
+            "${OUT_DIR}/reports"
+
+      - name: Upload current production snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: dividend-production-2026-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/
+            ${{ env.OUT_DIR }}/reports/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 1
