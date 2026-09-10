@@ -1,0 +1,12 @@
+# 项目文档索引
+
+本仓库用于承载 A 股红利核心股 PIT 动态 Top10 V1.0 回测脚本及其手动触发的 GitHub Actions 工作流。
+
+## 优先阅读
+
+1. [PROJECT_ANALYSIS.md](PROJECT_ANALYSIS.md)：当前项目事实、入口和约束。
+2. [PROJECT_UPDATES.md](PROJECT_UPDATES.md)：重要变更、原因与验证记录。
+
+## 专项文档
+
+当前没有额外专项方案文档。
