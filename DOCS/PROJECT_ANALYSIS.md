@@ -23,4 +23,16 @@
 
 ## 当前状态
 
-仓库原先为空提交仓库。本次导入、空财务快照字段修复、实际数据字段适配和指数过滤已完成；GitHub Actions 运行 `34450501954` 成功并已生成 artifact。CoreTop10 有效样本为 2018–2025 的 8 年，2026 仅用于重合度 sanity check；LowVolProxy 有效样本为 2016–2025 的 10 年。
+## 工业富联 601138 盘中研究
+
+- 研究脚本：`scripts/chatgpt_601138_intraday_research.py`
+- GitHub Actions：`.github/workflows/chatgpt-601138-intraday-research.yml`
+- 触发方式：GitHub Actions 页面手动运行 `ChatGPT 601138 Intraday Research`，可选 `end_date`。
+- 日线母策略：RA-D1-V；分钟执行数据来自 BaoStock 不复权 5 分钟 K 线。
+- 执行候选：开盘卖、Open 上方固定限价卖、冲高后回落确认卖，并比较 1.2%/1.5%/1.8% 回补和 4% 灾难止损敏感性。
+- 防前视约束：分钟数据只用于信号后的执行；实际卖出后的下一根 5 分钟 bar 才允许触发 TP/Stop；同 bar 双触发按止损先发生；分钟 OHLC 与 BaoStock 未复权日线不一致的日期剔除。
+- 输出目录：`research/601138_intraday/`，包括信号、分钟 QC、逐笔交易、汇总和 `REPORT.md`；成功运行后由 workflow 尝试 commit 回 `main`，同时上传 Actions artifact。
+
+## 当前状态
+
+红利 PIT Top10 工作流已完成一次成功真实数据回测，最近成功运行 `34450501954`。工业富联 601138 研究桥已导入脚本和 workflow，本地编译、YAML 解析和纯函数 smoke 测试通过，等待 GitHub Actions 真实数据运行确认。
