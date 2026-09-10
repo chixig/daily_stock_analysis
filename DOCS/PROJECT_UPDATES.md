@@ -31,3 +31,12 @@
 - 结果事实：LowVolProxy 在 10 个有效年份上总收益 217.87%、CAGR 12.26%、正收益年份占比 90%。它是近似代理，不是中证官方指数复刻。
 - 结果事实：2026 模型 Top10 与冻结官方 Top10 重合 3/10；报告明确要求仅将本项目视为方法论代理，不得把收益表述为官方 2026 Top10 的历史收益。
 - 验证：artifact 下载、CSV/JSON 结构检查、逐年代码唯一性检查均通过；CoreTop10 2018–2026 每年 10 个不同代码，LowVolProxy 2016–2026 每年 50 个不同代码。
+
+## 2026-09-10：导入工业富联 601138 盘中研究桥
+
+- 背景：根据 `industrial_fulian_601138_intraday_research_bridge` 说明，将工业富联 `601138` 的 RA-D1-V × 5 分钟左侧卖点研究接入同一仓库。
+- 导入范围：`scripts/chatgpt_601138_intraday_research.py` 和 `.github/workflows/chatgpt-601138-intraday-research.yml`；未提交下载包根目录说明副本或本地研究产物。
+- 研究口径：日线前复权只负责重建开盘时已知的 RA-D1-V 信号；BaoStock 不复权 5 分钟 K 线只负责信号后的执行顺序；实际卖出后的下一根 bar 才开始 TP/Stop 判断；分钟 OHLC 对账失败日期剔除。
+- 输出与发布：workflow 生成 `research/601138_intraday/` 下的 signals、minute QC、trades、summary 和 `REPORT.md`，成功后尝试 commit 回 `main`，并上传 30 天 artifact。
+- 本地验证：脚本编译通过、workflow YAML 解析通过、70 个策略规格生成、限价成交/回落确认/下一根 bar 回补/同 bar 止损优先/日线 OHLC 对账/费用计算 smoke 测试通过。
+- 待办：手动触发 `ChatGPT 601138 Intraday Research`，检查真实 BaoStock 数据覆盖、QC 通过率、候选信号数和参数稳定性；不以单点最高回测值直接定版。
