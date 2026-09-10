@@ -1,0 +1,101 @@
+name: Update 601138 Full 5min History
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "Requested start date"
+        required: false
+        default: "2018-06-08"
+      end_date:
+        description: "End date; leave blank to use today's date"
+        required: false
+        default: ""
+
+  # 约北京时间 20:30，周一到周五自动刷新
+  schedule:
+    - cron: "30 12 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-601138-full-5min
+  cancel-in-progress: false
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install baostock pandas
+
+      - name: Resolve dates
+        id: dates
+        shell: bash
+        run: |
+          START="${{ github.event.inputs.start_date }}"
+          END="${{ github.event.inputs.end_date }}"
+
+          if [ -z "$START" ]; then
+            START="2018-06-08"
+          fi
+
+          if [ -z "$END" ]; then
+            END="$(date -u +%F)"
+          fi
+
+          echo "start=$START" >> "$GITHUB_OUTPUT"
+          echo "end=$END" >> "$GITHUB_OUTPUT"
+          echo "START=$START"
+          echo "END=$END"
+
+      - name: Download all available 5-minute history
+        run: |
+          python scripts/download_601138_full_5min.py \
+            --start "${{ steps.dates.outputs.start }}" \
+            --end "${{ steps.dates.outputs.end }}" \
+            --out "data/601138_intraday/5min"
+
+      - name: Show coverage
+        if: always()
+        run: |
+          if [ -f data/601138_intraday/5min/coverage.json ]; then
+            cat data/601138_intraday/5min/coverage.json
+          fi
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 601138-full-5min-history
+          path: data/601138_intraday/5min/**
+          retention-days: 30
+
+      - name: Commit data back to repository
+        if: success()
+        shell: bash
+        run: |
+          git config user.name "chatgpt-research-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add data/601138_intraday/5min
+
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "data: update 601138 full 5min history"
+            git push
+          fi
