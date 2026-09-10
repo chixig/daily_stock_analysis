@@ -417,7 +417,23 @@ def annual_financial_snapshot(payload: dict, signal_date: pd.Timestamp) -> pd.Da
             "positive_cfo_3y": int((last3["cfo_n"] > 0).sum()),
             "debt_assets_latest": float(g["debt_assets_n"].iloc[-1]) if pd.notna(g["debt_assets_n"].iloc[-1]) else np.nan,
         })
-    return pd.DataFrame(rows)
+    # Preserve the merge contract even when an early signal date has no
+    # disclosed annual statements yet.  Without explicit columns, an empty
+    # `rows` list produces a DataFrame with no `code6` column and the first
+    # yearly scoring merge fails with KeyError instead of yielding no picks.
+    return pd.DataFrame(rows, columns=[
+        "code6",
+        "fin_year_latest",
+        "annual_count",
+        "roe_median_5y",
+        "roe_std_5y",
+        "profit_cagr",
+        "revenue_cagr",
+        "cfo_ni_median_3y",
+        "positive_profit_3y",
+        "positive_cfo_3y",
+        "debt_assets_latest",
+    ])
 
 
 @dataclass
