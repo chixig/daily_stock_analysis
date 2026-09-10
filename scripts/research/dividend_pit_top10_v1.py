@@ -242,12 +242,13 @@ def load_financials(paths: Dict[str, Path]) -> Tuple[pd.DataFrame, pd.DataFrame]
 
     pick_numeric(profit, ["n_income_attr_p", "NET_PROFIT", "PARENT_NETPROFIT", "net_profit", "n_income"], "net_profit_n")
     pick_numeric(profit, ["revenue", "total_revenue", "total_operate_income", "TOTAL_OPERATE_INCOME", "operate_income"], "revenue_n")
+    pick_numeric(profit, ["basic_eps", "BASIC_EPS", "eps"], "basic_eps_n")
     pick_numeric(bal, ["total_hldr_eqy_exc_min_int", "TOTAL_HLDR_EQY_EXC_MIN_INT", "total_equity", "TOTAL_EQUITY"], "equity_n")
     pick_numeric(bal, ["total_assets", "TOTAL_ASSETS"], "assets_n")
     pick_numeric(bal, ["total_liab", "TOTAL_LIAB", "total_liabilities"], "liab_n")
     pick_numeric(cash, ["n_cashflow_act", "NETCASH_OPERATE", "net_cashflow_operate", "net_operate_cash_flow"], "cfo_n")
 
-    keep_p = ["code6", "ann_date_n", "end_date_n", "net_profit_n", "revenue_n"]
+    keep_p = ["code6", "ann_date_n", "end_date_n", "net_profit_n", "revenue_n", "basic_eps_n"]
     keep_b = ["code6", "ann_date_n", "end_date_n", "equity_n", "assets_n", "liab_n"]
     keep_c = ["code6", "ann_date_n", "end_date_n", "cfo_n"]
 
@@ -363,7 +364,7 @@ def annual_financial_snapshot(payload: dict, signal_date: pd.Timestamp) -> pd.Da
         x = x.sort_values(["code6", "end_date_n", "ann_date_n"]).drop_duplicates(["code6", "end_date_n"], keep="last")
         return x[["code6", "end_date_n"] + fields]
 
-    p = prep(payload["profit"], ["net_profit_n", "revenue_n"])
+    p = prep(payload["profit"], ["net_profit_n", "revenue_n", "basic_eps_n"])
     b = prep(payload["bal"], ["equity_n", "assets_n", "liab_n"])
     c = prep(payload["cash"], ["cfo_n"])
 
@@ -404,6 +405,21 @@ def annual_financial_snapshot(payload: dict, signal_date: pd.Timestamp) -> pd.Da
             n = len(vals) - 1
             return (vals.iloc[-1] / vals.iloc[0]) ** (1.0 / n) - 1.0
 
+        latest = g.sort_values("fyear").iloc[-1]
+        eps_latest = float(latest["basic_eps_n"]) if pd.notna(latest["basic_eps_n"]) else np.nan
+        net_latest = float(latest["net_profit_n"]) if pd.notna(latest["net_profit_n"]) else np.nan
+        equity_latest = float(latest["equity_n"]) if pd.notna(latest["equity_n"]) else np.nan
+        shares_estimate = (
+            net_latest / eps_latest
+            if np.isfinite(net_latest) and np.isfinite(eps_latest) and abs(eps_latest) > 1e-9
+            else np.nan
+        )
+        equity_per_share = (
+            equity_latest / shares_estimate
+            if np.isfinite(equity_latest) and np.isfinite(shares_estimate) and shares_estimate > 0
+            else np.nan
+        )
+
         rows.append({
             "code6": code6,
             "fin_year_latest": int(g["fyear"].max()) if len(g) else np.nan,
@@ -416,6 +432,9 @@ def annual_financial_snapshot(payload: dict, signal_date: pd.Timestamp) -> pd.Da
             "positive_profit_3y": int((last3["net_profit_n"] > 0).sum()),
             "positive_cfo_3y": int((last3["cfo_n"] > 0).sum()),
             "debt_assets_latest": float(g["debt_assets_n"].iloc[-1]) if pd.notna(g["debt_assets_n"].iloc[-1]) else np.nan,
+            "eps_latest": eps_latest,
+            "shares_estimate_latest": shares_estimate,
+            "equity_per_share_latest": equity_per_share,
         })
     # Preserve the merge contract even when an early signal date has no
     # disclosed annual statements yet.  Without explicit columns, an empty
@@ -433,6 +452,9 @@ def annual_financial_snapshot(payload: dict, signal_date: pd.Timestamp) -> pd.Da
         "positive_profit_3y",
         "positive_cfo_3y",
         "debt_assets_latest",
+        "eps_latest",
+        "shares_estimate_latest",
+        "equity_per_share_latest",
     ])
 
 
@@ -498,9 +520,22 @@ def build_market_panel(q: QlibStore, div_groups: Dict[Tuple[int, int], np.ndarra
         idxs[y]["exit_date"] = ex2
         idxs[y]["exit_idx"] = q.calendar.get_loc(ex2)
 
-    fields = ["open", "close", "factor", "amount", "pe_ttm", "pb", "dv_ttm", "total_mv"]
+    # The released Qlib bundle contains OHLCV and adjustment factors only.
+    # Valuation and market-cap proxies are derived later from PIT financials.
+    fields = ["open", "close", "factor", "amount"]
     rows = []
-    allins = q.instruments[q.instruments["qcode"].astype(str).str.match(r"^(SH|SZ|BJ)\d{6}$", na=False)]
+    allins = q.instruments[q.instruments["qcode"].astype(str).str.match(r"^(SH|SZ|BJ)\d{6}$", na=False)].copy()
+    market = allins["qcode"].astype("string").str[:2]
+    code = allins["qcode"].astype("string").str[2:]
+    # Qlib's all.txt also contains broad-market index series such as SH000905
+    # and SZ399300. Their six-digit suffixes overlap stock codes, so including
+    # them would create duplicate securities after qcode_to_code6().
+    is_stock = (
+        (market.eq("SH") & code.str.startswith(("600", "601", "603", "605", "688", "689")))
+        | (market.eq("SZ") & code.str.startswith(("0", "1", "2", "3")) & ~code.str.startswith("399"))
+        | (market.eq("BJ") & code.str.startswith(("4", "8", "9")))
+    )
+    allins = allins[is_stock]
     log("Building annual market panel from", len(allins), "instruments")
 
     for n, r in enumerate(allins.itertuples(index=False), 1):
@@ -526,11 +561,6 @@ def build_market_panel(q: QlibStore, div_groups: Dict[Tuple[int, int], np.ndarra
             if pd.notna(r.end) and r.end < meta["signal_date"]:
                 continue
 
-            vals = {}
-            for f in ["pe_ttm", "pb", "dv_ttm", "total_mv"]:
-                st, ar = arrays[f]
-                vals[f] = q.value(st, ar, si)
-
             # 252-day trailing stats known at signal date.
             st_amt, amt = arrays["amount"]
             j_amt = si - st_amt if amt is not None else -1
@@ -540,13 +570,24 @@ def build_market_panel(q: QlibStore, div_groups: Dict[Tuple[int, int], np.ndarra
             else:
                 avg_amount = np.nan
 
-            st_mv, mv = arrays["total_mv"]
-            j_mv = si - st_mv if mv is not None else -1
-            if mv is not None and 0 <= j_mv < len(mv):
-                block_mv = mv[max(0, j_mv - 251): j_mv + 1]
-                avg_mv = float(np.nanmean(block_mv)) if np.isfinite(block_mv).any() else np.nan
-            else:
-                avg_mv = np.nan
+            # Approximate average market value later using PIT-estimated shares.
+            # Keep the price component here so score_year can combine it with
+            # only information known by the signal date.
+            avg_raw_price = np.nan
+            if factor_arr is not None and len(factor_arr):
+                first_idx = max(si - 251, start_close, st_factor)
+                last_idx = min(
+                    si,
+                    start_close + len(close) - 1,
+                    st_factor + len(factor_arr) - 1,
+                )
+                if last_idx >= first_idx:
+                    close_slice = close[first_idx - start_close : last_idx - start_close + 1]
+                    factor_slice = factor_arr[first_idx - st_factor : last_idx - st_factor + 1]
+                    raw_prices = close_slice / factor_slice
+                    raw_prices = raw_prices[np.isfinite(raw_prices) & (raw_prices > 0)]
+                    if len(raw_prices):
+                        avg_raw_price = float(np.nanmean(raw_prices))
 
             j_close = si - start_close
             block_c = close[max(0, j_close - 251): j_close + 1]
@@ -569,11 +610,6 @@ def build_market_panel(q: QlibStore, div_groups: Dict[Tuple[int, int], np.ndarra
             listed_years = (meta["signal_date"] - r.start).days / 365.25 if pd.notna(r.start) else np.nan
             dm = dividend_metrics(div_groups, code6, meta["signal_date"])
             dy_actual_pct = (dm["dps_ttm"] / raw_price * 100.0) if raw_price > 0 else np.nan
-            payout_proxy = (
-                dy_actual_pct * vals["pe_ttm"] / 100.0
-                if np.isfinite(dy_actual_pct) and np.isfinite(vals["pe_ttm"]) and vals["pe_ttm"] > 0
-                else np.nan
-            )
             rows.append({
                 "year": y,
                 "signal_date": meta["signal_date"],
@@ -584,17 +620,18 @@ def build_market_panel(q: QlibStore, div_groups: Dict[Tuple[int, int], np.ndarra
                 "listed_years": listed_years,
                 "close_signal_adj": c,
                 "raw_price_signal": raw_price,
-                "pe_ttm": vals["pe_ttm"],
-                "pb": vals["pb"],
+                "pe_ttm": np.nan,
+                "pb": np.nan,
                 "dy_ttm": dy_actual_pct,
-                "dy_ttm_qlib_audit": vals["dv_ttm"],
+                "dy_ttm_qlib_audit": np.nan,
                 "dps_ttm": dm["dps_ttm"],
                 "continuous_dividend_years": dm["continuous_dividend_years"],
                 "dps_cagr_5y": dm["dps_cagr_5y"],
                 "dps_max_cut_5y": dm["dps_max_cut_5y"],
-                "payout_proxy": payout_proxy,
+                "payout_proxy": np.nan,
                 "avg_amount_252": avg_amount,
-                "avg_mv_252": avg_mv,
+                "avg_raw_price_252": avg_raw_price,
+                "avg_mv_252": np.nan,
                 "vol_252": vol,
                 "entry_open": entry_open,
                 "exit_open": exit_open,
@@ -623,7 +660,7 @@ def add_dividend_history(market: pd.DataFrame) -> pd.DataFrame:
     return x
 
 def select_with_bank_cap(df: pd.DataFrame, score_col: str, n: int, bank_cap: int) -> pd.DataFrame:
-    z = df.sort_values(score_col, ascending=False).copy()
+    z = df.sort_values(score_col, ascending=False).drop_duplicates("code6", keep="first").copy()
     chosen = []
     banks = 0
     for r in z.itertuples(index=False):
@@ -637,8 +674,32 @@ def select_with_bank_cap(df: pd.DataFrame, score_col: str, n: int, bank_cap: int
     return z[z["code6"].isin(chosen)].sort_values(score_col, ascending=False).head(n)
 
 
-def score_year(market_y: pd.DataFrame, fin_y: pd.DataFrame, n: int, bank_cap: int) -> pd.DataFrame:
+def add_derived_valuation(market_y: pd.DataFrame, fin_y: pd.DataFrame) -> pd.DataFrame:
+    """Derive valuation and size proxies from PIT financials plus Qlib prices."""
     x = market_y.merge(fin_y, on="code6", how="left")
+    price = pd.to_numeric(x["raw_price_signal"], errors="coerce")
+    eps = pd.to_numeric(x["eps_latest"], errors="coerce")
+    shares = pd.to_numeric(x["shares_estimate_latest"], errors="coerce")
+    equity_per_share = pd.to_numeric(x["equity_per_share_latest"], errors="coerce")
+    avg_raw_price = pd.to_numeric(x["avg_raw_price_252"], errors="coerce")
+
+    x["pe_ttm"] = np.where((price > 0) & (eps > 0), price / eps, np.nan)
+    x["pb"] = np.where((price > 0) & (equity_per_share > 0), price / equity_per_share, np.nan)
+    x["avg_mv_252"] = np.where(
+        (avg_raw_price > 0) & (shares > 0),
+        avg_raw_price * shares,
+        np.nan,
+    )
+    x["payout_proxy"] = np.where(
+        (x["dy_ttm"] > 0) & (x["pe_ttm"] > 0),
+        x["dy_ttm"] * x["pe_ttm"] / 100.0,
+        np.nan,
+    )
+    return x
+
+
+def score_year(market_y: pd.DataFrame, fin_y: pd.DataFrame, n: int, bank_cap: int) -> pd.DataFrame:
+    x = add_derived_valuation(market_y, fin_y)
     # Cross-sectional investability: keep top 80% by both liquidity and size.
     amt_cut = x["avg_amount_252"].quantile(1.0 - LIQUIDITY_KEEP_PCT)
     mv_cut = x["avg_mv_252"].quantile(1.0 - LIQUIDITY_KEEP_PCT)
@@ -698,8 +759,8 @@ def score_year(market_y: pd.DataFrame, fin_y: pd.DataFrame, n: int, bank_cap: in
     return selected
 
 
-def lowvol_proxy_year(market_y: pd.DataFrame) -> pd.DataFrame:
-    x = market_y.copy()
+def lowvol_proxy_year(market_y: pd.DataFrame, fin_y: pd.DataFrame) -> pd.DataFrame:
+    x = add_derived_valuation(market_y, fin_y)
     amt_cut = x["avg_amount_252"].quantile(0.20)
     mv_cut = x["avg_mv_252"].quantile(0.20)
     z = x[
@@ -872,7 +933,7 @@ def main():
         my = market[market["year"] == y].copy()
         s10 = score_year(my, fin, TOPN, BANK_CAP_TOP10)
         s20 = score_year(my, fin, TOPN20, BANK_CAP_TOP20)
-        lv = lowvol_proxy_year(my)
+        lv = lowvol_proxy_year(my, fin)
         core10[y] = s10
         core20[y] = s20
         lowvol[y] = lv
@@ -953,6 +1014,7 @@ def main():
     (REPORTS / "2026_overlap_sanity.json").write_text(json.dumps(sanity, ensure_ascii=False, indent=2), encoding="utf-8")
 
     model_def = f"""# PIT 动态 Top10 V1.0 模型定义\n\n## 定位\n这是可复现 Pilot，不是假装复刻此前未冻结的全A精确公式。\n\n## 时间\n- 信号：每年5月第一个交易日\n- 执行：每年5月第二个交易日开盘\n- 持有：至下一年5月第二个交易日开盘\n- 回测：{START_YEAR}–{END_BACKTEST_YEAR}\n- 2026仅用于当前成分 sanity check\n\n## PIT\n- 财务报表必须 `ann_date <= signal_date`\n- 只使用已披露完整年度\n- 市场估值/股息/流动性只取信号日前数据\n\n## Investability\n- 上市≥{MIN_LISTED_YEARS}年\n- 过去一年平均成交额、市值均位于全A前80%\n\n## Dividend Qualification\n- 使用 gbbq 实际现金分红事件，严格只统计信号日前已发生事件\n- 连续分红年数≥3\n- 当前TTM现金股息率≥{MIN_DY}%\n\n## Safety / Veto\n- PE、PB为正\n- 最近3个完整年度归母净利润均为正\n- 5Y中位ROE≥{MIN_MEDIAN_ROE}%\n- 非银行：资产负债率>85%或最近3年经营现金流仅0–1年为正则剔除\n\n## Quality 50%\n- 5Y中位ROE\n- ROE稳定性\n- 3Y净利润CAGR\n- 3Y营收CAGR\n- 3Y经营现金流/净利润中位数（银行中性化）\n\n## Valuation 30%\n- PE（越低越好）\n- PB（越低越好）\n- 当前TTM现金股息率（越高越好）\n\n## Dividend 20%\n- 连续分红年数\n- 5Y DPS CAGR\n- 5Y DPS最大下调幅度（越稳定越好）\n\n## Concentration guardrail\n- Top10银行最多{BANK_CAP_TOP10}只\n- Top20银行最多{BANK_CAP_TOP20}只\n\n## 成本\n- 佣金：万1.354（比例化；未模拟5元最低佣金）\n- 过户费：单边0.001%近似\n- 卖出印花税：2023-08-28前0.1%，之后0.05%\n- 初始建仓只收买入成本；以后仅对年度替换仓位计双边换手成本\n\n## 关键限制\n1. 该V1是“冻结方法论的量化代理”，不是此前2026榜单的历史复刻。\n2. 通过2026 Top10重合度检查代表性；重合<5/10时禁止把回测收益称为“官方Top10历史收益”。\n3. LowVolProxy近似H30269规则，但不是中证官方指数复刻。\n4. 2012–2018 / 2019–2025只用于稳定性分段，不宣称为真正训练/验证集，因为V1规则是在2026年后定义。\n5. 2026重合度比较存在时间点差异：V1是5月信号，官方Top10冻结于9月。\n"""
+    model_def += "\n## 数据源说明\n- 当前 Qlib 发布包只提供 OHLCV、复权因子和成交额等市场字段，不包含 PE/PB/市值文件。\n- PE、PB 和平均市值因此由信号日前可见的最新完整年度 EPS、权益、估算股本和过去一年平均原始价格派生，属于可复现代理口径。\n"
     (OUT / "MODEL_DEFINITION.md").write_text(model_def, encoding="utf-8")
 
     # Human-readable result.
