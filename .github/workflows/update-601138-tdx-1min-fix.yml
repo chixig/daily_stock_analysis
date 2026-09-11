@@ -1,0 +1,126 @@
+name: Probe and Update 601138 Free TDX 1min
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "First run: probe. If probe confirms history, run kline_full or snapshot_full."
+        required: true
+        default: "probe"
+        type: choice
+        options:
+          - probe
+          - kline_full
+          - snapshot_full
+          - both_full
+          - incremental
+      start_date:
+        description: "Start date"
+        required: false
+        default: "2018-06-08"
+      end_date:
+        description: "End date; blank = today"
+        required: false
+        default: ""
+
+  schedule:
+    - cron: "45 8 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-601138-tdx-1min
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "git+https://github.com/clong365/easy_tdx.git@main" pandas
+          python -c "import easy_tdx; print('easy_tdx import OK')"
+
+      - name: Resolve mode and dates
+        id: cfg
+        shell: bash
+        run: |
+          MODE="${{ github.event.inputs.mode }}"
+          START="${{ github.event.inputs.start_date }}"
+          END="${{ github.event.inputs.end_date }}"
+
+          if [ -z "$MODE" ]; then MODE="incremental"; fi
+          if [ -z "$START" ]; then START="2018-06-08"; fi
+          if [ -z "$END" ]; then END="$(date -u +%F)"; fi
+
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "start=$START" >> "$GITHUB_OUTPUT"
+          echo "end=$END" >> "$GITHUB_OUTPUT"
+          echo "MODE=$MODE START=$START END=$END"
+
+      - name: Probe / download / update 601138 minute history
+        run: |
+          python scripts/download_601138_tdx_1min.py \
+            --mode "${{ steps.cfg.outputs.mode }}" \
+            --start "${{ steps.cfg.outputs.start }}" \
+            --end "${{ steps.cfg.outputs.end }}" \
+            --out "data/601138_intraday/tdx_1min"
+
+      - name: Print probe and coverage
+        if: always()
+        shell: bash
+        run: |
+          echo "===== probe_report.json ====="
+          if [ -f data/601138_intraday/tdx_1min/probe_report.json ]; then
+            cat data/601138_intraday/tdx_1min/probe_report.json
+          else
+            echo "probe_report.json missing"
+          fi
+
+          echo ""
+          echo "===== coverage.json ====="
+          if [ -f data/601138_intraday/tdx_1min/coverage.json ]; then
+            cat data/601138_intraday/tdx_1min/coverage.json
+          else
+            echo "coverage.json not generated in probe-only mode (normal)."
+          fi
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: 601138-tdx-1min-${{ github.run_number }}
+          path: |
+            data/601138_intraday/tdx_1min/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Commit data back to repository
+        if: success()
+        shell: bash
+        run: |
+          git config user.name "chatgpt-research-bot"
+          git config user.email "actions@users.noreply.github.com"
+
+          git add data/601138_intraday/tdx_1min
+
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "data: probe/update 601138 free TDX 1min history"
+            git push
+          fi
