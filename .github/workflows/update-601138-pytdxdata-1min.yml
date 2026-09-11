@@ -116,7 +116,7 @@ jobs:
           git config user.name "chatgpt-research-bot"
           git config user.email "actions@users.noreply.github.com"
 
-          git add data/601138_intraday/pytdxdata_1min
+          git add -f data/601138_intraday/pytdxdata_1min
 
           if git diff --cached --quiet; then
             echo "No data changes."
