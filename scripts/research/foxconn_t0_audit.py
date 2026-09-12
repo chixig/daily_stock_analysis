@@ -263,7 +263,7 @@ def run():
         g=d[main_masks["stage"]&windows["primary"]].copy()
         g.rt_cash=cashflow(g.open,g.close,g.date,slip=slip)
         g.rt_pct=100*g.rt_cash/(1000*g.open)
-        sliprows.append(dict(slip_each=slip,**metrics(g)))
+        sliprows.append(dict(slip_each_bp=slip*10000,**metrics(g)))
     # Matched dates used for direct open vs close proxy comparison.
     old=d[main_masks["stage_v3"]&windows["old_main"]].set_index("date").join(snap)
     old["proxy_rt_cash"]=cashflow(old.s_open,old.s_close,pd.Series(old.index,index=old.index))
@@ -317,7 +317,146 @@ def run():
     (ROOT/"manifest.json").write_text(json.dumps({"code_sha":os.environ.get("GITHUB_SHA"),"run_id":os.environ.get("GITHUB_RUN_ID"),"sha256":manifests},indent=2))
     print((ROOT/"REPORT.md").read_text())
 
+
+def supplement():
+    """No new candidate search: validate the fixed registry and execution proxies."""
+    import sys
+    d=pd.read_csv(OUT/"daily_features_and_cashflows.csv",parse_dates=["date"])
+    scan=pd.read_csv(OUT/"bounded_scan.csv")
+    trials=json.loads((OUT/"trial_registry.json").read_text())
+    masks={t["id"]:d.date.isin(pd.to_datetime(t["dates"])) for t in trials}
+    primary=d.date.ge("2024-01-02")
+    masks["RT_UR_VOL_FROZEN"]=primary&d.stage.isin(["U","R"])&d.vr.ge(1.5)
+    masks["RT_UR_VOL_V3"]=primary&d.stage_v3.isin(["U","R"])&d.vr.ge(1.5)
+    original=masks["RT_UR_VOL_FROZEN"]
+    robustness=[]
+    for name,mask in masks.items():
+        g=d[mask]
+        v=dict(id=name,**metrics(g),**stress(g))
+        for year in [2024,2025,2026]:
+            v[f"exclude_{year}_pct"]=metrics(g[g.date.dt.year.ne(year)])["mean_pct"]
+        v["new_n"]=int((mask&~original).sum())
+        v["new_cash"]=metrics(d[mask&~original])["cash"]
+        v["new_mean_pct"]=metrics(d[mask&~original])["mean_pct"]
+        v["min_starting_reserve_ex_post"]=float(max(0,-np.r_[0,g.rt_cash.cumsum()].min()))
+        v["max_single_day_topup"]=float(g.extra_cash_needed.max()) if len(g) else None
+        robustness.append(v)
+    robust=pd.DataFrame(robustness)
+    robust.to_json(OUT/"all_candidate_robustness.json",orient="records",indent=2)
+    selected=robust[(robust.n>=15)&(robust.mean_pct>0)].copy()
+    selected["block_lo"]=selected.month_block_ci95.map(lambda x:x[0] if isinstance(x,list) else None)
+    selected["block_hi"]=selected.month_block_ci95.map(lambda x:x[1] if isinstance(x,list) else None)
+    # Independent vendor query checks the reconstructed return chain and archive freshness.
+    qpath=SOURCE/"baostock_qfq_crosscheck.csv"
+    querycode="""import baostock as bs
+import pandas as pd
+from pathlib import Path
+p=Path("research/foxconn_t0_20260913/source")
+lg=bs.login()
+assert lg.error_code=="0",lg.error_msg
+for flag,name in [("2","baostock_qfq_crosscheck.csv"),("3","baostock_raw_crosscheck.csv")]:
+    rs=bs.query_history_k_data_plus("sh.601138","date,open,high,low,close,preclose,volume",start_date="2018-06-08",end_date="2026-09-11",frequency="d",adjustflag=flag)
+    rows=[]
+    while rs.error_code=="0" and rs.next(): rows.append(rs.get_row_data())
+    assert rs.error_code=="0",rs.error_msg
+    pd.DataFrame(rows,columns=rs.fields).to_csv(p/name,index=False)
+bs.logout()
+"""
+    qc={"status":"unattempted"}
+    if not qpath.exists():
+        try:
+            completed=subprocess.run([sys.executable,"-c",querycode],capture_output=True,text=True,timeout=180)
+            (SOURCE/"vendor_query_log.txt").write_text(completed.stdout+"\n"+completed.stderr)
+            qc["query_returncode"]=completed.returncode
+        except subprocess.TimeoutExpired:
+            qc={"status":"vendor_timeout_180s"}
+    if qpath.exists():
+        q=pd.read_csv(qpath,parse_dates=["date"]).set_index("date")
+        z=d.set_index("date").join(q.close.rename("vendor_qfq"))
+        complete=z.vendor_qfq.notna().all()
+        normalized=z.vendor_qfq/z.vendor_qfq.iloc[-1]
+        local=z.signal_close/z.signal_close.iloc[-1]
+        qc.update(status="vendor_qfq_available",rows=len(q),all_dates_present=bool(complete),
+                  max_normalized_difference=float((normalized-local).abs().max()))
+        if complete:
+            st=stage(pd.Series(z.vendor_qfq.to_numpy()),"frozen")
+            qc["primary_stage_disagreement_with_vendor_qfq"]=int((st[primary.to_numpy()].to_numpy()!=d.loc[primary,"stage"].to_numpy()).sum())
+        rp=SOURCE/"baostock_raw_crosscheck.csv"
+        if rp.exists():
+            r=pd.read_csv(rp,parse_dates=["date"]).set_index("date")
+            rr=d.set_index("date").join(r[["open","close"]],rsuffix="_fresh")
+            qc["fresh_raw_missing_dates"]=int(rr.open_fresh.isna().sum())
+            qc["fresh_raw_open_different_gt001"]=int((abs(rr.open-rr.open_fresh)>.01).sum())
+            qc["fresh_raw_close_different_gt001"]=int((abs(rr.close-rr.close_fresh)>.01).sum())
+    (OUT/"vendor_crosscheck.json").write_text(json.dumps(qc,indent=2))
+    raw,minute=load_inputs()
+    minute["date"]=pd.to_datetime(minute.date)
+    minute["stamp"]=pd.to_datetime(minute.time.astype(str).str[:14],format="%Y%m%d%H%M%S")
+    minute=minute.sort_values(["date","stamp"])
+    mismatch=pd.read_csv(OUT/"daily_minute_snapshot_audit.csv",parse_dates=["date"])
+    mismatch=mismatch[(mismatch.close-mismatch.m_close).abs()>.01]
+    mismatch[["date","open","close","m_open","m_close","bars"]].to_csv(OUT/"minute_close_mismatch_dates.csv",index=False)
+    execution=[]; account=[]
+    # Fixed time alternatives, not optimized exits. The next bar Open is an indicative price.
+    for name in ["RT_UR_VOL_FROZEN","RT_UR_VOL_V3"]:
+        g=d[masks[name]].copy()
+        for target in ["09:40","09:45"]:
+            # Bar ending 09:40 starts at 09:35; bar ending 09:45 starts at 09:40.
+            px=minute[minute.stamp.dt.strftime("%H:%M").eq(target)].set_index("date").open
+            gg=g.set_index("date").join(px.rename("execution_open"))
+            missing=int(gg.execution_open.isna().sum())
+            if missing:
+                execution.append(dict(id=name,next_bar_end=target,status="missing",missing_days=missing));continue
+            gg["rt_cash"]=cashflow(gg.execution_open,gg.close,pd.Series(gg.index,index=gg.index))
+            gg["rt_pct"]=100*gg.rt_cash/(1000*gg.open)
+            execution.append(dict(id=name,next_bar_end=target,status="indicative_not_guaranteed",**metrics(gg),delta_cash=float(gg.rt_cash.sum()-g.rt_cash.sum())))
+            gg.to_csv(OUT/(name+"_execution_"+target.replace(":","")+".csv"))
+        # Finite-cash scenario: cease on first inability to restore inventory, never retrospectively skip.
+        for reserve in [0.,2000.,float(d.loc[primary,"open"].iloc[0]*1000)]:
+            balance=reserve; failure=None; done=0
+            for _,row in g.iterrows():
+                next_balance=balance+row.rt_cash
+                if next_balance < -1e-8:
+                    failure=str(row.date.date());break
+                balance=next_balance;done+=1
+            account.append(dict(id=name,initial_reserve=reserve,completed_roundtrips=done,
+                                first_unfunded_rebuy_date=failure,ending_cash_if_completed=balance if failure is None else None,
+                                incremental_pnl_if_completed=balance-reserve if failure is None else None))
+    pd.DataFrame(execution).to_csv(OUT/"fixed_execution_proxies.csv",index=False)
+    pd.DataFrame(account).to_csv(OUT/"finite_cash_scenarios.csv",index=False)
+    # Broader candidate support is descriptive; do not optimize rules to pass this review.
+    selected["status"]="insufficient_or_observation"
+    parts=[
+        "# 工业富联反T：候选复核与执行边界",
+        "事实：固定首批88区域，没有新增搜索或重新挑阈值；所有结果都是已查看历史。",
+        "## 供应商复权与原价交叉核验",json.dumps(qc,ensure_ascii=False,indent=2),
+        "供应商复权序列与原价新查询可核查重建，但不是独立交易所认证。",
+        "## 正收益区域的反证",
+        md_table(selected[["id","n","mean_pct","cash","block_lo","block_hi","delete_top3_pct","delete_top5_pct","exclude_2024_pct","exclude_2025_pct","exclude_2026_pct","new_n","new_cash"]]),
+        "## 固定时间执行价格敏感性",md_table(pd.DataFrame(execution)),
+        "09:40结束bar的Open为09:35附近指示价，09:45结束bar同理；没有订单簿、排队与真实成交证据，不称已验证交易收益。",
+        "## 有限现金回补场景",md_table(pd.DataFrame(account)),
+        "持有1000旧仓，现金仅随成功反T往返变化。失败日不虚构买回，不把失败之后收益纳入完整账户。未处理差异化红利税、股权登记权利、其他持仓和利息；这些是模拟边界。",
+        "## 分钟收盘异常日期",md_table(mismatch[["date","close","m_close","bars"]]),
+        "## 双向线索登记",
+        f"首批88区域中，反T负收益{int(scan.mirror_candidate.sum())}个，均净<=-0.5% {int(scan.large_loss_mirror.sum())}个。均是重叠研究区域，不能相加为独立机会。",
+        "所有负区域的正T成本后结果已保留。未来正T研究采用相同镜像登记，不把负净收益机械取反。",
+        "## 收口",
+        "现阶段不发布正式反T交易规则。保留原V3 RT-UR-VOL作为独立旧候选，主阶段版本单独登记；不能选择更漂亮阶段覆盖另一版。",
+        "其余区域按完整反证保留观察或停止，不用分钟止损救活不稳定方向。隔夜未启动，正T未优化。",
+        "## 前瞻规格（待实际运行）",
+        "前一交易日完成后封存输入版本、stage两版、volume ratio及候选命中；集合竞价前记录计划。所有日期含无信号日记录；收盘后追加结果，事后补录独立标记。",
+        "观察规则限两版RT-UR-VOL，彼此为对照不相加。仅纸面观察，不发送订单。新信号不足不调阈值；达到新增30个去重信号后阶段复核，这只是预设观察周期，不保证统计充分。",
+        "目前未启动自动前瞻、未获得未来数据或真实交易。后续若继续事件探索，须另登记新批次和有限假设，不覆盖本批历史。"
+    ]
+    (ROOT/"REVIEW.md").write_text("\n\n".join(parts),encoding="utf-8")
+    manifest={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(ROOT.rglob("*")) if p.is_file() and p.name!="manifest.json"}
+    (ROOT/"manifest.json").write_text(json.dumps({"code_sha":os.environ.get("GITHUB_SHA"),"run_id":os.environ.get("GITHUB_RUN_ID"),"sha256":manifest},indent=2))
+    print((ROOT/"REVIEW.md").read_text())
+
 if __name__=="__main__":
     p=argparse.ArgumentParser(); p.add_argument("--test",action="store_true"); args=p.parse_args()
     if args.test: tests()
-    else: run()
+    else:
+        run()
+        supplement()
