@@ -1,0 +1,65 @@
+{
+  "data_cutoff": "2026-09-11",
+  "daily_days": 2007,
+  "snapshot_days": 2006,
+  "daily_not_snapshot": [
+    "2019-08-16"
+  ],
+  "snapshot_not_daily": [],
+  "calendar_columns": [
+    "date"
+  ],
+  "daily_not_calendar": [],
+  "minute_days": 1624,
+  "minute_duplicate_timestamps": 0,
+  "minute_open_mismatch_gt_001": 0,
+  "minute_close_mismatch_gt_001": 4,
+  "snapshot_open_mismatch_gt_001": 1777,
+  "snapshot_close_mismatch_gt_001": 0,
+  "snapshot_row_counts": {
+    "240": 2006
+  },
+  "snapshot_duplicate_dt_total": 0,
+  "action_dates": [
+    {
+      "date": "2019-06-20",
+      "action_ratio": "0.9890202702702704"
+    },
+    {
+      "date": "2020-06-30",
+      "action_ratio": "0.9868593955321944"
+    },
+    {
+      "date": "2021-07-27",
+      "action_ratio": "0.9784853700516352"
+    },
+    {
+      "date": "2022-08-05",
+      "action_ratio": "0.9494438827098078"
+    },
+    {
+      "date": "2023-07-28",
+      "action_ratio": "0.9757495590828924"
+    },
+    {
+      "date": "2024-08-15",
+      "action_ratio": "0.9728718428437794"
+    },
+    {
+      "date": "2025-07-31",
+      "action_ratio": "0.9807692307692307"
+    },
+    {
+      "date": "2026-01-16",
+      "action_ratio": "0.99457147557164"
+    },
+    {
+      "date": "2026-08-03",
+      "action_ratio": "0.9885361552028218"
+    }
+  ],
+  "primary_stage_disagreement": 51,
+  "price_basis": "Unadjusted BaoStock artifact; features use close/preclose cumulative chain. Not independently exchange-certified; chain has not been independently checked against vendor adjustment factors.",
+  "cost_basis": "Historical commission assumption; date-varying stamp scenario, constant transfer scenario. Not account-confirmed or fully historical tariff-verified.",
+  "tests": "cashflow direction, roundtrip costs, stage temporal nonleakage, initial-loss drawdown passed"
+}

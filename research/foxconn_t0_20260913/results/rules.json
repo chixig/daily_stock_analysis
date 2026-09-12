@@ -1,0 +1,17 @@
+{
+  "main_stage": "frozen_positive_v1_slope5_recentD20",
+  "comparison_stage": "reverse_v3_slope1_repair_aboveMA20",
+  "end": "2026-09-11",
+  "primary_start": "2024-01-02",
+  "old_end": "2026-06-25",
+  "q": 1000,
+  "commission": 0.0001354,
+  "minimum_commission": 5,
+  "transfer_scenario": 1e-05,
+  "slippage_each_side": 0.0005,
+  "mirror_threshold_pct": -0.5,
+  "mirror_note": "Administrative inclusive flag, not a validated threshold; also flag all negative regions.",
+  "trial_budget": "4 families, 18 single regions per stage, at most 4 predeclared pairs per stage; no adaptive search",
+  "bootstrap": "calendar-month cluster resampling, seed=601138, 2000 draws; descriptive, not selection-adjusted",
+  "frozen_at": "before first run; all prior historical windows already explored"
+}
