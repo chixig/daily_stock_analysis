@@ -1,0 +1,139 @@
+name: ChatGPT Dividend PIT Top10 V2.1.1 Hotfix
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dividend-pit-top10-v2-1
+  cancel-in-progress: false
+
+env:
+  OUT_DIR: _dividend_pit_top10_v2_1
+  # IMPORTANT: reuse the exact V2.1 cache path/schema.
+  PIT_CACHE_DIR: _persistent_cache/baostock_early_v2_1
+  PYTHONUNBUFFERED: "1"
+  HF_HUB_DISABLE_TELEMETRY: "1"
+  BS_MAX_RETRIES: "5"
+  BS_RECONNECT_EVERY: "120"
+  BS_CHECKPOINT_EVERY_PAIRS: "25"
+  BS_CHECKPOINT_EVERY_VALS: "100"
+  BS_CIRCUIT_BREAKER: "3"
+  BS_MAX_UNRESOLVED_RATE: "0.03"
+
+jobs:
+  backtest:
+    name: PIT V2.1.1 hotfix resumable industry-routed Top10
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "pandas>=2.2" \
+            "numpy>=1.26" \
+            "pyarrow>=17" \
+            "huggingface_hub>=0.25" \
+            "hf_xet>=1.1" \
+            "requests>=2.32" \
+            "urllib3>=2.2" \
+            "baostock>=0.8.9" \
+            "tabulate>=0.9"
+
+      - name: Syntax and routing hotfix self-check
+        shell: bash
+        run: |
+          python -m py_compile \
+            scripts/research/dividend_pit_top10_v2.py \
+            scripts/research/dividend_pit_top10_v2_1.py \
+            scripts/research/dividend_pit_top10_v2_1_1.py
+
+      - name: Restore V2.1 persistent BaoStock PIT checkpoint
+        id: restore-pit-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.PIT_CACHE_DIR }}
+          # New save key, SAME restore prefix as V2.1 so the failed V2.1 run is reused.
+          key: baostock-pit-v2-1-${{ runner.os }}-schema1-${{ github.run_id }}
+          restore-keys: |
+            baostock-pit-v2-1-${{ runner.os }}-schema1-
+
+      - name: Show restored checkpoint
+        shell: bash
+        run: |
+          echo "cache_matched_key=${{ steps.restore-pit-cache.outputs.cache-matched-key }}"
+          if [ -f "${PIT_CACHE_DIR}/cache_meta.json" ]; then
+            cat "${PIT_CACHE_DIR}/cache_meta.json"
+          else
+            echo "WARNING: no V2.1 checkpoint restored; the run may need to fetch data again."
+          fi
+
+      - name: Prepare output directories
+        shell: bash
+        run: |
+          rm -rf "${OUT_DIR}/out" "${OUT_DIR}/reports"
+          mkdir -p "${OUT_DIR}/out" "${OUT_DIR}/reports" "${PIT_CACHE_DIR}"
+
+      - name: Run V2.1.1 hotfixed resumable PIT backtest
+        id: run-v211
+        shell: bash
+        run: |
+          python scripts/research/dividend_pit_top10_v2_1_1.py
+
+      - name: Show data QA and headline results
+        if: always()
+        shell: bash
+        run: |
+          echo "===== BaoStock QA ====="
+          if [ -f "${OUT_DIR}/reports/baostock_v2_1_data_qa.json" ]; then
+            cat "${OUT_DIR}/reports/baostock_v2_1_data_qa.json"
+          else
+            echo "QA file not produced."
+          fi
+
+          echo
+          echo "===== PIT coverage by year ====="
+          if [ -f "${OUT_DIR}/reports/baostock_v2_1_pit_coverage_by_year.json" ]; then
+            cat "${OUT_DIR}/reports/baostock_v2_1_pit_coverage_by_year.json"
+          fi
+
+          echo
+          echo "===== Headline results ====="
+          if [ -f "${OUT_DIR}/out/README.md" ]; then
+            sed -n '1,360p' "${OUT_DIR}/out/README.md"
+          else
+            echo "Backtest README not produced."
+          fi
+
+      - name: Save persistent BaoStock PIT checkpoint
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.PIT_CACHE_DIR }}
+          key: baostock-pit-v2-1-${{ runner.os }}-schema1-${{ github.run_id }}
+
+      - name: Upload V2.1.1 artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dividend-pit-top10-v2-1-1-${{ github.run_id }}
+          path: |
+            ${{ env.OUT_DIR }}/out/
+            ${{ env.OUT_DIR }}/reports/
+            ${{ env.PIT_CACHE_DIR }}/cache_meta.json
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 1
