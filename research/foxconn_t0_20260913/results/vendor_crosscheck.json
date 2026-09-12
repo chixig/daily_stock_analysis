@@ -1,0 +1,11 @@
+{
+  "status": "vendor_qfq_available",
+  "query_returncode": 0,
+  "rows": 2007,
+  "all_dates_present": true,
+  "max_normalized_difference": 1.9633508330230143e-07,
+  "primary_stage_disagreement_with_vendor_qfq": 0,
+  "fresh_raw_missing_dates": 0,
+  "fresh_raw_open_different_gt001": 0,
+  "fresh_raw_close_different_gt001": 0
+}
