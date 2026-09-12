@@ -6,7 +6,6 @@
 
 {
   "status": "vendor_qfq_available",
-  "query_returncode": 0,
   "rows": 2007,
   "all_dates_present": true,
   "max_normalized_difference": 1.9633508330230143e-07,
@@ -71,6 +70,8 @@
 首批88区域中，反T负收益67个，均净<=-0.5% 44个。均是重叠研究区域，不能相加为独立机会。
 
 所有负区域的正T成本后结果已保留。未来正T研究采用相同镜像登记，不把负净收益机械取反。
+
+All-scope mirror entries: 149; see mirror_registry_all_scopes.csv.
 
 ## 收口
 

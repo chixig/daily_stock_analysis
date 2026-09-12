@@ -1,6 +1,5 @@
 {
   "status": "vendor_qfq_available",
-  "query_returncode": 0,
   "rows": 2007,
   "all_dates_present": true,
   "max_normalized_difference": 1.9633508330230143e-07,
