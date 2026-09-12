@@ -9,6 +9,6 @@
 
 ## 专项文档
 
-当前没有额外专项方案文档。
+[Foxconn T0 research](FOXCONN_T0_RESEARCH.md): implemented historical batch; prospective specification remains proposed.
 
 - [工业富联反T复核与有限研究](FOXCONN_T0_RESEARCH.md)：active；GitHub独立研究分支执行。

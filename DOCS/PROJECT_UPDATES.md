@@ -53,3 +53,9 @@
 
 ## 2026-09-13 工业富联反T研究恢复
 新增独立分支审计与有限研究入口，保留现有采集流程。计算和底稿全部在GitHub；双向亏损区域登记反向候选。真实数据验收待执行。
+
+## Foxconn T0 batch validation (2026-09-13)
+Runs 34707899992, 34708396165 and final 34708662088 succeeded. Final code: 166ab401abce18213c7d025671074240dde1b19d; results: ac5b6e3af988b609a40f6cf16737b4dcf2c8871b.
+Data: 2007 daily dates, 2006 snapshot dates; missing snapshot 2019-08-16. V3 candidate N31 reproduced; frozen-stage variant N23. Both remain observation candidates.
+Completed: fixed 88-region study, robustness, indicative execution prices, finite-cash scenarios and 149 scope-tagged negative-region mirror records. No live strategy, full dividend-tax account model or prospective automation certified.
+Results: research/foxconn_t0_20260913/REPORT.md, REVIEW.md, manifest.json. All data processing stayed on GitHub; local deliverable is conclusions only.
