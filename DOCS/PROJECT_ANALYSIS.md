@@ -34,3 +34,6 @@
 ## 当前状态
 
 红利 PIT Top10 工作流已完成一次成功真实数据回测，最近成功运行 `34450501954`。工业富联 601138 研究桥已完成真实 BaoStock 回测，成功运行 `34472518379`，并将 `research/601138_intraday/` 写回 `main`；当前结果用于参数稳定性研究，不宣布单点参数定版。
+
+## 工业富联反T独立复核批次
+2026-09-13用户授权在GitHub执行全阶段反T审计。入口 scripts/research/foxconn_t0_audit.py；规格 FOXCONN_T0_RESEARCH.md。底稿保留GitHub，旧RA-D1-V不代表完整反T。真实数据验收待工作流运行。
