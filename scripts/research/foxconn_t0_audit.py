@@ -318,12 +318,58 @@ def run():
     print((ROOT/"REPORT.md").read_text())
 
 
+
+def export_all_mirrors(d):
+    """Symmetric candidate registration; comparison direction always independently charged."""
+    records=[]
+    def register(identifier,g,scope,source_direction="rt"):
+        opposite="pt" if source_direction=="rt" else "rt"
+        a,b=metrics(g,source_direction),metrics(g,opposite)
+        if not a["n"] or a["mean_pct"]>=0:
+            return
+        records.append(dict(id=identifier,scope=scope,source_direction=source_direction,
+                            opposite_direction=opposite,n=a["n"],source_mean_pct=a["mean_pct"],
+                            source_cash=a["cash"],opposite_mean_pct=b["mean_pct"],opposite_cash=b["cash"],
+                            large_loss=a["mean_pct"]<=-.5,status="research_candidate_only",
+                            start=str(g.date.min().date()),end=str(g.date.max().date())))
+    trials=json.loads((OUT/"trial_registry.json").read_text())
+    for t in trials:
+        g=d[d.date.isin(pd.to_datetime(t["dates"]))]
+        register(t["id"],g,"primary_bounded_scan")
+    windows={"primary":d.date.ge("2024-01-02"),"old_main":d.date.between("2024-01-02","2026-06-25"),
+             "viewed_tail":d.date.between("2026-06-26",RULES["end"]),"2023":d.date.dt.year.eq(2023),
+             "early_stress":d.date.lt("2023-01-01"),"2024":d.date.dt.year.eq(2024),
+             "2025":d.date.dt.year.eq(2025),"2026_ytd":d.date.dt.year.eq(2026)}
+    for version in ["stage","stage_v3"]:
+        for w,wm in windows.items():
+            for s in ["ALL","U","R","D","C"]:
+                m=wm&d[version].ne("UNKNOWN")&(True if s=="ALL" else d[version].eq(s))
+                register(version+"_"+s,d[m],w+"_baseline")
+            m=wm&d[version].isin(["U","R"])&d.vr.ge(1.5)
+            register("RT_UR_VOL_"+version,d[m],w+"_candidate")
+    primary=windows["primary"]
+    base=d.stage.isin(["U","R"])&d.vr.ge(1.5)
+    for threshold in [1.2,1.3,1.4,1.5,1.6,1.7,1.8,2.0]:
+        m=primary&d.stage.isin(["U","R"])&d.vr.ge(threshold)
+        register("UR_volume_ge_"+str(threshold),d[m],"primary_sensitivity")
+        register("UR_volume_ge_"+str(threshold)+"_new",d[m&~base],"primary_increment_only")
+    # Verify both registration directions using synthetic, deterministic cashflows.
+    sample=pd.DataFrame({"date":pd.to_datetime(["2026-01-01"]),"ordinal":[0],
+                         "rt_cash":[100.],"rt_pct":[1.],"pt_cash":[-140.],"pt_pct":[-1.4]})
+    n=len(records)
+    register("test",sample,"test","pt")
+    assert records[-1]["opposite_direction"]=="rt" and records[-1]["opposite_mean_pct"]==1
+    records=records[:n]
+    pd.DataFrame(records).to_csv(OUT/"mirror_registry_all_scopes.csv",index=False)
+    return records
+
 def supplement():
     """No new candidate search: validate the fixed registry and execution proxies."""
     import sys
     d=pd.read_csv(OUT/"daily_features_and_cashflows.csv",parse_dates=["date"])
     scan=pd.read_csv(OUT/"bounded_scan.csv")
     trials=json.loads((OUT/"trial_registry.json").read_text())
+    all_mirrors=export_all_mirrors(d)
     masks={t["id"]:d.date.isin(pd.to_datetime(t["dates"])) for t in trials}
     primary=d.date.ge("2024-01-02")
     masks["RT_UR_VOL_FROZEN"]=primary&d.stage.isin(["U","R"])&d.vr.ge(1.5)
@@ -441,6 +487,7 @@ bs.logout()
         "## 双向线索登记",
         f"首批88区域中，反T负收益{int(scan.mirror_candidate.sum())}个，均净<=-0.5% {int(scan.large_loss_mirror.sum())}个。均是重叠研究区域，不能相加为独立机会。",
         "所有负区域的正T成本后结果已保留。未来正T研究采用相同镜像登记，不把负净收益机械取反。",
+        "All-scope mirror entries: "+str(len(all_mirrors))+"; see mirror_registry_all_scopes.csv.",
         "## 收口",
         "现阶段不发布正式反T交易规则。保留原V3 RT-UR-VOL作为独立旧候选，主阶段版本单独登记；不能选择更漂亮阶段覆盖另一版。",
         "其余区域按完整反证保留观察或停止，不用分钟止损救活不稳定方向。隔夜未启动，正T未优化。",
