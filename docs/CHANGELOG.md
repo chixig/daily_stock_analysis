@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [chore] Add isolated Foxconn T0 batch02 hypothesis coverage and failure audit.
+
 - [新功能] Add isolated Foxconn T0 audit and bounded research with GitHub-only evidence.
 
 - [改进] #1390 P0 为个股分析与历史/回测展示新增可选八态 `action` / `action_label` 建议动作字段，保留 `operation_advice` 自由文本和 `decision_type=buy|hold|sell` 统计口径，不新增迁移或配置项。
