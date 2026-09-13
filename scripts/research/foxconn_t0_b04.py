@@ -182,6 +182,7 @@ def run():
     valid=(d.date.map(first.open)-d.open).abs().le(.01)&(d.date.map(last.close)-d.close).abs().le(.01)
     d["later_open"]=d.date.map(minute[minute.clock.eq("09:40")].set_index("date").open).where(valid)
     masks=causal(d)
+    assert masks.shape==(len(d),10)
     checks(d,masks)
     primary=d.date.ge("2024-01-02")
     windows={"full_available":pd.Series(True,index=d.index),"full_2020":d.date.ge("2020-01-01"),"primary":primary}
@@ -392,7 +393,7 @@ def run():
     thirdsum=save("primary_down_thirds_summary.csv",thirdrows)
     focused_diag=diag[(diag.window=="primary")&(diag.phase=="ALL")]
     summary=dict(
-        primary_rule_n=len(masks),
+        primary_rule_n=len(masks.columns),
         primary_negative_RT_rules=int(stat[stat.id.isin(masks.columns)&stat.window.eq("primary")].mean_pct.lt(0).sum()),
         primary_large_negative_RT_rules=int(stat[stat.id.isin(masks.columns)&stat.window.eq("primary")].mean_pct.le(-.5).sum()),
         full_available_leg_counts=legsum[legsum.window.eq("full_available")].to_dict("records"),
@@ -417,7 +418,7 @@ def run():
     dump("manifest.json",dict(code_sha=os.environ["GITHUB_SHA"],run_id=os.environ["GITHUB_RUN_ID"],
         contract_sha256=hashlib.sha256(Path("DOCS/FOXCONN_T0_B04.md").read_bytes()).hexdigest(),
         files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}))
-    print(json.dumps({"daily_n":len(d),"variants":len(masks),"followup_pass":audit["followup_pass"],
+    print(json.dumps({"daily_n":len(d),"variants":len(masks.columns),"followup_pass":audit["followup_pass"],
         "primary":stat[stat.window.eq("primary")][["id","n","mean_pct","cash"]].to_dict("records")},indent=2))
 if __name__=="__main__":
     run()
