@@ -1,13 +1,13 @@
 {
   "factor_n": 38,
   "rule_n": 410,
-  "nonempty": 372,
-  "n30": 223,
+  "nonempty": 392,
+  "n30": 239,
   "basic_pass": 0,
   "statistical_pass": 0,
   "literal_open_pass": 0,
-  "negative_mean": 304,
-  "large_negative": 219,
+  "negative_mean": 322,
+  "large_negative": 229,
   "input_hashes": {
     "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
     "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
@@ -20,15 +20,29 @@
   "US": [
     {
       "series": "NASDAQCOM",
-      "status": "unavailable",
-      "reason": "The read operation timed out",
-      "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2018-01-01&coed=2026-09-11"
+      "status": "available",
+      "rows": 2185,
+      "attempts": [
+        {
+          "provider": "Yahoo same Nasdaq index",
+          "status": "available",
+          "source": "https://query1.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1514764800&period2=1789171200&interval=1d"
+        }
+      ],
+      "vintage": "current vendor, not publication-vintage certified"
     },
     {
       "series": "NASDAQSOX",
-      "status": "unavailable",
-      "reason": "The read operation timed out",
-      "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQSOX&cosd=2018-01-01&coed=2026-09-11"
+      "status": "available",
+      "rows": 2185,
+      "attempts": [
+        {
+          "provider": "Yahoo same Nasdaq index",
+          "status": "available",
+          "source": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESOX?period1=1514764800&period2=1789171200&interval=1d"
+        }
+      ],
+      "vintage": "current vendor, not publication-vintage certified"
     }
   ],
   "limitations": [

@@ -1,14 +1,28 @@
 [
   {
     "series": "NASDAQCOM",
-    "status": "unavailable",
-    "reason": "The read operation timed out",
-    "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2018-01-01&coed=2026-09-11"
+    "status": "available",
+    "rows": 2185,
+    "attempts": [
+      {
+        "provider": "Yahoo same Nasdaq index",
+        "status": "available",
+        "source": "https://query1.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1514764800&period2=1789171200&interval=1d"
+      }
+    ],
+    "vintage": "current vendor, not publication-vintage certified"
   },
   {
     "series": "NASDAQSOX",
-    "status": "unavailable",
-    "reason": "The read operation timed out",
-    "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQSOX&cosd=2018-01-01&coed=2026-09-11"
+    "status": "available",
+    "rows": 2185,
+    "attempts": [
+      {
+        "provider": "Yahoo same Nasdaq index",
+        "status": "available",
+        "source": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESOX?period1=1514764800&period2=1789171200&interval=1d"
+      }
+    ],
+    "vintage": "current vendor, not publication-vintage certified"
   }
 ]

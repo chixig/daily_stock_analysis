@@ -7,13 +7,13 @@ All data processing on GitHub. Data through 2026-09-11. Historical research, not
 {
   "factor_n": 38,
   "rule_n": 410,
-  "nonempty": 372,
-  "n30": 223,
+  "nonempty": 392,
+  "n30": 239,
   "basic_pass": 0,
   "statistical_pass": 0,
   "literal_open_pass": 0,
-  "negative_mean": 304,
-  "large_negative": 219,
+  "negative_mean": 322,
+  "large_negative": 229,
   "input_hashes": {
     "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
     "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
@@ -26,15 +26,29 @@ All data processing on GitHub. Data through 2026-09-11. Historical research, not
   "US": [
     {
       "series": "NASDAQCOM",
-      "status": "unavailable",
-      "reason": "The read operation timed out",
-      "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQCOM&cosd=2018-01-01&coed=2026-09-11"
+      "status": "available",
+      "rows": 2185,
+      "attempts": [
+        {
+          "provider": "Yahoo same Nasdaq index",
+          "status": "available",
+          "source": "https://query1.finance.yahoo.com/v8/finance/chart/%5EIXIC?period1=1514764800&period2=1789171200&interval=1d"
+        }
+      ],
+      "vintage": "current vendor, not publication-vintage certified"
     },
     {
       "series": "NASDAQSOX",
-      "status": "unavailable",
-      "reason": "The read operation timed out",
-      "source": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQSOX&cosd=2018-01-01&coed=2026-09-11"
+      "status": "available",
+      "rows": 2185,
+      "attempts": [
+        {
+          "provider": "Yahoo same Nasdaq index",
+          "status": "available",
+          "source": "https://query1.finance.yahoo.com/v8/finance/chart/%5ESOX?period1=1514764800&period2=1789171200&interval=1d"
+        }
+      ],
+      "vintage": "current vendor, not publication-vintage certified"
     }
   ],
   "limitations": [
@@ -50,10 +64,10 @@ All data processing on GitHub. Data through 2026-09-11. Historical research, not
 
 | id                       |   n |   mean_pct |      cash |   pf_cash |   2024_pct |   2025_pct |   2026_pct |   delete5_pct |   delayed_pct |   maxT_p | basic_pass   |
 |:-------------------------|----:|-----------:|----------:|----------:|-----------:|-----------:|-----------:|--------------:|--------------:|---------:|:-------------|
-| C__clv__high             |  37 |      0.546 |  4051.069 |     1.274 |      0.586 |      1.462 |     -0.339 |        -0.062 |         0.230 |    0.973 | False        |
+| C__clv__high             |  37 |      0.546 |  4051.069 |     1.274 |      0.586 |      1.462 |     -0.339 |        -0.062 |         0.230 |    0.977 | False        |
 | C__amihud20__high        |  30 |      0.371 |  5141.667 |     1.603 |    nan     |      0.274 |      0.516 |        -0.226 |         0.098 |  nan     | False        |
 | U__combo_exhaustion      |  31 |      0.358 |  9960.837 |     1.610 |      0.833 |     -0.746 |      1.886 |        -0.754 |         0.225 |    1.000 | False        |
-| R__upper_shadow__low     |  36 |      0.340 |  4499.633 |     1.374 |      0.540 |     -0.271 |      0.471 |        -0.334 |        -0.119 |    0.992 | False        |
+| R__upper_shadow__low     |  36 |      0.340 |  4499.633 |     1.374 |      0.540 |     -0.271 |      0.471 |        -0.334 |        -0.119 |    0.994 | False        |
 | C__range_pos20__high     |  34 |      0.316 |  7064.543 |     1.901 |     -0.991 |      1.766 |      0.543 |        -0.315 |         0.035 |  nan     | False        |
 | C__market_ret5__high     |  45 |      0.252 |  4791.357 |     1.313 |      0.351 |     -0.068 |      0.447 |        -0.297 |         0.116 |    1.000 | False        |
 | C__market_ret1__high     |  41 |      0.241 |   748.311 |     1.053 |      0.008 |      1.131 |     -0.207 |        -0.377 |        -0.000 |    1.000 | False        |
@@ -118,13 +132,33 @@ All data processing on GitHub. Data through 2026-09-11. Historical research, not
 ## Screening funnel
 
 {
-  "n30": 223,
+  "n30": 239,
   "n30_positive": 20,
   "n30_mean_ge03": 5,
   "n30_positive_delete5_mean": 0,
   "n30_positive_all3years": 0,
-  "available_factors": 36
+  "available_factors": 38
 }
+
+## CLV / 3day CLV / volume quintiles, ALL, RT net
+
+| factor       | stage   |   bucket |   n |   mean_pct |   median_pct |   win_pct |       cash |   pf_pct |   pf_cash |   worst_pct |   mdd_cash |   clusters |
+|:-------------|:--------|---------:|----:|-----------:|-------------:|----------:|-----------:|---------:|----------:|------------:|-----------:|-----------:|
+| volume_ratio | ALL     |        1 | 127 |     -0.730 |       -0.678 |    33.858 | -36067.657 |    0.476 |     0.496 |      -9.705 | -37799.079 |         31 |
+| volume_ratio | ALL     |        2 | 126 |     -0.495 |       -0.081 |    49.206 | -19670.921 |    0.641 |     0.710 |     -11.125 | -32133.765 |         41 |
+| volume_ratio | ALL     |        3 | 132 |     -0.567 |       -0.061 |    49.242 | -28062.874 |    0.603 |     0.652 |     -10.701 | -33268.680 |         36 |
+| volume_ratio | ALL     |        4 | 145 |     -1.128 |       -0.880 |    40.000 | -52339.317 |    0.433 |     0.524 |     -11.915 | -53366.773 |         34 |
+| volume_ratio | ALL     |        5 | 124 |     -0.004 |        0.302 |    55.645 |   2878.839 |    0.997 |     1.053 |     -12.333 | -15392.723 |         30 |
+| clv          | ALL     |        1 | 135 |     -0.916 |       -0.721 |    37.037 | -46734.915 |    0.358 |     0.381 |     -12.229 | -46895.317 |         42 |
+| clv          | ALL     |        2 | 114 |     -1.019 |       -0.840 |    36.842 | -43581.484 |    0.427 |     0.446 |     -10.106 | -44449.178 |         43 |
+| clv          | ALL     |        3 | 131 |     -0.589 |       -0.099 |    48.855 | -29344.773 |    0.595 |     0.625 |     -10.701 | -38813.050 |         40 |
+| clv          | ALL     |        4 | 132 |     -0.310 |       -0.011 |    49.242 |   1230.491 |    0.791 |     1.018 |     -12.333 | -22056.824 |         41 |
+| clv          | ALL     |        5 | 142 |     -0.254 |        0.518 |    53.521 | -14831.249 |    0.818 |     0.819 |     -11.915 | -23517.136 |         43 |
+| clv3         | ALL     |        1 | 111 |     -0.891 |       -0.639 |    37.838 | -39409.329 |    0.434 |     0.428 |     -12.229 | -40582.108 |         40 |
+| clv3         | ALL     |        2 | 134 |     -0.968 |       -0.745 |    41.791 | -48396.921 |    0.381 |     0.416 |     -12.333 | -48887.262 |         39 |
+| clv3         | ALL     |        3 | 126 |     -0.599 |       -0.535 |    40.476 | -10072.230 |    0.607 |     0.855 |      -9.916 | -36489.893 |         42 |
+| clv3         | ALL     |        4 | 144 |     -0.565 |       -0.152 |    48.611 | -39414.237 |    0.630 |     0.570 |     -11.915 | -42175.286 |         37 |
+| clv3         | ALL     |        5 | 139 |     -0.062 |        0.516 |    56.115 |   4030.787 |    0.953 |     1.057 |     -10.155 | -20442.875 |         44 |
 
 ## Retrospective walk-forward
 
