@@ -264,6 +264,9 @@ def run():
                             exit_at=str(b["dt"])
                         break
                     cash=float(old.cashflow(pd.Series([r.open]),pd.Series([buy]),pd.Series([r.date])).iloc[0])
+                    ptcash=float(old.cashflow(pd.Series([r.open]),pd.Series([buy]),pd.Series([r.date]),"PT").iloc[0])
+                    h.loc[idx,"pt_cash"]=ptcash
+                    h.loc[idx,"pt_pct"]=100*ptcash/(1000*r.open)
                     h.loc[idx,"rt_cash"]=cash
                     h.loc[idx,"rt_pct"]=100*cash/(1000*r.open)
                     used.append(idx)
@@ -273,6 +276,10 @@ def run():
                 h=h.loc[used]
                 ref=g.loc[used]
                 v=dict(candidate=name,mode=mode,execution=execution,unavailable=unavailable,**old.metrics(h))
+                v["opposite_pt_pct"]=old.metrics(h,"pt")["mean_pct"]
+                v["opposite_pt_cash"]=old.metrics(h,"pt")["cash"]
+                assert np.isfinite(h.rt_cash).all()
+                assert len(h)==len(g)-unavailable
                 v["baseline_cash"]=float(ref.rt_cash.sum())
                 v["delta_cash"]=v["cash"]-v["baseline_cash"]
                 v["baseline_winner_to_loss"]=int(((ref.rt_cash>0)&(h.rt_cash<0)).sum())
@@ -280,6 +287,8 @@ def run():
                     v["delta_"+str(year)]=float(h.loc[h.date.dt.year.eq(year),"rt_cash"].sum()-ref.loc[ref.date.dt.year.eq(year),"rt_cash"].sum())
                 exit_rows.append(v)
     exits=pd.DataFrame(exit_rows)
+    exits[exits.mean_pct.lt(0)].to_csv(OUT/"fixed_exit_positive_mirrors.csv",index=False)
+    # These mirror candidates use the same causal exit clock, not an optimized positive-T exit.
     exits.to_csv(OUT/"fixed_exit_exploration.csv",index=False)
     pd.DataFrame(exit_trades).to_csv(OUT/"fixed_exit_trades.csv",index=False)
     (OUT/"fixed_exit_spec.json").write_text(json.dumps({
