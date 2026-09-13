@@ -253,7 +253,7 @@ def run():
                         if execution=="confirm_bar_then_next_open":
                             if k+1<len(bars):
                                 buy=float(bars.iloc[k+1].open)
-                                exit_at=str(bars.iloc[k+1].dt)
+                                exit_at=str(bars.iloc[k+1]["dt"])
                             else:
                                 # No post-close executable bar; scheduled closing fallback only.
                                 buy=r.close;exit_at="scheduled_close"
@@ -261,7 +261,7 @@ def run():
                             if b.open>=stop:buy=float(b.open);reason="stop_gap"
                             elif mode=="stop2_tp1" and b.open<=tp:buy=float(b.open);reason="tp_gap"
                             else:buy=float(stop if sl else tp)
-                            exit_at=str(b.dt)
+                            exit_at=str(b["dt"])
                         break
                     cash=float(old.cashflow(pd.Series([r.open]),pd.Series([buy]),pd.Series([r.date])).iloc[0])
                     h.loc[idx,"rt_cash"]=cash
