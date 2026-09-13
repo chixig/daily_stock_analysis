@@ -1,0 +1,30 @@
+name: Foxconn Hindsight Decline Check
+on:
+  push:
+    branches: [research/foxconn-t0-20260913-b03]
+    paths:
+      - scripts/research/foxconn_t0_hindsight_check.py
+      - .github/workflows/foxconn-t0-hindsight-check.yml
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0
+      - run: python scripts/research/foxconn_t0_hindsight_check.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foxconn-hindsight-${{ github.run_id }}
+          path: research/foxconn_t0_20260913_hindsight_check/
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/foxconn_t0_20260913_hindsight_check/
+          git commit -m "research: preserve hindsight decline interval check"
+          git push origin HEAD:research/foxconn-t0-20260913-b03
