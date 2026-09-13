@@ -18,3 +18,5 @@
 - [Foxconn batch03](FOXCONN_T0_B03.md): implemented; mechanical open-to-close reverse T not adopted after fixed factor audit, PT comparison and return attribution.
 
 - [Hindsight decline check](FOXCONN_T0_HINDSIGHT_CHECK.md): implemented; profitable intervals exist, causal identification remains unverified.
+
+- [Foxconn B04](FOXCONN_T0_B04.md): active; full swing reference and fixed causal detection comparison.

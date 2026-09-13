@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [chore] Register bounded Foxconn swing and causal-detection study on isolated research branch.
+
 - [文档] Clarify profitable hindsight RT intervals versus unverified causal rules; evidence research/foxconn_t0_20260913_hindsight_check/REPORT.md.
 
 
