@@ -1,0 +1,8 @@
+{
+  "intervals": 8,
+  "positive_net_cash_intervals": 4,
+  "positive_net_mean_intervals": 4,
+  "cash_and_mean_both_positive": 4,
+  "every_interval_contains_net_profitable_days": true,
+  "boundary": "Existence of hindsight profitable intervals is separate from their causal detectability. Stock decline alone does not imply daily open-close RT net profit."
+}

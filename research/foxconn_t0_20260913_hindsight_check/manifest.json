@@ -1,0 +1,14 @@
+{
+  "code_sha": "f19008fac161fba0705644bc3af0047edf511d7d",
+  "run_id": "34750591927",
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913_b03/results/hindsight_drawdown_attribution.csv": "687427eeebed86d3a5c79da10ff3100f7ac7c223ab6f52340a3490fc39ae9bb0"
+  },
+  "files": {
+    "research/foxconn_t0_20260913_hindsight_check/period_results.csv": "7f6c993d55f6721a457b74acb9003b861ecf5623e10a6798fff09d386c82d9bd",
+    "research/foxconn_t0_20260913_hindsight_check/summary.json": "6bc55648bba7a748ce6579bea39ac0cf93c2953ca469394bf3c7bd545ce87332",
+    "research/foxconn_t0_20260913_hindsight_check/trades.csv": "0875ab88bfdf29d38f9c3308165968e85d00fc11b3f6b1449528260810134ad1",
+    "research/foxconn_t0_20260913_hindsight_check/REPORT.md": "a92832c56ae50e908a18deefc1a21fee05cfbf556366b54c908761ec55da8b9d"
+  }
+}
