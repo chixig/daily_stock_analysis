@@ -405,14 +405,15 @@ def run():
                 buycost=1000*r.open*1.0005
                 buycost+=max(buycost*.0001354,5)+buycost*.00001
                 needed=buycost if p=="pt" else max(0,-r.rt_cash)
-                if cash+1e-8>=needed:flow=float(r[p+"_cash"])
-                else:skipped+=1
+                if cash+1e-8<needed:skipped+=1
+                # Record infeasibility ex post; never use future close to skip a loss.
+                flow=float(r[p+"_cash"])
             cash+=flow;flows.append(flow)
         acc=np.r_[0,np.cumsum(flows)]
         accounts.append(dict(name=name,initial_common_cash=initial_cash,cash_increment=float(sum(flows)),
               incremental_return_on_initial_stock_plus_cash_pct=float(100*sum(flows)/(initial_cash+1000*d.loc[primary,"open"].iloc[0])),
-              skipped=skipped,T_cash_mdd=float((acc-np.maximum.accumulate(acc)).min()),
-              boundary="ex-post sufficient reserve; stock/dividend baseline shared, not total account return"))
+              unaffordable_dates=skipped,T_cash_mdd=float((acc-np.maximum.accumulate(acc)).min()),
+              boundary="ex-post common reserve and feasibility audit; no unaffordable trade deleted; not executable account return"))
     pd.DataFrame(accounts).to_csv(OUT/"common_cash_scenario.csv",index=False)
 
     # Matched-sample execution sensitivity: retain the dropped-date ledger, compare identical dates.
