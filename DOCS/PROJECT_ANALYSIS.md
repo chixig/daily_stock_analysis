@@ -45,4 +45,11 @@ Completed: fixed 88-region study, robustness, indicative execution prices, finit
 Results: research/foxconn_t0_20260913/REPORT.md, REVIEW.md, manifest.json. All data processing stayed on GitHub; local deliverable is conclusions only.
 
 ## Foxconn batch02 (2026-09-13)
-User approved continued reverse T research. Six fixed mechanisms across four stages; all computation and evidence on GitHub. Prior results remain unchanged. New outputs research/foxconn_t0_20260913_b02/. Actual validation pending Actions.
+User approved continued reverse T research. Six fixed mechanisms across four stages; all computation and evidence on GitHub. Prior results remain unchanged. New outputs research/foxconn_t0_20260913_b02/. Validation completed; see outcome below.
+
+## Batch02 validated outcome
+
+Batch02 historical research completed on 2026-09-13. Final Actions run 34746090459 succeeded; code efe13df45ec425cea3570f762be0583288b7f0af; results 611d9ebfde3eb910a263cb4aad1e8dcab08ddc1f. Six mechanisms across four frozen stages produced 24 cells: 2 empty, 19 negative means, 3 weak positive means. No strategy promotion. Fourteen materially negative cells were independently costed as positive-T mirrors.
+Old frozen-stage volume candidate remains N23; top three winning cash flows equal 97.3% of net cash gain. After path inspection, two fixed exits were explored in-sample without threshold search, under touch/gap-aware and next-bar execution assumptions. Baseline cash 8706.204; stop2 touch 3507.609; stop2_tp1 touch -2048.378. Both execution assumptions failed to improve aggregate cash for all three examined candidates. This does not falsify every stop rule. Four negative-mean exit variants also have independently costed mirrors; the frozen touch mirror loses 1152.402, preserving the both-directions-negative counterexample.
+Validation includes parent input hashes, deterministic cash-flow checks, previous-day signal invariance to same-day OHLC/volume, and exit cardinality/finite outcomes. An intermediate timestamp field-access failure was fixed and rerun. All market computation/evidence remains on GitHub. Local outputs contain conclusions only. No main merge, live trading, positive-T optimization or prospective automation. Remaining scope includes point-in-time event data and executable intraday reversal hypotheses; the overall reverse-T research is not final.
+Evidence: research/foxconn_t0_20260913_b02/REPORT.md, manifest.json and results/.
