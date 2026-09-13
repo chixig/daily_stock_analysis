@@ -25,7 +25,7 @@ CONTRACT={
  "multiplicity":"5000 calendar-month shared Rademacher wild draws, centered monthly scores; maxT across all eligible rules; within-batch only",
  "walk_forward":"for each 2024/25/26 train only 2020..prior year, n>=30 and PF>=1.3; choose highest mean, tie id; top1 only, no retuning",
  "price_models":"O-C benchmark and 09:35 approximate next-bar open; after-open factors cannot trade at auction O",
- "US":"latest NY16:00 close before Shanghai09:25, max7 days stale; present FRED vintage, historical publication timestamps unverified",
+ "US":"latest NY16:00 close before Shanghai09:25, max7 days stale; FRED or identical Yahoo index fallback, current vintage; historical publication timestamps unverified",
  "PT":"frozen U1/R1/D1/C1 direction layer only; fixed1000 shares for comparison, not original position schedule or discretionary confirmation",
  "attribution":"log(C/preclose)=log(O/preclose)+log(C/O); raw prior actual close and corporate-action adjustment separately",
  "mirror":"all negative cells paired with independently costed opposite direction; large flag <=-0.5pct",
@@ -40,27 +40,43 @@ def safe_corr(a,b):
     return float(x.iloc[:,0].rank().corr(x.iloc[:,1].rank())) if len(x)>=15 and x.iloc[:,0].nunique()>2 else np.nan
 
 def us_source(d,series):
-    url=f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}&cosd=2018-01-01&coed=2026-09-11"
-    try:
-        req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 research"})
-        cache=SOURCE/(series+".csv")
-        data=cache.read_bytes() if cache.exists() else urllib.request.urlopen(req,timeout=45).read()
-        a=pd.read_csv(io.BytesIO(data))
-        a.columns=["date","value"]
-        a.date=pd.to_datetime(a.date)
-        a.value=pd.to_numeric(a.value,errors="coerce")
+    fred=f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}&cosd=2018-01-01&coed=2026-09-11"
+    symbol="%5EIXIC" if series=="NASDAQCOM" else "%5ESOX"
+    t1=int(pd.Timestamp("2018-01-01",tz="UTC").timestamp())
+    t2=int(pd.Timestamp("2026-09-12",tz="UTC").timestamp())
+    yahoo=f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?period1={t1}&period2={t2}&interval=1d"
+    attempts=[]
+    a=None
+    # Two prior FRED attempts timed out; try a fixed alternate source for the same index, not a new factor.
+    for provider,url in [("Yahoo same Nasdaq index",yahoo),("FRED",fred)]:
+      try:
+        req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0"})
+        data=urllib.request.urlopen(req,timeout=20).read()
+        if provider=="FRED":
+            a=pd.read_csv(io.BytesIO(data));a.columns=["date","value"]
+        else:
+            j=json.loads(data)["chart"]["result"][0]
+            a=pd.DataFrame({"date":pd.to_datetime(j["timestamp"],unit="s",utc=True).tz_convert("America/New_York").date,
+               "value":j["indicators"]["quote"][0]["close"]})
+            (SOURCE/(series+"_yahoo.json")).write_bytes(data)
+        a.date=pd.to_datetime(a.date);a.value=pd.to_numeric(a.value,errors="coerce")
         a=a.dropna().sort_values("date")
-        assert len(a)>500
-        (SOURCE/(series+".csv")).write_bytes(data)
-        a["ret"]=a.value.pct_change()
-        a["available"]=(a.date+pd.Timedelta(hours=16)).dt.tz_localize("America/New_York").dt.tz_convert("UTC")
-        q=pd.DataFrame({"decision":(d.date+pd.Timedelta(hours=9,minutes=25)).dt.tz_localize("Asia/Shanghai").dt.tz_convert("UTC")})
-        z=pd.merge_asof(q,a[["available","ret"]],left_on="decision",right_on="available",direction="backward",tolerance=pd.Timedelta(days=7))
-        assert (z.available.dropna()<z.loc[z.available.notna(),"decision"]).all()
-        z.to_csv(OUT/(series+"_alignment.csv"),index=False)
-        return z.ret.set_axis(d.index),dict(series=series,status="available",rows=len(a),source=url,vintage="current, not publication-vintage certified")
-    except Exception as e:
-        return pd.Series(np.nan,index=d.index),dict(series=series,status="unavailable",reason=str(e)[:300],source=url)
+        a=a[a.date.le("2026-09-11")]
+        assert len(a)>500 and not a.date.duplicated().any()
+        a.to_csv(SOURCE/(series+".csv"),index=False)
+        attempts.append(dict(provider=provider,status="available",source=url))
+        break
+      except Exception as e:
+        a=None;attempts.append(dict(provider=provider,status="unavailable",reason=str(e)[:250],source=url))
+    if a is None:
+        return pd.Series(np.nan,index=d.index),dict(series=series,status="unavailable",attempts=attempts)
+    a["ret"]=a.value.pct_change()
+    a["available"]=(a.date+pd.Timedelta(hours=16)).dt.tz_localize("America/New_York").dt.tz_convert("UTC")
+    q=pd.DataFrame({"decision":(d.date+pd.Timedelta(hours=9,minutes=25)).dt.tz_localize("Asia/Shanghai").dt.tz_convert("UTC")})
+    z=pd.merge_asof(q,a[["available","ret"]],left_on="decision",right_on="available",direction="backward",tolerance=pd.Timedelta(days=7))
+    assert (z.available.dropna()<z.loc[z.available.notna(),"decision"]).all()
+    z.to_csv(OUT/(series+"_alignment.csv"),index=False)
+    return z.ret.set_axis(d.index),dict(series=series,status="available",rows=len(a),attempts=attempts,vintage="current vendor, not publication-vintage certified")
 
 def build_features(d,ix,mp,us):
     c=d.signal_close;o=d.open*c/d.close;h=d.high*c/d.close;l=d.low*c/d.close;v=d.volume
@@ -323,6 +339,7 @@ def run():
             bucket.append(dict(factor=col,stage=st,bucket=b+1,**old.metrics(d[bm])))
     pd.DataFrame(ics).to_csv(OUT/"factor_rank_IC.csv",index=False)
     pd.DataFrame(bucket).to_csv(OUT/"factor_quintiles.csv",index=False)
+    pd.DataFrame(bucket)[lambda x:x.factor.isin(["clv","clv3","volume_ratio"])&x.stage.eq("ALL")].to_csv(OUT/"interpretable_factor_quintiles.csv",index=False)
     # Detailed robustness for top 12 N>=30 plus all hurdle-pass rows, without promoting them automatically.
     selected=list(dict.fromkeys(tab[tab.n>=30].nlargest(12,"mean_pct").index.tolist()+tab[tab.basic_pass].index.tolist()))
     details=[]
@@ -449,6 +466,7 @@ def run():
        "## PT versus RT, primary same q1000/cost window",old.md_table(pd.DataFrame(comparisons)[lambda x:x.window.eq("primary")]),
        "## Matched execution (identical dates)",old.md_table(pd.DataFrame(matched)),
        "## Screening funnel",json.dumps(gatecounts,indent=2),
+       "## CLV / 3day CLV / volume quintiles, ALL, RT net",old.md_table(pd.DataFrame(bucket)[lambda x:x.factor.isin(["clv","clv3","volume_ratio"])&x.stage.eq("ALL")]),
        "## Retrospective walk-forward",old.md_table(pd.DataFrame(walk)),
        "## Common cash benchmark",old.md_table(pd.DataFrame(accounts)),
        "## Limitations",
