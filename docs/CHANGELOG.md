@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [文档] Add isolated Foxconn batch03 factor audit, causal PT comparison and overnight/intraday attribution specification.
+
+
 - [chore] Add isolated Foxconn T0 batch02 hypothesis coverage and failure audit.
 
 - [新功能] Add isolated Foxconn T0 audit and bounded research with GitHub-only evidence.

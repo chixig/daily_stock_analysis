@@ -14,3 +14,5 @@
 - [工业富联反T复核与有限研究](FOXCONN_T0_RESEARCH.md)：active；GitHub独立研究分支执行。
 
 - [Foxconn T0 B02](FOXCONN_T0_B02.md): implemented historical coverage, failure audit and fixed-exit exploration; no strategy promotion.
+
+- [Foxconn batch03](FOXCONN_T0_B03.md): active fixed factor audit, PT comparison and return attribution.

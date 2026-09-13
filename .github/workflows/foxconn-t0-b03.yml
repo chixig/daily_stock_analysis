@@ -1,0 +1,43 @@
+name: Foxconn T0 Factor Audit B03
+on:
+  push:
+    branches: [research/foxconn-t0-20260913-b03]
+    paths:
+      - scripts/research/foxconn_t0_b03.py
+      - .github/workflows/foxconn-t0-b03.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-t0-b03
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0
+      - name: Verify syntax
+        run: python -m py_compile scripts/research/foxconn_t0_b03.py
+      - name: Fixed factor research and return attribution
+        run: python scripts/research/foxconn_t0_b03.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foxconn-t0-b03-${{ github.run_id }}
+          path: research/foxconn_t0_20260913_b03/
+          retention-days: 90
+      - name: Preserve successful evidence
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/foxconn_t0_20260913_b03/
+          if ! git diff --cached --quiet; then
+            git commit -m "research: preserve foxconn batch03 evidence"
+            git push origin HEAD:research/foxconn-t0-20260913-b03
+          fi
