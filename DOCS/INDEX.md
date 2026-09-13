@@ -19,4 +19,4 @@
 
 - [Hindsight decline check](FOXCONN_T0_HINDSIGHT_CHECK.md): implemented; profitable intervals exist, causal identification remains unverified.
 
-- [Foxconn B04](FOXCONN_T0_B04.md): active; full swing reference and fixed causal detection comparison.
+- [Foxconn B04](FOXCONN_T0_B04.md): implemented; hindsight opportunities confirmed, all10 causal RT variants negative. Fixed evidence: research/foxconn_t0_20260913_b04/REPORT.md. Pre-run contract retained unchanged.
