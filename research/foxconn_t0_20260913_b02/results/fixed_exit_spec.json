@@ -1,0 +1,18 @@
+{
+  "status": "post-diagnostic exploratory, not independently validated",
+  "rules": [
+    "stop2",
+    "stop2_tp1"
+  ],
+  "thresholds_frozen": [
+    0.02,
+    0.01
+  ],
+  "base": "same old three candidates, same signals, no new event selection",
+  "models": [
+    "gap-aware bar touch, stop first if ambiguous",
+    "bar-end confirmation then next bar open"
+  ],
+  "fees": "same parent costs; price is simulation, no queue/orderbook guarantee",
+  "limits": "same-bar chronology unknown; final-bar scheduled-close fallback is not post-close execution"
+}
