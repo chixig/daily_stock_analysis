@@ -190,6 +190,44 @@ def run():
                          max_single_topup=float(g.extra_cash_needed.max()),
                          **{f"exclude_{year}_cash":old.metrics(g[g.date.dt.year.ne(year)])["cash"] for year in [2024,2025,2026]}))
     pd.DataFrame(diag).to_csv(OUT/"candidate_concentration.csv",index=False)
+
+    path_summary=[]
+    for name,m in candidates.items():
+        g=d[m]
+        net=float(g.rt_cash.sum())
+        record=dict(candidate=name,n=len(g),best1_share_net=float(g.rt_cash.max()/net) if net else None,
+                    best3_share_net=float(g.nlargest(3,"rt_cash").rt_cash.sum()/net) if net else None,
+                    year2026_share_net=float(g.loc[g.date.dt.year.eq(2026),"rt_cash"].sum()/net) if net else None)
+        path_rows=[]
+        for _,r in g.iterrows():
+            b=minute[minute.date.eq(r.date)].reset_index(drop=True)
+            if b.empty or abs(float(b.close.iloc[-1])-r.close)>.01:
+                path_rows.append(dict(date=str(r.date.date()),quality="unavailable_or_daily_close_mismatch"));continue
+            adverse=np.flatnonzero((b.high/r.open-1).to_numpy()>=.02)
+            favorable=np.flatnonzero((1-b.low/r.open).to_numpy()>=.01)
+            ai=int(adverse[0]) if len(adverse) else None
+            fi=int(favorable[0]) if len(favorable) else None
+            if ai is not None and fi is not None:
+                order="same_bar_unknown" if ai==fi else ("favorable_first" if fi<ai else "adverse_first")
+            elif ai is not None:order="adverse_only"
+            elif fi is not None:order="favorable_only"
+            else:order="neither"
+            path_rows.append(dict(date=str(r.date.date()),quality="ok",net_loser=bool(r.rt_cash<0),adverse2=ai is not None,
+                                  favorable1=fi is not None,order=order))
+        pp=pd.DataFrame(path_rows)
+        pp.to_csv(OUT/(name+"_path_threshold_diagnosis.csv"),index=False)
+        ok=pp[pp.quality.eq("ok")]
+        record["path_valid_n"]=len(ok)
+        for label,gg in [("loser",ok[ok.net_loser]),("winner",ok[~ok.net_loser])]:
+            record[label+"_n"]=len(gg)
+            record[label+"_touched_favorable1"]=int(gg.favorable1.sum())
+            record[label+"_touched_adverse2"]=int(gg.adverse2.sum())
+            record[label+"_adverse_before_favorable"]=int(gg.order.isin(["adverse_first","adverse_only"]).sum())
+            record[label+"_same_bar_unknown"]=int(gg.order.eq("same_bar_unknown").sum())
+        path_summary.append(record)
+    ps=pd.DataFrame(path_summary)
+    ps.to_csv(OUT/"path_diagnosis_summary.csv",index=False)
+
     coverage=[
         ["single day returns/volume/candle/location","all4","batch01 88 regions","covered narrowly; not exhaustive"],
         ["multi-day failed breakout","all4","batch02 fixed definition","tested; exact daily failure, not intraday breakout"],
@@ -218,6 +256,8 @@ def run():
             old.md_table(pd.DataFrame(extreme)),
             "## 反方向候选",
             old.md_table(pd.DataFrame(mirrors)[lambda x:(x.scope=="primary")&x.large_loss][["id","n","rt_pct","pt_pct","pt_cash"]]),
+            "## 路径诊断（非止盈止损回测）",old.md_table(ps),
+            "固定诊断线为向下1%有利空间、向上2%不利空间；同5分钟bar不判断先后，触价不等于成交。阈值只作失败归因描述，不新建优化策略。",
             "## 解释限制",
             "亏损交易的MAE/MFE只用于事后路径描述，不可拿来作为当时知道的过滤条件。开盘后指示价不是成交认证。",
             "24个单元不是24条独立策略；六类机制的定义可能交叠。区间是历史描述，未校正历次选择；零样本不是机制失败。",
