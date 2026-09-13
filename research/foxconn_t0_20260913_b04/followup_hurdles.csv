@@ -1,0 +1,11 @@
+id,n,episodes,mean,pf,years,delete5,double,delayed,ci,followup_pass
+D,True,True,False,False,False,False,False,False,False,False
+DD2,True,True,False,False,False,False,False,False,False,False
+DD3,True,True,False,False,False,False,False,False,False,False
+BR10,True,True,False,False,False,False,False,False,False,False
+BR20,True,True,False,False,False,False,False,False,False,False
+D_I10,True,True,False,False,False,False,False,False,False,False
+DD2_I10,True,True,False,False,False,False,False,False,False,False
+DD3_I10,True,True,False,False,False,False,False,False,False,False
+BR10_I10,True,True,False,False,False,False,False,False,False,False
+BR20_I10,True,True,False,False,False,False,False,False,False,False

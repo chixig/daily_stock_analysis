@@ -1,0 +1,24 @@
+{
+  "code_sha": "e9cd37b1ce40b1540778d2da5583068a12a98cdf",
+  "run_id": "34765496340",
+  "contract_sha256": "2904590548efc10129ce7ae4d2e11b88fbddc748a564faf86fcc1f8aad11f630",
+  "files": {
+    "research/foxconn_t0_20260913_b04/strategy_results.csv": "7ae2703ef253b64c2be519fe48ee8490e8ce3064a2371a70e4603e8e9b6c2e4e",
+    "research/foxconn_t0_20260913_b04/daily_audit.csv": "c97b0698b0de9d3a18515a94c34966e0510a61c9ea4de5bbc7c07474609fd0e9",
+    "research/foxconn_t0_20260913_b04/segments.csv": "d175b799b6fa5ed1d42c52d0bcda2151b0303da14454f1d89db4fbe825382b41",
+    "research/foxconn_t0_20260913_b04/reference_attribution.csv": "048fcddc5ad8b07cd499246799a102bdba0b8320819198a8dbbdec47119fff35",
+    "research/foxconn_t0_20260913_b04/detector_phase_attribution.csv": "40fd56b9c39bed21e7a8d29f8f3750e2daa7c4569a40bdca69ae9c35632c1bbc",
+    "research/foxconn_t0_20260913_b04/mirror_registry.csv": "289dbbbf544a1eb4b238f01d7374fc49fa9d2e5186af368f5ad4d64e7d589e91",
+    "research/foxconn_t0_20260913_b04/opportunity_coverage.csv": "59f5392c4cf54b47b29646812337cbe1818294d10c186bfc6a8f8cccc2463b95",
+    "research/foxconn_t0_20260913_b04/segment_thirds.csv": "a9d0d5269639564d8012cb3f550566bb76f8c9223f00a9aa00df6f76dc0ac918",
+    "research/foxconn_t0_20260913_b04/detector_episodes.csv": "f08a1acbac0f180329e9602cb681fc7f774cec19622858dc0105dc5efda306b3",
+    "research/foxconn_t0_20260913_b04/audit.json": "775990fd72ac29a3887ae57fe5cb2db87bfac4ec98261fe849ad8655a2271e09",
+    "research/foxconn_t0_20260913_b04/walk_forward_trades.csv": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "research/foxconn_t0_20260913_b04/followup_hurdles.csv": "52570b045518f09e6d2df5ed3e39444c2d470bbd55d52bb50e69ebbfc2a75ec3",
+    "research/foxconn_t0_20260913_b04/REPORT.md": "153651ae3363552cef33dc3f0cb023f7513f1a25841225ec3c5eafc41b3b390e",
+    "research/foxconn_t0_20260913_b04/completed_leg_counts.csv": "1628ba6498482849e84a570778f6a51863bc53ccca3e237792fa84d8002b4fc3",
+    "research/foxconn_t0_20260913_b04/walk_forward.csv": "13f77b9f20cc4718325ae61a3681aafb0fe8a03eef1ad73f9031d243e05dc0dc",
+    "research/foxconn_t0_20260913_b04/down_leg_detection.csv": "4229350fda60707247cd10b49e1d5e01d4e5ce170b6de7f4cdc16af19ea443f9",
+    "research/foxconn_t0_20260913_b04/execution_exclusions.csv": "ab61db7222fc02b58a2ef23e80c3c30c812d9fbaf907fabee64e7dbc73d339d8"
+  }
+}

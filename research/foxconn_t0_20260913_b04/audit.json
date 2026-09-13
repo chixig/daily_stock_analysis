@@ -1,0 +1,87 @@
+{
+  "data_start": "2018-06-08",
+  "data_end": "2026-09-11",
+  "daily_n": 2007,
+  "primary_n": 654,
+  "primary_minute_valid": 651,
+  "signal_variants": [
+    "D",
+    "DD2",
+    "DD3",
+    "BR10",
+    "BR20",
+    "D_I10",
+    "DD2_I10",
+    "DD3_I10",
+    "BR10_I10",
+    "BR20_I10"
+  ],
+  "new_variants": [
+    "DD2",
+    "DD3",
+    "BR10",
+    "BR20",
+    "DD2_I10",
+    "DD3_I10",
+    "BR10_I10",
+    "BR20_I10"
+  ],
+  "scales": [
+    0.08,
+    0.12,
+    0.2
+  ],
+  "prefix_and_mutation_cutoffs": [
+    300,
+    800,
+    1600
+  ],
+  "synthetic_signal_and_pivot_tests": "passed",
+  "frozen_stage_and_PT_reproduction": "passed",
+  "log_and_fullpath_reconciliation": "passed",
+  "followup_pass": [],
+  "walk_forward": [
+    {
+      "year": 2024,
+      "selected": "NONE",
+      "n": 0,
+      "cash": 0
+    },
+    {
+      "year": 2025,
+      "selected": "NONE",
+      "n": 0,
+      "cash": 0
+    },
+    {
+      "year": 2026,
+      "selected": "NONE",
+      "n": 0,
+      "cash": 0
+    }
+  ],
+  "walk_forward_primary": {
+    "n": 0,
+    "mean_pct": null,
+    "median_pct": null,
+    "win_pct": null,
+    "cash": 0,
+    "pf_pct": null,
+    "pf_cash": null,
+    "worst_pct": null,
+    "mdd_cash": 0,
+    "clusters": 0
+  },
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c"
+  },
+  "limitations": [
+    "Already-inspected history; descriptive month intervals not multiplicity adjusted",
+    "Hindsight reference scale and EDGE censoring; no unique true trend labels",
+    "Current vendor price vintage and inherited cost scenario",
+    "09:35 next-bar proxy is not executable fill certification",
+    "Fixed1000-share incremental T cash is not total account performance"
+  ]
+}
