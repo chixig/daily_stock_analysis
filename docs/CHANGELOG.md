@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [文档] Record batch03 completed factor audit, matched PT comparison, decline attribution and decision not to adopt mechanical open-to-close RT.
+
+
 - [文档] Add isolated Foxconn batch03 factor audit, causal PT comparison and overnight/intraday attribution specification.
 
 
