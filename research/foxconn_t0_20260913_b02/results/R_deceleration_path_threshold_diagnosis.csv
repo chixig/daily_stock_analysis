@@ -1,0 +1,16 @@
+date,quality,net_loser,adverse2,favorable1,order
+2024-04-16,ok,True,True,False,adverse_only
+2024-04-19,ok,False,False,True,favorable_only
+2024-04-30,ok,False,False,True,favorable_only
+2024-06-11,ok,False,True,True,adverse_first
+2024-07-15,ok,False,False,True,favorable_only
+2024-11-12,ok,False,False,True,favorable_only
+2024-11-15,ok,False,False,True,favorable_only
+2024-12-04,ok,False,False,True,favorable_only
+2024-12-09,ok,False,False,True,favorable_only
+2025-03-18,ok,True,False,False,neither
+2025-03-19,ok,False,False,True,favorable_only
+2025-06-03,ok,True,False,False,neither
+2025-12-01,ok,False,False,True,favorable_only
+2025-12-02,ok,True,True,False,adverse_only
+2026-07-13,ok,False,False,True,favorable_only

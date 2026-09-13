@@ -1,0 +1,4 @@
+candidate,n,best1_share_net,best3_share_net,year2026_share_net,path_valid_n,loser_n,loser_touched_favorable1,loser_touched_adverse2,loser_adverse_before_favorable,loser_same_bar_unknown,winner_n,winner_touched_favorable1,winner_touched_adverse2,winner_adverse_before_favorable,winner_same_bar_unknown
+UR_VOL_frozen,23,0.6054286156777835,0.9728195473175821,0.7429994816557867,23,9,3,7,7,0,14,14,2,1,0
+UR_VOL_v3,31,0.3967162758134983,0.6426902575510948,0.6348490765329914,31,12,4,8,8,0,19,19,3,2,0
+R_deceleration,15,0.4064876167790183,0.8067670661462952,0.4064876167790183,15,4,0,2,2,0,11,11,1,1,0
