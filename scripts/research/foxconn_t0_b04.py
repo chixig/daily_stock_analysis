@@ -372,6 +372,46 @@ def run():
         "## Follow-up hurdle (not trading approval)",old.md_table(pd.DataFrame(gates)),
         "## Audit",json.dumps(audit,default=str,indent=2),
         "No stage replacement. Negative RT/PT regions independently costed and registered. Main production path unchanged."]
+
+    # Reporting-only summaries of preregistered outputs; no new detector or threshold.
+    mirror_robust=[]
+    for key in masks:
+        g=d[masks[key]&primary]
+        if len(g) and g.rt_pct.mean()<0:
+            mirror_robust.append(dict(id=key,losing_RT_mean=float(g.rt_pct.mean()),
+                large_RT_loss=bool(g.rt_pct.mean()<=-.5),**metrics(g,"pt")))
+    mirror_robust=save("primary_PT_mirror_robustness.csv",mirror_robust)
+    primary_ann=stat[stat.window.isin(["2024","2025","2026"])][["id","direction","window","n","mean_pct","cash"]]
+    # Fully-contained reference legs only, separate from clipped day attribution.
+    fullids=segtab[(segtab.start>=pd.Timestamp("2024-01-02"))&segtab.label.eq("D")][["scale","segment"]]
+    parttab=pd.DataFrame(parts).merge(fullids,on=["scale","segment"],how="inner")
+    thirdrows=[]
+    for (scale,phase),g in parttab.groupby(["scale","phase"]):
+        thirdrows.append(dict(scale=scale,phase=phase,n=int(g.n.sum()),rt_cash=float(g.rt_cash.sum()),
+            overnight_log_pct=float(g.overnight_log_pct.sum()),intraday_log_pct=float(g.intraday_log_pct.sum())))
+    thirdsum=save("primary_down_thirds_summary.csv",thirdrows)
+    focused_diag=diag[(diag.window=="primary")&(diag.phase=="ALL")]
+    summary=dict(
+        primary_rule_n=len(masks),
+        primary_negative_RT_rules=int(stat[stat.id.isin(masks.columns)&stat.window.eq("primary")].mean_pct.lt(0).sum()),
+        primary_large_negative_RT_rules=int(stat[stat.id.isin(masks.columns)&stat.window.eq("primary")].mean_pct.le(-.5).sum()),
+        full_available_leg_counts=legsum[legsum.window.eq("full_available")].to_dict("records"),
+        primary_leg_counts=legsum[legsum.window.eq("primary")].to_dict("records"),
+        primary_annual=primary_ann.to_dict("records"),
+        primary_mirrors=mirror_robust.to_dict("records"),
+        primary_down_thirds=thirdsum.to_dict("records"),
+        primary_phase_attribution=focused_diag.to_dict("records"),
+        primary_coverage=coverage[coverage.window.eq("primary")].to_dict("records"),
+        mirror_registry_rows=len(mir),mirror_large_rows=int(mir.large.sum()),
+        causal_check_note="same/future mutation and prefix invariance passed; no model change during report expansion")
+    dump("summary.json",summary)
+    report.extend(["## Full available completed-leg counts",old.md_table(legsum[legsum.window.eq("full_available")]),
+        "## Annual fixed rules",old.md_table(primary_ann),
+        "## Primary independently costed PT mirrors (candidate registration only)",old.md_table(mirror_robust),
+        "## Primary detector attribution by hindsight label at 8% scale",
+        old.md_table(focused_diag[focused_diag.scale.eq(.08)][["id","label","n","rt_cash","rt_mean_pct","overnight_log_pct","intraday_log_pct"]]),
+        "## Primary fully-contained down-leg thirds",old.md_table(thirdsum)])
+
     (ROOT/"REPORT.md").write_text("\n\n".join(report))
     paths=[p for p in ROOT.iterdir() if p.is_file() and p.name!="manifest.json"]
     dump("manifest.json",dict(code_sha=os.environ["GITHUB_SHA"],run_id=os.environ["GITHUB_RUN_ID"],
