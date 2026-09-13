@@ -216,7 +216,8 @@ def run():
                                   favorable1=fi is not None,order=order))
         pp=pd.DataFrame(path_rows)
         pp.to_csv(OUT/(name+"_path_threshold_diagnosis.csv"),index=False)
-        ok=pp[pp.quality.eq("ok")]
+        ok=pp[pp.quality.eq("ok")].copy()
+        ok["net_loser"]=ok.net_loser.astype(bool)
         record["path_valid_n"]=len(ok)
         for label,gg in [("loser",ok[ok.net_loser]),("winner",ok[~ok.net_loser])]:
             record[label+"_n"]=len(gg)
@@ -227,6 +228,68 @@ def run():
         path_summary.append(record)
     ps=pd.DataFrame(path_summary)
     ps.to_csv(OUT/"path_diagnosis_summary.csv",index=False)
+
+
+    # Diagnostic follow-up: thresholds selected after path audit, explicitly exploratory.
+    exit_rows=[];exit_trades=[]
+    for name,m in candidates.items():
+        g=d[m].copy()
+        for mode in ["stop2","stop2_tp1"]:
+            for execution in ["bar_touch_gap_aware","confirm_bar_then_next_open"]:
+                h=g.copy()
+                used=[];unavailable=0
+                for idx,r in g.iterrows():
+                    bars=minute[minute.date.eq(r.date)].reset_index(drop=True)
+                    if bars.empty or abs(float(bars.close.iloc[-1])-r.close)>.01:
+                        unavailable+=1;continue
+                    stop=r.open*1.02;tp=r.open*.99
+                    buy=r.close;reason="close";ambiguous=False;exit_at="15:00"
+                    for k,b in bars.iterrows():
+                        sl=b.high>=stop
+                        take=mode=="stop2_tp1" and b.low<=tp
+                        if not sl and not take:continue
+                        ambiguous=bool(sl and take)
+                        reason="stop" if sl else "tp"
+                        if execution=="confirm_bar_then_next_open":
+                            if k+1<len(bars):
+                                buy=float(bars.iloc[k+1].open)
+                                exit_at=str(bars.iloc[k+1].dt)
+                            else:
+                                # No post-close executable bar; scheduled closing fallback only.
+                                buy=r.close;exit_at="scheduled_close"
+                        else:
+                            if b.open>=stop:buy=float(b.open);reason="stop_gap"
+                            elif mode=="stop2_tp1" and b.open<=tp:buy=float(b.open);reason="tp_gap"
+                            else:buy=float(stop if sl else tp)
+                            exit_at=str(b.dt)
+                        break
+                    cash=float(old.cashflow(pd.Series([r.open]),pd.Series([buy]),pd.Series([r.date])).iloc[0])
+                    h.loc[idx,"rt_cash"]=cash
+                    h.loc[idx,"rt_pct"]=100*cash/(1000*r.open)
+                    used.append(idx)
+                    exit_trades.append(dict(candidate=name,mode=mode,execution=execution,date=str(r.date.date()),
+                                            buy_base=buy,exit_at=exit_at,reason=reason,same_bar_ambiguous=ambiguous,
+                                            rt_cash=cash,baseline_cash=r.rt_cash,delta_cash=cash-r.rt_cash))
+                h=h.loc[used]
+                ref=g.loc[used]
+                v=dict(candidate=name,mode=mode,execution=execution,unavailable=unavailable,**old.metrics(h))
+                v["baseline_cash"]=float(ref.rt_cash.sum())
+                v["delta_cash"]=v["cash"]-v["baseline_cash"]
+                v["baseline_winner_to_loss"]=int(((ref.rt_cash>0)&(h.rt_cash<0)).sum())
+                for year in [2024,2025,2026]:
+                    v["delta_"+str(year)]=float(h.loc[h.date.dt.year.eq(year),"rt_cash"].sum()-ref.loc[ref.date.dt.year.eq(year),"rt_cash"].sum())
+                exit_rows.append(v)
+    exits=pd.DataFrame(exit_rows)
+    exits.to_csv(OUT/"fixed_exit_exploration.csv",index=False)
+    pd.DataFrame(exit_trades).to_csv(OUT/"fixed_exit_trades.csv",index=False)
+    (OUT/"fixed_exit_spec.json").write_text(json.dumps({
+        "status":"post-diagnostic exploratory, not independently validated",
+        "rules":["stop2","stop2_tp1"],"thresholds_frozen":[.02,.01],
+        "base":"same old three candidates, same signals, no new event selection",
+        "models":["gap-aware bar touch, stop first if ambiguous","bar-end confirmation then next bar open"],
+        "fees":"same parent costs; price is simulation, no queue/orderbook guarantee",
+        "limits":"same-bar chronology unknown; final-bar scheduled-close fallback is not post-close execution"
+    },indent=2))
 
     coverage=[
         ["single day returns/volume/candle/location","all4","batch01 88 regions","covered narrowly; not exhaustive"],
@@ -258,10 +321,12 @@ def run():
             old.md_table(pd.DataFrame(mirrors)[lambda x:(x.scope=="primary")&x.large_loss][["id","n","rt_pct","pt_pct","pt_cash"]]),
             "## 路径诊断（非止盈止损回测）",old.md_table(ps),
             "固定诊断线为向下1%有利空间、向上2%不利空间；同5分钟bar不判断先后，触价不等于成交。阈值只作失败归因描述，不新建优化策略。",
+            "## 固定退出的探索性比较",old.md_table(exits),
+            "本比较在看完路径诊断后提出，属于新增样本内探索。固定2%止损及2%止损+1%止盈，不搜索其他阈值；两种执行价格假设都不是成交认证。",
             "## 解释限制",
             "亏损交易的MAE/MFE只用于事后路径描述，不可拿来作为当时知道的过滤条件。开盘后指示价不是成交认证。",
             "24个单元不是24条独立策略；六类机制的定义可能交叠。区间是历史描述，未校正历次选择；零样本不是机制失败。",
-            "没有采用自适应止损或追加条件，没有升级正T，正T仅双向登记。未启动实际交易、前瞻自动化或隔夜。",
+            "未搜索自适应止损阈值；补做固定退出探索，单列执行假设。正T仅登记，未启动真实交易、前瞻自动化或隔夜。",
             "## 验证",
             "父批次输入哈希、现金流确定性测试、前日假设的当日OHLC及成交量变动不影响当日信号测试通过。",
             "指数可用="+str(ix is not None)+"；全部行及失败记录见results。"]
