@@ -1,0 +1,20 @@
+{
+  "batch": "foxconn-t0-20260913-b02",
+  "cutoff": "2026-09-11",
+  "parent_result": "ac5b6e3af988b609a40f6cf16737b4dcf2c8871b",
+  "stage": "frozen positive stage; no re-optimization",
+  "hypotheses": {
+    "failed_breakout": "Previous adjusted high exceeds preceding 20 highs, previous close returns below that old high.",
+    "failed_rebound": "Previous 3-day return positive, previous candle red, previous close below MA20.",
+    "distribution3": "Previous 3-day average volume >=1.2 times preceding 20-day average (excludes these 3 days), previous R3<=0.",
+    "relative_weak": "Previous stock close-to-close return <0 while SSE composite return >0.",
+    "gapdown_red": "Today gap<=-1%, previous red candle. Open-dependent; benchmark and 09:35 indicative execution separate.",
+    "gapup_weak": "Today gap>=1%, previous CLV<0.4. Open-dependent; benchmark and 09:35 indicative execution separate."
+  },
+  "trial_budget": "6 hypotheses x 4 stages =24; unavailable index is UNKNOWN, not false",
+  "validation": "All history explored. Chronological slices/blocks describe stability, not untouched OOS.",
+  "mirror": "All negative same-date source outcomes registered; <=-0.5% inclusive emphasis only.",
+  "failure_audit": "Three pre-existing candidates; ex-ante fields separate from future MAE/MFE. No adaptive veto.",
+  "stop": "No parameter expansion this batch. Preserve sparse and failed cells.",
+  "fees": "Reuse exact parent scenario; actual commissions/dividend taxes/orderbook not certified."
+}

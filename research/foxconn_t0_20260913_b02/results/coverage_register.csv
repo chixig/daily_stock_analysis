@@ -1,0 +1,11 @@
+family,stages,evidence,boundary
+single day returns/volume/candle/location,all4,batch01 88 regions,covered narrowly; not exhaustive
+multi-day failed breakout,all4,batch02 fixed definition,"tested; exact daily failure, not intraday breakout"
+weak rebound under MA20,all4,batch02 fixed definition,tested; structural zero cells remain
+3day volume without price progress,all4,batch02 fixed definition,tested; no threshold tuning
+stock/index previous-day divergence,all4,batch02 fixed definition,tested
+opening gap interactions,all4,batch02 two fixed events,benchmark and after-open indicative prices split
+intraday reversal/TP/SL,all4,old E1 failure; first batch fixed times,not comprehensively tested; cannot infer fills from snapshots
+announcements/industry/US shocks,all4,historical partial evidence only,not covered this batch; needs point-in-time event data
+auction imbalance/orderflow,all4,no orderbook data,"unavailable, not falsified"
+true future validation,all4,no future samples,not started; never substitute historic resampling
