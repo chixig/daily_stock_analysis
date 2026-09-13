@@ -16,3 +16,5 @@
 - [Foxconn T0 B02](FOXCONN_T0_B02.md): implemented historical coverage, failure audit and fixed-exit exploration; no strategy promotion.
 
 - [Foxconn batch03](FOXCONN_T0_B03.md): implemented; mechanical open-to-close reverse T not adopted after fixed factor audit, PT comparison and return attribution.
+
+- [Hindsight decline check](FOXCONN_T0_HINDSIGHT_CHECK.md): implemented; profitable intervals exist, causal identification remains unverified.
