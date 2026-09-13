@@ -1,6 +1,6 @@
 {
-  "code_sha": "f921bda1257abe245279cf3a88479cabb2937424",
-  "run_id": "34746021237",
+  "code_sha": "efe13df45ec425cea3570f762be0583288b7f0af",
+  "run_id": "34746090459",
   "parent_manifest": {
     "code_sha": "166ab401abce18213c7d025671074240dde1b19d",
     "run_id": "34708662088",
@@ -38,7 +38,7 @@
   },
   "files": {
     "research/foxconn_t0_20260913_b02/CONTRACT.json": "2785d69253f189de253e321d1dee16343011751a75cd3ec2abab45c6ca313451",
-    "research/foxconn_t0_20260913_b02/REPORT.md": "8461908002ecd647f1596b4fbfa8f13e7f37e674487b8d70bcd574e1b08c8979",
+    "research/foxconn_t0_20260913_b02/REPORT.md": "96cb52954b964d33b4a499c46b5997e4f48c250f14c165827c05736c01e2205e",
     "research/foxconn_t0_20260913_b02/results/fixed_exit_trades.csv": "195992848afcea87c1f1a468479e2d0fb0621a1768d5b0622056cf461586683f",
     "research/foxconn_t0_20260913_b02/results/UR_VOL_v3_path_threshold_diagnosis.csv": "f4e551bc841374fb27f176784890210ba239b3ffe8a8e86fc8879a1ad33a8f3a",
     "research/foxconn_t0_20260913_b02/results/period_results.csv": "2d54f2f6a92887c1755444426502bf25f17abaf9ffcdee706faaa7d49c9dd464",
@@ -50,11 +50,12 @@
     "research/foxconn_t0_20260913_b02/results/positive_mirror_candidates.csv": "295b68f212afc555d4dc3c1fed435f4a88c7e316eedb656a98e38fad02cc4243",
     "research/foxconn_t0_20260913_b02/results/old_candidate_exante_profiles.csv": "276b66e61ee5c4905443fc4d688a6678ba56b8882ea9a907a2201b4a3592e35c",
     "research/foxconn_t0_20260913_b02/results/coverage_register.csv": "ad5bb1586e946d885fc2b80eb0564b4a8d1c6e0b25692dc1eb50f43f6c0bb161",
-    "research/foxconn_t0_20260913_b02/results/fixed_exit_exploration.csv": "d7eef9d9c3cfb4b5b05c29de2250e0410b64487224662e441de1f95f8178cf4b",
+    "research/foxconn_t0_20260913_b02/results/fixed_exit_exploration.csv": "10638c65e76d04d68ad45ba475e6b0bc3fe0f8d8421b533ba7e4e6e9c742242a",
     "research/foxconn_t0_20260913_b02/results/new_hypothesis_trades.csv": "42209eafec06b964268f02e9132f33b6618cbe665d13ace6dba66bd9438541e9",
     "research/foxconn_t0_20260913_b02/results/hypothesis_matrix.csv": "9bcc6fdedaa5cdc4f9ab92adde6b4b5b21caf95c4d91d1ac3dae84ff6fdb1810",
     "research/foxconn_t0_20260913_b02/results/candidate_concentration.csv": "cf9cc67815458637a6db2aaa5200903497d352b752bcc003cad96286a95a10c9",
     "research/foxconn_t0_20260913_b02/results/path_diagnosis_summary.csv": "dc60444d90701a250df505d49497e5b3a590b9e5bd85f2e1f948bb9eb9bb62eb",
+    "research/foxconn_t0_20260913_b02/results/fixed_exit_positive_mirrors.csv": "72fea842757d01db98b855f5f79eb764c66d4b08409ed6ea4f46673e934c7af1",
     "research/foxconn_t0_20260913_b02/source/index_log.txt": "4634d685aeea15033df6628cf916829c5eb285567f02605010e6fdb99e7cc3b1",
     "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c"
   }
