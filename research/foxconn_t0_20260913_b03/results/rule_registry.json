@@ -1,0 +1,2462 @@
+{
+  "ALL__ret1__low": {
+    "stage": "ALL",
+    "factor": "ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__ret1__high": {
+    "stage": "ALL",
+    "factor": "ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__ret3__low": {
+    "stage": "ALL",
+    "factor": "ret3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__ret3__high": {
+    "stage": "ALL",
+    "factor": "ret3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__ret5__low": {
+    "stage": "ALL",
+    "factor": "ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__ret5__high": {
+    "stage": "ALL",
+    "factor": "ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__ret10__low": {
+    "stage": "ALL",
+    "factor": "ret10",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__ret10__high": {
+    "stage": "ALL",
+    "factor": "ret10",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__ret20__low": {
+    "stage": "ALL",
+    "factor": "ret20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__ret20__high": {
+    "stage": "ALL",
+    "factor": "ret20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__bias5__low": {
+    "stage": "ALL",
+    "factor": "bias5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__bias5__high": {
+    "stage": "ALL",
+    "factor": "bias5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__bias20__low": {
+    "stage": "ALL",
+    "factor": "bias20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__bias20__high": {
+    "stage": "ALL",
+    "factor": "bias20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__ma20slope5__low": {
+    "stage": "ALL",
+    "factor": "ma20slope5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__ma20slope5__high": {
+    "stage": "ALL",
+    "factor": "ma20slope5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__range_pos20__low": {
+    "stage": "ALL",
+    "factor": "range_pos20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__range_pos20__high": {
+    "stage": "ALL",
+    "factor": "range_pos20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__drawdown60__low": {
+    "stage": "ALL",
+    "factor": "drawdown60",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__drawdown60__high": {
+    "stage": "ALL",
+    "factor": "drawdown60",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__overnight5__low": {
+    "stage": "ALL",
+    "factor": "overnight5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__overnight5__high": {
+    "stage": "ALL",
+    "factor": "overnight5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__intraday5__low": {
+    "stage": "ALL",
+    "factor": "intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__intraday5__high": {
+    "stage": "ALL",
+    "factor": "intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__overnight_minus_intraday5__low": {
+    "stage": "ALL",
+    "factor": "overnight_minus_intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__overnight_minus_intraday5__high": {
+    "stage": "ALL",
+    "factor": "overnight_minus_intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__volume_ratio__low": {
+    "stage": "ALL",
+    "factor": "volume_ratio",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__volume_ratio__high": {
+    "stage": "ALL",
+    "factor": "volume_ratio",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__volume_trend__low": {
+    "stage": "ALL",
+    "factor": "volume_trend",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__volume_trend__high": {
+    "stage": "ALL",
+    "factor": "volume_trend",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__signed_volume5__low": {
+    "stage": "ALL",
+    "factor": "signed_volume5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__signed_volume5__high": {
+    "stage": "ALL",
+    "factor": "signed_volume5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__volume_price_corr20__low": {
+    "stage": "ALL",
+    "factor": "volume_price_corr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__volume_price_corr20__high": {
+    "stage": "ALL",
+    "factor": "volume_price_corr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__amihud20__low": {
+    "stage": "ALL",
+    "factor": "amihud20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__amihud20__high": {
+    "stage": "ALL",
+    "factor": "amihud20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__atr20__low": {
+    "stage": "ALL",
+    "factor": "atr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__atr20__high": {
+    "stage": "ALL",
+    "factor": "atr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__rv5_20__low": {
+    "stage": "ALL",
+    "factor": "rv5_20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__rv5_20__high": {
+    "stage": "ALL",
+    "factor": "rv5_20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__downside_share20__low": {
+    "stage": "ALL",
+    "factor": "downside_share20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__downside_share20__high": {
+    "stage": "ALL",
+    "factor": "downside_share20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__range_expansion__low": {
+    "stage": "ALL",
+    "factor": "range_expansion",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__range_expansion__high": {
+    "stage": "ALL",
+    "factor": "range_expansion",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__body__low": {
+    "stage": "ALL",
+    "factor": "body",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__body__high": {
+    "stage": "ALL",
+    "factor": "body",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__clv__low": {
+    "stage": "ALL",
+    "factor": "clv",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__clv__high": {
+    "stage": "ALL",
+    "factor": "clv",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__upper_shadow__low": {
+    "stage": "ALL",
+    "factor": "upper_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__upper_shadow__high": {
+    "stage": "ALL",
+    "factor": "upper_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__lower_shadow__low": {
+    "stage": "ALL",
+    "factor": "lower_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__lower_shadow__high": {
+    "stage": "ALL",
+    "factor": "lower_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__clv3__low": {
+    "stage": "ALL",
+    "factor": "clv3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__clv3__high": {
+    "stage": "ALL",
+    "factor": "clv3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__market_ret1__low": {
+    "stage": "ALL",
+    "factor": "market_ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__market_ret1__high": {
+    "stage": "ALL",
+    "factor": "market_ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__market_ret5__low": {
+    "stage": "ALL",
+    "factor": "market_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__market_ret5__high": {
+    "stage": "ALL",
+    "factor": "market_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__relative_ret5__low": {
+    "stage": "ALL",
+    "factor": "relative_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__relative_ret5__high": {
+    "stage": "ALL",
+    "factor": "relative_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__beta_residual1__low": {
+    "stage": "ALL",
+    "factor": "beta_residual1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__beta_residual1__high": {
+    "stage": "ALL",
+    "factor": "beta_residual1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__prev_late_return__low": {
+    "stage": "ALL",
+    "factor": "prev_late_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__prev_late_return__high": {
+    "stage": "ALL",
+    "factor": "prev_late_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__prev_am_return__low": {
+    "stage": "ALL",
+    "factor": "prev_am_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__prev_am_return__high": {
+    "stage": "ALL",
+    "factor": "prev_am_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__prev_pm_minus_am__low": {
+    "stage": "ALL",
+    "factor": "prev_pm_minus_am",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "ALL__prev_pm_minus_am__high": {
+    "stage": "ALL",
+    "factor": "prev_pm_minus_am",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "ALL__us_NASDAQCOM__low": {
+    "stage": "ALL",
+    "factor": "us_NASDAQCOM",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "ALL__us_NASDAQCOM__high": {
+    "stage": "ALL",
+    "factor": "us_NASDAQCOM",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "ALL__us_NASDAQSOX__low": {
+    "stage": "ALL",
+    "factor": "us_NASDAQSOX",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "ALL__us_NASDAQSOX__high": {
+    "stage": "ALL",
+    "factor": "us_NASDAQSOX",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "ALL__current_gap__low": {
+    "stage": "ALL",
+    "factor": "current_gap",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "ALL__current_gap__high": {
+    "stage": "ALL",
+    "factor": "current_gap",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "ALL__gap_over_atr__low": {
+    "stage": "ALL",
+    "factor": "gap_over_atr",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "ALL__gap_over_atr__high": {
+    "stage": "ALL",
+    "factor": "gap_over_atr",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "ALL__combo_exhaustion": {
+    "stage": "ALL",
+    "factor": "combo_exhaustion",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "ALL__combo_distribution": {
+    "stage": "ALL",
+    "factor": "combo_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "ALL__combo_weak_rebound": {
+    "stage": "ALL",
+    "factor": "combo_weak_rebound",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "ALL__combo_persistent_sell": {
+    "stage": "ALL",
+    "factor": "combo_persistent_sell",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "ALL__combo_market_relative_weak": {
+    "stage": "ALL",
+    "factor": "combo_market_relative_weak",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "ALL__combo_late_distribution": {
+    "stage": "ALL",
+    "factor": "combo_late_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "U__ret1__low": {
+    "stage": "U",
+    "factor": "ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__ret1__high": {
+    "stage": "U",
+    "factor": "ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__ret3__low": {
+    "stage": "U",
+    "factor": "ret3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__ret3__high": {
+    "stage": "U",
+    "factor": "ret3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__ret5__low": {
+    "stage": "U",
+    "factor": "ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__ret5__high": {
+    "stage": "U",
+    "factor": "ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__ret10__low": {
+    "stage": "U",
+    "factor": "ret10",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__ret10__high": {
+    "stage": "U",
+    "factor": "ret10",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__ret20__low": {
+    "stage": "U",
+    "factor": "ret20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__ret20__high": {
+    "stage": "U",
+    "factor": "ret20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__bias5__low": {
+    "stage": "U",
+    "factor": "bias5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__bias5__high": {
+    "stage": "U",
+    "factor": "bias5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__bias20__low": {
+    "stage": "U",
+    "factor": "bias20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__bias20__high": {
+    "stage": "U",
+    "factor": "bias20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__ma20slope5__low": {
+    "stage": "U",
+    "factor": "ma20slope5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__ma20slope5__high": {
+    "stage": "U",
+    "factor": "ma20slope5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__range_pos20__low": {
+    "stage": "U",
+    "factor": "range_pos20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__range_pos20__high": {
+    "stage": "U",
+    "factor": "range_pos20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__drawdown60__low": {
+    "stage": "U",
+    "factor": "drawdown60",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__drawdown60__high": {
+    "stage": "U",
+    "factor": "drawdown60",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__overnight5__low": {
+    "stage": "U",
+    "factor": "overnight5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__overnight5__high": {
+    "stage": "U",
+    "factor": "overnight5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__intraday5__low": {
+    "stage": "U",
+    "factor": "intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__intraday5__high": {
+    "stage": "U",
+    "factor": "intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__overnight_minus_intraday5__low": {
+    "stage": "U",
+    "factor": "overnight_minus_intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__overnight_minus_intraday5__high": {
+    "stage": "U",
+    "factor": "overnight_minus_intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__volume_ratio__low": {
+    "stage": "U",
+    "factor": "volume_ratio",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__volume_ratio__high": {
+    "stage": "U",
+    "factor": "volume_ratio",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__volume_trend__low": {
+    "stage": "U",
+    "factor": "volume_trend",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__volume_trend__high": {
+    "stage": "U",
+    "factor": "volume_trend",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__signed_volume5__low": {
+    "stage": "U",
+    "factor": "signed_volume5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__signed_volume5__high": {
+    "stage": "U",
+    "factor": "signed_volume5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__volume_price_corr20__low": {
+    "stage": "U",
+    "factor": "volume_price_corr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__volume_price_corr20__high": {
+    "stage": "U",
+    "factor": "volume_price_corr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__amihud20__low": {
+    "stage": "U",
+    "factor": "amihud20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__amihud20__high": {
+    "stage": "U",
+    "factor": "amihud20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__atr20__low": {
+    "stage": "U",
+    "factor": "atr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__atr20__high": {
+    "stage": "U",
+    "factor": "atr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__rv5_20__low": {
+    "stage": "U",
+    "factor": "rv5_20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__rv5_20__high": {
+    "stage": "U",
+    "factor": "rv5_20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__downside_share20__low": {
+    "stage": "U",
+    "factor": "downside_share20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__downside_share20__high": {
+    "stage": "U",
+    "factor": "downside_share20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__range_expansion__low": {
+    "stage": "U",
+    "factor": "range_expansion",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__range_expansion__high": {
+    "stage": "U",
+    "factor": "range_expansion",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__body__low": {
+    "stage": "U",
+    "factor": "body",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__body__high": {
+    "stage": "U",
+    "factor": "body",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__clv__low": {
+    "stage": "U",
+    "factor": "clv",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__clv__high": {
+    "stage": "U",
+    "factor": "clv",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__upper_shadow__low": {
+    "stage": "U",
+    "factor": "upper_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__upper_shadow__high": {
+    "stage": "U",
+    "factor": "upper_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__lower_shadow__low": {
+    "stage": "U",
+    "factor": "lower_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__lower_shadow__high": {
+    "stage": "U",
+    "factor": "lower_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__clv3__low": {
+    "stage": "U",
+    "factor": "clv3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__clv3__high": {
+    "stage": "U",
+    "factor": "clv3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__market_ret1__low": {
+    "stage": "U",
+    "factor": "market_ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__market_ret1__high": {
+    "stage": "U",
+    "factor": "market_ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__market_ret5__low": {
+    "stage": "U",
+    "factor": "market_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__market_ret5__high": {
+    "stage": "U",
+    "factor": "market_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__relative_ret5__low": {
+    "stage": "U",
+    "factor": "relative_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__relative_ret5__high": {
+    "stage": "U",
+    "factor": "relative_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__beta_residual1__low": {
+    "stage": "U",
+    "factor": "beta_residual1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__beta_residual1__high": {
+    "stage": "U",
+    "factor": "beta_residual1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__prev_late_return__low": {
+    "stage": "U",
+    "factor": "prev_late_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__prev_late_return__high": {
+    "stage": "U",
+    "factor": "prev_late_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__prev_am_return__low": {
+    "stage": "U",
+    "factor": "prev_am_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__prev_am_return__high": {
+    "stage": "U",
+    "factor": "prev_am_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__prev_pm_minus_am__low": {
+    "stage": "U",
+    "factor": "prev_pm_minus_am",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "U__prev_pm_minus_am__high": {
+    "stage": "U",
+    "factor": "prev_pm_minus_am",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "U__us_NASDAQCOM__low": {
+    "stage": "U",
+    "factor": "us_NASDAQCOM",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "U__us_NASDAQCOM__high": {
+    "stage": "U",
+    "factor": "us_NASDAQCOM",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "U__us_NASDAQSOX__low": {
+    "stage": "U",
+    "factor": "us_NASDAQSOX",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "U__us_NASDAQSOX__high": {
+    "stage": "U",
+    "factor": "us_NASDAQSOX",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "U__current_gap__low": {
+    "stage": "U",
+    "factor": "current_gap",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "U__current_gap__high": {
+    "stage": "U",
+    "factor": "current_gap",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "U__gap_over_atr__low": {
+    "stage": "U",
+    "factor": "gap_over_atr",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "U__gap_over_atr__high": {
+    "stage": "U",
+    "factor": "gap_over_atr",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "U__combo_exhaustion": {
+    "stage": "U",
+    "factor": "combo_exhaustion",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "U__combo_distribution": {
+    "stage": "U",
+    "factor": "combo_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "U__combo_weak_rebound": {
+    "stage": "U",
+    "factor": "combo_weak_rebound",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "U__combo_persistent_sell": {
+    "stage": "U",
+    "factor": "combo_persistent_sell",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "U__combo_market_relative_weak": {
+    "stage": "U",
+    "factor": "combo_market_relative_weak",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "U__combo_late_distribution": {
+    "stage": "U",
+    "factor": "combo_late_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "R__ret1__low": {
+    "stage": "R",
+    "factor": "ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__ret1__high": {
+    "stage": "R",
+    "factor": "ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__ret3__low": {
+    "stage": "R",
+    "factor": "ret3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__ret3__high": {
+    "stage": "R",
+    "factor": "ret3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__ret5__low": {
+    "stage": "R",
+    "factor": "ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__ret5__high": {
+    "stage": "R",
+    "factor": "ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__ret10__low": {
+    "stage": "R",
+    "factor": "ret10",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__ret10__high": {
+    "stage": "R",
+    "factor": "ret10",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__ret20__low": {
+    "stage": "R",
+    "factor": "ret20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__ret20__high": {
+    "stage": "R",
+    "factor": "ret20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__bias5__low": {
+    "stage": "R",
+    "factor": "bias5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__bias5__high": {
+    "stage": "R",
+    "factor": "bias5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__bias20__low": {
+    "stage": "R",
+    "factor": "bias20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__bias20__high": {
+    "stage": "R",
+    "factor": "bias20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__ma20slope5__low": {
+    "stage": "R",
+    "factor": "ma20slope5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__ma20slope5__high": {
+    "stage": "R",
+    "factor": "ma20slope5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__range_pos20__low": {
+    "stage": "R",
+    "factor": "range_pos20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__range_pos20__high": {
+    "stage": "R",
+    "factor": "range_pos20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__drawdown60__low": {
+    "stage": "R",
+    "factor": "drawdown60",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__drawdown60__high": {
+    "stage": "R",
+    "factor": "drawdown60",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__overnight5__low": {
+    "stage": "R",
+    "factor": "overnight5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__overnight5__high": {
+    "stage": "R",
+    "factor": "overnight5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__intraday5__low": {
+    "stage": "R",
+    "factor": "intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__intraday5__high": {
+    "stage": "R",
+    "factor": "intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__overnight_minus_intraday5__low": {
+    "stage": "R",
+    "factor": "overnight_minus_intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__overnight_minus_intraday5__high": {
+    "stage": "R",
+    "factor": "overnight_minus_intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__volume_ratio__low": {
+    "stage": "R",
+    "factor": "volume_ratio",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__volume_ratio__high": {
+    "stage": "R",
+    "factor": "volume_ratio",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__volume_trend__low": {
+    "stage": "R",
+    "factor": "volume_trend",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__volume_trend__high": {
+    "stage": "R",
+    "factor": "volume_trend",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__signed_volume5__low": {
+    "stage": "R",
+    "factor": "signed_volume5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__signed_volume5__high": {
+    "stage": "R",
+    "factor": "signed_volume5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__volume_price_corr20__low": {
+    "stage": "R",
+    "factor": "volume_price_corr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__volume_price_corr20__high": {
+    "stage": "R",
+    "factor": "volume_price_corr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__amihud20__low": {
+    "stage": "R",
+    "factor": "amihud20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__amihud20__high": {
+    "stage": "R",
+    "factor": "amihud20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__atr20__low": {
+    "stage": "R",
+    "factor": "atr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__atr20__high": {
+    "stage": "R",
+    "factor": "atr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__rv5_20__low": {
+    "stage": "R",
+    "factor": "rv5_20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__rv5_20__high": {
+    "stage": "R",
+    "factor": "rv5_20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__downside_share20__low": {
+    "stage": "R",
+    "factor": "downside_share20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__downside_share20__high": {
+    "stage": "R",
+    "factor": "downside_share20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__range_expansion__low": {
+    "stage": "R",
+    "factor": "range_expansion",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__range_expansion__high": {
+    "stage": "R",
+    "factor": "range_expansion",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__body__low": {
+    "stage": "R",
+    "factor": "body",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__body__high": {
+    "stage": "R",
+    "factor": "body",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__clv__low": {
+    "stage": "R",
+    "factor": "clv",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__clv__high": {
+    "stage": "R",
+    "factor": "clv",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__upper_shadow__low": {
+    "stage": "R",
+    "factor": "upper_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__upper_shadow__high": {
+    "stage": "R",
+    "factor": "upper_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__lower_shadow__low": {
+    "stage": "R",
+    "factor": "lower_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__lower_shadow__high": {
+    "stage": "R",
+    "factor": "lower_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__clv3__low": {
+    "stage": "R",
+    "factor": "clv3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__clv3__high": {
+    "stage": "R",
+    "factor": "clv3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__market_ret1__low": {
+    "stage": "R",
+    "factor": "market_ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__market_ret1__high": {
+    "stage": "R",
+    "factor": "market_ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__market_ret5__low": {
+    "stage": "R",
+    "factor": "market_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__market_ret5__high": {
+    "stage": "R",
+    "factor": "market_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__relative_ret5__low": {
+    "stage": "R",
+    "factor": "relative_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__relative_ret5__high": {
+    "stage": "R",
+    "factor": "relative_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__beta_residual1__low": {
+    "stage": "R",
+    "factor": "beta_residual1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__beta_residual1__high": {
+    "stage": "R",
+    "factor": "beta_residual1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__prev_late_return__low": {
+    "stage": "R",
+    "factor": "prev_late_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__prev_late_return__high": {
+    "stage": "R",
+    "factor": "prev_late_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__prev_am_return__low": {
+    "stage": "R",
+    "factor": "prev_am_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__prev_am_return__high": {
+    "stage": "R",
+    "factor": "prev_am_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__prev_pm_minus_am__low": {
+    "stage": "R",
+    "factor": "prev_pm_minus_am",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "R__prev_pm_minus_am__high": {
+    "stage": "R",
+    "factor": "prev_pm_minus_am",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "R__us_NASDAQCOM__low": {
+    "stage": "R",
+    "factor": "us_NASDAQCOM",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "R__us_NASDAQCOM__high": {
+    "stage": "R",
+    "factor": "us_NASDAQCOM",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "R__us_NASDAQSOX__low": {
+    "stage": "R",
+    "factor": "us_NASDAQSOX",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "R__us_NASDAQSOX__high": {
+    "stage": "R",
+    "factor": "us_NASDAQSOX",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "R__current_gap__low": {
+    "stage": "R",
+    "factor": "current_gap",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "R__current_gap__high": {
+    "stage": "R",
+    "factor": "current_gap",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "R__gap_over_atr__low": {
+    "stage": "R",
+    "factor": "gap_over_atr",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "R__gap_over_atr__high": {
+    "stage": "R",
+    "factor": "gap_over_atr",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "R__combo_exhaustion": {
+    "stage": "R",
+    "factor": "combo_exhaustion",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "R__combo_distribution": {
+    "stage": "R",
+    "factor": "combo_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "R__combo_weak_rebound": {
+    "stage": "R",
+    "factor": "combo_weak_rebound",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "R__combo_persistent_sell": {
+    "stage": "R",
+    "factor": "combo_persistent_sell",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "R__combo_market_relative_weak": {
+    "stage": "R",
+    "factor": "combo_market_relative_weak",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "R__combo_late_distribution": {
+    "stage": "R",
+    "factor": "combo_late_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "D__ret1__low": {
+    "stage": "D",
+    "factor": "ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__ret1__high": {
+    "stage": "D",
+    "factor": "ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__ret3__low": {
+    "stage": "D",
+    "factor": "ret3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__ret3__high": {
+    "stage": "D",
+    "factor": "ret3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__ret5__low": {
+    "stage": "D",
+    "factor": "ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__ret5__high": {
+    "stage": "D",
+    "factor": "ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__ret10__low": {
+    "stage": "D",
+    "factor": "ret10",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__ret10__high": {
+    "stage": "D",
+    "factor": "ret10",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__ret20__low": {
+    "stage": "D",
+    "factor": "ret20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__ret20__high": {
+    "stage": "D",
+    "factor": "ret20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__bias5__low": {
+    "stage": "D",
+    "factor": "bias5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__bias5__high": {
+    "stage": "D",
+    "factor": "bias5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__bias20__low": {
+    "stage": "D",
+    "factor": "bias20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__bias20__high": {
+    "stage": "D",
+    "factor": "bias20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__ma20slope5__low": {
+    "stage": "D",
+    "factor": "ma20slope5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__ma20slope5__high": {
+    "stage": "D",
+    "factor": "ma20slope5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__range_pos20__low": {
+    "stage": "D",
+    "factor": "range_pos20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__range_pos20__high": {
+    "stage": "D",
+    "factor": "range_pos20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__drawdown60__low": {
+    "stage": "D",
+    "factor": "drawdown60",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__drawdown60__high": {
+    "stage": "D",
+    "factor": "drawdown60",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__overnight5__low": {
+    "stage": "D",
+    "factor": "overnight5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__overnight5__high": {
+    "stage": "D",
+    "factor": "overnight5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__intraday5__low": {
+    "stage": "D",
+    "factor": "intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__intraday5__high": {
+    "stage": "D",
+    "factor": "intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__overnight_minus_intraday5__low": {
+    "stage": "D",
+    "factor": "overnight_minus_intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__overnight_minus_intraday5__high": {
+    "stage": "D",
+    "factor": "overnight_minus_intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__volume_ratio__low": {
+    "stage": "D",
+    "factor": "volume_ratio",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__volume_ratio__high": {
+    "stage": "D",
+    "factor": "volume_ratio",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__volume_trend__low": {
+    "stage": "D",
+    "factor": "volume_trend",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__volume_trend__high": {
+    "stage": "D",
+    "factor": "volume_trend",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__signed_volume5__low": {
+    "stage": "D",
+    "factor": "signed_volume5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__signed_volume5__high": {
+    "stage": "D",
+    "factor": "signed_volume5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__volume_price_corr20__low": {
+    "stage": "D",
+    "factor": "volume_price_corr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__volume_price_corr20__high": {
+    "stage": "D",
+    "factor": "volume_price_corr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__amihud20__low": {
+    "stage": "D",
+    "factor": "amihud20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__amihud20__high": {
+    "stage": "D",
+    "factor": "amihud20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__atr20__low": {
+    "stage": "D",
+    "factor": "atr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__atr20__high": {
+    "stage": "D",
+    "factor": "atr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__rv5_20__low": {
+    "stage": "D",
+    "factor": "rv5_20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__rv5_20__high": {
+    "stage": "D",
+    "factor": "rv5_20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__downside_share20__low": {
+    "stage": "D",
+    "factor": "downside_share20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__downside_share20__high": {
+    "stage": "D",
+    "factor": "downside_share20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__range_expansion__low": {
+    "stage": "D",
+    "factor": "range_expansion",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__range_expansion__high": {
+    "stage": "D",
+    "factor": "range_expansion",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__body__low": {
+    "stage": "D",
+    "factor": "body",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__body__high": {
+    "stage": "D",
+    "factor": "body",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__clv__low": {
+    "stage": "D",
+    "factor": "clv",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__clv__high": {
+    "stage": "D",
+    "factor": "clv",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__upper_shadow__low": {
+    "stage": "D",
+    "factor": "upper_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__upper_shadow__high": {
+    "stage": "D",
+    "factor": "upper_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__lower_shadow__low": {
+    "stage": "D",
+    "factor": "lower_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__lower_shadow__high": {
+    "stage": "D",
+    "factor": "lower_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__clv3__low": {
+    "stage": "D",
+    "factor": "clv3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__clv3__high": {
+    "stage": "D",
+    "factor": "clv3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__market_ret1__low": {
+    "stage": "D",
+    "factor": "market_ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__market_ret1__high": {
+    "stage": "D",
+    "factor": "market_ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__market_ret5__low": {
+    "stage": "D",
+    "factor": "market_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__market_ret5__high": {
+    "stage": "D",
+    "factor": "market_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__relative_ret5__low": {
+    "stage": "D",
+    "factor": "relative_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__relative_ret5__high": {
+    "stage": "D",
+    "factor": "relative_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__beta_residual1__low": {
+    "stage": "D",
+    "factor": "beta_residual1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__beta_residual1__high": {
+    "stage": "D",
+    "factor": "beta_residual1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__prev_late_return__low": {
+    "stage": "D",
+    "factor": "prev_late_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__prev_late_return__high": {
+    "stage": "D",
+    "factor": "prev_late_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__prev_am_return__low": {
+    "stage": "D",
+    "factor": "prev_am_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__prev_am_return__high": {
+    "stage": "D",
+    "factor": "prev_am_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__prev_pm_minus_am__low": {
+    "stage": "D",
+    "factor": "prev_pm_minus_am",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "D__prev_pm_minus_am__high": {
+    "stage": "D",
+    "factor": "prev_pm_minus_am",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "D__us_NASDAQCOM__low": {
+    "stage": "D",
+    "factor": "us_NASDAQCOM",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "D__us_NASDAQCOM__high": {
+    "stage": "D",
+    "factor": "us_NASDAQCOM",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "D__us_NASDAQSOX__low": {
+    "stage": "D",
+    "factor": "us_NASDAQSOX",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "D__us_NASDAQSOX__high": {
+    "stage": "D",
+    "factor": "us_NASDAQSOX",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "D__current_gap__low": {
+    "stage": "D",
+    "factor": "current_gap",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "D__current_gap__high": {
+    "stage": "D",
+    "factor": "current_gap",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "D__gap_over_atr__low": {
+    "stage": "D",
+    "factor": "gap_over_atr",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "D__gap_over_atr__high": {
+    "stage": "D",
+    "factor": "gap_over_atr",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "D__combo_exhaustion": {
+    "stage": "D",
+    "factor": "combo_exhaustion",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "D__combo_distribution": {
+    "stage": "D",
+    "factor": "combo_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "D__combo_weak_rebound": {
+    "stage": "D",
+    "factor": "combo_weak_rebound",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "D__combo_persistent_sell": {
+    "stage": "D",
+    "factor": "combo_persistent_sell",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "D__combo_market_relative_weak": {
+    "stage": "D",
+    "factor": "combo_market_relative_weak",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "D__combo_late_distribution": {
+    "stage": "D",
+    "factor": "combo_late_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "C__ret1__low": {
+    "stage": "C",
+    "factor": "ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__ret1__high": {
+    "stage": "C",
+    "factor": "ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__ret3__low": {
+    "stage": "C",
+    "factor": "ret3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__ret3__high": {
+    "stage": "C",
+    "factor": "ret3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__ret5__low": {
+    "stage": "C",
+    "factor": "ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__ret5__high": {
+    "stage": "C",
+    "factor": "ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__ret10__low": {
+    "stage": "C",
+    "factor": "ret10",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__ret10__high": {
+    "stage": "C",
+    "factor": "ret10",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__ret20__low": {
+    "stage": "C",
+    "factor": "ret20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__ret20__high": {
+    "stage": "C",
+    "factor": "ret20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__bias5__low": {
+    "stage": "C",
+    "factor": "bias5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__bias5__high": {
+    "stage": "C",
+    "factor": "bias5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__bias20__low": {
+    "stage": "C",
+    "factor": "bias20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__bias20__high": {
+    "stage": "C",
+    "factor": "bias20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__ma20slope5__low": {
+    "stage": "C",
+    "factor": "ma20slope5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__ma20slope5__high": {
+    "stage": "C",
+    "factor": "ma20slope5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__range_pos20__low": {
+    "stage": "C",
+    "factor": "range_pos20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__range_pos20__high": {
+    "stage": "C",
+    "factor": "range_pos20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__drawdown60__low": {
+    "stage": "C",
+    "factor": "drawdown60",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__drawdown60__high": {
+    "stage": "C",
+    "factor": "drawdown60",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__overnight5__low": {
+    "stage": "C",
+    "factor": "overnight5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__overnight5__high": {
+    "stage": "C",
+    "factor": "overnight5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__intraday5__low": {
+    "stage": "C",
+    "factor": "intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__intraday5__high": {
+    "stage": "C",
+    "factor": "intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__overnight_minus_intraday5__low": {
+    "stage": "C",
+    "factor": "overnight_minus_intraday5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__overnight_minus_intraday5__high": {
+    "stage": "C",
+    "factor": "overnight_minus_intraday5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__volume_ratio__low": {
+    "stage": "C",
+    "factor": "volume_ratio",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__volume_ratio__high": {
+    "stage": "C",
+    "factor": "volume_ratio",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__volume_trend__low": {
+    "stage": "C",
+    "factor": "volume_trend",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__volume_trend__high": {
+    "stage": "C",
+    "factor": "volume_trend",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__signed_volume5__low": {
+    "stage": "C",
+    "factor": "signed_volume5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__signed_volume5__high": {
+    "stage": "C",
+    "factor": "signed_volume5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__volume_price_corr20__low": {
+    "stage": "C",
+    "factor": "volume_price_corr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__volume_price_corr20__high": {
+    "stage": "C",
+    "factor": "volume_price_corr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__amihud20__low": {
+    "stage": "C",
+    "factor": "amihud20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__amihud20__high": {
+    "stage": "C",
+    "factor": "amihud20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__atr20__low": {
+    "stage": "C",
+    "factor": "atr20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__atr20__high": {
+    "stage": "C",
+    "factor": "atr20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__rv5_20__low": {
+    "stage": "C",
+    "factor": "rv5_20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__rv5_20__high": {
+    "stage": "C",
+    "factor": "rv5_20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__downside_share20__low": {
+    "stage": "C",
+    "factor": "downside_share20",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__downside_share20__high": {
+    "stage": "C",
+    "factor": "downside_share20",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__range_expansion__low": {
+    "stage": "C",
+    "factor": "range_expansion",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__range_expansion__high": {
+    "stage": "C",
+    "factor": "range_expansion",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__body__low": {
+    "stage": "C",
+    "factor": "body",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__body__high": {
+    "stage": "C",
+    "factor": "body",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__clv__low": {
+    "stage": "C",
+    "factor": "clv",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__clv__high": {
+    "stage": "C",
+    "factor": "clv",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__upper_shadow__low": {
+    "stage": "C",
+    "factor": "upper_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__upper_shadow__high": {
+    "stage": "C",
+    "factor": "upper_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__lower_shadow__low": {
+    "stage": "C",
+    "factor": "lower_shadow",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__lower_shadow__high": {
+    "stage": "C",
+    "factor": "lower_shadow",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__clv3__low": {
+    "stage": "C",
+    "factor": "clv3",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__clv3__high": {
+    "stage": "C",
+    "factor": "clv3",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__market_ret1__low": {
+    "stage": "C",
+    "factor": "market_ret1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__market_ret1__high": {
+    "stage": "C",
+    "factor": "market_ret1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__market_ret5__low": {
+    "stage": "C",
+    "factor": "market_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__market_ret5__high": {
+    "stage": "C",
+    "factor": "market_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__relative_ret5__low": {
+    "stage": "C",
+    "factor": "relative_ret5",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__relative_ret5__high": {
+    "stage": "C",
+    "factor": "relative_ret5",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__beta_residual1__low": {
+    "stage": "C",
+    "factor": "beta_residual1",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__beta_residual1__high": {
+    "stage": "C",
+    "factor": "beta_residual1",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__prev_late_return__low": {
+    "stage": "C",
+    "factor": "prev_late_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__prev_late_return__high": {
+    "stage": "C",
+    "factor": "prev_late_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__prev_am_return__low": {
+    "stage": "C",
+    "factor": "prev_am_return",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__prev_am_return__high": {
+    "stage": "C",
+    "factor": "prev_am_return",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__prev_pm_minus_am__low": {
+    "stage": "C",
+    "factor": "prev_pm_minus_am",
+    "tail": "low",
+    "timing": "previous_close"
+  },
+  "C__prev_pm_minus_am__high": {
+    "stage": "C",
+    "factor": "prev_pm_minus_am",
+    "tail": "high",
+    "timing": "previous_close"
+  },
+  "C__us_NASDAQCOM__low": {
+    "stage": "C",
+    "factor": "us_NASDAQCOM",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "C__us_NASDAQCOM__high": {
+    "stage": "C",
+    "factor": "us_NASDAQCOM",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "C__us_NASDAQSOX__low": {
+    "stage": "C",
+    "factor": "us_NASDAQSOX",
+    "tail": "low",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "C__us_NASDAQSOX__high": {
+    "stage": "C",
+    "factor": "us_NASDAQSOX",
+    "tail": "high",
+    "timing": "US_preopen_publication_unverified"
+  },
+  "C__current_gap__low": {
+    "stage": "C",
+    "factor": "current_gap",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "C__current_gap__high": {
+    "stage": "C",
+    "factor": "current_gap",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "C__gap_over_atr__low": {
+    "stage": "C",
+    "factor": "gap_over_atr",
+    "tail": "low",
+    "timing": "after_open"
+  },
+  "C__gap_over_atr__high": {
+    "stage": "C",
+    "factor": "gap_over_atr",
+    "tail": "high",
+    "timing": "after_open"
+  },
+  "C__combo_exhaustion": {
+    "stage": "C",
+    "factor": "combo_exhaustion",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "C__combo_distribution": {
+    "stage": "C",
+    "factor": "combo_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "C__combo_weak_rebound": {
+    "stage": "C",
+    "factor": "combo_weak_rebound",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "C__combo_persistent_sell": {
+    "stage": "C",
+    "factor": "combo_persistent_sell",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "C__combo_market_relative_weak": {
+    "stage": "C",
+    "factor": "combo_market_relative_weak",
+    "tail": "fixed",
+    "timing": "previous_close"
+  },
+  "C__combo_late_distribution": {
+    "stage": "C",
+    "factor": "combo_late_distribution",
+    "tail": "fixed",
+    "timing": "previous_close"
+  }
+}

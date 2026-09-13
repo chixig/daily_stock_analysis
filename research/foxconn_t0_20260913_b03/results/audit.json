@@ -1,0 +1,41 @@
+{
+  "factor_n": 38,
+  "rule_n": 410,
+  "nonempty": 372,
+  "n30": 223,
+  "basic_pass": 0,
+  "statistical_pass": 0,
+  "literal_open_pass": 0,
+  "negative_mean": 304,
+  "large_negative": 219,
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c"
+  },
+  "feature_mutation_tests": "passed at 3 historical cutoffs",
+  "stage_match": true,
+  "attribution_identity": "passed 1e-12",
+  "minute_primary_valid": 651,
+  "US": [
+    {
+      "series": "NASDAQCOM",
+      "status": "unavailable",
+      "reason": "The read operation timed out",
+      "source": "https://fred.stlouisfed.org/graph/graph.csv?id=NASDAQCOM&cosd=2018-01-01&coed=2026-09-11"
+    },
+    {
+      "series": "NASDAQSOX",
+      "status": "unavailable",
+      "reason": "The read operation timed out",
+      "source": "https://fred.stlouisfed.org/graph/graph.csv?id=NASDAQSOX&cosd=2018-01-01&coed=2026-09-11"
+    }
+  ],
+  "limitations": [
+    "history already inspected",
+    "current vendor vintage",
+    "within-batch multiplicity only",
+    "bar proxy not fills",
+    "PT direction layer, not discretionary implementation"
+  ]
+}

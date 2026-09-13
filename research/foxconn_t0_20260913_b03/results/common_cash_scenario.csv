@@ -1,0 +1,9 @@
+name,initial_common_cash,cash_increment,incremental_return_on_initial_stock_plus_cash_pct,skipped,T_cash_mdd,boundary
+PT_PT_matrix,80051.63781599999,45428.670825454275,47.79367496370199,0,-3574.828559087997,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+RT_UR_volume,80051.63781599999,8706.203697820081,9.159446273480803,0,-1769.2447286879653,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+RT_R_deceleration,80051.63781599999,5177.304172437052,5.446833207081846,0,-1237.8579906509894,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+PT_unconditional,80051.63781599999,40694.605620519644,42.81315562315282,0,-21429.77732568878,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+RT_unconditional,80051.63781599999,-76434.9170745513,-80.41409788489204,18,-81745.21161963095,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+RT_factor_C__clv__high,80051.63781599999,4051.0689203411894,4.2619664567834254,0,-8652.369187134005,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+RT_factor_C__amihud20__high,80051.63781599999,5141.6670008891415,5.409340774161439,0,-3174.973129286984,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
+RT_factor_U__combo_exhaustion,80051.63781599999,9960.836758578189,10.47939518713005,0,-7824.641434568966,"ex-post sufficient reserve; stock/dividend baseline shared, not total account return"
