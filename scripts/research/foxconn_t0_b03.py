@@ -40,11 +40,11 @@ def safe_corr(a,b):
     return float(x.iloc[:,0].rank().corr(x.iloc[:,1].rank())) if len(x)>=15 and x.iloc[:,0].nunique()>2 else np.nan
 
 def us_source(d,series):
-    url="https://fred.stlouisfed.org/graph/?g=unused" # replaced by documented CSV endpoint below
-    url=f"https://fred.stlouisfed.org/graph/graph.csv?id={series}&cosd=2018-01-01&coed=2026-09-11"
+    url=f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}&cosd=2018-01-01&coed=2026-09-11"
     try:
         req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 research"})
-        data=urllib.request.urlopen(req,timeout=45).read()
+        cache=SOURCE/(series+".csv")
+        data=cache.read_bytes() if cache.exists() else urllib.request.urlopen(req,timeout=45).read()
         a=pd.read_csv(io.BytesIO(data))
         a.columns=["date","value"]
         a.date=pd.to_datetime(a.date)
@@ -153,7 +153,13 @@ def decompose(d):
           decline_pct=float(np.expm1(g.log_day.sum())*100),night_pct=float(np.expm1(g.log_night.sum())*100),
           intraday_pct=float(np.expm1(g.log_intraday.sum())*100),night_log_sum=float(g.log_night.sum()),
           intraday_log_sum=float(g.log_intraday.sum()),D_days=int(g.stage.eq("D").sum()),
-          before_D_days=int((~g.stage.eq("D")).sum()),hindsight_only=True))
+          non_D_days=int((~g.stage.eq("D")).sum()),
+          D_day_log=float(g.loc[g.stage.eq("D"),"log_day"].sum()),
+          non_D_day_log=float(g.loc[~g.stage.eq("D"),"log_day"].sum()),
+          first_D_date=str(g.loc[g.stage.eq("D"),"date"].iloc[0].date()) if g.stage.eq("D").any() else None,
+          before_first_D_days=int((g.index<g.loc[g.stage.eq("D")].index[0]).sum()) if g.stage.eq("D").any() else len(g),
+          before_first_D_log=float(g.loc[g.index<g.loc[g.stage.eq("D")].index[0],"log_day"].sum()) if g.stage.eq("D").any() else float(g.log_day.sum()),
+          hindsight_only=True))
     pd.DataFrame(dd).to_csv(OUT/"hindsight_drawdown_attribution.csv",index=False)
     a[["date","stage","stage_contemporaneous_hindsight","log_day","log_night","log_intraday","log_raw_night","log_action"]].to_csv(OUT/"daily_attribution.csv",index=False)
     return pd.DataFrame(rows),pd.DataFrame(dd)
@@ -391,6 +397,40 @@ def run():
               skipped=skipped,T_cash_mdd=float((acc-np.maximum.accumulate(acc)).min()),
               boundary="ex-post sufficient reserve; stock/dividend baseline shared, not total account return"))
     pd.DataFrame(accounts).to_csv(OUT/"common_cash_scenario.csv",index=False)
+
+    # Matched-sample execution sensitivity: retain the dropped-date ledger, compare identical dates.
+    matched=[];missing=[]
+    for name,(mask,p) in bases.items():
+        if name in ["PT_unconditional","RT_unconditional"]:continue
+        m=mask&primary
+        mm=m&d.later_open.notna()
+        base=summarize(d,mm,p)
+        matched.append(dict(name=name,n=int(mm.sum()),excluded=int((m&~mm).sum()),
+          open_mean=base.get("mean_pct"),open_cash=base.get("cash"),
+          delayed_mean=base.get("delayed_pct"),delayed_cash=base.get("delayed_cash")))
+        for _,r in d[m&~mm].iterrows():
+            missing.append(dict(name=name,date=r.date,open=r.open,close=r.close,net_pct=r[p+"_pct"],cash=r[p+"_cash"]))
+    pd.DataFrame(matched).to_csv(OUT/"matched_execution_comparison.csv",index=False)
+    pd.DataFrame(missing).to_csv(OUT/"execution_excluded_dates.csv",index=False)
+    factor_audit=[]
+    for col in ranks:
+        n=int((primary&ranks[col].notna()).sum())
+        ic=safe_corr(ranks.loc[primary,col],d.loc[primary,"rt_pct"])
+        factor_audit.append(dict(factor=col,primary_rank_available=n,primary_IC=ic,
+             primary_factor_available=int((primary&f[col].notna()).sum()),
+             IC2024=safe_corr(ranks.loc[d.date.dt.year.eq(2024),col],d.loc[d.date.dt.year.eq(2024),"rt_pct"]),
+             IC2025=safe_corr(ranks.loc[d.date.dt.year.eq(2025),col],d.loc[d.date.dt.year.eq(2025),"rt_pct"]),
+             IC2026=safe_corr(ranks.loc[d.date.dt.year.eq(2026),col],d.loc[d.date.dt.year.eq(2026),"rt_pct"])))
+    pd.DataFrame(factor_audit).to_csv(OUT/"factor_coverage_IC_summary.csv",index=False)
+    gatecounts={
+       "n30":int(tab.n.ge(30).sum()),
+       "n30_positive":int((tab.n.ge(30)&tab.mean_pct.gt(0)).sum()),
+       "n30_mean_ge03":int((tab.n.ge(30)&tab.mean_pct.ge(.3)).sum()),
+       "n30_positive_delete5_mean":int((tab.n.ge(30)&tab.mean_pct.gt(0)&tab.delete5_pct.gt(0)).sum()),
+       "n30_positive_all3years":int((tab.n.ge(30)&tab.mean_pct.gt(0)&tab["2024_pct"].gt(0)&tab["2025_pct"].gt(0)&tab["2026_pct"].gt(0)).sum()),
+       "available_factors":sum(z["primary_rank_available"]>0 for z in factor_audit)}
+    save("screen_funnel.json",gatecounts)
+
     attribution,drawdowns=decompose(d)
     audit=dict(factor_n=38,rule_n=len(rules),nonempty=int(tab.n.gt(0).sum()),n30=int(tab.n.ge(30).sum()),
        basic_pass=int(tab.basic_pass.sum()),statistical_pass=int(tab.statistical_pass.sum()),literal_open_pass=int(tab.literal_open_pass.sum()),
@@ -407,6 +447,8 @@ def run():
        "## Causal-stage return attribution (primary)",old.md_table(attribution[(attribution.window=="primary")&(attribution.label=="stage")]),
        "## Hindsight peak-trough decomposition (not tradable labels)",old.md_table(drawdowns),
        "## PT versus RT, primary same q1000/cost window",old.md_table(pd.DataFrame(comparisons)[lambda x:x.window.eq("primary")]),
+       "## Matched execution (identical dates)",old.md_table(pd.DataFrame(matched)),
+       "## Screening funnel",json.dumps(gatecounts,indent=2),
        "## Retrospective walk-forward",old.md_table(pd.DataFrame(walk)),
        "## Common cash benchmark",old.md_table(pd.DataFrame(accounts)),
        "## Limitations",
