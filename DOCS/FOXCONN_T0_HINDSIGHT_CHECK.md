@@ -1,0 +1,4 @@
+# Hindsight decline interval clarification
+Status implemented. Of eight previously identified hindsight decline intervals, four produce positive net RT cash and mean returns; four are negative. All contain profitable days. Fixed1000 shares and inherited costs. Opportunities exist; previously tested causal rules remain unverified and not adopted. No new stage formula or live strategy.
+2026-06-03 to07-30: N40, +9063.723 net cash. 2023-04-18 to05-12: N15, +3471.609. 2024-07-09 to2025-04-08: N180, -4670.225 despite45.274% stock decline. Eight selected hindsight intervals are not a future win-rate sample.
+Run34750591927 succeeded; code f19008fac161fba0705644bc3af0047edf511d7d; result99a05378ea3facf65598df2a1d598651b9ddfe8f. Parent hashes, interval counts and daily cash reproduction passed. All market computation and trades remain GitHub. Evidence: research/foxconn_t0_20260913_hindsight_check/REPORT.md and manifest.json.
