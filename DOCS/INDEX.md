@@ -21,4 +21,4 @@
 
 - [Foxconn B04](FOXCONN_T0_B04.md): implemented; hindsight opportunities confirmed, all10 causal RT variants negative. Fixed evidence: research/foxconn_t0_20260913_b04/REPORT.md. Pre-run contract retained unchanged.
 
-- [B05 conditional decline probability](FOXCONN_T0_B05.md): active, fixed design before results.
+- [B05 conditional decline probability](FOXCONN_T0_B05.md): implemented; prior highCLV+highvolume observation candidate, long-history counterevidence retained. Results research/foxconn_t0_20260915_b05/REPORT.md; pre-run spec retained.

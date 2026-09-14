@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [research] Record B05 conditional decline probabilities, fixed observation candidate and historical counterevidence.
+
 - [文档] Record completed Foxconn B04 swing opportunities, negative causal rules, and independently costed PT candidates.
 
 - [chore] Register bounded Foxconn swing and causal-detection study on isolated research branch.
