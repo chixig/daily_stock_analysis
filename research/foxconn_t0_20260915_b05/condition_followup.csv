@@ -1,0 +1,14 @@
+condition,n,historical_probability_signal,trade_profit_positive
+weak,278,False,False
+notweak,376,False,False
+highCLV,141,True,False
+lowCLV,162,False,False
+highVolume,67,True,True
+highCLV_highVolume,30,True,True
+weak_highCLV,46,False,False
+weak_lowCLV,85,False,False
+gapDown1,170,False,False
+gapUp1,154,False,False
+gapUp1_highCLV,36,False,True
+gapUp1_highVolume,17,False,True
+gapDown1_lowCLV,40,False,False

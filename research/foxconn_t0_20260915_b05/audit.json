@@ -1,0 +1,57 @@
+{
+  "data_end": "2026-09-11",
+  "primary_days": 654,
+  "conditions": 14,
+  "models": 4,
+  "trade_masks": 8,
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_t0_20260913_b04/daily_audit.csv": "c97b0698b0de9d3a18515a94c34966e0510a61c9ea4de5bbc7c07474609fd0e9"
+  },
+  "all_primary_predictions_available": true,
+  "feature_mutation_and_prefix": "passed900/1600",
+  "future_target_pipeline_invariance": "passed through2025-01-02",
+  "synthetic_fit_and_costs": "passed",
+  "fold_chronology": "all train ends before prediction month",
+  "max_iterations": 5,
+  "frozen_PT": {
+    "n": 72,
+    "mean_pct": 1.6156810165899478,
+    "median_pct": 1.4290188755534035,
+    "win_pct": 75.0,
+    "cash": 45428.670825454275,
+    "pf_pct": 4.596276194732876,
+    "pf_cash": 4.341808860653908,
+    "worst_pct": -4.6126820117264495,
+    "mdd_cash": -3574.828559087997,
+    "clusters": 42,
+    "episodes": 64,
+    "delete5_pct": 1.1212910670659906,
+    "delete5_cash": 25352.7578065182,
+    "double_slip_pct": 1.5148019806280062,
+    "double_slip_cash": 42695.928222908246,
+    "matched_n": 71,
+    "excluded_n": 1,
+    "matched_open_pct": 1.6368614377430883,
+    "matched_open_cash": 45399.02498005428,
+    "delayed_pct": 1.0055781850084393,
+    "delayed_cash": 30399.983333117245,
+    "month_ci_low": 0.9809582934677086,
+    "month_ci_high": 2.3352534792265476
+  },
+  "probability_followup": [
+    "highCLV",
+    "highVolume",
+    "highCLV_highVolume"
+  ],
+  "negative_mirror_rows": 129,
+  "large_mirror_rows": 87,
+  "limitations": [
+    "already-inspected history",
+    "descriptive month intervals not multiple-search adjusted",
+    "auction-open features cannot certify auction execution",
+    "5minute proxy not fills",
+    "no current new data or live trading"
+  ]
+}
