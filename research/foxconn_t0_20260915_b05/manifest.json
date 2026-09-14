@@ -1,18 +1,21 @@
 {
-  "code_sha": "bfa3fbe2924629e3c74294b01f5556d321454b39",
-  "run_id": "34875430237",
+  "code_sha": "8e779e6d510fe6b5727fb2f36ce10c9e8ea78522",
+  "run_id": "34875628984",
   "contract_sha256": "fffa62768341d0ad0359b99b5bd79bbf6428d346af6a32d2108b845c1b8b4243",
   "files": {
+    "research/foxconn_t0_20260915_b05/candidate_trades.csv": "fb28238a68e8febe5b97c79f710c8d75a46ed4b8ebf532a4f7d035d5d56c8cb2",
     "research/foxconn_t0_20260915_b05/mirror_registry.csv": "8043d9a580524b43955bd8134e760d0da6eb9f39ba142f115d653eb6f267259b",
     "research/foxconn_t0_20260915_b05/calibration.csv": "bee42a22da1975a8c31ae623c383c8ef080e7a6da75c70eb79be0b2b39b59624",
     "research/foxconn_t0_20260915_b05/condition_and_trade_economics.csv": "231d6296c90bf686f716af6ef2f1f1652b84002e5d162af21a26f33e49a33575",
     "research/foxconn_t0_20260915_b05/coefficients.csv": "93e0cb11d75b465a00362dbc8011c732e1171552df00b934f4061c1bb935a558",
+    "research/foxconn_t0_20260915_b05/summary.json": "b832fb227e68469449638a8e3244a0544fd8f3232913f665aa2729b9ae7b9416",
     "research/foxconn_t0_20260915_b05/audit.json": "79190e9097bc91195521cf3dfe56087a3d82cfecb93fcce361588b77bf2a565a",
     "research/foxconn_t0_20260915_b05/daily_predictions.csv": "ad17bf3824349408923b2a1742d0dd68ae0d6887f228c8adc7f00e1dbb64dc2b",
     "research/foxconn_t0_20260915_b05/conditional_probabilities.csv": "470f8ea6ff1f2ee1a5080bd518067723402b1177dbdaba1cc97a19d68dd3a360",
     "research/foxconn_t0_20260915_b05/model_evaluation.csv": "53af91e132c880fc7f68b4df5ec60ec99eba9550d7ce836b9b53e028bbea0eb6",
+    "research/foxconn_t0_20260915_b05/candidate_context_audit.csv": "bee39170b643947172d9c8251d499a51788018f976cd640fdf149ce44f90a5b4",
     "research/foxconn_t0_20260915_b05/condition_followup.csv": "e44ab11eb90677a96dfcd3c549367383af263c271ef4e5161cd376a10f2fa689",
-    "research/foxconn_t0_20260915_b05/REPORT.md": "8be935222ec072878dd1c598f07217f52e5dc8203616cc6e11b52d2770bd813d",
+    "research/foxconn_t0_20260915_b05/REPORT.md": "aa7da4cc63ce594f4f32aceaac84671a88bac3863a42b8ae7cf463981d361e63",
     "research/foxconn_t0_20260915_b05/monthly_training.csv": "85be1f025acf7db3132e4b04f0b2fdf9d4f66ff1d3486fc28edc1b4dfde58383"
   }
 }
