@@ -118,7 +118,7 @@ def run():
     f=features(d,ix)
     np.testing.assert_array_equal(f.weak,a.DD2.astype(float))
     for cut in [900,1600]:
-        alt=d.copy();alt.loc[cut:,["open","high","low","close","signal_close","volume"]]*=1.31
+        alt=d.copy();alt["volume"]=alt.volume.astype(float);alt.loc[cut:,["open","high","low","close","signal_close","volume"]]*=1.31
         fx=features(alt,ix)
         np.testing.assert_allclose(f.loc[cut,COLS["P9"]],fx.loc[cut,COLS["P9"]],atol=1e-12)
         np.testing.assert_allclose(features(d.iloc[:cut+1],ix.iloc[:cut+1]).iloc[-1],f.iloc[cut],atol=1e-12)
@@ -171,7 +171,7 @@ def run():
             g=d[m&wm]
             rows.append(dict(id=key,kind="model_trade" if key in rules else "condition",
                 timing="after_auction" if (key.startswith("gap") or (key in rules and key.startswith("A"))) else "previous_close",window=win,
-                **probstats(g,d[wm]),**b4.metrics(g)))
+                **{**probstats(g,d[wm]),**b4.metrics(g)}))
             for direction in ["rt","pt"]:
                 v=old.metrics(g,direction)
                 if v["n"] and v["mean_pct"]<0:
