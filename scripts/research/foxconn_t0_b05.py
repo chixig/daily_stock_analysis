@@ -214,6 +214,37 @@ def run():
       "## Follow-up diagnostic, not statistical certification",old.md_table(st),
       "## Last fitted coefficients, standardized and observational",old.md_table(coef[coef.month.eq(coef.month.max())]),
       "## Audit",json.dumps(audit,indent=2,default=str)]
+
+    # Post-result explanation audit only; no new masks, thresholds or model fits.
+    candidate=cond["highCLV_highVolume"]
+    ur=d.stage.isin(["U","R"])&d.vr.ge(1.5)
+    candidate_context=[]
+    for win,wm in windows.items():
+        for scope,mask in [("candidate",candidate),("old_UR_volume",ur),
+            ("candidate_overlap_old_UR",candidate&ur),("candidate_outside_old_UR",candidate&~ur),
+            ("high_volume_without_highCLV",vol&~high)]:
+            gg=d[mask&wm]
+            candidate_context.append(dict(scope=scope,window=win,**{**probstats(gg,d[wm]),**b4.metrics(gg)}))
+        for stage in ["U","R","D","C"]:
+            gg=d[candidate&wm&d.stage.eq(stage)]
+            candidate_context.append(dict(scope="candidate_stage_"+stage,window=win,**{**probstats(gg,d[wm]),**b4.metrics(gg)}))
+    context=save("candidate_context_audit.csv",candidate_context)
+    save("candidate_trades.csv",d[candidate][["date","stage","clv","vr","open","close","rt_pct","rt_cash","later_open"]])
+    summary=dict(
+        candidate_all_windows=stats[stats.id.eq("highCLV_highVolume")].to_dict("records"),
+        primary_probabilities=prob[prob.window.eq("primary")].to_dict("records"),
+        primary_models=ev[ev.window.eq("primary")].to_dict("records"),
+        primary_model_trades=stats[stats.window.eq("primary")&stats.kind.eq("model_trade")].to_dict("records"),
+        primary_mirrors=[r for r in mirrors if r["window"]=="primary"],
+        candidate_context=context.to_dict("records"),
+        candidate_note="selected for explanation after observing fixed14-condition results; no threshold optimization, no independent OOS",
+        audit=audit)
+    dump("summary.json",summary)
+    report.extend(["## All fixed conditions, 2020 onward",old.md_table(stats[stats.window.eq("full_2020")&stats.kind.eq("condition")]),
+        "## Candidate chronology and old-rule overlap (post-result diagnostic, no new trades)",
+        old.md_table(context[context.window.isin(["primary","full_2020"])]),
+        "## Primary paired opposite-direction registry",old.md_table(pd.DataFrame(mirrors)[lambda t:t.window.eq("primary")])])
+
     (ROOT/"REPORT.md").write_text("\n\n".join(report))
     dump("manifest.json",dict(code_sha=os.environ["GITHUB_SHA"],run_id=os.environ["GITHUB_RUN_ID"],
         contract_sha256=hashlib.sha256(Path("DOCS/FOXCONN_T0_B05.md").read_bytes()).hexdigest(),
