@@ -24,3 +24,5 @@
 - [B05 conditional decline probability](FOXCONN_T0_B05.md): implemented; prior highCLV+highvolume observation candidate, long-history counterevidence retained. Results research/foxconn_t0_20260915_b05/REPORT.md; pre-run spec retained.
 
 - [B06 execution and external hypotheses](FOXCONN_T0_B06.md): implemented; BASE execution sensitivity and external rules verified; candidate retained with historical counterevidence, external rules not adopted. Evidence research/foxconn_t0_20260915_b06/REPORT.md; pre-run contract unchanged.
+
+- [B07 expanded-history environment study](FOXCONN_T0_B07.md): active; pre-run fixed rules.
