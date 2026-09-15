@@ -1,0 +1,31 @@
+name: Foxconn B07 Expanded History Environments
+on:
+  push:
+    branches: [research/foxconn-t0-20260915-b07]
+    paths:
+      - scripts/research/foxconn_t0_b07.py
+      - .github/workflows/foxconn-t0-b07.yml
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0
+      - run: python -m py_compile scripts/research/foxconn_t0_b07.py
+      - run: python scripts/research/foxconn_t0_b07.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foxconn-b07-${{ github.run_id }}
+          path: research/foxconn_t0_20260915_b07/
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/foxconn_t0_20260915_b07/
+          git commit -m "research: preserve candidate and external rule evidence"
+          git push origin HEAD:research/foxconn-t0-20260915-b07
