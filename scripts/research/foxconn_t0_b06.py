@@ -123,7 +123,7 @@ def run():
                     temp["rt_cash"]=old.cashflow(gg[col],gg.close,gg.date,slip=slip)
                     temp["rt_pct"]=100*temp.rt_cash/(1000*gg.open)
                     execution.append(dict(id=key,window=win,time=time,slip=slip,
-                        full_signal_n=len(g),excluded=len(g)-len(gg),**old.metrics(temp)))
+                        slip_bps=10000*slip,full_signal_n=len(g),excluded=len(g)-len(gg),**old.metrics(temp)))
             for p in ["rt","pt"]:
                 m=old.metrics(g,p)
                 if m["n"] and m["mean_pct"]<0:
@@ -141,7 +141,7 @@ def run():
             ledger.append(dict(id=key,date=z.date,stage=z.stage,open=z.open,close=z.close,
                 rt_cash=z.rt_cash,rt_pct=z.rt_pct,pt_cash=z.pt_cash,pt_pct=z.pt_pct,**f.loc[i].to_dict()))
     stat=save("rule_results.csv",stats);ex=save("matched_execution.csv",execution)
-    save("execution_exclusions.csv",missing);mir=save("mirror_registry.csv",mirrors)
+    save("execution_exclusions.csv",missing)
     ly=save("leave_one_year_out.csv",leaveyear);lt=save("all_trades.csv",ledger)
     fail=save("BASE_losing_trades.csv",lt[lt.id.eq("BASE_HV")&lt.rt_cash.lt(0)])
     overlap=[]
@@ -152,13 +152,25 @@ def run():
             np.testing.assert_allclose(d.loc[inter|lonly,"rt_cash"].sum(),d.loc[r[left]&wm,"rt_cash"].sum(),atol=1e-6)
             for part,m in [("intersection",inter),("left_only",lonly),("right_only",ronly)]:
                 overlap.append(dict(left=left,right=right,part=part,window=win,**old.metrics(d[m])))
+                for p in ["rt","pt"]:
+                    metric=old.metrics(d[m],p)
+                    if metric["n"] and metric["mean_pct"]<0:
+                        opp="pt" if p=="rt" else "rt"
+                        mirrors.append(dict(id=left+"__"+right+"__"+part,window=win,losing=p,losing_mean=metric["mean_pct"],large=metric["mean_pct"]<=-.5,opposite=opp,scope="overlap_diagnostic",**old.metrics(d[m],opp)))
     ov=save("overlap_partitions.csv",overlap)
     relax=[]
     for broad,narrow in [("EXT_R2","EXT_R1"),("EXT_R4","EXT_R3"),("EXT_R2","EXT_R5")]:
         assert not (r[narrow]&~r[broad]).any()
         for win,wm in windows.items():
-            relax.append(dict(broad=broad,narrow=narrow,window=win,**economy(d[r[broad]&~r[narrow]&wm])))
+            g=d[r[broad]&~r[narrow]&wm]
+            relax.append(dict(broad=broad,narrow=narrow,window=win,**economy(g)))
+            for p in ["rt","pt"]:
+                metric=old.metrics(g,p)
+                if metric["n"] and metric["mean_pct"]<0:
+                    opp="pt" if p=="rt" else "rt"
+                    mirrors.append(dict(id=broad+"__outside__"+narrow,window=win,losing=p,losing_mean=metric["mean_pct"],large=metric["mean_pct"]<=-.5,opposite=opp,scope="relaxation_diagnostic",**old.metrics(g,opp)))
     ab=save("threshold_relaxation_diagnostics.csv",relax)
+    mir=save("mirror_registry.csv",mirrors)
     failure_groups=[]
     for win,wm in windows.items():
         for stage in ["ALL","U","R","D","C"]:
@@ -198,7 +210,7 @@ def run():
         "Data through2026-09-11. External claims unverified; no window search to match reported counts.",
         "## Primary",old.md_table(stat[stat.window.eq("primary")][cols]),
         "## Historical and annual",old.md_table(stat[~stat.window.eq("primary")][cols]),
-        "## Primary matched execution, all times same dates",old.md_table(ex[ex.window.eq("primary")]),
+        "## Primary matched execution, all times same dates",old.md_table(ex[ex.window.eq("primary")].drop(columns="slip")),
         "## External claims versus our common primary window",old.md_table(comparison),
         "## Primary overlap with BASE",old.md_table(ov[ov.window.eq("primary")&ov.left.eq("BASE_HV")]),
         "## Primary relaxation marginal dates, not new strategies",old.md_table(ab[ab.window.eq("primary")]),
