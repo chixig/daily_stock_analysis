@@ -1,0 +1,16 @@
+{
+  "code_sha": "957860b9d76a951f92a5a8921702014568522c03",
+  "run_id": "34926660120",
+  "spec_sha256": "268563236905e891962247007274be2dbd18554bd2881d93d545ff905009e6d4",
+  "files": {
+    "research/foxconn_t0_20260915_b07/walkforward_training.csv": "000da601996001a6860921d99fecf1810ad40871a29000441ee4fe329a7cc51c",
+    "research/foxconn_t0_20260915_b07/mirror_registry.csv": "aa75b903c579c53a4bbf1e99e119f3a71cc420e075cb39673aff92848f95b39b",
+    "research/foxconn_t0_20260915_b07/coverage.csv": "5c8188d0e0879de5c7c1e2366cb2c42034056fcb0891e88a31bc30186a305b3f",
+    "research/foxconn_t0_20260915_b07/walkforward_trades.csv": "2123958f3d4ced5218514740b8d770b5d02b033bac02d9b96ea567b47ec9e68a",
+    "research/foxconn_t0_20260915_b07/results.csv": "6712fe39e9d9ad2ffbd41bb4328637b4153ec50521006d7185ec478b8f46b983",
+    "research/foxconn_t0_20260915_b07/audit.json": "dea9ceae87a2354b07c0ae99f94a13569d6eaa3e01cddd9834a346bc4916a64b",
+    "research/foxconn_t0_20260915_b07/daily_features_and_signals.csv": "522e4f08461664c6e90c53dd4e933d7266cb4ee10805ce75cd955516e9dd41a8",
+    "research/foxconn_t0_20260915_b07/REPORT.md": "14f4b9c4aacf9eec6451ec2b098321d60bc586a7b7d5c535819d7b93afa0f266",
+    "research/foxconn_t0_20260915_b07/walkforward_results.csv": "8593b4889ec3f9b063341ae18e267156b36f9c755b5a80eaa7095487a40118b7"
+  }
+}

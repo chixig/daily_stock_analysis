@@ -1,0 +1,32 @@
+{
+  "data_start": "2018-06-08",
+  "data_end": "2026-09-11",
+  "daily_n": 2007,
+  "first_complete_features": "2019-07-22",
+  "rules": [
+    "BASE",
+    "MKT20_high",
+    "MKT20_low",
+    "REL20_high",
+    "REL20_low",
+    "VOL_high",
+    "VOL_low",
+    "ACT_high",
+    "ACT_low"
+  ],
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_t0_20260913_b04/daily_audit.csv": "c97b0698b0de9d3a18515a94c34966e0510a61c9ea4de5bbc7c07474609fd0e9",
+    "research/foxconn_t0_20260915_b05/candidate_trades.csv": "fb28238a68e8febe5b97c79f710c8d75a46ed4b8ebf532a4f7d035d5d56c8cb2"
+  },
+  "primary_BASE_reproduced": true,
+  "PT_reproduced": true,
+  "feature_mutation_prefix_passed": true,
+  "complement_cash_passed": true,
+  "annual_cutoff_passed": true,
+  "mirror_rows": 239,
+  "large_mirror_rows": 152,
+  "limitation": "Historical exploratory splits and retrospective walk-forward, no new unseen forward sample. SSE is not industry. ACT close*volume proxy is not float turnover."
+}
