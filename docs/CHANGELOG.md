@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [chore] Record expanded-history B07 environment tests, non-adoption and historical validation.
+
 - [chore] Record B06 fixed-candidate execution tests, external-rule counterevidence and diagnostic mirror registry.
 
 - [chore] Record B05 conditional decline probabilities, fixed observation candidate and historical counterevidence.

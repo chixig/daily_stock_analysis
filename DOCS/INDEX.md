@@ -25,4 +25,4 @@
 
 - [B06 execution and external hypotheses](FOXCONN_T0_B06.md): implemented; BASE execution sensitivity and external rules verified; candidate retained with historical counterevidence, external rules not adopted. Evidence research/foxconn_t0_20260915_b06/REPORT.md; pre-run contract unchanged.
 
-- [B07 expanded-history environment study](FOXCONN_T0_B07.md): active; pre-run fixed rules.
+- [B07 expanded-history environment study](FOXCONN_T0_B07.md): implemented; expanded history,8 environment splits and annualNONE results; historical counterevidence retained.
