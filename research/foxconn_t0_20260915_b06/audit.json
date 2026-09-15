@@ -24,8 +24,8 @@
   "PT_reproduction": "N72/cash45428.671",
   "minute0935_reproduction": true,
   "overlap_cash_reconciliation": true,
-  "mirror_rows": 50,
-  "large_mirror_rows": 21,
+  "mirror_rows": 194,
+  "large_mirror_rows": 70,
   "source_limit": "External period/fees/fills unknown; common-window comparison is not exact reproduction.",
   "limits": [
     "All history already inspected",
