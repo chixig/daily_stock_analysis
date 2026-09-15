@@ -117,3 +117,7 @@ Models mildly improve aggregate Brier but upper probabilities overstate realized
 Decision: preserve highCLV+highVolume as a fixed observation/research candidate. Continue with validation of this precise condition when requested, not broad threshold tuning or automatic trading. Previous no-adoption decisions still apply to prior tested rules; B05 adds a candidate and does not certify execution or future70% probability.
 Validation: input hashes, future-feature and prefix invariance900/1600, entire forecast refit with future targets mutated unchanged through2025-01-02, prior-month train cutoff, all654 forecasts finite, synthetic logistic/cost checks, IRLS converged<=5iterations, frozen PT72/cash45428.671 reproduced. Initial run failed on duplicate summary n key, fixed without parameter change; reporting extension preserves all original numerical-file hashes. Only study workflow certified; unrelated bank-model workflow not modified.
 Evidence: research/foxconn_t0_20260915_b05/REPORT.md and manifest.json at fixed result commit. All market computation/evidence on GitHub, local Chinese conclusions only; no main merge, live trading, overnight strategy or new automatic monitor.
+
+
+## B06 authorized
+2026-09-15 user requested continued fixed-candidate validation and supplied five external AI rules for reference. Exact external period/costs unknown; no claim of reproduction. Six fixed masks, execution and failure/overlap audit, all computation on GitHub. Results pending.
