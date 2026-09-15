@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [chore] Record B06 fixed-candidate execution tests, external-rule counterevidence and diagnostic mirror registry.
+
 - [chore] Record B05 conditional decline probabilities, fixed observation candidate and historical counterevidence.
 
 - [文档] Record completed Foxconn B04 swing opportunities, negative causal rules, and independently costed PT candidates.
