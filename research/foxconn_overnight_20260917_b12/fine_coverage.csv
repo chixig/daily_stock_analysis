@@ -1,0 +1,5 @@
+mode,trades,entry_1m,exit_1m,both_1m
+1000_S0,61,0,0,0
+1000_S2,61,0,0,0
+1000_S2_WORSTBAR,61,0,0,0
+OPEN,61,0,0,0

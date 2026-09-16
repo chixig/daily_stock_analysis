@@ -1,0 +1,18 @@
+{
+  "code_sha": "1d0b5504cf8bd20bdad090a31fe1deed5c036a5e",
+  "run_id": "35124403153",
+  "files": {
+    "research/foxconn_overnight_20260917_b12/first_event_trades.csv": "6145d04f96a10f26b6f57339a6ed32259330f6690ca39e3efb51d6746f4b9d41",
+    "research/foxconn_overnight_20260917_b12/mirror_registry.csv": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "research/foxconn_overnight_20260917_b12/event_members.csv": "a748c73faaadf1f784b9329e80ddbe89c76777320cc48a873264fdff9223b740",
+    "research/foxconn_overnight_20260917_b12/fine_coverage.csv": "ca66a470afce5915a183af4dab464980b612e451e8da88e3edd65f72e88e3e6a",
+    "research/foxconn_overnight_20260917_b12/leave_one_event_out.csv": "0a97f6899da950ac8735fc8a5a0240a34c8247f0fef3703bb368604b7b057e0a",
+    "research/foxconn_overnight_20260917_b12/daily_minute_alignment.csv": "cc1bcc1c0ca1cdc94d1128f279f2f0ba32fc9a6c40f7e59bf4bdf95bf7e306e7",
+    "research/foxconn_overnight_20260917_b12/execution_pressure.csv": "5d09fa319aed730407d66936cd302f89872f70e333e5e5bfe0d0f4633a0445a8",
+    "research/foxconn_overnight_20260917_b12/latency_trades.csv": "40f4c462569e04117a2fd10b55655acb4f5f267197df90ec8daa540b645f2e37",
+    "research/foxconn_overnight_20260917_b12/audit.json": "72f2a2f35733eea5f0bb25f5570ccdb9e9ab3c484f64edc60dc95da93363c0eb",
+    "research/foxconn_overnight_20260917_b12/event_summary.csv": "57a837bfcd22edea7d339986c7c4cb04e32cb4ef58362edd6d19736f9c4f79e7",
+    "research/foxconn_overnight_20260917_b12/REPORT.md": "f5174261877585b96bbfedc1bcb8659d3f8d5f50fd62c530ab07c906e480fa21",
+    "research/foxconn_overnight_20260917_b12/events.csv": "abc6072651a07b5a1607253f01d8d2965cea53ede830d849773a33418caaa3e0"
+  }
+}

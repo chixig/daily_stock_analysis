@@ -1,0 +1,41 @@
+{
+  "data_end": "2026-09-11",
+  "fixed_candidate": "prev_r20<=-16.1565018;close buy;10:00 deadline;none/2% stop unchanged",
+  "raw_signal_days": 63,
+  "tradable_signals": 61,
+  "fine_coverage": {
+    "symbol": "601138",
+    "requested_start": "2018-06-08",
+    "requested_end": "2026-09-11",
+    "kline": {
+      "rows": 4800,
+      "trading_days": 20,
+      "actual_start": "2026-08-17 09:31:00",
+      "actual_end": "2026-09-11 15:00:00"
+    },
+    "snapshot": {
+      "rows": 481440,
+      "trading_days": 2006,
+      "actual_start": "2018-06-08 09:30:00",
+      "actual_end": "2026-09-11 14:59:00"
+    }
+  },
+  "input_hashes": {
+    "research/foxconn_overnight_20260916_b11/exit_trades.csv": "0f591d3c5ae3d053db8414408f43746be228083bc390b6d5a3ea3cd39b50a3ad",
+    "research/foxconn_overnight_20260916_b11/exit_results.csv": "78ef95412d8d31f2a96a6abd4157b79c3dce2ee9626f3f6876e03a4072a3bbb8",
+    "research/foxconn_overnight_20260916_b10/features.csv": "62d30d4e292fc4ab967b78e945ea8b841ab3e5f04b8dd20f532335bfdcfb739e",
+    "research/foxconn_overnight_20260916_b10/walkforward_predictions.csv": "cd819c985ae625677157159eceb57dde0697dc63aed1d1cc42487bb464319dbe",
+    "research/foxconn_overnight_20260916_b08/daily_ledger.csv": "8d5ffd55d0a21e1ca2f76c19af81f1aefd0051c67c0fc9252607b82ce1ffce1c",
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_t0_20260913/source/baostock_raw_crosscheck.csv": "52b880bacd8740ac79a4f7a31a8c21f2cb26e074d441797a44e9e3c8b6f97e10",
+    "data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv": "78811cdfa3e493c3a65bb3d872e93fe3f66980f58673d7932c8e30e2b1d144d0",
+    "data/601138_intraday/pytdxdata_1min/qc_kline_daily.csv": "dcdad2392b55609df9fb9c1213575c33adfb43c1ff242165b7b351fe86b05eea",
+    "data/601138_intraday/pytdxdata_1min/coverage.json": "74c9ef374a16e3987a7ca2220cf040971da3edf3c1d5e16e2f2bdac3c196c677",
+    "data/601138_intraday/pytdxdata_1min/kline_yearly/601138_1m_kline_2026.csv": "8ed20c66fc16f3d7137d563d08457fa626a955409b006ce9e3b5d230b15e6d75"
+  },
+  "checks": "B11 hashes/61 trades,causal event-prefix,partition by events,latency liquidity/range,original pnl reproduction",
+  "gate": "Execution cannot be certified without candidate-date 1m/auction coverage;account and prospective automation not started pending execution gate. 5m stress is diagnostic,not evidence of actual orders.",
+  "limitations": "Historical C discovered in full sample;event sensitivity3/5/10 sessions fixed before run;first buyable can be computed online;future event-end used only reporting;bar-confirmation latency is 0-5min then next close adds5min,not actual tick simulation."
+}
