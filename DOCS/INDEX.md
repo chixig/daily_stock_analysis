@@ -30,3 +30,5 @@
 - [B08 overnight study](FOXCONN_OVERNIGHT_B08.md): implemented finite first round;14 computable rules negative,ON2_F7 unavailable; no strategy promotion. Fixed results b4691c823383eca5de71ca120c3df2e3918df6a3; execution uncertified.
 
 - [B09 intraday paths](FOXCONN_OVERNIGHT_B09.md): implemented bounded study;all8 long/old/recent negative,early-entry also negative;results1290406e8da73b3d10a5e85882d188a1a88ff332,execution uncertified.
+
+- [B10 优秀样本反推与有限拟合](FOXCONN_OVERNIGHT_B10.md)：active。
