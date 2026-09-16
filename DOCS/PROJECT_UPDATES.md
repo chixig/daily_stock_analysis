@@ -148,3 +148,5 @@ Evidence: [report](https://github.com/chixig/daily_stock_analysis/blob/4ca9fe809
 
 ## 2026-09-16 B08 start
 User approved overnight research plan and execution. Reuse frozen historical input hashes. New cross-date cashflows,14:50 causal features,limited hypotheses,dividends and stress checks. No main merge or deployment.
+
+B08 implementation validation: First run failed before results on gapdays int/float prefix mismatch. Standardize calendar-feature dtype and numeric mutation input; retain exact prefix/value assertions and all frozen parameters.

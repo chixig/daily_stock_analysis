@@ -53,7 +53,7 @@ def rules(f,clow=.2,chigh=.8,r=4,vl=.8,vh=1.5):
 
 def prior_features(d,ix):
     f=pd.DataFrame({'clv':(d.close-d.low)/(d.high-d.low).replace(0,np.nan),'r3':100*d.signal_close.pct_change(3),'vr':d.volume/d.volume.shift().rolling(20).mean(),'relative':d.signal_close.pct_change()-ix.pct_change()}).shift()
-    f['gapdays']=(d.exit_date-d.date).dt.days
+    f['gapdays']=(d.exit_date-d.date).dt.days.astype(float)
     return f
 
 def tail_features(d,m,clock):
@@ -63,13 +63,13 @@ def tail_features(d,m,clock):
     a=a.reindex(pd.DatetimeIndex(d.date));a.index=d.index
     expected=46 if clock=='14:50' else 45
     a.loc[a.bars.ne(expected),['p','h','l','v']]=np.nan
-    f=pd.DataFrame({'clv':(a.p-a.l)/(a.h-a.l).replace(0,np.nan),'r3':100*(a.p*(d.signal_close/d.close)/d.signal_close.shift(3)-1),'vr':a.v/a.v.shift().rolling(20).mean(),'relative':np.nan,'gapdays':(d.exit_date-d.date).dt.days})
+    f=pd.DataFrame({'clv':(a.p-a.l)/(a.h-a.l).replace(0,np.nan),'r3':100*(a.p*(d.signal_close/d.close)/d.signal_close.shift(3)-1),'vr':a.v/a.v.shift().rolling(20).mean(),'relative':np.nan,'gapdays':(d.exit_date-d.date).dt.days.astype(float)})
     return f,a
 
 def checks(d,ix,m,f1,f2):
     old.tests()
     for cut in [900,1600]:
-        a=d.copy();a.loc[cut:,'volume']*=1.8
+        a=d.copy();a['volume']=a.volume.astype(float);a.loc[cut:,'volume']*=1.8
         a.loc[cut:,['open','close','high','low','signal_close']]*=1.3
         pd.testing.assert_series_equal(prior_features(a,ix).iloc[cut],f1.iloc[cut])
         pd.testing.assert_frame_equal(prior_features(d.iloc[:cut+1],ix.iloc[:cut+1]),f1.iloc[:cut+1])
@@ -140,7 +140,7 @@ def run():
     save('minute_audit.csv',pd.DataFrame({'date':d.date,'good_full_day':good,'tail_bars':tail.bars,'tail_price':tail.p,'daily_close':d.close,'exit0935close':d.exit0935close,'exit0935open':d.exit0935open}))
     d['cash'],d['net'],d['fee']=pnl(d);d['gross']=100*((d.next_open+d.dividend*.8)/d.close-1)
     d['price_only']=100*(d.next_open/d.close-1);d['event']=d.dividend.gt(0)
-    d['calendar_days']=(d.exit_date-d.date).dt.days
+    d['calendar_days']=(d.exit_date-d.date).dt.days.astype(float)
     masks={'ON0':pd.Series(True,index=d.index,dtype='boolean')}
     for ver,f in [('ON1',f1),('ON2',f2)]:
         for k,v in rules(f).items():
