@@ -45,7 +45,7 @@ def morning_exit(entry,days,bars,start,deadline,stop,worst=False):
             if pending:
                 if lower_open:return dict(price=float(b['open']),actual_exit=day['date'],clock=(pd.Timestamp('2000-01-01 '+b['clock'])-pd.Timedelta(minutes=5)).strftime('%H:%M'),reason=first_reason,delayed=True,dividend=div)
                 continue
-            line=threshold-div*.8 if threshold else None
+            line=np.floor((threshold-div*.8)*100+1e-8)/100 if threshold else None
             triggered=line is not None and b['low']<=line
             due=b['clock']>=deadline
             if not triggered and not due:continue
@@ -62,7 +62,7 @@ def tests():
     def day(o=100):return dict(date=dt,open=o,volume=1000,preclose=100,dividend_today=0)
     def bar(o,h,l,c):return dict(clock='09:35',open=o,high=h,low=l,close=c,volume=100)
     x=morning_exit(100,[day(94)],{dt:[bar(94,96,93,95)]},0,'10:00',.01);assert x['price']==94 and x['reason']=='opening_gap_stop'
-    x=morning_exit(100,[day()],{dt:[bar(100,101,98,100)]},0,'09:35',.01);assert abs(x['price']-99.0495)<1e-8
+    x=morning_exit(100,[day()],{dt:[bar(100,101,98,100)]},0,'09:35',.01);assert abs(x['price']-99.04)<1e-8
     assert morning_exit(100,[day()],{dt:[bar(100,101,98,100)]},0,'09:35',.01,True)['price']==98
     assert morning_exit(100,[day()],{dt:[bar(100,101,98,100)]},0,'09:35',None)['price']==100
     d2=day(92);d2['date']=dt+pd.Timedelta(days=1);d2['preclose']=90
@@ -159,7 +159,7 @@ def run():
     for label,_,_,worst in modes:
         if worst:
             a=priced[label];b=priced[label.replace('_WORSTBAR','')];ok=a.net.notna()&b.net.notna();assert (a.loc[ok,'net']<=b.loc[ok,'net']+1e-10).all()
-    audit=dict(data_end=str(d.date.max().date()),risk_model='loss<=-1%,depth2,minleaf40,yearly train completed previous years;highest-loss-rate negative-mean leaf excluded',entry_sets='ON0,A,B,C fixed B10 hindsight candidates;WF_ENTRY=B10 chronological regressor selector;all exclude entry-limit proxy',stop_contract='price drawdown from slipped entry before fees;credit20%-tax dividend receivable;gap fill open,bar cross threshold,slip/fees extra;worstbar diagnostic;deadline09:35/10:00;stop1/2%;no TP',input_hashes=inputs,full_minute_days=len(bars),checks='source hashes,B08 cash,prefix risk fit,train cutoff,partition cash,synthetic gap/bar/deadline/locked sale/future-bar tests,open baseline equality,worst-fill dominance passed',limitations='A/B/C entry thresholds discovered using full history;all historical data previously viewed. No prospective OOS. Five-minute range executions and limit proxies not queue-certified. Opportunity ledger only,delayed-exit overlapping trades not a capital-feasible portfolio. Missing paths disclosed,not assumed successful. Symmetric trims diagnostic,not hard selection gates.')
+    audit=dict(data_end=str(d.date.max().date()),risk_model='loss<=-1%,depth2,minleaf40,yearly train completed previous years;highest-loss-rate negative-mean leaf excluded',entry_sets='ON0,A,B,C fixed B10 hindsight candidates;WF_ENTRY=B10 chronological regressor selector;all exclude entry-limit proxy',stop_contract='price drawdown from slipped entry before fees;credit20%-tax dividend receivable;gap fill open,bar cross threshold rounded down to cent,slip/fees extra;worstbar diagnostic;deadline09:35/10:00;stop1/2%;no TP',input_hashes=inputs,full_minute_days=len(bars),checks='source hashes,B08 cash,prefix risk fit,train cutoff,partition cash,synthetic gap/bar/deadline/locked sale/future-bar tests,open baseline equality,worst-fill dominance passed',limitations='A/B/C entry thresholds discovered using full history;all historical data previously viewed. No prospective OOS. Five-minute range executions and limit proxies not queue-certified. Opportunity ledger only,delayed-exit overlapping trades not a capital-feasible portfolio. Missing paths disclosed,not assumed successful. Symmetric trims diagnostic,not hard selection gates.')
     (R/'audit.json').write_text(json.dumps(audit,indent=2))
     cols=['entry','window','variant','n','mean','cash','good_n','bad_n','delete5','delete_worst5','delete_both5']
     cols2=['entry','exit','window','n','mean','cash','delta_mean','stop_vs_no_stop_mean','opening_stops','bar_stops','saved_losses','spoiled_winners','delete5','delete_worst5']
