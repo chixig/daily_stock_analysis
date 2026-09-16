@@ -187,19 +187,19 @@ def run():
             coverage.append(dict(id=name,window=win,universe=int(wm.sum()),unknown=int((wm&~valid).sum()),hit=int((wm&hit).sum()),not_hit=int((universe&~hit).sum()),base_mean=float(g.net.mean()) if len(g) else None,nonhit_mean=float(g.loc[~selected,'net'].mean()) if (~selected).any() else None))
             assert int((universe&hit).sum()+(universe&~hit).sum()+(wm&~valid).sum())==int(wm.sum())
             if len(g[selected]) and met['mean']<0:
-                x=g[selected].copy();x['cash'],x['net'],x['fee']=pnl(x,reverse=True);mirror.append(dict(id=name,window=win,**brief(x)))
+                x=g[selected].copy();x['cash'],x['net'],x['fee']=pnl(x,reverse=True);x['gross']=100*(x.close-x.next_open-x.dividend*.8)/x.close;mirror.append(dict(id=name,window=win,**brief(x)))
         chosen=d[full&hit].copy();chosen['id']=name;alltr.append(chosen)
         for slip in [0,.0005,.001,.002]:
             for win in ['main2020','old2020_2023','recent2024']:
                 g=d[wins[win]&hit].copy();g['cash'],g['net'],g['fee']=pnl(g,slip=slip);stress.append(dict(id=name,window=win,kind='slip',value=slip*10000,**brief(g)))
         for exitcol in ['exit0935close','exit0935open']:
             for win in ['main2020','old2020_2023','recent2024']:
-                g=d[wins[win]&hit&d[exitcol].notna()].copy();base=brief(g);g['cash'],g['net'],g['fee']=pnl(g,exitcol=exitcol)
+                g=d[wins[win]&hit&d[exitcol].notna()].copy();base=brief(g);g['cash'],g['net'],g['fee']=pnl(g,exitcol=exitcol);g['gross']=100*((g[exitcol]+g.dividend*.8)/g.close-1)
                 stress.append(dict(id=name,window=win,kind=exitcol,value=0,matched_base_mean=base.get('mean'),matched_base_cash=base.get('cash'),excluded=int((wins[win]&hit&d[exitcol].isna()).sum()),**brief(g)))
         for kind,vals in [('dividend_tax',[0,.1,.2]),('shares',[100,500,1000]),('current_fees',[1])]:
             for v in vals:
                 g=d[wins['main2020']&hit].copy();kw={'tax':v} if kind=='dividend_tax' else {'q':v} if kind=='shares' else {'current':True}
-                g['cash'],g['net'],g['fee']=pnl(g,**kw);stress.append(dict(id=name,window='main2020',kind=kind,value=v,**brief(g)))
+                g['cash'],g['net'],g['fee']=pnl(g,**kw);g['gross']=100*((g.next_open+g.dividend*(1-kw.get('tax',.2)))/g.close-1);stress.append(dict(id=name,window='main2020',kind=kind,value=v,**brief(g)))
         for subset in ['event','non_event']:
             g=d[wins['main2020']&hit&(d.event if subset=='event' else ~d.event)];stress.append(dict(id=name,window='main2020',kind=subset,value=0,**brief(g)))
     stats=save('results.csv',results);save('coverage.csv',coverage);st=save('stress.csv',stress);save('mirror_registry.csv',mirror)
@@ -217,7 +217,7 @@ def run():
         dbl=st[(st.id==name)&st.window.eq('main2020')&st.kind.eq('slip')&st.value.eq(10)].iloc[0]
         delayed=st[(st.id==name)&st.window.eq('main2020')&st.kind.str.startswith('exit0935')]
         ok=bool(r.n>=60 and oldr.n>=20 and newr.n>=20 and (yr['mean']>0).sum()>=3 and oldr['mean']>0 and newr['mean']>0 and r['mean']>0 and r.delete5>0 and r.delete5_cash>0 and dbl['mean']>0 and (delayed['mean']>0).all() and r.ci_low>0 and r.inc_low>0 and adj[(name,'p_mean')]<.05 and adj[(name,'p_inc')]<.05)
-        gates.append(dict(id=name,n=r.n,mean=r['mean'],old_mean=oldr['mean'],recent_mean=newr['mean'],holm_mean=adj[(name,'p_mean')],holm_increment=adj[(name,'p_inc')],historical_numeric_pass=ok,execution_certified=False,status='historical_candidate_pending_execution' if ok else 'not_passed_or_observation'))
+        gates.append(dict(id=name,n=r.n,mean=r['mean'],old_mean=oldr['mean'],recent_mean=newr['mean'],holm_mean=adj[(name,'p_mean')],holm_increment=adj[(name,'p_inc')],historical_numeric_pass=ok,execution_certified=False,status='unavailable' if r.n==0 else 'historical_candidate_pending_execution' if ok else 'not_passed_or_observation'))
     gate=save('candidate_gates.csv',gates)
     # Frozen neighboring thresholds and 14:45 latency input: diagnostics only, never replace defaults.
     neigh=[]
