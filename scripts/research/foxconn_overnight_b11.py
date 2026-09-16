@@ -121,6 +121,23 @@ def run():
         priced[label]=g
         exit_audit.append(dict(exit=label,candidates=len(g),resolved=int(g.net.notna().sum()),missing=int(g.net.isna().sum()),delayed=int(g.delayed.sum())))
     save('exit_coverage.csv',exit_audit)
+    # Reporting diagnostics only: intervals, examples and delayed fills; no selection or threshold change.
+    examples=[];intervals=[]
+    for label in ['OPEN','1000_S0','1000_S1','1000_S2','1000_S2_WORSTBAR']:
+        g=priced[label]
+        for name in ['C','WF_ENTRY']:
+            mask=masks[name].loc[g.index]&g.net.notna()
+            x=g[mask].copy();x['entry']=name;x['exit_model']=label
+            for tail,part in [('best',x.nlargest(5,'net')),('worst',x.nsmallest(5,'net'))]:
+                part=part.copy();part['tail']=tail;examples.append(part)
+            for wn in ['main2022','recent2024']:
+                u=g[mask&windows[wn].loc[g.index]].copy();base=priced['OPEN'].loc[u.index];no=priced['1000_S0'].loc[u.index]
+                for comparison,v in [('absolute',u.net),('vs_open',u.net-base.net),('vs_1000_no_stop',u.net-no.net)]:
+                    z=u.copy();z['net']=v;ci=b8.boot(z,pd.Series(True,index=z.index));intervals.append(dict(entry=name,exit=label,window=wn,comparison=comparison,n=len(z),mean=float(v.mean()),ci_low=ci['ci_low'],ci_high=ci['ci_high']))
+    save('selected_case_examples.csv',pd.concat(examples)[['entry','exit_model','tail','date','close','next_open','model_exit','actual_exit','exit_clock','net','cash','reason','delayed']])
+    save('descriptive_intervals.csv',intervals)
+    z=priced['OPEN'][priced['OPEN'].delayed].copy();save('delayed_exit_cases.csv',z[['date','close','next_open','model_exit','actual_exit','exit_clock','net','cash','reason']])
+
     stoprows=[];stoptr=[];stress=[]
     for name,mask in masks.items():
         for label,tm,st,worst in modes:
