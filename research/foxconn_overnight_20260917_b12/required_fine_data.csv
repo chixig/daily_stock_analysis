@@ -1,0 +1,123 @@
+signal_date,date,purpose,window,has_true_1m
+2023-05-08,2023-05-08,buy,14:50-15:00 closing auction,False
+2023-05-08,2023-05-09,sell,09:15-10:10 auction and continuous trading,False
+2023-05-10,2023-05-10,buy,14:50-15:00 closing auction,False
+2023-05-10,2023-05-11,sell,09:15-10:10 auction and continuous trading,False
+2023-05-11,2023-05-11,buy,14:50-15:00 closing auction,False
+2023-05-11,2023-05-12,sell,09:15-10:10 auction and continuous trading,False
+2023-05-12,2023-05-12,buy,14:50-15:00 closing auction,False
+2023-05-12,2023-05-15,sell,09:15-10:10 auction and continuous trading,False
+2023-05-15,2023-05-15,buy,14:50-15:00 closing auction,False
+2023-05-15,2023-05-16,sell,09:15-10:10 auction and continuous trading,False
+2023-05-16,2023-05-16,buy,14:50-15:00 closing auction,False
+2023-05-16,2023-05-17,sell,09:15-10:10 auction and continuous trading,False
+2023-05-17,2023-05-17,buy,14:50-15:00 closing auction,False
+2023-05-17,2023-05-18,sell,09:15-10:10 auction and continuous trading,False
+2023-05-24,2023-05-24,buy,14:50-15:00 closing auction,False
+2023-05-24,2023-05-25,sell,09:15-10:10 auction and continuous trading,False
+2023-08-14,2023-08-14,buy,14:50-15:00 closing auction,False
+2023-08-14,2023-08-15,sell,09:15-10:10 auction and continuous trading,False
+2023-09-20,2023-09-20,buy,14:50-15:00 closing auction,False
+2023-09-20,2023-09-21,sell,09:15-10:10 auction and continuous trading,False
+2023-09-22,2023-09-22,buy,14:50-15:00 closing auction,False
+2023-09-22,2023-09-25,sell,09:15-10:10 auction and continuous trading,False
+2023-10-25,2023-10-25,buy,14:50-15:00 closing auction,False
+2023-10-25,2023-10-26,sell,09:15-10:10 auction and continuous trading,False
+2023-10-26,2023-10-26,buy,14:50-15:00 closing auction,False
+2023-10-26,2023-10-27,sell,09:15-10:10 auction and continuous trading,False
+2023-10-27,2023-10-27,buy,14:50-15:00 closing auction,False
+2023-10-27,2023-10-30,sell,09:15-10:10 auction and continuous trading,False
+2023-10-30,2023-10-30,buy,14:50-15:00 closing auction,False
+2023-10-30,2023-10-31,sell,09:15-10:10 auction and continuous trading,False
+2023-10-31,2023-10-31,buy,14:50-15:00 closing auction,False
+2023-10-31,2023-11-01,sell,09:15-10:10 auction and continuous trading,False
+2023-11-01,2023-11-01,buy,14:50-15:00 closing auction,False
+2023-11-01,2023-11-02,sell,09:15-10:10 auction and continuous trading,False
+2023-11-02,2023-11-02,buy,14:50-15:00 closing auction,False
+2023-11-02,2023-11-03,sell,09:15-10:10 auction and continuous trading,False
+2023-11-03,2023-11-03,buy,14:50-15:00 closing auction,False
+2023-11-03,2023-11-06,sell,09:15-10:10 auction and continuous trading,False
+2023-11-06,2023-11-06,buy,14:50-15:00 closing auction,False
+2023-11-06,2023-11-07,sell,09:15-10:10 auction and continuous trading,False
+2023-11-07,2023-11-07,buy,14:50-15:00 closing auction,False
+2023-11-07,2023-11-08,sell,09:15-10:10 auction and continuous trading,False
+2023-11-08,2023-11-08,buy,14:50-15:00 closing auction,False
+2023-11-08,2023-11-09,sell,09:15-10:10 auction and continuous trading,False
+2023-11-09,2023-11-09,buy,14:50-15:00 closing auction,False
+2023-11-09,2023-11-10,sell,09:15-10:10 auction and continuous trading,False
+2023-11-10,2023-11-10,buy,14:50-15:00 closing auction,False
+2023-11-10,2023-11-13,sell,09:15-10:10 auction and continuous trading,False
+2024-01-09,2024-01-09,buy,14:50-15:00 closing auction,False
+2024-01-09,2024-01-10,sell,09:15-10:10 auction and continuous trading,False
+2024-01-18,2024-01-18,buy,14:50-15:00 closing auction,False
+2024-01-18,2024-01-19,sell,09:15-10:10 auction and continuous trading,False
+2024-04-11,2024-04-11,buy,14:50-15:00 closing auction,False
+2024-04-11,2024-04-12,sell,09:15-10:10 auction and continuous trading,False
+2024-04-23,2024-04-23,buy,14:50-15:00 closing auction,False
+2024-04-23,2024-04-24,sell,09:15-10:10 auction and continuous trading,False
+2024-07-31,2024-07-31,buy,14:50-15:00 closing auction,False
+2024-07-31,2024-08-01,sell,09:15-10:10 auction and continuous trading,False
+2024-08-05,2024-08-05,buy,14:50-15:00 closing auction,False
+2024-08-05,2024-08-06,sell,09:15-10:10 auction and continuous trading,False
+2024-08-06,2024-08-06,buy,14:50-15:00 closing auction,False
+2024-08-06,2024-08-07,sell,09:15-10:10 auction and continuous trading,False
+2024-08-07,2024-08-07,buy,14:50-15:00 closing auction,False
+2024-08-07,2024-08-08,sell,09:15-10:10 auction and continuous trading,False
+2024-08-08,2024-08-08,buy,14:50-15:00 closing auction,False
+2024-08-08,2024-08-09,sell,09:15-10:10 auction and continuous trading,False
+2024-08-09,2024-08-09,buy,14:50-15:00 closing auction,False
+2024-08-09,2024-08-12,sell,09:15-10:10 auction and continuous trading,False
+2024-08-12,2024-08-12,buy,14:50-15:00 closing auction,False
+2024-08-12,2024-08-13,sell,09:15-10:10 auction and continuous trading,False
+2024-08-13,2024-08-13,buy,14:50-15:00 closing auction,False
+2024-08-13,2024-08-14,sell,09:15-10:10 auction and continuous trading,False
+2024-08-14,2024-08-14,buy,14:50-15:00 closing auction,False
+2024-08-14,2024-08-15,sell,09:15-10:10 auction and continuous trading,False
+2024-08-15,2024-08-15,buy,14:50-15:00 closing auction,False
+2024-08-15,2024-08-16,sell,09:15-10:10 auction and continuous trading,False
+2024-08-16,2024-08-16,buy,14:50-15:00 closing auction,False
+2024-08-16,2024-08-19,sell,09:15-10:10 auction and continuous trading,False
+2024-08-30,2024-08-30,buy,14:50-15:00 closing auction,False
+2024-08-30,2024-09-02,sell,09:15-10:10 auction and continuous trading,False
+2024-12-10,2024-12-10,buy,14:50-15:00 closing auction,False
+2024-12-10,2024-12-11,sell,09:15-10:10 auction and continuous trading,False
+2025-04-09,2025-04-09,buy,14:50-15:00 closing auction,False
+2025-04-09,2025-04-10,sell,09:15-10:10 auction and continuous trading,False
+2025-04-17,2025-04-17,buy,14:50-15:00 closing auction,False
+2025-04-17,2025-04-18,sell,09:15-10:10 auction and continuous trading,False
+2025-04-18,2025-04-18,buy,14:50-15:00 closing auction,False
+2025-04-18,2025-04-21,sell,09:15-10:10 auction and continuous trading,False
+2025-11-25,2025-11-25,buy,14:50-15:00 closing auction,False
+2025-11-25,2025-11-26,sell,09:15-10:10 auction and continuous trading,False
+2025-11-26,2025-11-26,buy,14:50-15:00 closing auction,False
+2025-11-26,2025-11-27,sell,09:15-10:10 auction and continuous trading,False
+2025-11-27,2025-11-27,buy,14:50-15:00 closing auction,False
+2025-11-27,2025-11-28,sell,09:15-10:10 auction and continuous trading,False
+2025-11-28,2025-11-28,buy,14:50-15:00 closing auction,False
+2025-11-28,2025-12-01,sell,09:15-10:10 auction and continuous trading,False
+2025-12-02,2025-12-02,buy,14:50-15:00 closing auction,False
+2025-12-02,2025-12-03,sell,09:15-10:10 auction and continuous trading,False
+2025-12-03,2025-12-03,buy,14:50-15:00 closing auction,False
+2025-12-03,2025-12-04,sell,09:15-10:10 auction and continuous trading,False
+2025-12-04,2025-12-04,buy,14:50-15:00 closing auction,False
+2025-12-04,2025-12-05,sell,09:15-10:10 auction and continuous trading,False
+2025-12-05,2025-12-05,buy,14:50-15:00 closing auction,False
+2025-12-05,2025-12-08,sell,09:15-10:10 auction and continuous trading,False
+2026-07-03,2026-07-03,buy,14:50-15:00 closing auction,False
+2026-07-03,2026-07-06,sell,09:15-10:10 auction and continuous trading,False
+2026-07-06,2026-07-06,buy,14:50-15:00 closing auction,False
+2026-07-06,2026-07-07,sell,09:15-10:10 auction and continuous trading,False
+2026-07-20,2026-07-20,buy,14:50-15:00 closing auction,False
+2026-07-20,2026-07-21,sell,09:15-10:10 auction and continuous trading,False
+2026-07-21,2026-07-21,buy,14:50-15:00 closing auction,False
+2026-07-21,2026-07-22,sell,09:15-10:10 auction and continuous trading,False
+2026-07-22,2026-07-22,buy,14:50-15:00 closing auction,False
+2026-07-22,2026-07-23,sell,09:15-10:10 auction and continuous trading,False
+2026-07-23,2026-07-23,buy,14:50-15:00 closing auction,False
+2026-07-23,2026-07-24,sell,09:15-10:10 auction and continuous trading,False
+2026-07-24,2026-07-24,buy,14:50-15:00 closing auction,False
+2026-07-24,2026-07-27,sell,09:15-10:10 auction and continuous trading,False
+2026-07-29,2026-07-29,buy,14:50-15:00 closing auction,False
+2026-07-29,2026-07-30,sell,09:15-10:10 auction and continuous trading,False
+2026-07-30,2026-07-30,buy,14:50-15:00 closing auction,False
+2026-07-30,2026-07-31,sell,09:15-10:10 auction and continuous trading,False
