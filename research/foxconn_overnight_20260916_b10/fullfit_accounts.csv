@@ -1,0 +1,3 @@
+model,scope,initial,final,return_pct,mdd_pct,skipped,completed,open_shares
+case_classifier,ALL_DATA_IN_SAMPLE,20218.0,23322.45905585004,15.354926579533279,-4.359331005044975,37,19,0
+return_regressor,ALL_DATA_IN_SAMPLE,20218.0,19617.806256100026,-2.9686108611137296,-3.8917450424512556,29,19,0
