@@ -1,0 +1,19 @@
+{
+  "data_end": "2026-09-11",
+  "risk_model": "loss<=-1%,depth2,minleaf40,yearly train completed previous years;highest-loss-rate negative-mean leaf excluded",
+  "entry_sets": "ON0,A,B,C fixed B10 hindsight candidates;WF_ENTRY=B10 chronological regressor selector;all exclude entry-limit proxy",
+  "stop_contract": "price drawdown from slipped entry before fees;credit20%-tax dividend receivable;gap fill open,bar cross threshold,slip/fees extra;worstbar diagnostic;deadline09:35/10:00;stop1/2%;no TP",
+  "input_hashes": {
+    "research/foxconn_overnight_20260916_b10/features.csv": "62d30d4e292fc4ab967b78e945ea8b841ab3e5f04b8dd20f532335bfdcfb739e",
+    "research/foxconn_overnight_20260916_b10/walkforward_predictions.csv": "cd819c985ae625677157159eceb57dde0697dc63aed1d1cc42487bb464319dbe",
+    "research/foxconn_overnight_20260916_b08/daily_ledger.csv": "8d5ffd55d0a21e1ca2f76c19af81f1aefd0051c67c0fc9252607b82ce1ffce1c",
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_t0_20260913/source/baostock_raw_crosscheck.csv": "52b880bacd8740ac79a4f7a31a8c21f2cb26e074d441797a44e9e3c8b6f97e10",
+    "data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv": "78811cdfa3e493c3a65bb3d872e93fe3f66980f58673d7932c8e30e2b1d144d0"
+  },
+  "full_minute_days": 1624,
+  "checks": "source hashes,B08 cash,prefix risk fit,train cutoff,partition cash,synthetic gap/bar/deadline/locked sale/future-bar tests,open baseline equality,worst-fill dominance passed",
+  "limitations": "A/B/C entry thresholds discovered using full history;all historical data previously viewed. No prospective OOS. Five-minute range executions and limit proxies not queue-certified. Opportunity ledger only,delayed-exit overlapping trades not a capital-feasible portfolio. Missing paths disclosed,not assumed successful. Symmetric trims diagnostic,not hard selection gates."
+}
