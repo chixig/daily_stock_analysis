@@ -32,3 +32,5 @@
 - [B09 intraday paths](FOXCONN_OVERNIGHT_B09.md): implemented bounded study;all8 long/old/recent negative,early-entry also negative;results1290406e8da73b3d10a5e85882d188a1a88ff332,execution uncertified.
 
 - [B10 优秀样本反推与有限拟合](FOXCONN_OVERNIGHT_B10.md)：implemented本轮研究，3条探索线索未升级；成交审计见专项结论。
+
+- [B11事前避亏和次晨止损](FOXCONN_OVERNIGHT_B11.md)：active。
