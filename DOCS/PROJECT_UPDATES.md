@@ -150,3 +150,5 @@ Evidence: [report](https://github.com/chixig/daily_stock_analysis/blob/4ca9fe809
 User approved overnight research plan and execution. Reuse frozen historical input hashes. New cross-date cashflows,14:50 causal features,limited hypotheses,dividends and stress checks. No main merge or deployment.
 
 B08 implementation validation: First run failed before results on gapdays int/float prefix mismatch. Standardize calendar-feature dtype and numeric mutation input; retain exact prefix/value assertions and all frozen parameters.
+
+B08 implementation validation: Added same-vendor independently retrieved raw-price comparison, independent scalar next-day cashflow reconciliation, calendar hash and announcement-time checks, plus gross/price attribution and buy-hold controls. Primary rules, thresholds, cost assumptions and selections unchanged. Equal-capital and full order-book certification remain unimplemented, not prerequisites for declining unprofitable candidates.

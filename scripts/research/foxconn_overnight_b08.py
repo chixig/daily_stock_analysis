@@ -135,6 +135,34 @@ def run():
     ix=d.date.map(pd.read_csv(B2/'source/sse_index.csv',parse_dates=['date']).set_index('date').close)
     f1=prior_features(d,ix);f2,tail=tail_features(d,m,'14:50');lag,_=tail_features(d,m,'14:45')
     checks(d,ix,m,f1,f2)
+    # Independently downloaded raw cross-check, not a second exchange-certified vendor.
+    cp=P/'source/baostock_raw_crosscheck.csv'
+    h=hashlib.sha256(cp.read_bytes()).hexdigest();assert h==json.loads((P/'manifest.json').read_text())['sha256'][str(cp)];inputs[str(cp)]=h
+    raw=pd.read_csv(cp,parse_dates=['date']).set_index('date')
+    cross=d[['date','open','close']].join(raw[['open','close']],on='date',rsuffix='_cross')
+    cross['open_gap']=cross.open-cross.open_cross;cross['close_gap']=cross.close-cross.close_cross
+    save('raw_crosscheck.csv',cross)
+    assert cross.open_cross.notna().all() and cross.close_cross.notna().all()
+    assert cross.open_gap.abs().max()<.011 and cross.close_gap.abs().max()<.011
+    # Fee/cash accounting independent scalar calculation and separately mapped next-trading-day prices.
+    scalar=[];date_to_open=d.set_index('date').open.to_dict();dates=sorted(cal)
+    for i in range(len(d)-1):
+        rr=d.iloc[i];day=dates[i+1];assert rr.exit_date==day
+        buy=1000*rr.close*1.0005;sell=1000*date_to_open[day]*.9995
+        bt=.00002 if rr.date<pd.Timestamp('2022-04-29') else .00001
+        st=.00002 if day<pd.Timestamp('2022-04-29') else .00001
+        stamp=.001 if day<pd.Timestamp('2023-08-28') else .0005
+        bc=max(5,buy*.0001354)+buy*bt;sc=max(5,sell*.0001354)+sell*(st+stamp)
+        cash=sell-buy-bc-sc+1000*DIV.get(day.strftime('%Y-%m-%d'),0)*.8
+        scalar.append(cash)
+    np.testing.assert_allclose(scalar,pnl(d)[0].iloc[:-1],atol=1e-8)
+    # Known dividend announcement dates must precede the buy date to be an ex-ante exclusion.
+    announcements=['2019-06-14','2020-06-20','2021-07-20','2022-07-30','2023-07-22','2024-08-08','2025-07-24','2026-01-09','2026-07-24']
+    events['announcement']=pd.to_datetime(announcements)
+    assert (events.announcement<d.date.shift().loc[events.index]).all()
+    assert events.vendor_dividend_gap.abs().max()<.011
+    save('corporate_actions.csv',events)
+    inputs['data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv']=hashlib.sha256(Path('data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv').read_bytes()).hexdigest()
     features=pd.concat([d[['date']],f1.add_prefix('ON1_'),f2.add_prefix('ON2_')],axis=1);save('features.csv',features)
     # Tail quality flags are for audit/execution comparisons only; do not drop rows by future close mismatch in signal construction.
     save('minute_audit.csv',pd.DataFrame({'date':d.date,'good_full_day':good,'tail_bars':tail.bars,'tail_price':tail.p,'daily_close':d.close,'exit0935close':d.exit0935close,'exit0935open':d.exit0935open}))
@@ -232,11 +260,31 @@ def run():
     for name,mask in masks.items():
         z,tr,summary=account(d,mask.fillna(False));z['id']=name;save('account_'+name+'.csv',z);save('account_trades_'+name+'.csv',tr);ac.append(dict(id=name,**summary))
     save('accounts.csv',ac)
-    audit=dict(data_start=str(d.date.min().date()),data_end=str(d.date.max().date()),daily_rows=len(d),completed_labels=int(full.sum()),minute_days=int(m.date.nunique()),tail_valid=int(f2.clv.notna().sum()),minute_good_days=int(good.sum()),corporate_events=len(events),input_hashes=inputs,dividend_source=SOURCE,dividend_verification='Vendor implementation table, nine dates match action flags; primary announcements and cash settlement not independently certified',cost='date-varying stamp and transfer, assumed commission,20% dividend-tax scenario',feature_checks='prior current/future mutation,tail future-bar mutation,prefix,fee floors,cash direction,calendar and decomposition passed',limits='OHLC price proxies, not auction queue certification. ON2_F7 unavailable without intraday index. No clean OOS. Account credits dividend receivable on ex-date; open/close sampled drawdown, not tick worst drawdown.',numeric_candidates=gate.loc[gate.historical_numeric_pass,'id'].tolist(),execution_certified=False)
+    # Diagnostic attribution, buy-and-hold controls and equal-capital account; no new signal search.
+    attribution=[]
+    for win,wm in wins.items():
+        g=d[wm]
+        for subset,sm in [('all',pd.Series(True,index=g.index)),('event',g.event),('non_event',~g.event),('weekend_holiday',g.calendar_days.ge(3))]:
+            x=g[sm]
+            if not len(x):continue
+            attribution.append(dict(window=win,subset=subset,n=len(x),price_mean=float(x.price_only.mean()),economic_gross_mean=float(x.gross.mean()),price_win=float(100*x.price_only.gt(0).mean()),economic_gross_win=float(100*x.gross.gt(0).mean()),net_mean=float(x.net.mean()),intraday_mean=float((100*(x.next_close/x.next_open-1)).mean()),economic_gross_cash=float((1000*(x.next_open-x.close+x.dividend*.8)).sum())))
+    save('attribution.csv',attribution)
+    controls=[]
+    for startdate in ['2020-01-01','2024-01-01']:
+        x=d[d.date.ge(startdate)];first=x.iloc[0];last=x.iloc[-1];capital=1000*first.close*1.1
+        for tax in [0,.2]:
+            bv=1000*first.close*1.0005;sv=1000*last.close*.9995
+            profit=sv-bv-fees(bv,first.date)-fees(sv,last.date,True)+1000*x.iloc[1:].dividend_today.sum()*(1-tax)
+            controls.append(dict(start=startdate,id='hold1000',dividend_tax=tax,initial=capital,profit=profit,return_pct=100*profit/capital))
+    save('capital_controls.csv',controls)
+    save('worst10.csv',d[full].sort_values('net').head(10))
+    save('best10.csv',d[full].sort_values('net',ascending=False).head(10))
+
+    audit=dict(data_start=str(d.date.min().date()),data_end=str(d.date.max().date()),daily_rows=len(d),completed_labels=int(full.sum()),minute_days=int(m.date.nunique()),tail_valid=int(f2.clv.notna().sum()),minute_good_days=int(good.sum()),corporate_events=len(events),input_hashes=inputs,raw_price_crosscheck='All2007 dates independently retrieved same-vendor raw open/close within0.011; all2006 scalar cashflows match; corporate reference-price differences match dividends within rounding',dividend_source=SOURCE,dividend_verification='Vendor implementation table, nine dates match action flags; primary announcements and cash settlement not independently certified',cost='date-varying stamp and transfer, assumed commission,20% dividend-tax scenario',feature_checks='prior current/future mutation,tail future-bar mutation,prefix,fee floors,cash direction,calendar and decomposition passed',limits='OHLC price proxies, not auction queue certification. ON2_F7 unavailable without intraday index. No clean OOS. Account credits dividend receivable on ex-date; open/close sampled drawdown, not tick worst drawdown.',numeric_candidates=gate.loc[gate.historical_numeric_pass,'id'].tolist(),execution_certified=False)
     (R/'audit.json').write_text(json.dumps(audit,indent=2))
     cols=['id','window','n','mean','win','cash','delete5','ci_low','ci_high','increment']
     report=['# B08 overnight research','Frozen inputs through 2026-09-11; all results exploratory historical, 20% dividend tax scenario.','## Main/old/recent',stats[stats.window.isin(['main2020','old2020_2023','recent2024'])][cols].to_markdown(index=False,floatfmt='.4f'),'## Gates',gate.to_markdown(index=False),'## Annual selection',pd.DataFrame(selections).to_markdown(index=False),'## Audit',json.dumps(audit,indent=2)]
     (R/'REPORT.md').write_text('\n\n'.join(report))
-    manifest=dict(code_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in R.iterdir() if p.is_file() and p.name!='manifest.json'})
+    manifest=dict(code_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],spec_sha256=hashlib.sha256(Path('DOCS/FOXCONN_OVERNIGHT_B08.md').read_bytes()).hexdigest(),files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in R.iterdir() if p.is_file() and p.name!='manifest.json'})
     (R/'manifest.json').write_text(json.dumps(manifest,indent=2));print(json.dumps(audit))
 if __name__=='__main__':run()
