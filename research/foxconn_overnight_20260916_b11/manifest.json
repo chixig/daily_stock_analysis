@@ -1,17 +1,20 @@
 {
-  "code_sha": "e8fae9ba379d90ce84462e6760d69983665585d6",
-  "run_id": "35086745300",
-  "spec_sha256": "20648e50cbc20ebcdd6570f5a0db3d8f1151ab2892a66c7eaeec2afd224888e3",
+  "code_sha": "de4c21d9a1b9d3b6b65fa647d0b3f5489bdda655",
+  "run_id": "35087298084",
+  "spec_sha256": "dfb73e114c5d9091fae6b1ccd0707f74dc920d7edd032d20732ee724527626a5",
   "files": {
     "research/foxconn_overnight_20260916_b11/risk_rules.csv": "20935775c554770dd3f3c72ca7fd7d8951705e9f83380cf3ca128aaed3af6288",
     "research/foxconn_overnight_20260916_b11/exit_trades.csv": "557c0e891f1d794ad6b3a6fa23fde1b56f48be59fa9c332da42bc77750c2ecc3",
     "research/foxconn_overnight_20260916_b11/mirror_registry.csv": "3d2b6cfb6f7a09d0852b03f84858c781b8863468611c81d86d0fdf2e564f8c5a",
+    "research/foxconn_overnight_20260916_b11/descriptive_intervals.csv": "c482cc1de3f64b7ace1028ffed6deafddac72aaacc56f7700f2adda1a43b9d3f",
     "research/foxconn_overnight_20260916_b11/risk_signals.csv": "66d047a50bb86da465f2435948ea3449a27e4acd9daf8fc773fa4482a581159a",
     "research/foxconn_overnight_20260916_b11/exit_coverage.csv": "8a54d4a4f50d0de9640d9267fb6050c5a2a98bf322babc46bef2cbc141a88d45",
     "research/foxconn_overnight_20260916_b11/risk_trades.csv": "564d6a825bbb4e1c2ab6c8780f9d8db3159c8e81c4126415d8364c646d23d26c",
     "research/foxconn_overnight_20260916_b11/risk_results.csv": "4e5e3fc674f6ed8cd4898641d9af8e0f6c7fb354b2a7fd4a492f92c18dce9dbd",
     "research/foxconn_overnight_20260916_b11/audit.json": "22dac72f5e4df37ec7fa02cf6f6ffffe3044f07d8e3e003c58c472e1ca885095",
+    "research/foxconn_overnight_20260916_b11/selected_case_examples.csv": "67f9e49016f52b5a60df68df77d713b6e4f12bddb1c8d91c21fccf9d3a8d12eb",
     "research/foxconn_overnight_20260916_b11/risk_leaves.csv": "b6688852a83e43c1cdc8cdce89a1d0dc831fa583d9edade99320329a801cad87",
+    "research/foxconn_overnight_20260916_b11/delayed_exit_cases.csv": "0ea8b5ed18e203b1200ba101dc9219ccbad4e2d3d24c454f5641616c336b55bf",
     "research/foxconn_overnight_20260916_b11/REPORT.md": "cf665ec367888a6c0323d656c61aafac3f6c10029769253c179ba1e65c2c8b16",
     "research/foxconn_overnight_20260916_b11/exit_stress.csv": "b18bb6eda3cb9007eee61cd2b4d791bc72c81b5cf71ba79099e44a897d6abe6c",
     "research/foxconn_overnight_20260916_b11/exit_results.csv": "a8551ca04e0225724b5f9595a3663b032f114159f1f4860eaec36b8a812fa17c"
