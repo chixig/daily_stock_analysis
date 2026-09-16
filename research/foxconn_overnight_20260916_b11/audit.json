@@ -2,7 +2,7 @@
   "data_end": "2026-09-11",
   "risk_model": "loss<=-1%,depth2,minleaf40,yearly train completed previous years;highest-loss-rate negative-mean leaf excluded",
   "entry_sets": "ON0,A,B,C fixed B10 hindsight candidates;WF_ENTRY=B10 chronological regressor selector;all exclude entry-limit proxy",
-  "stop_contract": "price drawdown from slipped entry before fees;credit20%-tax dividend receivable;gap fill open,bar cross threshold,slip/fees extra;worstbar diagnostic;deadline09:35/10:00;stop1/2%;no TP",
+  "stop_contract": "price drawdown from slipped entry before fees;credit20%-tax dividend receivable;gap fill open,bar cross threshold rounded down to cent,slip/fees extra;worstbar diagnostic;deadline09:35/10:00;stop1/2%;no TP",
   "input_hashes": {
     "research/foxconn_overnight_20260916_b10/features.csv": "62d30d4e292fc4ab967b78e945ea8b841ab3e5f04b8dd20f532335bfdcfb739e",
     "research/foxconn_overnight_20260916_b10/walkforward_predictions.csv": "cd819c985ae625677157159eceb57dde0697dc63aed1d1cc42487bb464319dbe",
