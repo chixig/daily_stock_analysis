@@ -165,3 +165,6 @@ C（B10全历史发现的20日深跌阈值）61笔开盘均净+0.4734%，10:00�
 首轮35086745300、解释输出35087298084、分币修正最终35087815032均成功。最终代码b8deb2b7a8dc8ce28b120e1cef8646d5b16742f7，固定结果087b33677618f6048ee5490bb2e155d253db382e。输入/B08现金、训练截止/前缀、分区现金、跳空/止损/期限/延后/未来bar与悲观成交测试通过。解释性补充前12输出哈希同；分币修正改变止损统计而不改参数，风险5表/覆盖/镜像/延迟案例8文件哈希不变。
 
 本地中文正式成果content_id=foxconn-t0-20260916-b11，SHA-256 2861df1fd938795d456570c598f69922211a93108b153b9ebb949766fe8dbf58。源数据/计算/逐笔留GitHub。[固定报告](https://github.com/chixig/daily_stock_analysis/blob/087b33677618f6048ee5490bb2e155d253db382e/research/foxconn_overnight_20260916_b11/REPORT.md)、[完整结果](https://github.com/chixig/daily_stock_analysis/tree/087b33677618f6048ee5490bb2e155d253db382e/research/foxconn_overnight_20260916_b11)。
+
+## B12当前工作
+按用户批准冻结C候选，核验细数据覆盖、延迟成交与整事件/首次信号。结果待运行；资金账户/前瞻须待本阶段检查。

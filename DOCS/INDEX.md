@@ -34,3 +34,5 @@
 - [B10 优秀样本反推与有限拟合](FOXCONN_OVERNIGHT_B10.md)：implemented本轮研究，3条探索线索未升级；成交审计见专项结论。
 
 - [B11事前避亏和次晨止损](FOXCONN_OVERNIGHT_B11.md)：implemented本轮研究；保留C＋10:00＋2%与无止损对照，未实盘认证。
+
+- [B12 C候选执行与事件验证](FOXCONN_OVERNIGHT_B12.md)：active。
