@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > For user-friendly release highlights, see the [GitHub Releases](https://github.com/ZhuLinsen/daily_stock_analysis/releases) page.
 
 ## [Unreleased]
-- [改进] 新增工业富联隔夜研究独立分支与验证流水线，日内反T暂停；不改变产品或交易功能。
+- [改进] 完成工业富联首轮隔夜研究：无条件与14条可计算规则未通过，1条缺分钟指数数据；日内反T暂停，未认证交易执行。
 
 - [chore] Record expanded-history B07 environment tests, non-adoption and historical validation.
 
