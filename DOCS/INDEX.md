@@ -28,3 +28,5 @@
 - [B07 expanded-history environment study](FOXCONN_T0_B07.md): implemented; expanded history,8 environment splits and annualNONE results; historical counterevidence retained.
 
 - [B08 overnight study](FOXCONN_OVERNIGHT_B08.md): implemented finite first round;14 computable rules negative,ON2_F7 unavailable; no strategy promotion. Fixed results b4691c823383eca5de71ca120c3df2e3918df6a3; execution uncertified.
+
+- [B09 intraday paths](FOXCONN_OVERNIGHT_B09.md): active;8 fixed path hypotheses,primary close-to-nextopen;results pending.
