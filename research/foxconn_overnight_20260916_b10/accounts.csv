@@ -1,0 +1,5 @@
+model,variant,initial,final,return_pct,mdd_pct,skipped,completed,open_shares
+case_classifier,diagnostic,20218.0,15191.466256950109,-24.86167644203131,-26.00889620982414,150,81,0
+case_classifier,economic,20218.0,20218.0,0.0,0.0,0,0,0
+return_regressor,diagnostic,20218.0,19382.19430705009,-4.133968211246963,-17.052677946136775,88,89,0
+return_regressor,economic,20218.0,21668.476820300002,7.174185479770512,-0.38213452488691235,9,3,0
