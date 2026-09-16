@@ -74,6 +74,17 @@ def run():
   for _,r in g.iterrows():
    day=d[d.date.eq(r.actual_exit)].iloc[0];bb=bars[r.actual_exit];alignment.append(dict(mode=mode,date=r.date,exit_date=r.actual_exit,entry_bar_close=float(bars[r.date].loc['15:00','close']),daily_entry_close=r.close,exit_minute_high=float(bb.high.max()),daily_high=day.high,exit_minute_low=float(bb.low.min()),daily_low=day.low))
  res=save('execution_pressure.csv',results);save('latency_trades.csv',pd.concat(latency_trades));save('daily_minute_alignment.csv',alignment)
+ a=pd.DataFrame(alignment);diffs={key:float((a[left]-a[right]).abs().max()) for key,left,right in [('entry_close_max_abs','entry_bar_close','daily_entry_close'),('exit_high_max_abs','exit_minute_high','daily_high'),('exit_low_max_abs','exit_minute_low','daily_low')]}
+ save('alignment_summary.csv',[diffs])
+ req=[];base=z[z.exit_model.eq('1000_S2')]
+ for _,row in base.iterrows():
+  req.append(dict(signal_date=row.date,date=row.date,purpose='buy',window='14:50-15:00 closing auction',has_true_1m=row.date in fine_dates))
+  req.append(dict(signal_date=row.date,date=row.actual_exit,purpose='sell',window='09:15-10:10 auction and continuous trading',has_true_1m=row.actual_exit in fine_dates))
+ save('required_fine_data.csv',req)
+ checks=[]
+ for (gap,mode),x in pd.DataFrame(loo).groupby(['gap','mode']):checks.append(dict(gap=gap,mode=mode,events=len(x),min_leave_one_mean=float(x['mean'].min()),min_leave_one_cash=float(x.cash.min()),all_leave_one_mean_positive=bool(x['mean'].gt(0).all())))
+ save('event_robustness_summary.csv',checks)
+
  # An adverse signal universe still receives separately costed opposite-direction evidence.
  mirrors=[]
  for mode,g in z.groupby('exit_model'):
