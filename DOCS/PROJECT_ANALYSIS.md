@@ -147,4 +147,9 @@ Input hashes/B08 cash reproduction,future-minute and daily-final-price mutation,
 Evidence research/foxconn_overnight_20260916_b09/REPORT.md and manifest.json. Chinese local conclusion SHA256dbb602123b7a274e05eb926966f3ea631f1a59c4b7fed5e05b0fd3d1fd2be9b6. All market processing/evidence GitHub. Product and bilingual product docs unchanged. Next continuation should prioritize timestamp-valid event/auction data after coverage audit,not add historical price-volume combinations. Unrelated bank workflow failure remains out of scope.
 
 ## B10 当前研究
-用户2026-09-16授权先找优秀隔夜样本反推因子；B10冻结24个可用特征与两种深度2树，探索拟合后逐年回溯。结果未出，不改变交易状态。
+
+B10完成：2020起1623机会，净>=1%赢家189个，24特征完整1599日含188赢家。样本内A高波动+前日大跌56笔+0.3704%，B20日未深跌+尾盘量比<=0.43238共48笔+0.5403%，C20日深跌78笔+0.3718%；A/C删5赢家均转负。B排除14笔收盘涨停等买入受限代理后34笔均净-0.0419%。年度2022-2026分类231笔-0.2471%、回归177笔-0.0023%；回归近期重复选择C，38笔+0.3730%但删5后-0.2843%。保留3条线索，未升级策略。日内反T暂停、正T冻结不变。
+
+首轮35078545579与补充35078763778均成功；最终代码500135db41c042297fb21e8206dc943264af36f4，固定结果0d17f13a92df1e9458932013e29358f730c21d59。补充只审计成交与账户，35个已有文件哈希均一致。输入/B08现金、时点扰动/前缀、年度截止/前缀拟合检查通过。受限代理不是逐笔成交证明，全部历史已看过，非新独立OOS；未取得新市场数据、未合main/交易/监控。后续冻结线索并核验新信息时点和成交，避免原样本继续调参。
+
+固定证据：[报告](../research/foxconn_overnight_20260916_b10/REPORT.md)、[成交审计](../research/foxconn_overnight_20260916_b10/fullfit_execution_summary.csv)。本地中文正式成果content_id=foxconn-t0-20260916-b10，SHA-256 d16b60a8b650442ee9815390aaf3bcc05d25695fb8bc8a84f8ab430080394c5e。
