@@ -112,7 +112,7 @@ def run():
         matched.append(dict(feature=col,pairs=int(ok.sum()),cases=int(pair.loc[ok,'case_index'].nunique()),unique_controls=int(pair.loc[ok,'control_index'].nunique()),case_mean=float(a[ok].mean()),control_mean=float(b[ok].mean()),standardized_paired_difference=float((a[ok]-b[ok]).mean()/sd) if sd else 0))
     match=save('matched_factor_profiles.csv',matched)
     # All-data fits intentionally describe discovered cases; never call their performance OOS.
-    leaves=[];discovery=[];stress=[];rules=[]
+    leaves=[];discovery=[];stress=[];rules=[];execution=[];fullaccounts=[]
     for kind in ['case_classifier','return_regressor']:
         model,node,lr,eco=fit(d,f,eligible,kind)
         (R/(kind+'_fullfit.txt')).write_text(export_text(model,feature_names=list(f),decimals=6))
@@ -125,10 +125,20 @@ def run():
             g=d[windows[name]&selected];u=d[windows[name]&valid]
             discovery.append(dict(model=kind,window=name,**met(g,int(u.net.ge(1).sum())),**b8.boot(u,selected.loc[u.index])))
         g=d[selected].copy();g['model']=kind;save(kind+'_fullfit_trades.csv',g)
+        # Post-result execution diagnostic only; fitted rules and selection stay frozen.
+        blocked=d.close.ge(d.preclose*1.099)|d.volume.le(0)
+        ex=library.loc[g.index].copy();ex['entry_blocked_proxy']=blocked.loc[g.index];ex['exit_blocked_proxy']=(d.next_open.le(d.preclose.shift(-1)*.901)|d.volume.shift(-1).le(0)).loc[g.index]
+        save(kind+'_fullfit_execution_cases.csv',ex)
+        for wn in ['main2020','old2020_2023','recent2024']:
+            for scenario,ok in [('entry_blocked',blocked),('entry_not_blocked',~blocked)]:
+                execution.append(dict(model=kind,window=wn,scenario=scenario,**met(d[selected&windows[wn]&ok])))
+        z,tr,ac=b8.account(d,selected);save(kind+'_fullfit_account.csv',z);save(kind+'_fullfit_account_trades.csv',tr);fullaccounts.append(dict(model=kind,scope='ALL_DATA_IN_SAMPLE',**ac))
+
         for slip in [0,.001,.002]:stress.append(dict(model=kind,scope='ALL_DATA_IN_SAMPLE',kind='slip',value=slip,**met(b9.changes(g,slip=slip))))
         for col in ['exit0935close','exit0935open']:stress.append(dict(model=kind,scope='ALL_DATA_IN_SAMPLE',kind=col,value=0,excluded=int(g[col].isna().sum()),**met(b9.changes(g[g[col].notna()],exitcol=col))))
         # Show negative examples satisfying the very same fitted rule.
         save(kind+'_false_positive_cases.csv',library.loc[g.index[g.net<1]].sort_values('net').head(20))
+    save('fullfit_execution_summary.csv',execution);save('fullfit_accounts.csv',fullaccounts)
     leaf=save('all_leaf_profiles.csv',leaves);disc=save('in_sample_rules.csv',rules);ds=save('in_sample_results.csv',discovery)
     # Rolling chronological fits; test outcomes never select thresholds or leaves.
     wf=[];fitlog=[];leaflog=[];preds=[];allmask={};ecomask={};fold_base=[]
