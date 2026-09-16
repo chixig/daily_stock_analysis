@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 > For user-friendly release highlights, see the [GitHub Releases](https://github.com/ZhuLinsen/daily_stock_analysis/releases) page.
 
 ## [Unreleased]
-- [改进] 增加工业富联隔夜研究B09：固定8条盘中路径假设，拆解尾盘与隔夜收益，不改变原交易主线。
+- [改进] 完成工业富联隔夜研究B09：8条盘中路径规则及提前入场诊断未通过，保留镜像反证，不改变原交易主线。
 - [改进] 完成工业富联首轮隔夜研究：无条件与14条可计算规则未通过，1条缺分钟指数数据；日内反T暂停，未认证交易执行。
 
 - [chore] Record expanded-history B07 environment tests, non-adoption and historical validation.
