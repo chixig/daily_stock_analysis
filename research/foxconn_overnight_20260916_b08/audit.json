@@ -10,8 +10,11 @@
   "input_hashes": {
     "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
     "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
-    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c"
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_t0_20260913/source/baostock_raw_crosscheck.csv": "52b880bacd8740ac79a4f7a31a8c21f2cb26e074d441797a44e9e3c8b6f97e10",
+    "data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv": "78811cdfa3e493c3a65bb3d872e93fe3f66980f58673d7932c8e30e2b1d144d0"
   },
+  "raw_price_crosscheck": "All2007 dates independently retrieved same-vendor raw open/close within0.011; all2006 scalar cashflows match; corporate reference-price differences match dividends within rounding",
   "dividend_source": "https://money.finance.sina.com.cn/corp/go.php/vISSUE_ShareBonus/stockid/601138.phtml",
   "dividend_verification": "Vendor implementation table, nine dates match action flags; primary announcements and cash settlement not independently certified",
   "cost": "date-varying stamp and transfer, assumed commission,20% dividend-tax scenario",
