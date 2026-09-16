@@ -73,7 +73,7 @@ Frozen inputs through 2026-09-11; all results exploratory historical, 20% divide
 | ON2_F4 | 296 |  -0.204552 |  -0.317279 |    -0.123284  |           1 |                1 | False                     | False                 | not_passed_or_observation |
 | ON2_F5 | 607 |  -0.312184 |  -0.331093 |    -0.28246   |           1 |                1 | False                     | False                 | not_passed_or_observation |
 | ON2_F6 | 194 |  -0.36367  |  -0.325287 |    -0.424571  |           1 |                1 | False                     | False                 | not_passed_or_observation |
-| ON2_F7 |   0 | nan        | nan        |   nan         |           1 |                1 | False                     | False                 | not_passed_or_observation |
+| ON2_F7 |   0 | nan        | nan        |   nan         |           1 |                1 | False                     | False                 | unavailable               |
 
 ## Annual selection
 
