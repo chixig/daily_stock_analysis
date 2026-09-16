@@ -1,0 +1,22 @@
+{
+  "data_start": "2018-06-08",
+  "data_end": "2026-09-11",
+  "daily_rows": 2007,
+  "completed_labels": 2006,
+  "minute_days": 1624,
+  "tail_valid": 1621,
+  "minute_good_days": 1620,
+  "corporate_events": 9,
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c"
+  },
+  "dividend_source": "https://money.finance.sina.com.cn/corp/go.php/vISSUE_ShareBonus/stockid/601138.phtml",
+  "dividend_verification": "Vendor implementation table, nine dates match action flags; primary announcements and cash settlement not independently certified",
+  "cost": "date-varying stamp and transfer, assumed commission,20% dividend-tax scenario",
+  "feature_checks": "prior current/future mutation,tail future-bar mutation,prefix,fee floors,cash direction,calendar and decomposition passed",
+  "limits": "OHLC price proxies, not auction queue certification. ON2_F7 unavailable without intraday index. No clean OOS. Account credits dividend receivable on ex-date; open/close sampled drawdown, not tick worst drawdown.",
+  "numeric_candidates": [],
+  "execution_certified": false
+}
