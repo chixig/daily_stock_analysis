@@ -1,0 +1,20 @@
+{
+  "data_end": "2026-09-11",
+  "minute_days": 1624,
+  "signal_dates": 1624,
+  "valid_tail_volume": 1604,
+  "input_hashes": {
+    "research/foxconn_overnight_20260916_b08/daily_ledger.csv": "8d5ffd55d0a21e1ca2f76c19af81f1aefd0051c67c0fc9252607b82ce1ffce1c",
+    "research/foxconn_overnight_20260916_b08/results.csv": "ad3bd3ddf290c5e6e4090af381a299be01432b99dce6be9fa0952812b3ea15c3",
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_t0_20260913/source/baostock_raw_crosscheck.csv": "52b880bacd8740ac79a4f7a31a8c21f2cb26e074d441797a44e9e3c8b6f97e10",
+    "data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv": "78811cdfa3e493c3a65bb3d872e93fe3f66980f58673d7932c8e30e2b1d144d0",
+    "research/foxconn_overnight_20260916_b08/features.csv": "5c318ba2ea0c9e2b4a9ac4c26bd5409169f2cab5d3a324469cde7a59af92c0e7"
+  },
+  "rule_count": 8,
+  "passed": [],
+  "checks": "B08 cash reproduction,source hashes,future-minute/daily-close mutation,prefix,coverage partition,log path identity,temporal training cutoff passed",
+  "limitations": "Same previously explored history,not clean OOS. No auction queue certification,dividend vendor/settlement limitations inherited. Early-entry diagnostic is a different strategy,not automatic replacement. Frozen stages descriptive only."
+}

@@ -1,0 +1,9 @@
+id,passed,holm_mean,holm_increment,execution_certified
+L1_tail_up,False,1,1,False
+L2_tail_down,False,1,1,False
+L3_afternoon_recovery,False,1,1,False
+L4_afternoon_reversal,False,1,1,False
+L5_breakout,False,1,1,False
+L6_breakdown,False,1,1,False
+L7_tail_up_volume,False,1,1,False
+L8_tail_down_volume,False,1,1,False
