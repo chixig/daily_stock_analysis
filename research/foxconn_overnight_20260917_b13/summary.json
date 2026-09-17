@@ -17,6 +17,9 @@
     3
   ],
   "input_hashes": {
+    "research/foxconn_overnight_20260917_b13/tdx_recovered_1m.csv": "cc9a3d09b75626f2b6689eaa291c43f1aecac490bb23a9914c86e85f5ef99446",
+    "research/foxconn_overnight_20260917_b13/tdx_requery.json": "16db4284035259379cbec6a4691b256302b423c523f1d95649bc0a59f31deb82",
+    "research/foxconn_overnight_20260917_b13/vendor_requery.json": "395ef78d31a4aeb89760db4ea4f2c41e4cb6d53c0a61c3a57c9ebd888eb5c4c0",
     "research/foxconn_overnight_20260917_b12/required_fine_data.csv": "e6beb2b47f4c09a23f485b61e953a6fd64448cd74ae8eb7f7facf5e3c92cab06",
     "research/foxconn_overnight_20260917_b12/event_robustness_summary.csv": "dfc6d04789df0ca87940830e4bdfb6e6ecd399a626c804323a7244de4060b844",
     "research/foxconn_overnight_20260917_b12/first_event_trades.csv": "6145d04f96a10f26b6f57339a6ed32259330f6690ca39e3efb51d6746f4b9d41",
@@ -34,6 +37,6 @@
     "research/foxconn_overnight_20260917_b12/events.csv": "abc6072651a07b5a1607253f01d8d2965cea53ede830d849773a33418caaa3e0",
     "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff"
   },
-  "gate": "Not certified: no candidate-date true 1m; daily extremes cannot locate crossing before 10:00; no tuning, account or monitoring.",
+  "gate": "Not certified: recovered coverage is partial; see tdx_requery and paired results. No tuning, account or monitoring.",
   "provenance": "BaoStock frequency5 adjustflag3; raw package versus ledger; downloader hard QC excludes extrema."
 }
