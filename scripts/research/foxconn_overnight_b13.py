@@ -53,6 +53,40 @@ finally:bs.logout()
   except subprocess.TimeoutExpired:rec=dict(date=day,status='timeout45s')
   probes.append(rec)
  (R/'vendor_requery.json').write_text(json.dumps(probes,indent=2))
+ # Archived probe found deeper data than the saved 20-day library. Retry the exact offset call.
+ tdx_code="""import asyncio,sys,json,importlib.metadata
+from pathlib import Path
+sys.path.insert(0,'scripts')
+from download_601138_pytdxdata_1min import TdxData,MARKET,CODE,KlinePeriod,normalize_kline
+async def main():
+ async with TdxData() as td:
+  bars=await td.get_kline(MARKET,CODE,KlinePeriod.MIN_1,start=50000,count=200)
+  d=normalize_kline(bars);d.to_csv(Path(sys.argv[1])/'tdx_recovered_1m.csv',index=False)
+  print(json.dumps({'package':importlib.metadata.version('pytdxdata'),'rows':len(d)},default=str))
+asyncio.run(main())
+"""
+ try:
+  cp=subprocess.run([sys.executable,'-c',tdx_code,str(R)],capture_output=True,text=True,timeout=120)
+  tr=dict(status='ok' if cp.returncode==0 else 'error',returncode=cp.returncode,detail=(cp.stdout+cp.stderr)[-1800:])
+  if cp.returncode==0:
+   k=pd.read_csv(R/'tdx_recovered_1m.csv',parse_dates=['date','datetime'])
+   if len(k):
+    k=k[k.date.le('2026-09-11')];k.to_csv(R/'tdx_recovered_1m.csv',index=False)
+    qc=k.groupby('date').agg(bars=('datetime','size'),unique=('datetime','nunique'),first=('datetime','min'),last=('datetime','max'),high=('high','max'),low=('low','min'),close=('close','last'));qc.to_csv(R/'recovered_1m_qc.csv')
+    expected=list(pd.date_range('2000-01-01 09:31','2000-01-01 11:30',freq='min').strftime('%H:%M'))+list(pd.date_range('2000-01-01 13:01','2000-01-01 15:00',freq='min').strftime('%H:%M'))
+    valid=[];compare=[]
+    for date,g in k.groupby('date'):
+     g=g.sort_values('datetime');grid=g.datetime.dt.strftime('%H:%M').tolist()==expected
+     sane=bool((g.high>=g[['open','close','low']].max(axis=1)-1e-7).all() and (g.low<=g[['open','close','high']].min(axis=1)+1e-7).all() and g.volume.ge(0).all())
+     if grid and sane:valid.append(date)
+     if date in daily.index:
+      dd=daily.loc[date];bb=m[m.date.eq(date)];compare.append(dict(date=date,grid_ok=grid,ohlc_ok=sane,high_1m=g.high.max(),high_daily=dd.high,high_5m=bb.high.max(),low_1m=g.low.min(),low_daily=dd.low,low_5m=bb.low.min(),close_1m=g.iloc[-1].close,close_daily=dd.close))
+    save('recovered_price_alignment.csv',compare)
+    good=set(valid)
+    tr.update(rows=len(k),first=str(k.datetime.min()),last=str(k.datetime.max()),days=len(qc),full240=len(good),entry_covered=int(t.date.isin(good).sum()),exit_covered=int(t.actual_exit.isin(good).sum()),both_covered=int((t.date.isin(good)&t.actual_exit.isin(good)).sum()))
+    linked=t[['date','actual_exit']].copy();linked['entry_covered']=linked.date.isin(good);linked['exit_covered']=linked.actual_exit.isin(good);save('recovered_candidate_coverage.csv',linked)
+ except subprocess.TimeoutExpired:tr=dict(status='timeout120s')
+ (R/'tdx_requery.json').write_text(json.dumps(tr,indent=2))
  summary=dict(trades=61,unique_required_dates=len(unique),full48=int(a.bars.eq(48).sum()),high_gap_nonzero=int(a.high_gap.abs().gt(.005).sum()),low_gap_nonzero=int(a.low_gap.abs().gt(.005).sum()),max_high_gap=float(a.high_gap.abs().max()),max_low_gap=float(a.low_gap.abs().max()),ledger_daily_high_max=float(a.daily_ledger_high_delta.abs().max()),ledger_daily_low_max=float(a.daily_ledger_low_delta.abs().max()),possible_hidden_cross=int(a.possible_hidden_cross.sum()),whole_day_hidden_cross=int(a.whole_day_hidden_cross.sum()),adjustflags=sorted(a.adjustflags.unique()),raw_daily_adjustflags=sorted(a.daily_adjustflag.unique().tolist()),input_hashes=inputs,gate='Not certified: no candidate-date true 1m; daily extremes cannot locate crossing before 10:00; no tuning, account or monitoring.',provenance='BaoStock frequency5 adjustflag3; raw package versus ledger; downloader hard QC excludes extrema.')
  (R/'summary.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary))
  (R/'manifest.json').write_text(json.dumps(dict(code_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in R.iterdir() if p.is_file() and p.name!='manifest.json'}),indent=2))
