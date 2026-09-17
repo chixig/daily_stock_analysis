@@ -9,6 +9,8 @@ def run():
  assert os.environ.get('GITHUB_ACTIONS')=='true';R.mkdir(parents=True,exist_ok=True)
  src=Path('research/foxconn_t0_20260913/source/601138-full-5min-history.zip'); b12=Path('research/foxconn_overnight_20260917_b12')
  manifest=json.loads((b12/'manifest.json').read_text()); inputs={}
+ for pp in [R/'tdx_recovered_1m.csv',R/'tdx_requery.json',R/'vendor_requery.json']:
+  if pp.exists():inputs[str(pp)]=hashlib.sha256(pp.read_bytes()).hexdigest()
  for p,h in manifest['files'].items():assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h;inputs[p]=h
  inputs[str(src)]=hashlib.sha256(src.read_bytes()).hexdigest()
  with zipfile.ZipFile(src) as z:
@@ -27,8 +29,8 @@ def run():
  a=pd.DataFrame(rows);save('candidate_price_audit.csv',a)
  req=pd.read_csv(b12/'required_fine_data.csv');unique=req.groupby('date').purpose.agg(lambda x:','.join(sorted(set(x)))).reset_index();save('unique_required_dates.csv',unique)
  # Repeat two maximum-discrepancy dates using existing vendor. Failure is recorded, never replaced by stale rows.
- probes=[]
- for day in ['2025-12-05','2026-07-31']:
+ probes=json.loads((R/'vendor_requery.json').read_text()) if (R/'vendor_requery.json').exists() else []
+ for day in ([] if probes else ['2025-12-05','2026-07-31']):
   code="""import baostock as bs,pandas as pd,sys
 from pathlib import Path
 p=Path(sys.argv[2]);lg=bs.login();assert lg.error_code=='0',lg.error_msg
@@ -66,7 +68,7 @@ async def main():
 asyncio.run(main())
 """
  try:
-  cp=subprocess.run([sys.executable,'-c',tdx_code,str(R)],capture_output=True,text=True,timeout=120)
+  cp=type('SavedProbe',(),dict(returncode=0,stdout=json.loads((R/'tdx_requery.json').read_text()).get('detail',''),stderr=''))() if (R/'tdx_recovered_1m.csv').exists() else subprocess.run([sys.executable,'-c',tdx_code,str(R)],capture_output=True,text=True,timeout=120)
   tr=dict(status='ok' if cp.returncode==0 else 'error',returncode=cp.returncode,detail=(cp.stdout+cp.stderr)[-1800:])
   if cp.returncode==0:
    k=pd.read_csv(R/'tdx_recovered_1m.csv',parse_dates=['date','datetime'])
@@ -87,7 +89,30 @@ asyncio.run(main())
     linked=t[['date','actual_exit']].copy();linked['entry_covered']=linked.date.isin(good);linked['exit_covered']=linked.actual_exit.isin(good);save('recovered_candidate_coverage.csv',linked)
  except subprocess.TimeoutExpired:tr=dict(status='timeout120s')
  (R/'tdx_requery.json').write_text(json.dumps(tr,indent=2))
- summary=dict(trades=61,unique_required_dates=len(unique),full48=int(a.bars.eq(48).sum()),high_gap_nonzero=int(a.high_gap.abs().gt(.005).sum()),low_gap_nonzero=int(a.low_gap.abs().gt(.005).sum()),max_high_gap=float(a.high_gap.abs().max()),max_low_gap=float(a.low_gap.abs().max()),ledger_daily_high_max=float(a.daily_ledger_high_delta.abs().max()),ledger_daily_low_max=float(a.daily_ledger_low_delta.abs().max()),possible_hidden_cross=int(a.possible_hidden_cross.sum()),whole_day_hidden_cross=int(a.whole_day_hidden_cross.sum()),adjustflags=sorted(a.adjustflags.unique()),raw_daily_adjustflags=sorted(a.daily_adjustflag.unique().tolist()),input_hashes=inputs,gate='Not certified: no candidate-date true 1m; daily extremes cannot locate crossing before 10:00; no tuning, account or monitoring.',provenance='BaoStock frequency5 adjustflag3; raw package versus ledger; downloader hard QC excludes extrema.')
+ # Compare only dates with complete recovered 1m; do not infer the remaining 52 trades.
+ if (R/'tdx_recovered_1m.csv').exists() and tr.get('both_covered',0)>0:
+  import foxconn_overnight_b11 as b11
+  import foxconn_overnight_b08 as b8
+  b11.tests()
+  k=pd.read_csv(R/'tdx_recovered_1m.csv',parse_dates=['date','datetime']);k['clock']=k.datetime.dt.strftime('%H:%M');k=k.sort_values(['date','clock'])
+  bars={date:g.to_dict('records') for date,g in k.groupby('date')};days=ledger.reset_index().to_dict('records');loc={x['date']:i for i,x in enumerate(days)}
+  covered=t[t.date.isin(good)&t.actual_exit.isin(good)];full=pd.read_csv('research/foxconn_overnight_20260916_b11/exit_trades.csv',parse_dates=['date','actual_exit','exit_date'])
+  outputs=[];comparisons=[]
+  for mode,stop,worst in [('1000_S0',None,False),('1000_S2',.02,False),('1000_S2_WORSTBAR',.02,True)]:
+   g=full[full.entry.eq('C')&full.exit_model.eq(mode)&full.date.isin(covered.date)].copy().sort_values('date');assert len(g)==tr['both_covered']
+   old=g.copy();prices=[];clocks=[];reasons=[]
+   for _,r in g.iterrows():
+    x=b11.morning_exit(r.close,days,bars,loc[r.actual_exit],'10:00',stop,worst)
+    assert not x.get('delayed') and x['actual_exit']==r.actual_exit,'1m pending path needs separate timing support'
+    prices.append(x['price']);clocks.append(x['clock']);reasons.append(x['reason'])
+   g['model_exit']=prices;g['exit_clock']=clocks;g['reason']=reasons;g['cash'],g['net'],g['fee']=b8.pnl(g,exitcol='model_exit');g['gross']=100*((g.model_exit+g.dividend*.8)/g.close-1)
+   for label,frame in [('original5m',old),('recovered1m',g)]:outputs.append(dict(mode=mode,source=label,**b11.metrics(frame)))
+   for i,r in g.iterrows():
+    o=old.loc[i];comparisons.append(dict(date=r.date,exit_date=r.actual_exit,mode=mode,price5m=o.model_exit,price1m=r.model_exit,clock5m=o.exit_clock,clock1m=r.exit_clock,reason5m=o.reason,reason1m=r.reason,net5m=o.net,net1m=r.net,delta_net=r.net-o.net,cash5m=o.cash,cash1m=r.cash))
+  save('paired_1m_5m_results.csv',outputs);save('paired_1m_5m_trades.csv',comparisons)
+  align=pd.read_csv(R/'recovered_price_alignment.csv',parse_dates=['date']);aa=align[align.date.isin(covered.actual_exit)]
+  save('candidate_1m_alignment_summary.csv',[dict(n=len(aa),high1m_daily_max=float((aa.high_1m-aa.high_daily).abs().max()),low1m_daily_max=float((aa.low_1m-aa.low_daily).abs().max()),close1m_daily_max=float((aa.close_1m-aa.close_daily).abs().max()),high1m_5m_max=float((aa.high_1m-aa.high_5m).abs().max()),low1m_5m_max=float((aa.low_1m-aa.low_5m).abs().max()))])
+ summary=dict(trades=61,unique_required_dates=len(unique),full48=int(a.bars.eq(48).sum()),high_gap_nonzero=int(a.high_gap.abs().gt(.005).sum()),low_gap_nonzero=int(a.low_gap.abs().gt(.005).sum()),max_high_gap=float(a.high_gap.abs().max()),max_low_gap=float(a.low_gap.abs().max()),ledger_daily_high_max=float(a.daily_ledger_high_delta.abs().max()),ledger_daily_low_max=float(a.daily_ledger_low_delta.abs().max()),possible_hidden_cross=int(a.possible_hidden_cross.sum()),whole_day_hidden_cross=int(a.whole_day_hidden_cross.sum()),adjustflags=sorted(a.adjustflags.unique()),raw_daily_adjustflags=sorted(a.daily_adjustflag.unique().tolist()),input_hashes=inputs,gate='Not certified: recovered coverage is partial; see tdx_requery and paired results. No tuning, account or monitoring.',provenance='BaoStock frequency5 adjustflag3; raw package versus ledger; downloader hard QC excludes extrema.')
  (R/'summary.json').write_text(json.dumps(summary,indent=2));print(json.dumps(summary))
  (R/'manifest.json').write_text(json.dumps(dict(code_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in R.iterdir() if p.is_file() and p.name!='manifest.json'}),indent=2))
 if __name__=='__main__':run()
