@@ -36,3 +36,5 @@
 - [B11事前避亏和次晨止损](FOXCONN_OVERNIGHT_B11.md)：implemented本轮研究；保留C＋10:00＋2%与无止损对照，未实盘认证。
 
 - [B12 C候选执行与事件验证](FOXCONN_OVERNIGHT_B12.md)：implemented本批研究；事件/压力仍正，细数据及价格差异未过执行门槛。
+
+- [B13数据溯源与补数路径](FOXCONN_OVERNIGHT_B13.md)：active。

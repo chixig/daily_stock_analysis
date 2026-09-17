@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [文档] B13冻结候选，核验五分钟原始价格差与补数路径。
+
 - [改进] 冻结B12隔夜C候选细数据覆盖、延迟成交与事件集中度验证。
 
 - [改进] 完成B11事前避亏与次晨止损研究，保留C次晨退出候选，补充分币/跳空/受限成交与对称尾部诊断，未部署交易策略。
