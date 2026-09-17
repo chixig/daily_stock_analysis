@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [文档] B14冻结候选，探测历史成交通道以补52笔数据缺口。
+
 - [文档] B13保全93天一分钟、9笔对照及52笔数据缺口；无策略升级。
 
 - [文档] B13冻结候选，核验五分钟原始价格差与补数路径。
