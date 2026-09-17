@@ -1,0 +1,11 @@
+route,signal_date,exit_date,stop_line,early_observed_low,first_observed_cross,first_observed_cross_price,old_reason,old_clock,old_price,caution
+original,2023-05-15,2023-05-16,14.82,14.850000381469728,,,deadline,10:00,14.85,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+serial,2023-05-15,2023-05-16,14.82,14.850000381469728,,,deadline,10:00,14.85,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+original,2023-09-22,2023-09-25,19.55,19.649999618530277,,,deadline,10:00,19.85,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+serial,2023-09-22,2023-09-25,19.55,19.649999618530277,,,deadline,10:00,19.85,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+original,2024-07-31,2024-08-01,23.37,24.09000015258789,,,deadline,10:00,24.3,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+serial,2024-07-31,2024-08-01,23.37,24.09000015258789,,,deadline,10:00,24.3,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+original,2025-11-27,2025-11-28,59.09,,,,deadline,10:00,59.28,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+serial,2025-11-27,2025-11-28,59.09,59.25,,,deadline,10:00,59.28,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+original,2026-07-29,2026-07-30,56.62,55.20000076293945,09:37:31,56.59999847412109,intrabar_stop,09:40,56.62,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.
+serial,2026-07-29,2026-07-30,56.62,55.20000076293945,09:37:31,56.59999847412109,intrabar_stop,09:40,56.62,Observed noncross cannot prove no crossing. Date identity depends on requested date plus daily crosscheck; records have no date field.

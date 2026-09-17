@@ -1,20 +1,33 @@
 {
-  "code_sha": "495db74540fc35277184b7285e9cd7926916bbb8",
-  "run_id": "35183951618",
+  "code_sha": "32cf0e92401f2f74dfd4480c94e06caee6451090",
+  "run_id": "35184193956",
   "files": {
+    "research/foxconn_overnight_20260917_b14/2026-07-30_serial_pages.json": "f9617713835d3f38dea88736a1b9bcc889b072aabcb383e1a4e9f6bd70330cb7",
     "research/foxconn_overnight_20260917_b14/remaining_52_trades.csv": "a6363d50178961c54b27856777080790d2c3887437d1372e327161c8a65c0ec1",
     "research/foxconn_overnight_20260917_b14/provider_methods.txt": "1f2b797b6dbbc02f0389f1e28c9b996dadd78ab5884471edacf90bfa6efc88de",
     "research/foxconn_overnight_20260917_b14/2023-09-25_probe.json": "fb4c22d94d68bd68d59908bc521a5cd857c8cc07eb0c99fd7da27f37fa5618a2",
     "research/foxconn_overnight_20260917_b14/2024-08-01_transactions.csv": "520d2961ed1601170ad08fa7d79ce47e579f7892b0eb25ceecb9e92722b5cb5e",
+    "research/foxconn_overnight_20260917_b14/2025-11-28_serial_pages.json": "0502d1e95618979cf93a29df0d4f13f5b672db2c734c187f650fafd78f3aa8f6",
     "research/foxconn_overnight_20260917_b14/2024-08-01_probe.json": "6278203909fc63df5a4a7d2419d3410ba81e649b80851abeabbff950aaf8d0c3",
     "research/foxconn_overnight_20260917_b14/probe_summary.json": "d1bdc2e6ec41dec83b30e3c68a4e558e41811237ee5ce0a4f19c2e4ef9fc0441",
+    "research/foxconn_overnight_20260917_b14/2024-08-01_serial_transactions.csv": "b91cd7d86928cfd88e556cb2ff94c1bbe169834cadddd6c2c29f208f1458929a",
+    "research/foxconn_overnight_20260917_b14/2023-09-25_serial_pages.json": "a5adee7494335831c14213411c15c5f033d742dfe419c63bdedc8e4554f3bf9e",
+    "research/foxconn_overnight_20260917_b14/2023-05-16_serial_pages.json": "5540d1b9de91291192c8d5bbd74ebe7d5dae9ba428cac876d4ab7fa432d937f2",
     "research/foxconn_overnight_20260917_b14/2023-05-16_probe.json": "47b9d4b3d02a61c795972defa694ae168938b5b9185df3b49f4e3859b6a7f512",
     "research/foxconn_overnight_20260917_b14/2026-07-30_transactions.csv": "c5fddbe6f431ebe383af53b5238ffbe769c3b7fdc51e9ec3a7cc436465f12897",
+    "research/foxconn_overnight_20260917_b14/2023-05-16_serial_transactions.csv": "8c73cf4265c624f925c58f4d88d7134b85c7465ec39472ce306054eb7f198995",
+    "research/foxconn_overnight_20260917_b14/serial_summary.json": "1b6f5a77cfa8b9d3aa9001fa3085cee9d54a86cfe5e3d028597d2f297663bc1b",
+    "research/foxconn_overnight_20260917_b14/stop_observations.csv": "5a9c24bdbc6db77d6ff0829d1b85b0e044901a5962364872c35321bc3e63c40e",
     "research/foxconn_overnight_20260917_b14/audit.json": "36d245f2250f221c7804e659877d86ba9cb3f5aa318bb53d6b6a8086276a599b",
+    "research/foxconn_overnight_20260917_b14/transaction_quality.csv": "5099009d638195a73243c2dae0ed55cb5333e30304325386bc173a8903e5cf96",
+    "research/foxconn_overnight_20260917_b14/2023-09-25_serial_transactions.csv": "ce875f2833b540f9fc8b84a92e6f26f7adaba48f09e3f82339c75312d5d1e47c",
+    "research/foxconn_overnight_20260917_b14/2026-07-30_serial_transactions.csv": "678bd1991fff9d51b43127e5bfda0e0b635ca7c39c5336afc6ac155fbaced8f5",
     "research/foxconn_overnight_20260917_b14/2023-09-25_transactions.csv": "99dcba43d07e67fbfc08044ff349b4077534751234fdf6d571e35053dd66a12a",
+    "research/foxconn_overnight_20260917_b14/2024-08-01_serial_pages.json": "4e656d4a09d6fa9c5d23800caac9258e1071726b01de7181ca02476db6263820",
     "research/foxconn_overnight_20260917_b14/2025-11-28_probe.json": "1316cfa94db99dd313952aa8ea043303a4cae9c1f552b5c9290314afd8706ee7",
     "research/foxconn_overnight_20260917_b14/2026-07-30_probe.json": "0dd5f868425b712439768d826a480150ec863c1b57e2d4b078ec16c3feed2ca6",
     "research/foxconn_overnight_20260917_b14/2025-11-28_transactions.csv": "b8833266f9a7c83d163f85e4d665292dc371441011567a43bd8502ded3e25015",
-    "research/foxconn_overnight_20260917_b14/2023-05-16_transactions.csv": "ebec888b1c562d18390be506a4181bcc9cc3b42084ee965538db6ef179b5e46b"
+    "research/foxconn_overnight_20260917_b14/2023-05-16_transactions.csv": "ebec888b1c562d18390be506a4181bcc9cc3b42084ee965538db6ef179b5e46b",
+    "research/foxconn_overnight_20260917_b14/2025-11-28_serial_transactions.csv": "7bb3faad438bd05ce1db5ad458f7f0bdab928a46f56cfeaeebd234a6972fc351"
   }
 }
