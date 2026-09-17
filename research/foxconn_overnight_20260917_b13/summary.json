@@ -1,0 +1,39 @@
+{
+  "trades": 61,
+  "unique_required_dates": 83,
+  "full48": 61,
+  "high_gap_nonzero": 32,
+  "low_gap_nonzero": 36,
+  "max_high_gap": 0.13000000000000256,
+  "max_low_gap": 0.13000000000000256,
+  "ledger_daily_high_max": 0.0,
+  "ledger_daily_low_max": 0.0,
+  "possible_hidden_cross": 5,
+  "whole_day_hidden_cross": 0,
+  "adjustflags": [
+    "3"
+  ],
+  "raw_daily_adjustflags": [
+    3
+  ],
+  "input_hashes": {
+    "research/foxconn_overnight_20260917_b12/required_fine_data.csv": "e6beb2b47f4c09a23f485b61e953a6fd64448cd74ae8eb7f7facf5e3c92cab06",
+    "research/foxconn_overnight_20260917_b12/event_robustness_summary.csv": "dfc6d04789df0ca87940830e4bdfb6e6ecd399a626c804323a7244de4060b844",
+    "research/foxconn_overnight_20260917_b12/first_event_trades.csv": "6145d04f96a10f26b6f57339a6ed32259330f6690ca39e3efb51d6746f4b9d41",
+    "research/foxconn_overnight_20260917_b12/mirror_registry.csv": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "research/foxconn_overnight_20260917_b12/event_members.csv": "a748c73faaadf1f784b9329e80ddbe89c76777320cc48a873264fdff9223b740",
+    "research/foxconn_overnight_20260917_b12/fine_coverage.csv": "ca66a470afce5915a183af4dab464980b612e451e8da88e3edd65f72e88e3e6a",
+    "research/foxconn_overnight_20260917_b12/leave_one_event_out.csv": "0a97f6899da950ac8735fc8a5a0240a34c8247f0fef3703bb368604b7b057e0a",
+    "research/foxconn_overnight_20260917_b12/daily_minute_alignment.csv": "cc1bcc1c0ca1cdc94d1128f279f2f0ba32fc9a6c40f7e59bf4bdf95bf7e306e7",
+    "research/foxconn_overnight_20260917_b12/execution_pressure.csv": "5d09fa319aed730407d66936cd302f89872f70e333e5e5bfe0d0f4633a0445a8",
+    "research/foxconn_overnight_20260917_b12/latency_trades.csv": "40f4c462569e04117a2fd10b55655acb4f5f267197df90ec8daa540b645f2e37",
+    "research/foxconn_overnight_20260917_b12/audit.json": "72f2a2f35733eea5f0bb25f5570ccdb9e9ab3c484f64edc60dc95da93363c0eb",
+    "research/foxconn_overnight_20260917_b12/alignment_summary.csv": "77d7dfd928bf54265e97475eb7050bf87dc601c39ea8536db977c68c96028d53",
+    "research/foxconn_overnight_20260917_b12/event_summary.csv": "57a837bfcd22edea7d339986c7c4cb04e32cb4ef58362edd6d19736f9c4f79e7",
+    "research/foxconn_overnight_20260917_b12/REPORT.md": "f5174261877585b96bbfedc1bcb8659d3f8d5f50fd62c530ab07c906e480fa21",
+    "research/foxconn_overnight_20260917_b12/events.csv": "abc6072651a07b5a1607253f01d8d2965cea53ede830d849773a33418caaa3e0",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff"
+  },
+  "gate": "Not certified: no candidate-date true 1m; daily extremes cannot locate crossing before 10:00; no tuning, account or monitoring.",
+  "provenance": "BaoStock frequency5 adjustflag3; raw package versus ledger; downloader hard QC excludes extrema."
+}
