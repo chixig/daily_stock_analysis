@@ -1,0 +1,13 @@
+{
+  "status": "ok",
+  "returncode": 0,
+  "detail": "{\"package\": \"0.3.2\", \"rows\": 23160}\n",
+  "rows": 22320,
+  "first": "2026-04-30 09:31:00",
+  "last": "2026-09-11 15:00:00",
+  "days": 93,
+  "full240": 93,
+  "entry_covered": 9,
+  "exit_covered": 9,
+  "both_covered": 9
+}

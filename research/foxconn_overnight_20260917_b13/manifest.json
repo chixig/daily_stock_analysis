@@ -1,11 +1,16 @@
 {
-  "code_sha": "e0a7d9c67966d2e8f4c2c1756a5e0971334084db",
-  "run_id": "35182825106",
+  "code_sha": "1f9ae4dd8a28bebab6231729f81a2f0b3833feff",
+  "run_id": "35182994274",
   "files": {
     "research/foxconn_overnight_20260917_b13/vendor_requery.json": "395ef78d31a4aeb89760db4ea4f2c41e4cb6d53c0a61c3a57c9ebd888eb5c4c0",
+    "research/foxconn_overnight_20260917_b13/recovered_price_alignment.csv": "96babbec5c5a2e55f6195122a08dffa01426538db47c910a7f59ce283a54e794",
+    "research/foxconn_overnight_20260917_b13/recovered_candidate_coverage.csv": "9ac1638f2117ed32eb8d3a0f8aecfbb962c92c6d5583e4cb919a4ba7aa85a342",
     "research/foxconn_overnight_20260917_b13/summary.json": "350b2c1ef4c15749f0efedf7960e5d87e7bebd49a55355bf74a52653791c277b",
     "research/foxconn_overnight_20260917_b13/archive_members.json": "ce4a64886ab6d0a97f574b01f62bbca8100c718d4ee308e0920e7f71995d162f",
     "research/foxconn_overnight_20260917_b13/candidate_price_audit.csv": "43703441e27c8429228267f5c4e0c95b3d1b64d0b6c39616f3af64f7f99769b0",
+    "research/foxconn_overnight_20260917_b13/tdx_requery.json": "16db4284035259379cbec6a4691b256302b423c523f1d95649bc0a59f31deb82",
+    "research/foxconn_overnight_20260917_b13/recovered_1m_qc.csv": "53863c41e7f6f93eb1d69ece5d55a99da57d1d8e1ba4679c5bb8f73629cc7eb9",
+    "research/foxconn_overnight_20260917_b13/tdx_recovered_1m.csv": "cc9a3d09b75626f2b6689eaa291c43f1aecac490bb23a9914c86e85f5ef99446",
     "research/foxconn_overnight_20260917_b13/unique_required_dates.csv": "3769e4661eefe9265159fcd15af05d86d8afb042331e65f87ab3ae6f981a5a06"
   }
 }
