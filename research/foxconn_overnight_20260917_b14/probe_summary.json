@@ -1,0 +1,282 @@
+[
+  {
+    "date": "2023-05-16",
+    "status": "ok",
+    "returncode": 0,
+    "detail": "",
+    "rows": 4721,
+    "fields": [
+      "market",
+      "code",
+      "time",
+      "price",
+      "vol",
+      "trade_count",
+      "bs_flag"
+    ],
+    "first": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:06:56",
+        "price": 14.829999923706055,
+        "vol": 229.0,
+        "trade_count": 25,
+        "bs_flag": 0
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:06:59",
+        "price": 14.84000015258789,
+        "vol": 296.0,
+        "trade_count": 52,
+        "bs_flag": 0
+      }
+    ],
+    "last": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "10:05:56",
+        "price": 14.75,
+        "vol": 316.0,
+        "trade_count": 35,
+        "bs_flag": 0
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "10:05:59",
+        "price": 14.760000228881836,
+        "vol": 50.0,
+        "trade_count": 10,
+        "bs_flag": 0
+      }
+    ]
+  },
+  {
+    "date": "2023-09-25",
+    "status": "ok",
+    "returncode": 0,
+    "detail": "",
+    "rows": 4715,
+    "fields": [
+      "market",
+      "code",
+      "time",
+      "price",
+      "vol",
+      "trade_count",
+      "bs_flag"
+    ],
+    "first": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:07:02",
+        "price": 19.290000915527344,
+        "vol": 355.0,
+        "trade_count": 81,
+        "bs_flag": 0
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:07:05",
+        "price": 19.280000686645508,
+        "vol": 453.0,
+        "trade_count": 85,
+        "bs_flag": 1
+      }
+    ],
+    "last": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "10:05:38",
+        "price": 19.770000457763672,
+        "vol": 422.0,
+        "trade_count": 39,
+        "bs_flag": 1
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "10:05:41",
+        "price": 19.770000457763672,
+        "vol": 239.0,
+        "trade_count": 17,
+        "bs_flag": 0
+      }
+    ]
+  },
+  {
+    "date": "2024-08-01",
+    "status": "ok",
+    "returncode": 0,
+    "detail": "",
+    "rows": 4725,
+    "fields": [
+      "market",
+      "code",
+      "time",
+      "price",
+      "vol",
+      "trade_count",
+      "bs_flag"
+    ],
+    "first": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:07:00",
+        "price": 24.1299991607666,
+        "vol": 15.0,
+        "trade_count": 5,
+        "bs_flag": 0
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:07:03",
+        "price": 24.1200008392334,
+        "vol": 22.0,
+        "trade_count": 3,
+        "bs_flag": 1
+      }
+    ],
+    "last": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "10:06:06",
+        "price": 24.239999771118164,
+        "vol": 192.0,
+        "trade_count": 54,
+        "bs_flag": 1
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "10:06:09",
+        "price": 24.25,
+        "vol": 361.0,
+        "trade_count": 38,
+        "bs_flag": 0
+      }
+    ]
+  },
+  {
+    "date": "2025-11-28",
+    "status": "ok",
+    "returncode": 0,
+    "detail": "",
+    "rows": 2000,
+    "fields": [
+      "market",
+      "code",
+      "time",
+      "price",
+      "vol",
+      "trade_count",
+      "bs_flag"
+    ],
+    "first": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "13:20:03",
+        "price": 59.900001525878906,
+        "vol": 48.0,
+        "trade_count": 21,
+        "bs_flag": 0
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "13:20:06",
+        "price": 59.88999938964844,
+        "vol": 135.0,
+        "trade_count": 72,
+        "bs_flag": 1
+      }
+    ],
+    "last": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "13:17:00",
+        "price": 59.9900016784668,
+        "vol": 192.0,
+        "trade_count": 61,
+        "bs_flag": 1
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "13:17:03",
+        "price": 60.0099983215332,
+        "vol": 113.0,
+        "trade_count": 46,
+        "bs_flag": 0
+      }
+    ]
+  },
+  {
+    "date": "2026-07-30",
+    "status": "ok",
+    "returncode": 0,
+    "detail": "",
+    "rows": 5251,
+    "fields": [
+      "market",
+      "code",
+      "time",
+      "price",
+      "vol",
+      "trade_count",
+      "bs_flag"
+    ],
+    "first": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:22:37",
+        "price": 55.15999984741211,
+        "vol": 160.0,
+        "trade_count": 34,
+        "bs_flag": 1
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "14:22:40",
+        "price": 55.18000030517578,
+        "vol": 128.0,
+        "trade_count": 30,
+        "bs_flag": 0
+      }
+    ],
+    "last": [
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "09:32:34",
+        "price": 56.88999938964844,
+        "vol": 272.0,
+        "trade_count": 176,
+        "bs_flag": 1
+      },
+      {
+        "market": 1,
+        "code": "601138",
+        "time": "09:32:37",
+        "price": 56.9900016784668,
+        "vol": 169.0,
+        "trade_count": 74,
+        "bs_flag": 0
+      }
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "input_hashes": {
+    "research/foxconn_overnight_20260917_b13/tdx_recovered_1m.csv": "cc9a3d09b75626f2b6689eaa291c43f1aecac490bb23a9914c86e85f5ef99446",
+    "research/foxconn_overnight_20260917_b13/recovered_candidate_coverage.csv": "9ac1638f2117ed32eb8d3a0f8aecfbb962c92c6d5583e4cb919a4ba7aa85a342",
+    "research/foxconn_overnight_20260917_b13/unique_required_dates.csv": "3769e4661eefe9265159fcd15af05d86d8afb042331e65f87ab3ae6f981a5a06"
+  },
+  "remaining": 52,
+  "data_end": "2026-09-11",
+  "caution": "Transactions may be aggregated; request count does not guarantee completeness. Probe only; no new return claims or automated trading."
+}

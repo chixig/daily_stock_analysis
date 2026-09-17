@@ -1,0 +1,53 @@
+{
+  "date": "2023-05-16",
+  "rows": 4721,
+  "fields": [
+    "market",
+    "code",
+    "time",
+    "price",
+    "vol",
+    "trade_count",
+    "bs_flag"
+  ],
+  "first": [
+    {
+      "market": 1,
+      "code": "601138",
+      "time": "14:06:56",
+      "price": 14.829999923706055,
+      "vol": 229.0,
+      "trade_count": 25,
+      "bs_flag": 0
+    },
+    {
+      "market": 1,
+      "code": "601138",
+      "time": "14:06:59",
+      "price": 14.84000015258789,
+      "vol": 296.0,
+      "trade_count": 52,
+      "bs_flag": 0
+    }
+  ],
+  "last": [
+    {
+      "market": 1,
+      "code": "601138",
+      "time": "10:05:56",
+      "price": 14.75,
+      "vol": 316.0,
+      "trade_count": 35,
+      "bs_flag": 0
+    },
+    {
+      "market": 1,
+      "code": "601138",
+      "time": "10:05:59",
+      "price": 14.760000228881836,
+      "vol": 50.0,
+      "trade_count": 10,
+      "bs_flag": 0
+    }
+  ]
+}

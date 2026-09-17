@@ -1,0 +1,85 @@
+    async def get_transactions(
+        self, market: Market, code: str, *,
+        date: int | None = None, start: int = 0, count: int = 2000,
+    ) -> list[TransactionRecord]:
+        """获取逐笔成交（MAC 0x122F，每条含 trade_count=成交笔数）。"""
+        key = CacheKey("transaction", int(market), code, "", start, count,
+                       "" if date is None else str(date))
+
+        def make_cmd(s: int, c: int):
+            return MacTransactionCmd(int(market), code, date or 0, s, c)
+
+        payload = await self._cache.get_or_fetch(
+            key, lambda: self._fetch_paginated("mac", make_cmd, PageSpec(
+                page_size=1000, total=start + count, min_page=100,
+            ))
+        )
+        return unpack_payload(payload)
+
+    async def get_kline(
+        self, market: Market, code: str, period: KlinePeriod, *,
+        start: int = 0, count: int = 800, adjust: Adjust | None = None,
+    ) -> list[SecurityBar]:
+        """获取K线（count>页大小自动并发分页；adjust!=NONE 走MAC复权通道）。"""
+        adj = self.default_adjust if adjust is None else adjust
+        # EX扩展市场（港股/期货）：market为ExMarket值，走ex池
+        if isinstance(market, ExMarket) or int(market) not in (0, 1, 2):
+            # EX通道统一用pytdx EX协议(0x23FF): category=K线周期(与TDXParams一致, DAY=4)
+            from .protocol.commands.ex_proto import GetExInstrumentBarsCmd
+            cat = int(period)
+            fetch_count = max(700, start + count)
+            key = CacheKey("kline", int(market), code, period.name, start, fetch_count,
+                           f"{adj.name}@{cat}")
+            async def fetch() -> bytes:
+                result = await self._fetch_paginated_ex(
+                    lambda s2, c2: GetExInstrumentBarsCmd(int(market), code, cat, s2, c2),
+                    PageSpec(page_size=700, total=fetch_count, min_page=100))
+                bars = []
+                for d in result:
+                    bars.append(SecurityBar(
+                        market=int(market), code=code,
+                        year=d["year"], month=d["month"], day=d["day"],
+                        hour=d.get("hour", 0), minute=d.get("minute", 0),
+                        open=d["open"], high=d["high"], low=d["low"], close=d["close"],
+                        vol=float(d.get("trade", 0) or 0), amount=0.0,
+                    ))
+                return pack_payload(bars)
+            bars = unpack_payload(await self._cache.get_or_fetch(key, fetch))
+            # EX 0x23FF 按时间升序返回(老→新)：start=0 取最新 count 根
+            if count < len(bars):
+                return bars[-count:] if start == 0 else bars[start:start + count]
+            return bars
+
+        route = route_for("kline", adjust=adj, period=period)
+        key = CacheKey("kline", int(market), code, period.name, start, count, adj.name)
+
+        def make_cmd(s: int, c: int):
+            if route == "mac":
+                return MacKlineCmd(int(market), code, period, adj, s, c)
+            # 指数类(88开头板块指数 / 沪市000指数 / 深市399指数)走指数K线命令(多4字节涨跌家数)
+            # 注意: 深市股票000001.SZ(market=0)不是指数, 必须加market判断
+            mk = int(market)
+            is_index = code.startswith("88") or (
+                code.startswith("000") and mk == int(Market.SH)) or (
+                code.startswith("399") and mk == int(Market.SZ))
+            if is_index:
+                return GetIndexBarsCmd(mk, code, period, s, c)
+            return GetSecurityBarsCmd(mk, code, period, s, c)
+
+        if route == "mac":
+            payload = await self._cache.get_or_fetch(
+                key, lambda: self._fetch_mac_kline_serial(
+                    make_cmd, total=start + count, page_size=700,
+                )
+            )
+        else:
+            payload = await self._cache.get_or_fetch(
+                key, lambda: self._fetch_paginated(route, make_cmd, PageSpec(
+                    page_size=KLINE_PAGE, total=start + count, min_page=100,
+                ))
+            )
+        bars = unpack_payload(payload)
+        # K线按时间正序
+        if start == 0:
+            bars.sort(key=lambda b: (b.year, b.month, b.day, b.hour, b.minute))
+        return bars
