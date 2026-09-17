@@ -37,4 +37,4 @@
 
 - [B12 C候选执行与事件验证](FOXCONN_OVERNIGHT_B12.md)：implemented本批研究；事件/压力仍正，细数据及价格差异未过执行门槛。
 
-- [B13数据溯源与补数路径](FOXCONN_OVERNIGHT_B13.md)：active。
+- [B13数据溯源与补数路径](FOXCONN_OVERNIGHT_B13.md)：implemented有限研究；9笔1m对照完成，其余52笔待补，成交未认证。
