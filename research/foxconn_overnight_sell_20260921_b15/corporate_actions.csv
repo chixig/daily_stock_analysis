@@ -7,4 +7,4 @@ date,preclose,dividend_today,previous_close,reference_difference,vendor_dividend
 2024-08-15,20.8,0.58,21.38,0.5799999999999983,-1.6653345369377348e-15,2024-08-08,2024-08-14,2024-08-15,1,False,"vendor_event_reconciled; pay-date scenario, source snapshot retained"
 2025-07-31,32.64,0.64,33.28,0.6400000000000006,5.551115123125784e-16,2025-07-24,2025-07-30,2025-07-31,1,False,"vendor_event_reconciled; pay-date scenario, source snapshot retained"
 2026-01-16,60.46,0.33,60.79,0.3299999999999983,-1.7208456881689926e-15,2026-01-09,2026-01-15,2026-01-16,1,False,"vendor_event_reconciled; pay-date scenario, source snapshot retained"
-2026-08-03,56.05,0.65,56.7,0.6500000000000057,5.6621374255882976e-15,2026-07-24,2026-07-31,2026-08-03,1,True,"vendor_event_reconciled; pay-date scenario, source snapshot retained"
+2026-08-03,56.05,0.65,56.7,0.6500000000000057,5.6621374255882976e-15,2026-07-24,2026-07-31,2026-08-03,1,False,"vendor_event_reconciled; pay-date scenario, source snapshot retained"

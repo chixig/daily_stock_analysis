@@ -1,0 +1,18 @@
+{
+  "commission": 0.0001354,
+  "min_commission": 5,
+  "commission_status": "assumed inclusive broker commission, no account proof",
+  "transfer_before_20220429": 2e-05,
+  "transfer_after": 1e-05,
+  "stamp_before_20230828": 0.001,
+  "stamp_after": 0.0005,
+  "slip_each_bp": [
+    0,
+    5,
+    10,
+    20
+  ],
+  "base_bp": 5,
+  "dividend_tax": "FIFO calendar duration continuous account, opportunity benchmark0/10/20pct scenarios",
+  "transfer_source": "Official historical primary announcement not fetched; secondary report preserved; do not call fully primary-certified"
+}

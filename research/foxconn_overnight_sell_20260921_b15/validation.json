@@ -1,0 +1,30 @@
+[
+  {
+    "name": "inherited input hashes",
+    "status": "PASS"
+  },
+  {
+    "name": "daily OHLC, same-vendor raw crosscheck and available index calendar",
+    "status": "PASS"
+  },
+  {
+    "name": "causal rebuild/current-future mutation and prefix signals",
+    "status": "PASS"
+  },
+  {
+    "name": "all independent scalar ledgers, fee floors/date switches, two directions cost identity",
+    "status": "PASS"
+  },
+  {
+    "name": "tri-state partitions and complete rule output",
+    "status": "PASS"
+  },
+  {
+    "name": "all accounts cash/inventory/FIFO/T+1/self-financing assertions",
+    "status": "PASS"
+  },
+  {
+    "name": "synthetic same-day resale forbidden, funding partials persist, blocked repurchase terminal retained",
+    "status": "PASS"
+  }
+]

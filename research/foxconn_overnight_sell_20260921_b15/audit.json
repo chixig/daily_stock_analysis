@@ -1,0 +1,35 @@
+{
+  "data_start": "2018-06-08",
+  "data_end": "2026-09-11",
+  "rows": 2007,
+  "completed_opportunities": 2006,
+  "main_opportunities": 1623,
+  "last_pending_date": "2026-09-11",
+  "input_hashes": {
+    "research/foxconn_t0_20260913/results/daily_features_and_cashflows.csv": "336fd19b75d4489db11fbee4ac084744b6ea0c16802b3183bb128c43fd547e85",
+    "research/foxconn_t0_20260913/source/601138-full-5min-history.zip": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "research/foxconn_t0_20260913/source/baostock_raw_crosscheck.csv": "52b880bacd8740ac79a4f7a31a8c21f2cb26e074d441797a44e9e3c8b6f97e10",
+    "research/foxconn_t0_20260913_b02/source/sse_index.csv": "108cf1e67314f5c972ce064f39793368215a532ee701d6504a876a2c11d41c9c",
+    "research/foxconn_overnight_20260916_b08/corporate_actions.csv": "18b8c4d162765de5e25c49d231e504ea06acf470ce76d2d43a95c740cb300a24",
+    "data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv": "78811cdfa3e493c3a65bb3d872e93fe3f66980f58673d7932c8e30e2b1d144d0"
+  },
+  "rule_slots": 15,
+  "unavailable": [
+    "S2_F7"
+  ],
+  "minute_days": 1624,
+  "qualified_endpoint_days": 1620,
+  "qualified_path_days": 1098,
+  "dividend_events": 9,
+  "source_capture_failures": [],
+  "validation_count": 7,
+  "limitations": [
+    "All auction queue quantities unknown; proxies are not fills. Partial fills due to liquidity not identifiable; modeled partials are budget-limited only.",
+    "Cash action amounts/dates reconcile retained vendor references; all-nine primary announcement/pay-date certification incomplete. Main account ex-date-close payment is explicit scenario; locked receivable sensitivity included.",
+    "Single-stock calendar and index plus third-party calendar are crosschecks, not primary exchange suspension certification.",
+    "S2 timestamps inferred as bar end; receipt latency unknown. Endpoint/path quality filters are audit common-date restrictions, not deployable ex-ante filters.",
+    "Monthly blocks preserve within-month dependence; events crossing month boundary may split. Dense S0 may form one connected event; leave-event evidence then not identifiable.",
+    "All data historical explored; no holdout or forward evidence. Slippage-cost model may exceed statutory limits near boundaries; conservative limit flags refer to reference market price.",
+    "Opportunity same-day availability assumed per independent sale; continuous accounts enforce settled inventory, no daily reuse. Opportunity sum not account return."
+  ]
+}
