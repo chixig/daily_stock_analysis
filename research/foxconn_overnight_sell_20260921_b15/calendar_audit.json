@@ -1,0 +1,10 @@
+{
+  "provider_calendar_equal": true,
+  "provider_circularity": "Stock-derived calendar alone does not prove no suspensions",
+  "exchange_calendar": "XSHG library third-party exchange calendar, not exchange-certified",
+  "missing": [],
+  "extra": [],
+  "library_version": "4.13.2",
+  "sse_index_calendar_missing_stock": 0,
+  "sse_index_covered_days": 2007
+}

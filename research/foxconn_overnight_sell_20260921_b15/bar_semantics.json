@@ -1,0 +1,8 @@
+{
+  "interpretation": "end stamped complete five-minute bars inferred from 48 labels09:35..15:00 and first open/daily open agreement; not provider timestamp delivery certification",
+  "endpoint_good_days": 1620,
+  "path_strict_good_days": 1098,
+  "minute_days": 1624,
+  "failures_kept": true,
+  "B14_transactions_used": false
+}
