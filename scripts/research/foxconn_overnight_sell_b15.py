@@ -161,6 +161,7 @@ def account(d,mask,win,buffer,conservative=True,pay_delay=False):
   missed_up+=max(0,-gap_impact);avoided_down+=max(0,gap_impact)
   eq_open_before=cash+sum(a['amount']for a in recv)+shares()*r.open-reserve(day)
   bopen=bcash+sum(a['amount']for a in brecv)+q*r.open
+  last_buy_price=float(r.open)
   opportunities=win[i] if conservative else [('09:25',float(r.open),'nominal_open')]
   # Cash shortages cannot be remedied by repeated minimum-fee orders at the SAME observation.
   for clock,price,kind in opportunities:
@@ -171,11 +172,12 @@ def account(d,mask,win,buffer,conservative=True,pay_delay=False):
    n=missing
    while n>0 and n*price*1.0005+sf(n*price*1.0005,day)>cash-reserve(day)+1e-8:n-=100
    if n<=0:continue
+   last_buy_price=price
    v=n*price*1.0005;cost=sf(v,day);cash-=v+cost;total_fees+=cost;day_fees+=cost;net_trade-=v+cost;day_buys+=n
    lots.append({'q':n,'acquired':day,'divps':0.});orders.append(dict(date=day,clock=clock,side='BUY',quantity=n,reference=price,value=v,fee=cost,dividend_tax=0.,cash_after=cash,shares_after=shares(),kind=kind))
    if shares()==q and active is not None:
     episodes.append(dict(entry=active['date'],exit=day,days=i-active['i'],sale_cash=active['sale_cash'],final_cash=cash,restored=True));active=None;completed+=1
-  mark=price if day_buys else r.open
+  mark=last_buy_price
   eq_open=cash+sum(a['amount']for a in recv)+shares()*mark-reserve(day)
   bmark=bcash+sum(a['amount']for a in brecv)+q*mark
   # Pay at end of ex-date in documented same-pay-date scenario, conservative reserve alternative locks them to end.

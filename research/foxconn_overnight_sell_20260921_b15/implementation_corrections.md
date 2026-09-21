@@ -1,3 +1,5 @@
 # B15 implementation corrections
 
 First run 35609256751 (code01e521d00323b227a02765a8a5ffc60ace38ca62) stopped before any rule statistics/account computation: prefix test detected gapdays int64/float64 mismatch because full input has terminal NaT. Corrected feature schema to explicit float, preserving all values/missing semantics and tests; no rules/parameters/windows changed. Raw failure retained in that run/result commit. Removed premature corporate primary-verification boolean, expanded source capture, pinned observed exchange_calendars4.13.2 for reproducibility. Calendar audit matches all2007 sessions and2007 index dates.
+
+Final review after run35609409355: last repurchase mark previously could use next loop bar price after inventory became full (loop tuple assigned before break). Fix to retain last actually executed repurchase price; trade decisions, fills, cash, inventory, and endpoint opportunity results unchanged. Only sampled intraday mark / drawdown can change. Rerun full model and independent account review; preserve original2690d4ee20e3d885d29e7da65ccd7075e0bdf615 as pre-fix evidence. No parameter change.
