@@ -3,6 +3,6 @@
   "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
   "pip_freeze": "certifi==2026.7.22\ncharset-normalizer==3.5.1\nexchange_calendars==4.13.2\nidna==3.20\nkorean_lunar_calendar==0.4.0\nnumpy==2.1.3\npandas==2.2.3\npyluach==2.3.0\npython-dateutil==2.9.0.post0\npytz==2026.3.post1\nrequests==2.32.3\nsix==1.17.0\ntabulate==0.9.0\ntoolz==1.1.0\ntzdata==2026.4\nurllib3==2.8.0\n",
   "command": "python scripts/research/foxconn_overnight_sell_b15.py",
-  "run_id": "35609409355",
-  "code_sha": "510601915c140567fb4467eb88f92c6e3d06ff94"
+  "run_id": "35611577448",
+  "code_sha": "7c6f643f31dff3ccfb6594a2df42afb39eadb584"
 }

@@ -21,7 +21,10 @@
   "qualified_endpoint_days": 1620,
   "qualified_path_days": 1098,
   "dividend_events": 9,
-  "source_capture_failures": [],
+  "source_capture_failures": [
+    "div_tax2015",
+    "div2026_primary"
+  ],
   "validation_count": 7,
   "limitations": [
     "All auction queue quantities unknown; proxies are not fills. Partial fills due to liquidity not identifiable; modeled partials are budget-limited only.",
