@@ -1,0 +1,18 @@
+{
+  "source_run": "35609409355",
+  "source_code_sha": "510601915c140567fb4467eb88f92c6e3d06ff94",
+  "verification_run": "35610449907",
+  "verification_code_sha": "19d4531bfef89da553836955f07b15c8d1612110",
+  "input_manifest_verified": true,
+  "accounts_independently_verified": 144,
+  "primary_matches": 2,
+  "primary_failures": [
+    "2019-06-20",
+    "2020-06-30",
+    "2021-07-27",
+    "2022-08-05",
+    "2023-07-28",
+    "2024-08-15",
+    "2026-08-03"
+  ]
+}
