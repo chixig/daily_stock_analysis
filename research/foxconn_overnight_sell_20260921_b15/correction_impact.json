@@ -1,0 +1,12 @@
+{
+  "previous_result": "2690d4ee20e3d885d29e7da65ccd7075e0bdf615",
+  "opportunity_result_bytes_identical": true,
+  "changed_account_summary_fields": [
+    "mdd_pct",
+    "relative_mdd_cash"
+  ],
+  "all_other_account_summary_fields_unchanged": true,
+  "signals_and_all_orders_bytes_identical": true,
+  "all_daily_account_fields_except_two_mark_fields_identical": true,
+  "source_retrieval": "Reused already hashed source snapshots; unsuccessful captures remain unverified"
+}
