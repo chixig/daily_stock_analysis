@@ -67,7 +67,7 @@ def features(d,m,ix):
  # chain[t]/close[t]=chain[t-1]/preclose[t], so t final close cancels exactly.
  factor=chain.shift()/d.preclose
  s2=pd.DataFrame({'clv':(a.p-a.l)/(a.h-a.l).replace(0,np.nan),'r3':100*(a.p*factor/chain.shift(3)-1),'vr':a.v/a.v.shift().rolling(20).mean(),'relative':np.nan},index=d.index)
- for f in [s1,s2]:f['gapdays']=(d.exit_date-d.date).dt.days
+ for f in [s1,s2]:f['gapdays']=(d.exit_date-d.date).dt.days.astype(float)
  return s1,s2,a
 
 def rule_masks(f1,f2):
@@ -88,11 +88,17 @@ def fetch_sources():
  'fifo':'https://www.csrc.gov.cn/shenzhen/c105614/c1575308/content.shtml',
  'div_table':'https://money.finance.sina.com.cn/corp/go.php/vISSUE_ShareBonus/stockid/601138.phtml',
  'div2026_primary':'https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-07-24/601138_20260724_AYP4.pdf',
- 'transfer_report':'https://www.xinhuanet.com/finance/2022-04/29/c_1128607014.htm'}
+ 'transfer_report':'https://finance.sina.cn/2022-04-28/detail-imcwipii6993883.d.html',
+ 'div2019_primary':'https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2019-06-14/601138_20190614_1.pdf',
+ 'div2020_primary':'https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2020-06-20/601138_20200620_1.pdf',
+ 'div2022_issuer_reprint':'https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=8390542&stockid=601138',
+ 'div2023_issuer_reprint':'https://vip.stock.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=9364665&stockid=601138',
+ 'div2024_issuer_reprint':'https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=10363980&stockid=601138',
+ 'div2026half_primary':'https://static.cninfo.com.cn/finalpage/2026-01-09/1224926202.PDF'}
  (R/'sources').mkdir(exist_ok=True)
  for key,url in urls.items():
   try:
-   r=requests.get(url,timeout=25,headers={'User-Agent':'Mozilla/5.0'});r.raise_for_status();p=R/'sources'/(key+('.pdf' if '.pdf' in url else '.html'));p.write_bytes(r.content)
+   r=requests.get(url,timeout=25,headers={'User-Agent':'Mozilla/5.0'});r.raise_for_status();p=R/'sources'/(key+('.pdf' if '.pdf' in url.lower() else '.html'));p.write_bytes(r.content)
    SOURCELOG.append(dict(id=key,url=url,status=r.status_code,bytes=len(r.content),sha256=hashlib.sha256(r.content).hexdigest(),path=str(p)))
   except Exception as e:SOURCELOG.append(dict(id=key,url=url,status='FAILED',error=str(e)))
  save('sources.csv',SOURCELOG)
@@ -247,7 +253,7 @@ def run():
  CHECKS.append(dict(name='daily OHLC, same-vendor raw crosscheck and available index calendar',status='PASS'))
  # Keep all dividends with exact source status, never erase affected nights.
  corp=pd.read_csv(B8/'corporate_actions.csv',parse_dates=['date','announcement']);corp['record_date']=corp.date.map(d.set_index('exit_date').date.to_dict());corp['pay_date_assumption']=corp.date;corp['share_ratio']=1;corp['primary_verified']=False
- corp.loc[corp.date.eq('2026-08-03'),'primary_verified']=True;corp['status']='vendor_event_reconciled; pay-date scenario, source snapshot retained'
+ corp['status']='vendor_event_reconciled; pay-date scenario, source snapshot retained'
  assert set(d.loc[d.action_ratio.sub(1).abs().gt(.0001),'date'])==set(corp.date)
  assert (corp.vendor_dividend_gap.abs()<.011).all();assert (corp.announcement<corp.record_date).all();save('corporate_actions.csv',corp)
  with zipfile.ZipFile(P/'source/601138-full-5min-history.zip')as z:m=pd.read_csv(z.open(next(n for n in z.namelist()if n.endswith('601138_5min_all.csv'))))

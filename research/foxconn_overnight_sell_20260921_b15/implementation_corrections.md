@@ -1,0 +1,3 @@
+# B15 implementation corrections
+
+First run 35609256751 (code01e521d00323b227a02765a8a5ffc60ace38ca62) stopped before any rule statistics/account computation: prefix test detected gapdays int64/float64 mismatch because full input has terminal NaT. Corrected feature schema to explicit float, preserving all values/missing semantics and tests; no rules/parameters/windows changed. Raw failure retained in that run/result commit. Removed premature corporate primary-verification boolean, expanded source capture, pinned observed exchange_calendars4.13.2 for reproducibility. Calendar audit matches all2007 sessions and2007 index dates.
