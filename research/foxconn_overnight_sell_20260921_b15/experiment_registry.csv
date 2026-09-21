@@ -1,0 +1,17 @@
+id,field,condition,information_cutoff,family,status
+S0,none,unconditional,preplanned14:50,baseline,registered
+S1_F1,CLV,>=0.8,t-1,15 conditional rules,registered
+S1_F2,CLV,<=0.2,t-1,15 conditional rules,registered
+S1_F3,R3,>=4pct,t-1,15 conditional rules,registered
+S1_F4,R3,<=-4pct,t-1,15 conditional rules,registered
+S1_F5,VR,>=1.5,t-1,15 conditional rules,registered
+S1_F6,VR,<=0.8,t-1,15 conditional rules,registered
+S1_F7,relative,>0,t-1,15 conditional rules,registered
+S1_F8,gap_days,>=3,t-1,15 conditional rules,registered
+S2_F1,CLV,>=0.8,t14:50 complete bars,15 conditional rules,registered
+S2_F2,CLV,<=0.2,t14:50 complete bars,15 conditional rules,registered
+S2_F3,R3,>=4pct,t14:50 complete bars,15 conditional rules,registered
+S2_F4,R3,<=-4pct,t14:50 complete bars,15 conditional rules,registered
+S2_F5,VR,>=1.5,t14:50 complete bars,15 conditional rules,registered
+S2_F6,VR,<=0.8,t14:50 complete bars,15 conditional rules,registered
+S2_F7,relative,>0,t14:50 complete bars,15 conditional rules,registered
