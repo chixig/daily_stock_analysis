@@ -17,12 +17,17 @@
   {
     "name": "execution prefix and future suffix mutation",
     "status": "PASS",
-    "detail": "30 account/cutoff combinations; pipeline QC/windows/signals rebuilt"
+    "detail": "36 account/cutoff combinations; pipeline QC/windows/signals rebuilt"
   },
   {
     "name": "negative control detects old execution leakage",
     "status": "PASS",
     "detail": "2020-03-04 cutoff13:05; changed later daily high changes 1 earlier order rows"
+  },
+  {
+    "name": "synthetic unknown-window exposure, insufficient-funding persistence, T+1 and cash conservation",
+    "status": "PASS",
+    "detail": ""
   },
   {
     "name": "independent financial invariants",

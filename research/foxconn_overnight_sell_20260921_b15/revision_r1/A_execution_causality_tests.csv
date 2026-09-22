@@ -29,3 +29,9 @@ date,cutoff,rule,first_window,mutation_orders_equal,prefix_orders_equal,cash_inv
 2026-07-30,14:50,S1_F1,post0935,True,True,True
 2026-07-30,14:50,S2_F2,open,True,True,True
 2026-07-30,14:50,S2_F2,post0935,True,True,True
+2025-06-30,15:00,S0,open,True,True,True
+2025-06-30,15:00,S0,post0935,True,True,True
+2025-06-30,15:00,S1_F1,open,True,True,True
+2025-06-30,15:00,S1_F1,post0935,True,True,True
+2025-06-30,15:00,S2_F2,open,True,True,True
+2025-06-30,15:00,S2_F2,post0935,True,True,True
