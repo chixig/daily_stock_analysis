@@ -1,0 +1,5 @@
+scenario,net_increment,completed,traded_notional,reference_notional,yuan_per_episode,uniform_extra_bp_per_side,reference_price_bp_budget,basis
+S1_F1_open_b5_e0_d0_main,11271.407257445666,286,14017316.424999999,14017330.0,39.41051488617366,8.041059298157112,8.041051510840983,extra proportional fee on BOTH actual legs; not empirical slippage estimate
+S1_F1_open_b10_e0_d0_main,4265.030156890658,286,14017302.85,14017330.0,14.912692856261042,3.042689597657268,3.0426837043079233,extra proportional fee on BOTH actual legs; not empirical slippage estimate
+S1_F1_post0935_b5_e0_d0_main,8099.216504720724,286,14020488.01,14020500.0,28.318938827694836,5.776700853025959,5.776695912928016,extra proportional fee on BOTH actual legs; not empirical slippage estimate
+S1_F1_post0935_b10_e0_d0_main,1091.254101440718,286,14020476.02,14020500.0,3.8155737812612514,0.7783288526609655,0.7783275214441124,extra proportional fee on BOTH actual legs; not empirical slippage estimate

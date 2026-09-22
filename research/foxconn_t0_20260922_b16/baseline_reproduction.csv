@@ -1,0 +1,9 @@
+scenario,daily_fields_equal,orders_equal,increment
+S1_F1_open_b5_e0_d0_exdate_reference,True,True,11271.407257445666
+S1_F1_open_b10_e0_d0_exdate_reference,True,True,4265.030156890658
+S1_F1_post0935_b5_e0_d0_exdate_reference,True,True,8099.216504720724
+S1_F1_post0935_b10_e0_d0_exdate_reference,True,True,1091.254101440718
+S0_open_b5_e0_d0_exdate_reference,True,True,-13935.088326579673
+S0_open_b10_e0_d0_exdate_reference,True,True,-13961.36043247977
+S0_post0935_b5_e0_d0_exdate_reference,True,True,-13781.696779809557
+S0_post0935_b10_e0_d0_exdate_reference,True,True,-13865.906820559729
