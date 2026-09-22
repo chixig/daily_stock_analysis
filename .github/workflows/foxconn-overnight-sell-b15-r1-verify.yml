@@ -1,0 +1,28 @@
+name: Foxconn B15 R1 Final Verification
+on:
+  push:
+    branches: [research/foxconn-overnight-sell-20260921-b15]
+    paths:
+      - scripts/research/foxconn_overnight_sell_b15_r1_verify.py
+      - .github/workflows/foxconn-overnight-sell-b15-r1-verify.yml
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3
+      - run: python scripts/research/foxconn_overnight_sell_b15_r1_verify.py
+      - name: Preserve final verification
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/foxconn_overnight_sell_20260921_b15/revision_r1/
+          git diff --cached --quiet || git commit -m "research(B15-R1): preserve independent order checks and attribution"
+          git push origin HEAD:research/foxconn-overnight-sell-20260921-b15
