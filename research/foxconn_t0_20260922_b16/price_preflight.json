@@ -1,0 +1,73 @@
+{
+  "zip_names": [
+    "601138_5min_all.csv",
+    "601138_daily_raw.csv",
+    "coverage.json",
+    "qc_daily.csv",
+    "yearly/601138_5min_2020.csv",
+    "yearly/601138_5min_2021.csv",
+    "yearly/601138_5min_2022.csv",
+    "yearly/601138_5min_2023.csv",
+    "yearly/601138_5min_2024.csv",
+    "yearly/601138_5min_2025.csv",
+    "yearly/601138_5min_2026.csv"
+  ],
+  "columns5m": [
+    "date",
+    "time",
+    "code",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "adjustflag",
+    "datetime",
+    "clock"
+  ],
+  "columns1m": [
+    "symbol",
+    "datetime",
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "amount",
+    "source",
+    "clock"
+  ],
+  "five_min_first_last": [
+    "09:35",
+    "15:00"
+  ],
+  "one_min_first_last": [
+    "09:31",
+    "15:00"
+  ],
+  "datetime_timezone": "None",
+  "daily": [
+    {
+      "date": "2026-05-15 00:00:00",
+      "open": 69.5,
+      "high": 71.76,
+      "low": 67.37,
+      "close": 67.62,
+      "preclose": 68.6,
+      "dividend_today": 0.0
+    }
+  ],
+  "adjustflags5m": [
+    3
+  ],
+  "bar_semantics": {
+    "interpretation": "end stamped complete five-minute bars inferred from 48 labels09:35..15:00 and first open/daily open agreement; not provider timestamp delivery certification",
+    "endpoint_good_days": 1620,
+    "path_strict_good_days": 1098,
+    "minute_days": 1624,
+    "failures_kept": true,
+    "B14_transactions_used": false
+  }
+}

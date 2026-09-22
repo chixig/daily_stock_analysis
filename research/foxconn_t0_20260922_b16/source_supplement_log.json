@@ -1,0 +1,72 @@
+[
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/cninfo_stock_lookup.json",
+    "url": "https://www.cninfo.com.cn/new/information/topSearch/query",
+    "status": 200,
+    "sha256": "bdaa2a2f2e7e834a323003cfab46ea7acb5cfb2af1d9b896e8b3e7c25e51ad2f",
+    "parameters": {
+      "keyWord": "601138",
+      "maxNum": "10"
+    }
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/cninfo_query_with_orgid.json",
+    "url": "https://www.cninfo.com.cn/new/hisAnnouncement/query",
+    "status": 200,
+    "sha256": "c13a81dc5dd2a62aea45d25a6e42fd989c30031672ba90f51ee11f3d74515ee7",
+    "parameters": {
+      "pageNum": "1",
+      "pageSize": "30",
+      "column": "sse",
+      "tabName": "fulltext",
+      "stock": "601138,9900036731",
+      "searchkey": "权益分派实施公告",
+      "seDate": "2019-01-01~2026-09-11",
+      "sortName": "time",
+      "sortType": "asc",
+      "isHLtitle": "true"
+    }
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/2019-06-20_official.pdf",
+    "url": "https://static.cninfo.com.cn/finalpage/2019-06-14/1206352583.PDF",
+    "status": 200,
+    "sha256": "8de71a2940c8f7c9de1f7e0f2809721201075f014bedaa66ce5b216c0440c795",
+    "parameters": null
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/2020-06-30_official.pdf",
+    "url": "https://static.cninfo.com.cn/finalpage/2020-06-20/1207944899.PDF",
+    "status": 200,
+    "sha256": "3906d803cedce518f34902449358e32e01a5089d0f69c122d3dce85b9b4c283e",
+    "parameters": null
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/2021-07-27_official.pdf",
+    "url": "https://static.cninfo.com.cn/finalpage/2021-07-20/1210512273.PDF",
+    "status": 200,
+    "sha256": "fd395661a336feec70cb65e0708229683e19e6f333de4ed6facaec27a82673ed",
+    "parameters": null
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/2022-08-05_official.pdf",
+    "url": "https://static.cninfo.com.cn/finalpage/2022-07-30/1214173044.PDF",
+    "status": 200,
+    "sha256": "59cec9385d3a0ed04fd941de9f218621228b37ec204f68c77ce1de898bc7ab5f",
+    "parameters": null
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/2023-07-28_official.pdf",
+    "url": "https://static.cninfo.com.cn/finalpage/2023-07-22/1217359752.PDF",
+    "status": 200,
+    "sha256": "2d2b4486824b5150f922210d6ab86a551bc9d6d9bd72edae378c324a8bc9e9fa",
+    "parameters": null
+  },
+  {
+    "path": "research/foxconn_t0_20260922_b16/sources/2024-08-15_official.pdf",
+    "url": "https://static.cninfo.com.cn/finalpage/2024-08-08/1220814897.PDF",
+    "status": 200,
+    "sha256": "adcc6579a86015d165e6dedb5ca4f5fef0ea6d8bd9ece810cab68c1274bd574c",
+    "parameters": null
+  }
+]
