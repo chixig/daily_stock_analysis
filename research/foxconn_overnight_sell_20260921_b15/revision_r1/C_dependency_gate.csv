@@ -1,0 +1,3 @@
+rule,openonly_orders_equal_original,increment_cash,old_increment_cash,causal_openonly_baseline_available,C_scope
+S1_F1,True,11271.407257445666,11271.407257445666,True,continue_fixed_matrix; original result not execution-certified
+S0,False,-13935.088326579673,-13924.726018304653,True,continue_fixed_matrix; original result not execution-certified

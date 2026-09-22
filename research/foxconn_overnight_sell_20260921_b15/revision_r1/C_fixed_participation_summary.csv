@@ -1,0 +1,13 @@
+rule,first_window,slip_bp,frozen_dates,known,unknown,known_cash,known_mean,fees,basis
+S1_F1,open,5,286,286,0,11971.407257445766,-0.04260760627459408,7969.927742555001,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S1_F1,open,10,286,286,0,4965.030156890753,-0.14246634908953074,7967.639843110001,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S1_F1,post0935,5,286,286,0,8799.216504720747,-0.07162024256479477,7970.53349528,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S1_F1,post0935,10,286,286,0,1791.2541014407461,-0.17149348444834248,7968.245898560001,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S1_F1,0935_close_diagnostic,5,286,286,0,6147.929339628765,-0.12939651247767484,7970.495660372,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S1_F1,0935_close_diagnostic,10,286,286,0,-861.3580447432441,-0.22929862805933027,7968.208044744,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S0,open,5,226,226,0,-8683.55252279966,-0.2770629164052847,5424.0225228,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S0,open,10,226,226,0,-11771.558245599634,-0.37700546638024207,5422.4982456,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S0,post0935,5,226,226,0,-6632.486202149657,-0.21944812011057988,5423.98120215,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S0,post0935,10,226,226,0,-9719.466904299645,-0.319361877083891,5422.4569043,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S0,0935_close_diagnostic,5,226,226,0,-8353.380219149662,-0.26428287352322727,5424.01521915,original30pct paid actual-sale dates; independent cash and gross missed dividend
+S0,0935_close_diagnostic,10,226,226,0,-11441.220938299652,-0.36421903667015787,5422.4909383,original30pct paid actual-sale dates; independent cash and gross missed dividend

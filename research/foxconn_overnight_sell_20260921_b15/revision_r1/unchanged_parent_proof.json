@@ -1,0 +1,7 @@
+{
+  "original_results_sha256": "fa57ad2d23ad32857e3a18d9094bd64c99db79644cd047a7b597968cea6ad645",
+  "original_signals_sha256": "d6d17bc360fff9c04e72f194ff359f61dcbc15df74799e3ae03d8aaa078d7f7c",
+  "S0_independent_cashflow_recomputed_equal": true,
+  "S1_F1_and_S2_F2_signals_reconstructed_equal": true,
+  "parent_snapshot": "9c34181d7b63ccbdc72ac65481a0d3be1f24f471"
+}

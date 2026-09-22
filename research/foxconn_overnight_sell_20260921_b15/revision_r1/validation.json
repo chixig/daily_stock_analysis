@@ -1,0 +1,37 @@
+[
+  {
+    "name": "immutable B15 snapshot verified",
+    "status": "PASS",
+    "detail": "500 parent files"
+  },
+  {
+    "name": "opportunity and frozen signals unaffected",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "new engine replay mode reproduces all three original30pct baselines",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "name": "execution prefix and future suffix mutation",
+    "status": "PASS",
+    "detail": "30 account/cutoff combinations; pipeline QC/windows/signals rebuilt"
+  },
+  {
+    "name": "negative control detects old execution leakage",
+    "status": "PASS",
+    "detail": "2020-03-04 cutoff13:05; changed later daily high changes 1 earlier order rows"
+  },
+  {
+    "name": "independent financial invariants",
+    "status": "PASS",
+    "detail": "30 new continuous accounts"
+  },
+  {
+    "name": "all500 original evidence files unchanged after R1",
+    "status": "PASS",
+    "detail": ""
+  }
+]
