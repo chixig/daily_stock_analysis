@@ -13,12 +13,14 @@
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/protocol.md": "c532013b7d0ba00a3fa2084999644642b44d365a1aec36826eab89ee34a67c41"
   },
   "files": {
+    "research/foxconn_overnight_sell_20260921_b15/revision_r1/C_payment_path_divergence.csv": "b1892018df0e97a8f2fe3fdb80429cd1c770add396b3d439b2f3a6c38e02b981",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/REVIEW.md": "ac0a3c6954a381e21b4a79746e0e1e40d29182cdd96bf9bac43f53d83e58b948",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/C_fixed_participation_summary.csv": "551954c464d54658c2da2fa9068b2cdda99fb4cc3e33c7fc082a7337f3228c14",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/episodes_S1_F1_30_locked_post0935_5.csv": "11871c3bbd3d151e1c393fe80c83b63ee82ba47a5e46c643315cfb337e6a048e",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/episodes_S1_F1_30_paid_post0935_10.csv": "cc519336586649a9c9b07a9ce098c7ed498d892f700273d1f3a58e00aced6e00",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/orders_S2_F2_0_paid_open_5.csv": "9780bc191b0daedb83644d85a3c9868bd4a5f98342e80df8eb60be2fb3a75274",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S1_F1_30_paid_post0935_5.csv": "376a44f7f4a275c2764094d335f6fe71e3ac1921bc0521296a3f5fc1c08d8bc0",
+    "research/foxconn_overnight_sell_20260921_b15/revision_r1/C_payment_divergence_cases.csv": "19e2b2cdf18e1911a35a67af482f7328936113a657f89d9133e2cb9e43758afc",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S1_F1_30_locked_open_10.csv": "6fa38b9c5a8d2588c954c0914eed2a0ce31e8178e09717b20e0f9a096d5ed272",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/B_fine_price_quality.csv": "92e1fedb336d4fc27d109d0a0b1aeff9add2bc4b426db5314b9744b5403e4ca2",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S2_F2_10_locked_open_5.csv": "4d9bea125861d72f4515dfd67f9b291a496eb27e0dd841bd744a290f9b43a403",
@@ -49,6 +51,7 @@
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/A_QC_annotations_only.csv": "ace91c163034927b7cc4e8ba7789e558609d92b68342b2996b350825d5736e14",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/orders_S0_0_locked_open_5.csv": "d9369b930d09799354a07652fa7f8bae97bbceda4e19ab63015034de4dd88266",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S1_F1_30_paid_post0935_10.csv": "eda95a500fd030cbb471b94931aaa6f5713a17e50b03c14aac8185b4df3ca585",
+    "research/foxconn_overnight_sell_20260921_b15/revision_r1/FINAL_REVIEW.md": "9615550c36532817af81fdd15644220f09e9a401f3ab710721d84305b7b503fd",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/orders_S0_30_locked_open_10.csv": "5d6f6aad404385017cd672ec5f909208ceca6c77e6dcab43095fd3dd23072d72",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/episodes_S1_F1_10_locked_open_5.csv": "7468dfa7469f3ae12984bf23190f293567e86355a75d467cecb44dc97f373845",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/protocol.md": "c532013b7d0ba00a3fa2084999644642b44d365a1aec36826eab89ee34a67c41",
@@ -69,8 +72,10 @@
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S1_F1_10_paid_open_5.csv": "c8cf3f32b03f38e16b837d6bc2d4e9310246261664e14bb2d46916f12c911153",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/episodes_S1_F1_30_paid_open_10.csv": "2e1a047265461e3b22e8101a3f2adf71c6e4f85f2afcf24f02b64fb7f8fd209b",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/validation.json": "4c7c5731bbb2829e2f668febe3c0c7dec003b4a62b341565029a689b1cf03e2b",
+    "research/foxconn_overnight_sell_20260921_b15/revision_r1/final_order_verification.csv": "7df2dd321f95d7db8f7c0e5a802225fefb37e234770985943a7b641110d2631d",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S2_F2_10_paid_open_5.csv": "b4617cf7b40227f8e187c4b950cbf528f1ae16862e1442aa849b9aee10d154be",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/A_open_only_opportunity_paths.csv": "b81cf2b99152cb0010810a6bee0329c183713ebeccbe7cecb3b108694344e15e",
+    "research/foxconn_overnight_sell_20260921_b15/revision_r1/final_verification.json": "a141e516525126990ffe0d1a70586cca833911fb5a183b81cd538d3be01402a6",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/orders_S1_F1_30_paid_post0935_10.csv": "8cbbb9f112b9e7af7d656f45eb6ea9bbe000428cdc58406161102d64fc46ab51",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S0_30_locked_open_5.csv": "5c085110c6cd0357f29f2a6374ea3b7fa6e9842f62f4f6bb26439e0a2f6b2767",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/C_dependency_gate.csv": "105f9299de8bd03ff564e74ae202848e7ac20100f61cc989760b883100ea33e1",
@@ -135,5 +140,7 @@
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/account_S0_10_paid_open_5.csv": "25daf99dcc358a3a21cef5cbec38419ca61222845386ebd6ecc72afafe51d483",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/episodes_S0_30_locked_post0935_10.csv": "b88fad01230fc173330d323ce6e82365b2bffa87c39d11e50062bbc1580ce157",
     "research/foxconn_overnight_sell_20260921_b15/revision_r1/orders_S0_30_paid_open_5.csv": "49a172f96826df07c23070e79e3091f4ce5117caa082958527a956b96902f033"
-  }
+  },
+  "verification_run": "35720041620",
+  "verification_code_sha": "c126d642faf35ca613b5449c2a577c1e4340bd6e"
 }

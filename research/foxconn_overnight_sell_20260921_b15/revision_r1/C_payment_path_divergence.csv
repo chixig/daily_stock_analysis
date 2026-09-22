@@ -1,0 +1,9 @@
+rule,first_window,slip_bp,first_order_record_difference,first_quantity_or_participation_difference,changed_physical_orders
+S1_F1,open,5,2021-08-02,,0
+S1_F1,open,10,2021-08-02,2023-08-24,243
+S1_F1,post0935,5,2021-08-02,,0
+S1_F1,post0935,10,2021-08-02,2023-03-24,277
+S0,open,5,2021-07-28,2021-07-28,88
+S0,open,10,2021-07-28,2021-07-28,72
+S0,post0935,5,2021-07-27,2021-12-16,195
+S0,post0935,10,2021-07-28,2021-07-28,92
