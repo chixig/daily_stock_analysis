@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "accounts_checked": 44,
+  "original_files_unchanged": 627,
+  "main_code_sha": "c8c97772b40cce15c755ba3345554d7ecf1cb7e4",
+  "main_run_id": "35730079970",
+  "original_manifest_sha256": "55de07314176bf8b5f41322b5680b884f634f23d39aed92a7837180e1e615b8d",
+  "expected_live_log_difference": [
+    "research/foxconn_t0_20260922_b16/calculation.log"
+  ],
+  "source_primary_verified": 9,
+  "corrected_price_version": false,
+  "correction_reason": "cross-source discrepancy unresolved; no unsupported replacement",
+  "finite_account_funding_explained": true,
+  "verification_run_id": "35730482162",
+  "verification_code_sha": "389d966b3d621c41a62f0b453dd400abf00c243e"
+}

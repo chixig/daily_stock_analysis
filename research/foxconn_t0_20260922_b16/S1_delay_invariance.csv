@@ -1,0 +1,9 @@
+scenario,economic_orders_equal,all_sampled_equities_equal,cash_receivable_fields_can_differ
+S1_F1_open_b5_e0_d1_main,True,True,True
+S1_F1_open_b5_e0_d3_main,True,True,True
+S1_F1_open_b10_e0_d1_main,True,True,True
+S1_F1_open_b10_e0_d3_main,True,True,True
+S1_F1_post0935_b5_e0_d1_main,True,True,True
+S1_F1_post0935_b5_e0_d3_main,True,True,True
+S1_F1_post0935_b10_e0_d1_main,True,True,True
+S1_F1_post0935_b10_e0_d3_main,True,True,True
