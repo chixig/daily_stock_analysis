@@ -25,9 +25,9 @@ def pipeline(d,m):
  au=audit(d,m);ix=pd.Series(np.nan,index=d.index);f1,f2,_=old.features(d,m,ix);masks=old.rule_masks(f1,f2)
  op={};post={};lookup=m[m.clock.eq('09:45')].set_index('date').open
  for i,r in d.iterrows():
-  op[i]=[('09:25',float(r.open),'daily_open_indicative')]if pd.notna(r.open)and r.open>0 and r.open<r.limit_up-.005 else []
+  op[i]=[('09:25',float(r.open),'daily_open_indicative')]if pd.notna(r.open)and r.open>=r.limit_down-.005 and r.open<r.limit_up-.005 else []
   p=lookup.get(r.date,np.nan)
-  post[i]=[('09:40',float(p),'post0935_window_indicative_unknown')]if pd.notna(p)and p>0 and p<r.limit_up-.005 else []
+  post[i]=[('09:40',float(p),'post0935_window_indicative_unknown')]if pd.notna(p)and p>=r.limit_down-.005 and p<r.limit_up-.005 else []
  return au,{k:masks[k]for k in RULES},op,post
 
 # Account implementation below is a scoped copy of the B15 function; differences
@@ -87,7 +87,7 @@ def account(d,mask,win,buffer,conservative=True,pay_delay=False,slip=.0005,first
   today_orders=[o for o in orders if o['date']==day and o['side']=='BUY']
   intra=-uncovered*(r.close-r.open)-sum(o['quantity']*(o['reference']-r.open) for o in today_orders)
   missed_up+=max(0,-intra);avoided_down+=max(0,intra)
-  if sig and i<len(d)-1:
+  if sig and pd.notna(r.exit_date):
    if active is not None or shares()<q:skip_missing+=1
    elif sum(l['q']for l in lots if l['acquired']<day)<q:skip_t1+=1
    elif conservative and (r.close<=r.limit_down+.005 or r.volume<=0):blocked_sell+=1
@@ -107,6 +107,8 @@ def account(d,mask,win,buffer,conservative=True,pay_delay=False,slip=.0005,first
   assert abs(cash-(q*d.loc[start,'close']*buffer+net_trade+div_paid))<1e-5
   assert shares()==q+sum(o['quantity']*(1 if o['side']=='BUY' else -1)for o in orders)
   records.append(dict(date=day,cash=cash,receivable=ar,shares=shares(),settled_next_day=shares(),dividend_tax_reserve=tax_res,fees=day_fees,dividend_tax_paid=daytax,dividend_received=daydiv,buy_quantity=day_buys,sell_quantity=day_sells,restoration_missing_shares=uncovered,equity_open_before=eq_open_before,equity_open=eq_open,equity_close=eq,hold_equity_open=bopen,hold_equity_after=bmark,hold_equity_close=beq,relative_equity=eq-beq,restore_cash_gap=max(0,(q-shares())*r.close*(1+slip)+sf((q-shares())*r.close*(1+slip),day)-cash+tax_res)if shares()<q else 0.))
+  if until is not None and day==until.normalize():
+   return pd.DataFrame(records),pd.DataFrame(orders),pd.DataFrame(episodes),dict(prefix_state=dict(cash=cash,shares=shares(),receivable=sum(a['amount']for a in recv),tax_reserve=reserve(day),lots=lots,active=active))
  if active is not None:episodes.append(dict(entry=active['date'],exit=pd.NaT,days=len(d)-1-active['i'],restored=False))
  z=pd.DataFrame(records);eq=np.r_[initial,z[['equity_open_before','equity_open','equity_close']].to_numpy().ravel()];bh=np.r_[initial,z[['hold_equity_open','hold_equity_after','hold_equity_close']].to_numpy().ravel()]
  rel=eq-bh
@@ -128,9 +130,9 @@ def independent(z,o,buffer,d):
 
 def oldtag(rule,buf,locked):return f'{rule}_{int(buf*100)}_'+('locked'if locked else'restricted')
 def readorders(p):
- return pd.read_csv(p,parse_dates=['date'])if p.stat().st_size>5 else pd.DataFrame(columns=['date','clock','side','quantity','reference','value','fee','dividend_tax'])
+ return pd.read_csv(p,parse_dates=['date'])if p.stat().st_size>5 else pd.DataFrame(columns=['date','clock','side','quantity','reference','value','fee','dividend_tax','cash_after','shares_after'])
 def orderdiff(a,b,label):
- keys=['date','clock','side'];cols=['quantity','reference','value','fee','dividend_tax'];aa=a[keys+cols].copy();bb=b[keys+cols].copy()
+ keys=['date','clock','side'];cols=['quantity','reference','value','fee','dividend_tax','cash_after','shares_after'];aa=a[keys+cols].copy();bb=b[keys+cols].copy()
  aa['sequence']=aa.groupby(keys).cumcount();bb['sequence']=bb.groupby(keys).cumcount();z=aa.merge(bb,on=keys+['sequence'],how='outer',suffixes=('_old','_new'),indicator=True)
  changed=z['_merge'].ne('both')
  for c in cols:changed|=~np.isclose(z[c+'_old'],z[c+'_new'],equal_nan=True,atol=1e-8,rtol=0)
@@ -149,7 +151,7 @@ def annotate_original(d,m,au):
  amap=au.set_index('date');rows=[];deps=[]
  for p in sorted(P.glob('account_S*.csv')):
   tag=p.stem[8:];z=pd.read_csv(p,parse_dates=['date']);o=readorders(P/f'orders_{tag}.csv');inside=o[o.side.eq('BUY')&o.clock.ne('09:25')].copy()
-  unknown=z[z.restoration_missing_shares.gt(0)&~z.date.map(amap.strict).fillna(False)]
+  unknown=z[z.restoration_missing_shares.gt(0)&~z.date.map(amap.strict).fillna(False)] if not tag.endswith('nominal') else z.iloc[:0]
   for _,r in inside.iterrows():deps.append(dict(account=tag,dependency='actual_intraday_fill_conditioned_on_full_day_QC',date=r.date,clock=r.clock,quantity=r.quantity,reference=r.reference,fee=r.fee,day_qc=bool(amap.loc[r.date,'strict']),available_at='after15:00_or_unknown_provider_latency'))
   for _,r in unknown.iterrows():deps.append(dict(account=tag,dependency='restoration_deficit_on_QC_rejected_day_potential_suppression_not_proven_fill',date=r.date,quantity=r.restoration_missing_shares,day_qc=False,available_at='after15:00_or_unknown_provider_latency'))
   rows.append(dict(account=tag,intraday_buy_orders=len(inside),intraday_quantity=inside.quantity.sum(),intraday_fees=inside.fee.sum(),suppressed_window_exposure_days=len(unknown),first_intraday=inside.date.min()if len(inside)else pd.NaT,classification='no_intraday_or_suppressed_exposure'if len(inside)==len(unknown)==0 else'retrospective_QC_dependency'))
@@ -213,12 +215,13 @@ def minute_quality(d,m,sig,k,au):
 
 def causal_tests(d,m,sig,op,post):
  # Whole pipeline is rebuilt, including deliberately changed retrospective QC.
- cases=[('2020-01-03','09:35'),('2024-10-08','09:35'),('2024-10-08','14:50'),('2025-06-30','09:41'),('2026-07-30','14:50')];out=[]
+ cases=[('2020-01-03','09:35'),('2024-10-08','09:35'),('2024-10-08','14:50'),('2025-06-30','09:41'),('2026-07-30','14:50'),('2025-06-30','15:00')];out=[]
  for dates,clock in cases:
   day=pd.Timestamp(dates);until=day+pd.Timedelta(clock+':00');idx=int(d.index[d.date.eq(day)][0])
   dd=d.copy();mm=m.copy();future=dd.date.gt(day);dd.loc[future,['open','high','low','close','preclose','volume']]*=1.17
   # Current final H/L/V are after the cutoff; do not mutate earlier known opening price.
-  dd.loc[dd.date.eq(day),'high']*=1.5;dd.loc[dd.date.eq(day),'low']*=.5;dd.loc[dd.date.eq(day),'volume']*=1.5
+  if clock<'15:00':
+   dd.loc[dd.date.eq(day),'high']*=1.5;dd.loc[dd.date.eq(day),'low']*=.5;dd.loc[dd.date.eq(day),'volume']*=1.5
   mm.loc[(mm.date>day)|((mm.date==day)&mm.clock.gt(clock)),['high','low','close','volume']]*=1.4
   # An end-labelled bar open has event_time five minutes earlier. Keep an already observed open unchanged.
   open_event=pd.to_datetime(mm.clock,format='%H:%M')-pd.Timedelta(minutes=5)
@@ -227,7 +230,8 @@ def causal_tests(d,m,sig,op,post):
   # Prefix drops every post-cutoff bar, retaining a stub of an ongoing bar's OPEN if already observable.
   pre=m[(m.date<day)|((m.date==day)&((pd.to_datetime(m.clock,format='%H:%M')-pd.Timedelta(minutes=5)).dt.strftime('%H:%M')<=clock))].copy()
   ongoing=(pre.date==day)&pre.clock.gt(clock);pre.loc[ongoing,['high','low','close','volume']]=np.nan
-  dp=d.iloc[:idx+1].copy();dp.loc[dp.date.eq(day),['high','low','close','volume']]=np.nan
+  dp=d.iloc[:idx+1].copy()
+  if clock<'15:00':dp.loc[dp.date.eq(day),['high','low','close','volume']]=np.nan
   _,sp,ow,pw=pipeline(dp,pre)
   for rule in RULES:
    for first in ['open','post0935']:
@@ -335,6 +339,16 @@ def run():
    pe.append(dict(scenario=key,date=r.date,clock=r.clock,quantity=r.quantity,reference=r.reference,fine_price_available=f is not None,price_gap=gap,price_status='agrees_with_qualified_1m'if pd.notna(gap)and gap<.011 else('disagrees_with_qualified_1m'if pd.notna(gap)else'unknown_no_qualified_fine_overlap'),fill_status='unproven_auction_queue_receipt_and_capacity'))
  save('C_post0935_price_evidence.csv',pe)
  causal_tests(d,m,sig,op,post)
+ # Synthetic execution branches: unknown first window retains marked exposure;
+ # capital shortage cannot create shares/cash; new lots cannot be resold same day.
+ toy=pd.DataFrame({'date':pd.bdate_range('2020-01-02',periods=5),'open':[10.,12.,12.,12.,12.],'high':[10.,13.,13.,13.,13.],'low':[10.,12.,12.,12.,12.],'close':[10.,13.,13.,13.,13.],'preclose':[10.,10.,13.,13.,13.],'volume':1000.,'dividend_today':0.,'limit_up':20.,'limit_down':1.})
+ toy['exit_date']=toy.date.shift(-1);mask=pd.Series(True,index=toy.index,dtype='boolean');tw={i:[('09:25',float(r.open),'synthetic')]for i,r in toy.iterrows()};tp={i:[('09:40',float(r.open),'synthetic')]for i,r in toy.iterrows()};tp[1]=[]
+ tz,to,te,ta=account(toy,mask,tw,.3,first_window='post0935',post=tp)
+ assert tz.shares.iloc[1]==0 and tz.relative_equity.iloc[1]<-2900 and ta['unobserved_first_windows']>=1
+ assert tz.buy_quantity.iloc[2]==1000 and tz.sell_quantity.iloc[2]==0
+ independent(tz,to,.3,toy)
+ tz,to,te,ta=account(toy,mask,tw,0);assert ta['terminal_missing']>0 and ta['terminal_cash_gap']>0;independent(tz,to,0,toy)
+ check('synthetic unknown-window exposure, insufficient-funding persistence, T+1 and cash conservation')
  check('independent financial invariants',str(len(checks))+' new continuous accounts')
  for path,h in man['files'].items():assert sha(path)==h,path
  check('all500 original evidence files unchanged after R1')
