@@ -1,0 +1,12 @@
+{
+  "parent": "87fb15808cb4c707ace2b510ba9dc6d8dc9696d2",
+  "market_cutoff": "2026-09-11",
+  "sha256": {
+    "5m": "6decd5fbe5916d974d7897f9259de6dbe0c319722bd3972a85d780cf25c1c5ff",
+    "1m": "cc9a3d09b75626f2b6689eaa291c43f1aecac490bb23a9914c86e85f5ef99446",
+    "daily_ledger": "7f7ed4b001af012e997c9cc18768284c63548e10962872f322cee426d9dfe716",
+    "signals": "d6d17bc360fff9c04e72f194ff359f61dcbc15df74799e3ae03d8aaa078d7f7c",
+    "original_results": "fa57ad2d23ad32857e3a18d9094bd64c99db79644cd047a7b597968cea6ad645"
+  },
+  "all_other_inputs": "Verify inherited B15 and R1 manifests before calculation; exact code/input files also saved in runtime manifest."
+}
