@@ -1,0 +1,7 @@
+path,url,http,sha256,bytes,status,error
+research/foxconn_t0_20260922_b16/sources/cninfo_query.json,https://www.cninfo.com.cn/new/hisAnnouncement/query,200.0,c2a890bbf3a6a53ab02ddc6c1794bf1c72ba45799fe9f59dcc5ba2cc18467114,165.0,,
+research/foxconn_t0_20260922_b16/sources/2019-06-20_reprint.pdf,https://pdf.dfcfw.com/pdf/H2_AN201906131334966769_1.pdf,567.0,d4286b6d410ec8172581812d3aff5e190cbb0b40b8e296ecf1f7be91d8e1af65,7351.0,,
+,https://pdf.dfcfw.com/pdf/H2_AN201906131334966769_1.pdf,,,,failed,567 Server Error: Unknown Status for url: https://pdf.dfcfw.com/pdf/H2_AN201906131334966769_1.pdf
+research/foxconn_t0_20260922_b16/sources/2020-06-30_reprint.html,https://q.stock.sohu.com/cn/601138/bw_6.shtml,200.0,0159bb7a37acdb2f89fe8ee343a9dc1a99855d22d0b9ae7316979381ab93ab53,61957.0,,
+research/foxconn_t0_20260922_b16/sources/2021-07-27_reprint.html,https://www.jwview.com/jingwei/html/07-20/414603.shtml,200.0,52c2cfe1ce34675644c537f4a0180d28045b9430e4b62d56c8712fd948390446,47724.0,,
+research/foxconn_t0_20260922_b16/sources/2026-08-03.pdf,https://static.cninfo.com.cn/finalpage/2026-07-24/1225438954.PDF,200.0,89643e32442ce6473c73f66b0faeb0a6902eb554fc1315e579ecbc453cf79b29,182389.0,,
