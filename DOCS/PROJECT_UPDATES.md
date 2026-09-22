@@ -234,3 +234,11 @@ C（B10全历史发现的20日深跌阈值）61笔开盘均净+0.4734%，10:00�
 状态active，用户要求下一步，延续补剩余52笔细数据。参数冻结。pytdxdata0.3.2源码显示get_kline MAC按start+count累计取数；不把大offset等同新分页。历史get_transactions支持date但包含trade_count，不预设是真逐笔或完整分钟OHLC。固定探测2023-05-16、2023-09-25、2024-08-01、2025-11-28及已知1m对照2026-07-30，每日count20000、75秒超时。保存原始返回、字段、首尾及失败；不把失败当无历史，不用不完整记录替代52笔。
 
 成功后先核验时戳、日线价/量和已知1m区间覆盖；通过才决定扩大。所有行情/统计在GitHub，未购买渠道/获取凭据，未调参、交易或自动监控。临时代码完成后清理。本专项无英文对应稿。
+
+
+## B16 completed 2026-09-22
+Primary PDFs verified for all9 original dividend events (7 new,2 reused). Announced pay-date close/+1/+3 exchange-session delays leave S1 baselines unchanged: opening5/10bp +11271.41/+4265.03yuan;09:40proxy +8099.22/+1091.25yuan.5bp plus1/2 stays positive.10bp plus1/2 breaks finite-capital participation: opening -12463.69/-12708.69,proxy -12588.02/-12604.45,all end100shares missing. Earliest new gaps2024-01-22/2023-12-12(open),2023-04-06/2023-03-24(proxy). Static extra-cost budget does not establish capital sufficiency. Recommendation: stop this fixed1000share/30% specification towards adoption in both timings; preserve low-cost positive evidence. Submitted for coordinating review, not user adoption or general rejection of overnight selling.
+2026-05-15 proxy70.60 vs1m70.44 remains unresolved after clock/bar/adjustment checks; no invented correction.44accounts(24main+8stress+12references),627 original files,settlement/financial/causal checks verified. Main35730079970 and final35730482162 success. Data cutoff2026-09-11; explored history not OOS. No private account,paid data,new parameter search,monitoring,trade or main merge.
+Fixed evidence 86ceac2137830b28ca7b97c3218654adf0b5931a; research/foxconn_t0_20260922_b16. Final manifest SHA256 ed96a0acccb316d8960b7d6ab12a4196fc3f2abf8cec5381589f599bf0442689. Product/bilingual app docs unaffected.
+
+Protocol7f778afb85f07900837bacd5b5a33bc4c0184a4a frozen before computation. Source decoder/orgId corrected before calculation. Final closed-log manifest repaired expected tee timing only; economic outputs unchanged. Stop active expansion; revisit only material input correction or independently justified execution-cost evidence addressing observed funding failures. No waiting period.

@@ -40,3 +40,5 @@
 - [B13数据溯源与补数路径](FOXCONN_OVERNIGHT_B13.md)：implemented有限研究；9笔1m对照完成，其余52笔待补，成交未认证。
 
 - [B14历史成交通道核验](FOXCONN_OVERNIGHT_B14.md)：active。
+
+- [B16 payment and price boundaries](FOXCONN_B16.md): implemented research / submitted; both fixed specifications fail extra-cost funding pressure.
