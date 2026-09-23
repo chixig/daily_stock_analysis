@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b17_verify.py", line 101, in <module>
+    try:run()
+        ^^^^^
+  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b17_verify.py", line 65, in run
+    oo=pd.read_csv(B/f'orders_S1_F1_{w}_b{base}_e{extra}_d0_'+('main' if extra==0 else 'extra_cost')+'.csv',parse_dates=['date'])
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for +: 'PosixPath' and 'str'
