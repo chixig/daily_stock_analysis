@@ -1,0 +1,47 @@
+[
+  {
+    "test": "parent hashes before",
+    "status": "PASS",
+    "detail": "832"
+  },
+  {
+    "test": "unchanged causal signals for main three",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "test": "all original nominal rule main ledgers matched; all windows recomputed with frozen inputs",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "test": "1000 per order and participation invariant to cost",
+    "status": "PASS",
+    "detail": "40 independently verified accounts"
+  },
+  {
+    "test": "payment delays0/1/3 and5514 reference preserve orders and profit",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "test": "B16 fixed old dates11bp exactly equal funded1000-stock path",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "test": "six new engine future-suffix cases; inherited signal-prefix/QC tests reused",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "test": "small tens-of-yuan gap funded, complete next trade, true loss retained",
+    "status": "PASS",
+    "detail": "-88.77600000000166"
+  },
+  {
+    "test": "parent hashes after",
+    "status": "PASS",
+    "detail": "832"
+  }
+]
