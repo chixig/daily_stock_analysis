@@ -1,0 +1,1 @@
+The first standalone result review failed after financial checks, in annual bridge report filename assembly (Path + str). Correct parentheses; no inputs, trading paths, or financial results changed. Preserve failed run35883054076 and its traceback. Added explicit resource peak cases and funding-duration presentation; no new rule or cost grid.

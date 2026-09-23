@@ -13,7 +13,7 @@ def run():
  for p,h in man['files'].items():assert sha(p)==h,p
  a=pd.read_csv(R/'account_summary.csv');n=pd.read_csv(R/'nominal_matrix.csv')
  d=pd.read_csv(P/'daily_ledger.csv',parse_dates=['date'])
- attrib=[];periods=[];annualbridge=[];checks=[];concentration=[];pricechecks=[]
+ attrib=[];periods=[];annualbridge=[];checks=[];concentration=[];pricechecks=[];resources=[];funddetail=[]
  for _,s in a.iterrows():
   key=s.scenario;z=pd.read_csv(R/f'daily_{key}.csv',parse_dates=['date']);o=pd.read_csv(R/f'orders_{key}.csv',parse_dates=['date']);t=pd.read_csv(R/f'trades_{key}.csv',parse_dates=['entry','exit']);f=pd.read_csv(R/f'funding_{key}.csv',parse_dates=['date'])
   assert o.quantity.eq(1000).all()
@@ -39,6 +39,19 @@ def run():
     periods.append(dict(scenario=key,start=z.date.iloc[start],recovered=z.date.iloc[i],duration_calendar_days=(z.date.iloc[i]-z.date.iloc[start]).days,peak_deficit=-mini,peak_date=minday,open_at_end=False));start=None
   if start is not None:periods.append(dict(scenario=key,start=z.date.iloc[start],recovered=pd.NaT,duration_calendar_days=(z.date.iloc[-1]-z.date.iloc[start]).days,peak_deficit=-mini,peak_date=minday,open_at_end=True))
   vals=t.cash_increment
+  if s.bp==5 and s.inventory=='all':
+   need=pd.read_csv(R/f'inventory_{key}.csv',parse_dates=['date'])
+   peak=need[need.minimum_old_shares.eq(s.stock)]
+   for _,rr in peak.iterrows():
+    resources.append(dict(scenario=key,date=rr.date,minimum_shares=s.stock,outstanding_before=rr.outstanding_before,bought_today=rr.bought_today,initial_stock_value=s.stock*d.loc[d.date.ge('2020-01-01'),'close'].iloc[0],batches=';'.join(str(x.entry.date())+'->'+str(x.exit.date()) for _,x in t[t.entry.le(rr.date)&t.exit.ge(rr.date)].iterrows())))
+  maxgap=f.loc[f.single_gap.idxmax()]
+  peakfund=f.loc[f.cumulative_deposit.idxmax()]
+  passive_pay=z.set_index('date').hold_payment.cumsum().shift(fill_value=0)
+  pure_min=0.;pure_date=None
+  for _,fr in f.iterrows():
+   pure=fr.cash_before-(fr.cumulative_deposit-fr.deposit)-s.initialcash-fr.buy_cost-fr.tax_reserve-passive_pay.loc[fr.date]
+   if pure<pure_min:pure_min=pure;pure_date=fr.date
+  funddetail.append(dict(scenario=key,single_gap_max=maxgap.single_gap,single_gap_date=maxgap.date,single_gap_entry=maxgap.entry,peak_deposit=s.deposits,peak_date=peakfund.date,first_deposit=s.first_deposit,days_first_to_peak=(peakfund.date-pd.Timestamp(s.first_deposit)).days,days_first_to_cutoff=(d.date.iloc[-1]-pd.Timestamp(s.first_deposit)).days,retained_deposit_yuan_days=s.deposit_yuan_days,unreturned=s.unreturned,withdrawals=s.withdrawals,terminal_receivable=s.terminal_receivable,terminal_tax_reserve=s.terminal_tax_reserve,incremental_pool_deficit_excluding_hold_dividends=-pure_min,incremental_pool_peak_date=pure_date))
   # Transaction event attribution, explicitly distinct from old daily carried assignment.
   ev=pd.read_csv(R/'events.csv');ee=ev[ev.scenario.eq(key)]
   best=ee.loc[ee.increment.idxmax()];worst=ee.loc[ee.increment.idxmin()]
@@ -58,11 +71,12 @@ def run():
     x=at[at.scenario.eq(f'{rule}_{w}_{bp}_all')].iloc[0];y=at[at.scenario.eq(f'{rule}_{w}_{bp}_1000')].iloc[0]
     diff.append(dict(rule=rule,window=w,bp=bp,inventory_participation_price_fee_effect=x.price_fee_missed_dividend-y.price_fee_missed_dividend,tax_effect=-(x.fifo_dividend_tax-y.fifo_dividend_tax)-(x.terminal_reserve-y.terminal_reserve),total=x.net-y.net))
  save('inventory_attribution.csv',diff)
+ save('stock_resource_peaks.csv',resources);save('funding_detail.csv',funddetail)
  # Old year46 vs2 and full-signal bridge, all years, not only chosen winner.
  ys=pd.read_csv(R/'years.csv')
  for w in ['open','post0935']:
   for bp,base,extra in [(5,5,0),(10,10,0),(11,10,1),(12,10,2)]:
-   oo=pd.read_csv(B/f'orders_S1_F1_{w}_b{base}_e{extra}_d0_'+('main' if extra==0 else 'extra_cost')+'.csv',parse_dates=['date'])
+   oo=pd.read_csv(B/(f'orders_S1_F1_{w}_b{base}_e{extra}_d0_'+('main' if extra==0 else 'extra_cost')+'.csv'),parse_dates=['date'])
    for year in range(2020,2027):
     annualbridge.append(dict(window=w,bp=bp,year=year,old_sales=int((oo.side.eq('SELL')&oo.date.dt.year.eq(year)).sum()),old_partial_buy_orders=int((oo.side.eq('BUY')&oo.quantity.lt(1000)&oo.date.dt.year.eq(year)).sum()),corrected1000_sales=int(ys.loc[ys.scenario.eq(f'S1_F1_{w}_{bp}_1000')&ys.year.eq(year),'sales'].iloc[0]),corrected_all_sales=int(ys.loc[ys.scenario.eq(f'S1_F1_{w}_{bp}_all')&ys.year.eq(year),'sales'].iloc[0])))
  save('year_participation_bridge.csv',annualbridge)
@@ -89,6 +103,8 @@ def run():
  table('单笔对称尾部删除诊断',pd.read_csv(R/'symmetric_tails.csv'))
  table('支付日短延迟影响摘要',pd.read_csv(R/'payment_delay_proof.csv').groupby('delay')[['delta_deposit']].agg(['min','max']).reset_index())
  table('新路径09:40争议价覆盖',pd.DataFrame(pricechecks))
+ table('历史库存峰值案例',pd.DataFrame(resources))
+ table('资金占用及被动股息口径诊断',pd.DataFrame(funddetail))
  (R/'REPORT_TABLES.md').write_text('\n\n'.join(text))
  # Preserve first manifest, then close hashes including completed calculation log.
  (R/'calculation_manifest.json').write_text(json.dumps(man,ensure_ascii=False,indent=2))
