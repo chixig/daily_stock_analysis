@@ -39,6 +39,9 @@ def run():
     periods.append(dict(scenario=key,start=z.date.iloc[start],recovered=z.date.iloc[i],duration_calendar_days=(z.date.iloc[i]-z.date.iloc[start]).days,peak_deficit=-mini,peak_date=minday,open_at_end=False));start=None
   if start is not None:periods.append(dict(scenario=key,start=z.date.iloc[start],recovered=pd.NaT,duration_calendar_days=(z.date.iloc[-1]-z.date.iloc[start]).days,peak_deficit=-mini,peak_date=minday,open_at_end=True))
   vals=t.cash_increment
+  if s.inventory=='all':
+   required=max(int((t.entry.le(day)&t.exit.ge(day)).sum()) for day in t.entry)*1000
+   assert required==s.stock
   if s.bp==5 and s.inventory=='all':
    need=pd.read_csv(R/f'inventory_{key}.csv',parse_dates=['date'])
    peak=need[need.minimum_old_shares.eq(s.stock)]
@@ -103,11 +106,33 @@ def run():
  table('单笔对称尾部删除诊断',pd.read_csv(R/'symmetric_tails.csv'))
  table('支付日短延迟影响摘要',pd.read_csv(R/'payment_delay_proof.csv').groupby('delay')[['delta_deposit']].agg(['min','max']).reset_index())
  table('新路径09:40争议价覆盖',pd.DataFrame(pricechecks))
- table('历史库存峰值案例',pd.DataFrame(resources))
+ table('历史库存峰值案例（每情景首例，完整日期见远端）',pd.DataFrame(resources).groupby('scenario',sort=False).head(1))
  table('资金占用及被动股息口径诊断',pd.DataFrame(funddetail))
+ # Reuse frozen qualified1m-day flags but re-evaluate expanded340 trades.
+ qf=pd.read_csv(P/'revision_r1'/'B_fine_price_quality.csv',parse_dates=['date'])
+ qualified=set(qf.loc[qf.price_qualified,'date'])
+ km=pd.read_csv('research/foxconn_overnight_20260917_b13/tdx_recovered_1m.csv',parse_dates=['date','datetime'])
+ km['clock']=km.datetime.dt.strftime('%H:%M')
+ lookup=km[km.date.isin(qualified)&km.clock.eq('09:41')].set_index('date').open
+ quality=[];pe=[]
+ layers=pd.read_csv(P/'revision_r1'/'B_all_valid_date_quality.csv',parse_dates=['date']).set_index('date')
+ for inv in ['all','1000']:
+  o=pd.read_csv(R/f'orders_S1_F1_post0935_5_{inv}.csv',parse_dates=['date'])
+  for _,x in o[o.side.eq('BUY')&o.clock.eq('09:40')].iterrows():
+   fine=lookup.get(x.date,np.nan);gap=abs(x.reference-fine)
+   pe.append(dict(inventory=inv,date=x.date,reference=x.reference,fine=fine,gap=gap,status='unknown' if pd.isna(fine) else ('agree' if gap<.011 else 'disagree')))
+  for bp in [5,10,11,12]:
+   t=pd.read_csv(R/f'trades_S2_F2_open_{bp}_{inv}.csv',parse_dates=['entry'])
+   t['layer']=t.entry.map(layers.layer)
+   assert t.layer.notna().all()
+   for layer,g in t.groupby('layer'):quality.append(dict(inventory=inv,bp=bp,layer=layer,n=len(g),cash=g.cash_increment.sum(),mean_pct=g.net_pct.mean()))
+ pe=save('expanded_0940_quality.csv',pe);qs=save('expanded_S2_quality.csv',quality)
+ table('扩大交易集后的09:40价格覆盖',pe.groupby(['inventory','status']).size().rename('n').reset_index())
+ table('新S2_F2路径按原数据质量分层（事后诊断，非过滤器）',qs)
+
  (R/'REPORT_TABLES.md').write_text('\n\n'.join(text))
  # Preserve first manifest, then close hashes including completed calculation log.
- (R/'calculation_manifest.json').write_text(json.dumps(man,ensure_ascii=False,indent=2))
+ if not (R/'calculation_manifest.json').exists():(R/'calculation_manifest.json').write_text(json.dumps(man,ensure_ascii=False,indent=2))
  result=dict(status='PASS',accounts=len(checks),code_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],checks=['parent manifest','all order quantities1000','cash/shares and equal external flows','per-leg dividend-tax reconciliation','historical funding min and deposits','all pending explicitly zero','inventory vs tax decomposition'],limitations=['real auction capacity unknown','09:40 indicative unverified','S2 signal quality remains unresolved'])
  (R/'final_validation.json').write_text(json.dumps(result,ensure_ascii=False,indent=2))
  final=dict(parent='86ceac2137830b28ca7b97c3218654adf0b5931a',code_sha=os.environ['GITHUB_SHA'],run_id=os.environ['GITHUB_RUN_ID'],files={str(p):sha(p) for p in R.rglob('*') if p.is_file() and p.name!='manifest.json'})
