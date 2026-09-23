@@ -1,0 +1,10 @@
+# B17 frozen research protocol
+direction_id: foxconn-t0
+content_id: foxconn-t0-20260923-b17
+Authorization: user supplied B17 task and requested re-research, including this research branch, remote computation and evidence commits. No main merge, trading or private account access.
+Parent: 86ceac2137830b28ca7b97c3218654adf0b5931a. Inputs and B15/R1/B16 evidence immutable. Cutoff 2026-09-11.
+A: Reuse and verify all B15 frozen rules and nominal 1000-share ledgers/results at 5bp; present main/early/recent/year/all windows and valid-date S0. S2_F7 unavailable. Main cash and mean percentage both reported; denominator 1000*entry raw close.
+B: S0,S1_F1,S2_F2 open 5/10/11/12bp; S1_F1 additionally6/7bp and post0935=09:40 proxy same six costs. 1000 shares each order. Fixed R1 causal open retry; no future daily QC. Sufficient-stock main path plus separate1000-stock comparison. Determine historical minimum resource by peak number of unavailable 1000-share units (outstanding or bought today). This is measured historical resource, not future guarantee. Keep unknown/missing/blocked dates and unfinished liabilities.
+C: FIFO dividend taxes and announced payment-at-close follow B16. Deposits paired same date and amount to hold comparator; deposits never PnL. Profits and deposits retained, no automatic withdrawal; terminal unreturned capital explicit. Zero initial cash plus 5514 reference bridge. Deposits are hindsight minimum funding accounting, not causal auction transfer certification. Report distribution and duration, cash pool and hold-relative funding.
+Validation: all quantities1000; identical participant shapes across cost; cash/stock/AR/tax/external flows reconciled independently; old parent hashes; old opportunity reconciliation; payment-delay and future mutation; small-cash-gap synthetic; fixed old orders11bp bridge. Recalculate period,event,tail concentration for changed sets. No rule search, new cutoff, invented cash cap or compulsory wait.
+Deliverable status: submitted for coordination review, no strategy adoption. Old scenario failures remain as history. Known proxy70.60/70.44 unresolved; do not substitute.
