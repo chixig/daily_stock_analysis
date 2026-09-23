@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "accounts": 40,
+  "code_sha": "01bc04e163142a46a7a9af8f5f1a49d488214875",
+  "run_id": "35883287358",
+  "checks": [
+    "parent manifest",
+    "all order quantities1000",
+    "cash/shares and equal external flows",
+    "per-leg dividend-tax reconciliation",
+    "historical funding min and deposits",
+    "all pending explicitly zero",
+    "inventory vs tax decomposition"
+  ],
+  "limitations": [
+    "real auction capacity unknown",
+    "09:40 indicative unverified",
+    "S2 signal quality remains unresolved"
+  ]
+}
