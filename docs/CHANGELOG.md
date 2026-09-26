@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [chore] Add isolated Foxconn B18 bounded strategy research and remote-only evidence workflow; no application behavior change.
+
 - [文档] B14冻结候选，探测历史成交通道以补52笔数据缺口。
 
 - [文档] B13保全93天一分钟、9笔对照及52笔数据缺口；无策略升级。
@@ -1823,4 +1825,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 输入/收益复现/事件前缀与守恒/延迟价约束检查通过，补充3项摘要未改变首轮12输出哈希。本地结论《隔夜T执行压力与事件集中度检验.md》SHA256：5bebd274c019d6f425f89cb8e6e4c8e65895b22c2544b3327131c54f798e0d10。仅本研究工作流success，不认证其他工作流或真实成交。
 
-- [chore] Add isolated Foxconn B18 bounded strategy research and remote-only evidence workflow; no application behavior change.

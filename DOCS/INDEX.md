@@ -42,3 +42,5 @@
 - [B14历史成交通道核验](FOXCONN_OVERNIGHT_B14.md)：active。
 
 - [B18 更优卖出与回补研究](FOXCONN_B18.md)：active；按2026-09-26纠偏方向授权执行，发现与历史后段分开，旧差额任务不执行。
+
+- [B18研究报告](../research/foxconn_t0_20260926_b18/REPORT.md)：implemented本批计算／submitted待统筹审核；H00/H01/H03为事后线索，未采用。
