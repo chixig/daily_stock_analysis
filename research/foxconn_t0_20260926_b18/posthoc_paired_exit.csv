@@ -1,0 +1,5 @@
+candidate,n,wins,win,cash,mean,worst,mdd,top3,bottom3,mean_pct,scope
+H00,154,80,51.94805194805194,14719.824468116989,95.58327576699344,-2801.807323559994,-3711.8921185499994,10576.822646439012,-6763.82694335999,,"same actual sale dates, independent opportunities before FIFO tax"
+H01,41,12,29.268292682926827,740.5168733999957,18.061387156097457,-950.6131990649985,-1660.9753026150056,2451.513674264999,-1891.0926037649997,,"same actual sale dates, independent opportunities before FIFO tax"
+H02,154,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,"same actual sale dates, independent opportunities before FIFO tax"
+H03,41,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,,"same actual sale dates, independent opportunities before FIFO tax"

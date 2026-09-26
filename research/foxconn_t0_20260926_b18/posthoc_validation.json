@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "accounts": 12,
+  "original_files_unchanged": 160,
+  "selection": "after full historical grid viewed; not OOS",
+  "checks": [
+    "all orders scalar independently verified using inherited b17.verify",
+    "common 3000 shares and fixed 1000 per order",
+    "no modification of original discovery shortlist",
+    "original output manifest unchanged"
+  ]
+}
