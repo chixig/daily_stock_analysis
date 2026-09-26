@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "original_and_posthoc_files_verified": 232,
+  "new_independent_accounts": 12,
+  "total_cost_accounts": 39,
+  "complete_paths": 13,
+  "net_best": "H00",
+  "win_best": "H01",
+  "market_cutoff": "2026-09-11",
+  "source_commit": "3bef6174ff61dbce7ad508423849f95f688590c1"
+}
