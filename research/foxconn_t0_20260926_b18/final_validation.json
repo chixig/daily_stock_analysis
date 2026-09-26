@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": [
+    "all B18 calculation output hashes match",
+    "synthetic gap/target/stop/latency/missing/deadline/limit/future-bar tests",
+    "selected candidates reconstructed using discovery rows only",
+    "27 accounts independently reconciled from persisted orders and daily balances"
+  ],
+  "accounts": 27,
+  "verified_files": 160,
+  "limitations": "historical model verification only; not fills or independent OOS"
+}
