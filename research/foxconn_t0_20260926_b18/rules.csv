@@ -1,0 +1,167 @@
+rule,family,layer,description
+S0,none,daily,无条件
+S1_clv_le_0p2,clv,daily,S1 clv le 0.2
+S1_clv_le_0p3,clv,daily,S1 clv le 0.3
+S1_clv_ge_0p7,clv,daily,S1 clv ge 0.7
+S1_clv_ge_0p8,clv,daily,S1 clv ge 0.8
+S1_clv_ge_0p9,clv,daily,S1 clv ge 0.9
+S1_r3_le_m6,r3,daily,S1 r3 le -6
+S1_r3_le_m4,r3,daily,S1 r3 le -4
+S1_r3_le_m2,r3,daily,S1 r3 le -2
+S1_r3_ge_2,r3,daily,S1 r3 ge 2
+S1_r3_ge_4,r3,daily,S1 r3 ge 4
+S1_r3_ge_6,r3,daily,S1 r3 ge 6
+S1_r20_le_m10,r20,daily,S1 r20 le -10
+S1_r20_le_0,r20,daily,S1 r20 le 0
+S1_r20_ge_0,r20,daily,S1 r20 ge 0
+S1_r20_ge_10,r20,daily,S1 r20 ge 10
+S1_vr_le_0p8,vr,daily,S1 vr le 0.8
+S1_vr_le_1,vr,daily,S1 vr le 1
+S1_vr_ge_1p2,vr,daily,S1 vr ge 1.2
+S1_vr_ge_1p5,vr,daily,S1 vr ge 1.5
+S1_relative_ge_0,relative,daily,S1 relative ge 0
+S1_relative_lt_0,relative,daily,S1 relative lt 0
+S1_market20_ge_0,market20,daily,S1 market20 ge 0
+S1_market20_lt_0,market20,daily,S1 market20 lt 0
+S1_gapdays_ge_3,gapdays,daily,S1 gapdays ge 3
+S2_clv_le_0p2,clv,minute_unconfirmed,S2 clv le 0.2
+S2_clv_le_0p3,clv,minute_unconfirmed,S2 clv le 0.3
+S2_clv_ge_0p7,clv,minute_unconfirmed,S2 clv ge 0.7
+S2_clv_ge_0p8,clv,minute_unconfirmed,S2 clv ge 0.8
+S2_r3_le_m6,r3,minute_unconfirmed,S2 r3 le -6
+S2_r3_le_m4,r3,minute_unconfirmed,S2 r3 le -4
+S2_r3_le_m2,r3,minute_unconfirmed,S2 r3 le -2
+S2_r3_ge_2,r3,minute_unconfirmed,S2 r3 ge 2
+S2_r3_ge_4,r3,minute_unconfirmed,S2 r3 ge 4
+S2_r3_ge_6,r3,minute_unconfirmed,S2 r3 ge 6
+S2_vr_le_0p8,vr,minute_unconfirmed,S2 vr le 0.8
+S2_vr_ge_1p2,vr,minute_unconfirmed,S2 vr ge 1.2
+S2_vr_ge_1p5,vr,minute_unconfirmed,S2 vr ge 1.5
+S1_clv_ge_0p8__AND__S1_r3_le_m6,clv+r3,daily,S1_clv_ge_0p8 AND S1_r3_le_m6
+S1_clv_ge_0p8__AND__S1_r3_le_m4,clv+r3,daily,S1_clv_ge_0p8 AND S1_r3_le_m4
+S1_clv_ge_0p8__AND__S1_r3_le_m2,clv+r3,daily,S1_clv_ge_0p8 AND S1_r3_le_m2
+S1_clv_ge_0p8__AND__S1_r3_ge_2,clv+r3,daily,S1_clv_ge_0p8 AND S1_r3_ge_2
+S1_clv_ge_0p8__AND__S1_r3_ge_4,clv+r3,daily,S1_clv_ge_0p8 AND S1_r3_ge_4
+S1_clv_ge_0p8__AND__S1_r3_ge_6,clv+r3,daily,S1_clv_ge_0p8 AND S1_r3_ge_6
+S1_clv_ge_0p8__AND__S1_r20_le_m10,clv+r20,daily,S1_clv_ge_0p8 AND S1_r20_le_m10
+S1_clv_ge_0p8__AND__S1_r20_le_0,clv+r20,daily,S1_clv_ge_0p8 AND S1_r20_le_0
+S1_clv_ge_0p8__AND__S1_r20_ge_0,clv+r20,daily,S1_clv_ge_0p8 AND S1_r20_ge_0
+S1_clv_ge_0p8__AND__S1_r20_ge_10,clv+r20,daily,S1_clv_ge_0p8 AND S1_r20_ge_10
+S1_clv_ge_0p8__AND__S1_vr_le_0p8,clv+vr,daily,S1_clv_ge_0p8 AND S1_vr_le_0p8
+S1_clv_ge_0p8__AND__S1_vr_le_1,clv+vr,daily,S1_clv_ge_0p8 AND S1_vr_le_1
+S1_clv_ge_0p8__AND__S1_vr_ge_1p2,clv+vr,daily,S1_clv_ge_0p8 AND S1_vr_ge_1p2
+S1_clv_ge_0p8__AND__S1_vr_ge_1p5,clv+vr,daily,S1_clv_ge_0p8 AND S1_vr_ge_1p5
+S1_clv_ge_0p8__AND__S1_relative_ge_0,clv+relative,daily,S1_clv_ge_0p8 AND S1_relative_ge_0
+S1_clv_ge_0p8__AND__S1_relative_lt_0,clv+relative,daily,S1_clv_ge_0p8 AND S1_relative_lt_0
+S1_clv_ge_0p8__AND__S1_market20_ge_0,clv+market20,daily,S1_clv_ge_0p8 AND S1_market20_ge_0
+S1_clv_ge_0p8__AND__S1_market20_lt_0,clv+market20,daily,S1_clv_ge_0p8 AND S1_market20_lt_0
+S1_clv_ge_0p8__AND__S1_gapdays_ge_3,clv+gapdays,daily,S1_clv_ge_0p8 AND S1_gapdays_ge_3
+S1_clv_ge_0p8__AND__S2_r3_le_m6,clv+r3,minute_unconfirmed,S1_clv_ge_0p8 AND S2_r3_le_m6
+S1_clv_ge_0p8__AND__S2_r3_le_m4,clv+r3,minute_unconfirmed,S1_clv_ge_0p8 AND S2_r3_le_m4
+S1_clv_ge_0p8__AND__S2_r3_le_m2,clv+r3,minute_unconfirmed,S1_clv_ge_0p8 AND S2_r3_le_m2
+S1_clv_ge_0p8__AND__S2_r3_ge_2,clv+r3,minute_unconfirmed,S1_clv_ge_0p8 AND S2_r3_ge_2
+S1_clv_ge_0p8__AND__S2_r3_ge_4,clv+r3,minute_unconfirmed,S1_clv_ge_0p8 AND S2_r3_ge_4
+S1_clv_ge_0p8__AND__S2_r3_ge_6,clv+r3,minute_unconfirmed,S1_clv_ge_0p8 AND S2_r3_ge_6
+S1_clv_ge_0p8__AND__S2_vr_le_0p8,clv+vr,minute_unconfirmed,S1_clv_ge_0p8 AND S2_vr_le_0p8
+S1_clv_ge_0p8__AND__S2_vr_ge_1p2,clv+vr,minute_unconfirmed,S1_clv_ge_0p8 AND S2_vr_ge_1p2
+S1_clv_ge_0p8__AND__S2_vr_ge_1p5,clv+vr,minute_unconfirmed,S1_clv_ge_0p8 AND S2_vr_ge_1p5
+S1_clv_le_0p2__AND__S1_r3_le_m6,clv+r3,daily,S1_clv_le_0p2 AND S1_r3_le_m6
+S1_clv_le_0p2__AND__S1_r3_le_m4,clv+r3,daily,S1_clv_le_0p2 AND S1_r3_le_m4
+S1_clv_le_0p2__AND__S1_r3_le_m2,clv+r3,daily,S1_clv_le_0p2 AND S1_r3_le_m2
+S1_clv_le_0p2__AND__S1_r3_ge_2,clv+r3,daily,S1_clv_le_0p2 AND S1_r3_ge_2
+S1_clv_le_0p2__AND__S1_r3_ge_4,clv+r3,daily,S1_clv_le_0p2 AND S1_r3_ge_4
+S1_clv_le_0p2__AND__S1_r3_ge_6,clv+r3,daily,S1_clv_le_0p2 AND S1_r3_ge_6
+S1_clv_le_0p2__AND__S1_r20_le_m10,clv+r20,daily,S1_clv_le_0p2 AND S1_r20_le_m10
+S1_clv_le_0p2__AND__S1_r20_le_0,clv+r20,daily,S1_clv_le_0p2 AND S1_r20_le_0
+S1_clv_le_0p2__AND__S1_r20_ge_0,clv+r20,daily,S1_clv_le_0p2 AND S1_r20_ge_0
+S1_clv_le_0p2__AND__S1_r20_ge_10,clv+r20,daily,S1_clv_le_0p2 AND S1_r20_ge_10
+S1_clv_le_0p2__AND__S1_vr_le_0p8,clv+vr,daily,S1_clv_le_0p2 AND S1_vr_le_0p8
+S1_clv_le_0p2__AND__S1_vr_le_1,clv+vr,daily,S1_clv_le_0p2 AND S1_vr_le_1
+S1_clv_le_0p2__AND__S1_vr_ge_1p2,clv+vr,daily,S1_clv_le_0p2 AND S1_vr_ge_1p2
+S1_clv_le_0p2__AND__S1_vr_ge_1p5,clv+vr,daily,S1_clv_le_0p2 AND S1_vr_ge_1p5
+S1_clv_le_0p2__AND__S1_relative_ge_0,clv+relative,daily,S1_clv_le_0p2 AND S1_relative_ge_0
+S1_clv_le_0p2__AND__S1_relative_lt_0,clv+relative,daily,S1_clv_le_0p2 AND S1_relative_lt_0
+S1_clv_le_0p2__AND__S1_market20_ge_0,clv+market20,daily,S1_clv_le_0p2 AND S1_market20_ge_0
+S1_clv_le_0p2__AND__S1_market20_lt_0,clv+market20,daily,S1_clv_le_0p2 AND S1_market20_lt_0
+S1_clv_le_0p2__AND__S1_gapdays_ge_3,clv+gapdays,daily,S1_clv_le_0p2 AND S1_gapdays_ge_3
+S1_clv_le_0p2__AND__S2_r3_le_m6,clv+r3,minute_unconfirmed,S1_clv_le_0p2 AND S2_r3_le_m6
+S1_clv_le_0p2__AND__S2_r3_le_m4,clv+r3,minute_unconfirmed,S1_clv_le_0p2 AND S2_r3_le_m4
+S1_clv_le_0p2__AND__S2_r3_le_m2,clv+r3,minute_unconfirmed,S1_clv_le_0p2 AND S2_r3_le_m2
+S1_clv_le_0p2__AND__S2_r3_ge_2,clv+r3,minute_unconfirmed,S1_clv_le_0p2 AND S2_r3_ge_2
+S1_clv_le_0p2__AND__S2_r3_ge_4,clv+r3,minute_unconfirmed,S1_clv_le_0p2 AND S2_r3_ge_4
+S1_clv_le_0p2__AND__S2_r3_ge_6,clv+r3,minute_unconfirmed,S1_clv_le_0p2 AND S2_r3_ge_6
+S1_clv_le_0p2__AND__S2_vr_le_0p8,clv+vr,minute_unconfirmed,S1_clv_le_0p2 AND S2_vr_le_0p8
+S1_clv_le_0p2__AND__S2_vr_ge_1p2,clv+vr,minute_unconfirmed,S1_clv_le_0p2 AND S2_vr_ge_1p2
+S1_clv_le_0p2__AND__S2_vr_ge_1p5,clv+vr,minute_unconfirmed,S1_clv_le_0p2 AND S2_vr_ge_1p5
+S1_clv_le_0p3__AND__S1_r3_le_m4,r3+clv,daily,S1_clv_le_0p3 AND S1_r3_le_m4
+S1_clv_ge_0p7__AND__S1_r3_le_m4,r3+clv,daily,S1_clv_ge_0p7 AND S1_r3_le_m4
+S1_clv_ge_0p9__AND__S1_r3_le_m4,r3+clv,daily,S1_clv_ge_0p9 AND S1_r3_le_m4
+S1_r20_le_m10__AND__S1_r3_le_m4,r3+r20,daily,S1_r20_le_m10 AND S1_r3_le_m4
+S1_r20_le_0__AND__S1_r3_le_m4,r3+r20,daily,S1_r20_le_0 AND S1_r3_le_m4
+S1_r20_ge_0__AND__S1_r3_le_m4,r3+r20,daily,S1_r20_ge_0 AND S1_r3_le_m4
+S1_r20_ge_10__AND__S1_r3_le_m4,r3+r20,daily,S1_r20_ge_10 AND S1_r3_le_m4
+S1_r3_le_m4__AND__S1_vr_le_0p8,r3+vr,daily,S1_r3_le_m4 AND S1_vr_le_0p8
+S1_r3_le_m4__AND__S1_vr_le_1,r3+vr,daily,S1_r3_le_m4 AND S1_vr_le_1
+S1_r3_le_m4__AND__S1_vr_ge_1p2,r3+vr,daily,S1_r3_le_m4 AND S1_vr_ge_1p2
+S1_r3_le_m4__AND__S1_vr_ge_1p5,r3+vr,daily,S1_r3_le_m4 AND S1_vr_ge_1p5
+S1_r3_le_m4__AND__S1_relative_ge_0,r3+relative,daily,S1_r3_le_m4 AND S1_relative_ge_0
+S1_r3_le_m4__AND__S1_relative_lt_0,r3+relative,daily,S1_r3_le_m4 AND S1_relative_lt_0
+S1_market20_ge_0__AND__S1_r3_le_m4,r3+market20,daily,S1_market20_ge_0 AND S1_r3_le_m4
+S1_market20_lt_0__AND__S1_r3_le_m4,r3+market20,daily,S1_market20_lt_0 AND S1_r3_le_m4
+S1_gapdays_ge_3__AND__S1_r3_le_m4,r3+gapdays,daily,S1_gapdays_ge_3 AND S1_r3_le_m4
+S1_r3_le_m4__AND__S2_clv_le_0p2,r3+clv,minute_unconfirmed,S1_r3_le_m4 AND S2_clv_le_0p2
+S1_r3_le_m4__AND__S2_clv_le_0p3,r3+clv,minute_unconfirmed,S1_r3_le_m4 AND S2_clv_le_0p3
+S1_r3_le_m4__AND__S2_clv_ge_0p7,r3+clv,minute_unconfirmed,S1_r3_le_m4 AND S2_clv_ge_0p7
+S1_r3_le_m4__AND__S2_clv_ge_0p8,r3+clv,minute_unconfirmed,S1_r3_le_m4 AND S2_clv_ge_0p8
+S1_r3_le_m4__AND__S2_vr_le_0p8,r3+vr,minute_unconfirmed,S1_r3_le_m4 AND S2_vr_le_0p8
+S1_r3_le_m4__AND__S2_vr_ge_1p2,r3+vr,minute_unconfirmed,S1_r3_le_m4 AND S2_vr_ge_1p2
+S1_r3_le_m4__AND__S2_vr_ge_1p5,r3+vr,minute_unconfirmed,S1_r3_le_m4 AND S2_vr_ge_1p5
+S1_r3_le_m6__AND__S2_clv_le_0p2,clv+r3,minute_unconfirmed,S1_r3_le_m6 AND S2_clv_le_0p2
+S1_r3_le_m2__AND__S2_clv_le_0p2,clv+r3,minute_unconfirmed,S1_r3_le_m2 AND S2_clv_le_0p2
+S1_r3_ge_2__AND__S2_clv_le_0p2,clv+r3,minute_unconfirmed,S1_r3_ge_2 AND S2_clv_le_0p2
+S1_r3_ge_4__AND__S2_clv_le_0p2,clv+r3,minute_unconfirmed,S1_r3_ge_4 AND S2_clv_le_0p2
+S1_r3_ge_6__AND__S2_clv_le_0p2,clv+r3,minute_unconfirmed,S1_r3_ge_6 AND S2_clv_le_0p2
+S1_r20_le_m10__AND__S2_clv_le_0p2,clv+r20,minute_unconfirmed,S1_r20_le_m10 AND S2_clv_le_0p2
+S1_r20_le_0__AND__S2_clv_le_0p2,clv+r20,minute_unconfirmed,S1_r20_le_0 AND S2_clv_le_0p2
+S1_r20_ge_0__AND__S2_clv_le_0p2,clv+r20,minute_unconfirmed,S1_r20_ge_0 AND S2_clv_le_0p2
+S1_r20_ge_10__AND__S2_clv_le_0p2,clv+r20,minute_unconfirmed,S1_r20_ge_10 AND S2_clv_le_0p2
+S1_vr_le_0p8__AND__S2_clv_le_0p2,clv+vr,minute_unconfirmed,S1_vr_le_0p8 AND S2_clv_le_0p2
+S1_vr_le_1__AND__S2_clv_le_0p2,clv+vr,minute_unconfirmed,S1_vr_le_1 AND S2_clv_le_0p2
+S1_vr_ge_1p2__AND__S2_clv_le_0p2,clv+vr,minute_unconfirmed,S1_vr_ge_1p2 AND S2_clv_le_0p2
+S1_vr_ge_1p5__AND__S2_clv_le_0p2,clv+vr,minute_unconfirmed,S1_vr_ge_1p5 AND S2_clv_le_0p2
+S1_relative_ge_0__AND__S2_clv_le_0p2,clv+relative,minute_unconfirmed,S1_relative_ge_0 AND S2_clv_le_0p2
+S1_relative_lt_0__AND__S2_clv_le_0p2,clv+relative,minute_unconfirmed,S1_relative_lt_0 AND S2_clv_le_0p2
+S1_market20_ge_0__AND__S2_clv_le_0p2,clv+market20,minute_unconfirmed,S1_market20_ge_0 AND S2_clv_le_0p2
+S1_market20_lt_0__AND__S2_clv_le_0p2,clv+market20,minute_unconfirmed,S1_market20_lt_0 AND S2_clv_le_0p2
+S1_gapdays_ge_3__AND__S2_clv_le_0p2,clv+gapdays,minute_unconfirmed,S1_gapdays_ge_3 AND S2_clv_le_0p2
+S2_clv_le_0p2__AND__S2_r3_le_m6,clv+r3,minute_unconfirmed,S2_clv_le_0p2 AND S2_r3_le_m6
+S2_clv_le_0p2__AND__S2_r3_le_m4,clv+r3,minute_unconfirmed,S2_clv_le_0p2 AND S2_r3_le_m4
+S2_clv_le_0p2__AND__S2_r3_le_m2,clv+r3,minute_unconfirmed,S2_clv_le_0p2 AND S2_r3_le_m2
+S2_clv_le_0p2__AND__S2_r3_ge_2,clv+r3,minute_unconfirmed,S2_clv_le_0p2 AND S2_r3_ge_2
+S2_clv_le_0p2__AND__S2_r3_ge_4,clv+r3,minute_unconfirmed,S2_clv_le_0p2 AND S2_r3_ge_4
+S2_clv_le_0p2__AND__S2_r3_ge_6,clv+r3,minute_unconfirmed,S2_clv_le_0p2 AND S2_r3_ge_6
+S2_clv_le_0p2__AND__S2_vr_le_0p8,clv+vr,minute_unconfirmed,S2_clv_le_0p2 AND S2_vr_le_0p8
+S2_clv_le_0p2__AND__S2_vr_ge_1p2,clv+vr,minute_unconfirmed,S2_clv_le_0p2 AND S2_vr_ge_1p2
+S2_clv_le_0p2__AND__S2_vr_ge_1p5,clv+vr,minute_unconfirmed,S2_clv_le_0p2 AND S2_vr_ge_1p5
+S1_clv_le_0p3__AND__S2_r3_le_m4,r3+clv,minute_unconfirmed,S1_clv_le_0p3 AND S2_r3_le_m4
+S1_clv_ge_0p7__AND__S2_r3_le_m4,r3+clv,minute_unconfirmed,S1_clv_ge_0p7 AND S2_r3_le_m4
+S1_clv_ge_0p9__AND__S2_r3_le_m4,r3+clv,minute_unconfirmed,S1_clv_ge_0p9 AND S2_r3_le_m4
+S1_r20_le_m10__AND__S2_r3_le_m4,r3+r20,minute_unconfirmed,S1_r20_le_m10 AND S2_r3_le_m4
+S1_r20_le_0__AND__S2_r3_le_m4,r3+r20,minute_unconfirmed,S1_r20_le_0 AND S2_r3_le_m4
+S1_r20_ge_0__AND__S2_r3_le_m4,r3+r20,minute_unconfirmed,S1_r20_ge_0 AND S2_r3_le_m4
+S1_r20_ge_10__AND__S2_r3_le_m4,r3+r20,minute_unconfirmed,S1_r20_ge_10 AND S2_r3_le_m4
+S1_vr_le_0p8__AND__S2_r3_le_m4,r3+vr,minute_unconfirmed,S1_vr_le_0p8 AND S2_r3_le_m4
+S1_vr_le_1__AND__S2_r3_le_m4,r3+vr,minute_unconfirmed,S1_vr_le_1 AND S2_r3_le_m4
+S1_vr_ge_1p2__AND__S2_r3_le_m4,r3+vr,minute_unconfirmed,S1_vr_ge_1p2 AND S2_r3_le_m4
+S1_vr_ge_1p5__AND__S2_r3_le_m4,r3+vr,minute_unconfirmed,S1_vr_ge_1p5 AND S2_r3_le_m4
+S1_relative_ge_0__AND__S2_r3_le_m4,r3+relative,minute_unconfirmed,S1_relative_ge_0 AND S2_r3_le_m4
+S1_relative_lt_0__AND__S2_r3_le_m4,r3+relative,minute_unconfirmed,S1_relative_lt_0 AND S2_r3_le_m4
+S1_market20_ge_0__AND__S2_r3_le_m4,r3+market20,minute_unconfirmed,S1_market20_ge_0 AND S2_r3_le_m4
+S1_market20_lt_0__AND__S2_r3_le_m4,r3+market20,minute_unconfirmed,S1_market20_lt_0 AND S2_r3_le_m4
+S1_gapdays_ge_3__AND__S2_r3_le_m4,r3+gapdays,minute_unconfirmed,S1_gapdays_ge_3 AND S2_r3_le_m4
+S2_clv_le_0p3__AND__S2_r3_le_m4,r3+clv,minute_unconfirmed,S2_clv_le_0p3 AND S2_r3_le_m4
+S2_clv_ge_0p7__AND__S2_r3_le_m4,r3+clv,minute_unconfirmed,S2_clv_ge_0p7 AND S2_r3_le_m4
+S2_clv_ge_0p8__AND__S2_r3_le_m4,r3+clv,minute_unconfirmed,S2_clv_ge_0p8 AND S2_r3_le_m4
+S2_r3_le_m4__AND__S2_vr_le_0p8,r3+vr,minute_unconfirmed,S2_r3_le_m4 AND S2_vr_le_0p8
+S2_r3_le_m4__AND__S2_vr_ge_1p2,r3+vr,minute_unconfirmed,S2_r3_le_m4 AND S2_vr_ge_1p2
+S2_r3_le_m4__AND__S2_vr_ge_1p5,r3+vr,minute_unconfirmed,S2_r3_le_m4 AND S2_vr_ge_1p5

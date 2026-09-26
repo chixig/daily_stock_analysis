@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checks": [
+    "parent 1171 hashes before",
+    "baseline signal, prefix and future perturbation",
+    "all 13 execution paths prefix invariant; no QC gates",
+    "B17 286 trades +11271.41 reproduced",
+    "all parent hashes unchanged; all selected accounts scalar verified"
+  ],
+  "rules": 166,
+  "paths": 13,
+  "grid_rows": 43160,
+  "selected": 9,
+  "accounts": 27,
+  "parent_files": 1171,
+  "market_cutoff": "2026-09-11",
+  "limitations": [
+    "already viewed historical later period",
+    "five-minute source discrepancies",
+    "no queue or actual execution proof",
+    "missing intraday windows retain fallback and flags"
+  ]
+}

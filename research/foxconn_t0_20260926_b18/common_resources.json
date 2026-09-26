@@ -1,0 +1,6 @@
+{
+  "shares": 3000,
+  "per_trade": 1000,
+  "cash": "externally supplemented, identical hold flows",
+  "maximum_required": 3000
+}

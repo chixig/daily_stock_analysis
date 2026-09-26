@@ -1,0 +1,9 @@
+rule,path,selection
+S2_r3_ge_6,fixed_1450,discovery_cash
+S1_r3_le_m2__AND__S2_clv_le_0p2,fixed_0940,discovery_cash
+S2_clv_le_0p2__AND__S2_r3_le_m4,gap_low_target0.5,discovery_win_positive_cash
+S1_r3_le_m2__AND__S2_clv_le_0p2,gap_low_target0.5,discovery_win_positive_cash
+S1_r3_le_m2__AND__S2_clv_le_0p2,target1_stop1,discovery_stress_cash
+S1_clv_ge_0p9,target0.5_stop2,discovery_layer_daily
+S1_clv_ge_0p8,open,baseline
+S0,open,baseline

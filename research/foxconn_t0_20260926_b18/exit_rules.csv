@@ -1,0 +1,14 @@
+path,kind,deadline,tp,stop,branch
+open,open,,,,
+fixed_0940,fixed,09:40,,,
+fixed_1000,fixed,10:00,,,
+fixed_1030,fixed,10:30,,,
+fixed_1450,fixed,14:50,,,
+target0.5_stop1,target,10:30,0.005,0.01,none
+target0.5_stop2,target,10:30,0.005,0.02,none
+target1_stop1,target,10:30,0.01,0.01,none
+target1_stop2,target,10:30,0.01,0.02,none
+gap_both_target0.5,target,10:30,0.005,0.01,both
+gap_both_target1,target,10:30,0.01,0.01,both
+gap_high_target0.5,target,10:30,0.005,0.01,high
+gap_low_target0.5,target,10:30,0.005,0.01,low
