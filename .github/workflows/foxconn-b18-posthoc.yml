@@ -1,0 +1,32 @@
+name: Foxconn B18 Labelled Historical Champions
+on:
+  push:
+    branches: [research/foxconn-t0-20260926-b18]
+    paths:
+      - scripts/research/foxconn_b18_posthoc.py
+      - .github/workflows/foxconn-b18-posthoc.yml
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3
+      - run: python -m py_compile scripts/research/foxconn_b18_posthoc.py
+      - shell: bash
+        run: |
+          set -o pipefail
+          python scripts/research/foxconn_b18_posthoc.py 2>&1 | tee research/foxconn_t0_20260926_b18/posthoc_calculation.log
+      - name: Preserve labelled post-hoc evidence
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f research/foxconn_t0_20260926_b18/posthoc_*
+          git diff --cached --quiet || git commit -m "research(B18): preserve labelled historical champions"
+          git push origin HEAD:research/foxconn-t0-20260926-b18
