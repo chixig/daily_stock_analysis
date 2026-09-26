@@ -40,3 +40,5 @@
 - [B13数据溯源与补数路径](FOXCONN_OVERNIGHT_B13.md)：implemented有限研究；9笔1m对照完成，其余52笔待补，成交未认证。
 
 - [B14历史成交通道核验](FOXCONN_OVERNIGHT_B14.md)：active。
+
+- [B18 更优卖出与回补研究](FOXCONN_B18.md)：active；按2026-09-26纠偏方向授权执行，发现与历史后段分开，旧差额任务不执行。

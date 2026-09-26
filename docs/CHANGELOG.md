@@ -1822,3 +1822,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 真实一分钟与61笔买卖日均无交集；买入收盘价对齐，卖出日线/五分钟极值最大差各0.13元，原因存疑，可能影响止损路径，不能宣称价格一致性全部通过。122条细数据需求为买卖用途记录，非独立日期数。执行门槛未通过，资金账户/自动前瞻未启动；下一步补候选日期细行情并解释价格差异，冻结C及退出参数。旧历史非独立OOS，无实际交易。
 
 输入/收益复现/事件前缀与守恒/延迟价约束检查通过，补充3项摘要未改变首轮12输出哈希。本地结论《隔夜T执行压力与事件集中度检验.md》SHA256：5bebd274c019d6f425f89cb8e6e4c8e65895b22c2544b3327131c54f798e0d10。仅本研究工作流success，不认证其他工作流或真实成交。
+
+- [chore] Add isolated Foxconn B18 bounded strategy research and remote-only evidence workflow; no application behavior change.
