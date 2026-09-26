@@ -1,9 +1,9 @@
 {
   "files": {
-    "research/foxconn_t0_20260926_b18/REPORT.md": "6ba0a53810b909451525671da2816c8964ab5c8c0e6b0f39b558fde5f893f2aa",
+    "research/foxconn_t0_20260926_b18/REPORT.md": "75ae720e954b8689038aa302b417afef8e5fb63498c481a7118cceafca3605f9",
     "research/foxconn_t0_20260926_b18/reader_core_comparison.csv": "d6ca8b0635d9c88eac69f776c60aeab1b11465d009707df99e09277a4a03919c",
     "research/foxconn_t0_20260926_b18/reader_fine_replay_summary.csv": "b8737471382434398ca1820515314a70c4b71ea27bcb439e539b536bac5b320a",
-    "research/foxconn_t0_20260926_b18/delivery_validation.json": "42cd80d963a708023349587005fa83af55a457c8e2c2364a4fef5e0366a1c724",
+    "research/foxconn_t0_20260926_b18/delivery_validation.json": "60bcdc5adb013c776504d49e843dd6897934a6fdcb051166d8ca58d9f63bb032",
     "research/foxconn_t0_20260926_b18/final_posthoc_independent_checks.csv": "b80e8afbcaa570d8b1322177d9d6112e4c3459913994a3beea2ab33e499956c3"
   }
 }
