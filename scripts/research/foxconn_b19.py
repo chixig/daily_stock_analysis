@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """B19 bounded optimization; prices and all calculations stay on GitHub Actions."""
-import os,json,inspect,itertools,functools,zipfile,traceback
+import os,json,inspect,itertools,functools,zipfile,traceback,subprocess
 from pathlib import Path
 import numpy as np,pandas as pd
 import foxconn_b18 as b
@@ -103,12 +103,20 @@ def audit(d,z,o,t,s):
 
 def run():
  assert os.environ.get('GITHUB_ACTIONS')=='true','Remote calculations only'
- R.mkdir(parents=True,exist_ok=True);reg=registry();save('registry.csv',reg);js('registry.json',reg)
- parents={}
- for folder in [b.P,b.P/'revision_r1',b.b16.R,b.b17.R,b.R]:
-  for p in folder.glob('*manifest.json'):
-   obj=json.loads(p.read_text());parents.update(obj.get('files',{}))
- for p,h in parents.items():assert b.sha(p)==h,p
+ R.mkdir(parents=True,exist_ok=True)
+ if (R/'failure.json').exists():
+  (R/'failures').mkdir(exist_ok=True);(R/'failure.json').rename(R/'failures'/('before_'+os.environ.get('GITHUB_RUN_ID','run')+'.json'))
+ reg=registry();save('registry.csv',reg);js('registry.json',reg)
+ parent_folders=[b.P,b.b16.R,b.b17.R,b.R]
+ subprocess.run(['git','diff','--exit-code','524c7cd31f8fc8200288bd85596c1c6806ec6f9d','--']+[str(p) for p in parent_folders],check=True)
+ parents={str(p):b.sha(p) for folder in parent_folders for p in folder.rglob('*') if p.is_file()}
+ # Historical manifests may include a pre-final tee log. Pin actual bytes at the requested commit.
+ discrepancies=[]
+ for folder in parent_folders:
+  for manifest in folder.rglob('*manifest.json'):
+   for p,h in json.loads(manifest.read_text()).get('files',{}).items():
+    if Path(p).exists() and b.sha(p)!=h:discrepancies.append(dict(manifest=str(manifest),path=p,declared=h,parent_snapshot=b.sha(p)))
+ save('inherited_manifest_discrepancies.csv',discrepancies)
  js('frozen_input_hashes.json',dict(parent_commit='524c7cd31f8fc8200288bd85596c1c6806ec6f9d',files=parents,registry_sha256=b.sha(R/'registry.json'),code_sha256=b.sha(__file__)))
  (R/'inherited_account_runtime.py.txt').write_text(source)
  # Read market data only after immutable candidate registry and input hashes are written.
