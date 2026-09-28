@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "report_sha256": "17515cd8968ca4ae98cf28f2d5efeca6cfefb046747c17397673d2cc9bde6224",
+  "protected_files": 1611,
+  "resource_rows": 344,
+  "checks": [
+    "report tables derived from verified summaries",
+    "main fixed-rule minimum inventory unchanged",
+    "all saved accounts actual minimum inventory recalculated <=3000",
+    "all protected outputs unchanged",
+    "no new parameter search"
+  ],
+  "code_commit": "309ee9d51187bac328a9cd6df9d3dcb88aab47a0",
+  "run_url": "https://github.com/chixig/daily_stock_analysis/actions/runs/36390960514"
+}

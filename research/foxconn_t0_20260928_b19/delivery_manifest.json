@@ -1,0 +1,14 @@
+{
+  "files": {
+    "research/foxconn_t0_20260928_b19/REPORT.md": "17515cd8968ca4ae98cf28f2d5efeca6cfefb046747c17397673d2cc9bde6224",
+    "research/foxconn_t0_20260928_b19/REPORT_TEMPLATE.md": "84418025fa08cdf28348886081a425f7460ee752165c7b8f72ab9e62ff296b0d",
+    "research/foxconn_t0_20260928_b19/DELIVERY_NOTES.md": "16ec03bad4491f54354fc969334a6a9413a8f57d27bfa14e92dbd5b56d0b9d6f",
+    "research/foxconn_t0_20260928_b19/resource_requirements.csv": "11f49724ed84d4bb9952788f4580e44781d33efc6807f3a41b922419fad89045",
+    "research/foxconn_t0_20260928_b19/delivery_validation.json": "40b809e26273a02da9de0bf2b54605f12651c64c91083c355c9ec77e2a1d0868"
+  },
+  "code": {
+    "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19_deliver.py": "cb202c8364fd3ff6b44f62fc6790d98af8e51be5c3b3d140dd300a0fb019687e",
+    "scripts/research/foxconn_b19.py": "faa980f096779dd04c12bbd5fea4b7c6d4152a51b95d931ae49edf000fd3a91f",
+    "scripts/research/foxconn_b19_finalize.py": "a09a3cb723568cc6af141738a72c94f22edc8a40b096bef7a9497c6d943d0db1"
+  }
+}
