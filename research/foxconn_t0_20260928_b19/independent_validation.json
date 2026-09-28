@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "accounts": 344,
+  "checks": [
+    "all saved accounts independently FIFO/fee/dividend/stock/cash verified",
+    "5/11/20bp same orders",
+    "positive initial cash invariance",
+    "future daily data mutation",
+    "future bars after execution mutation",
+    "high/low conflict cannot substitute for completed close",
+    "cross-year fixed paths retain entry rule",
+    "missing windows and locked retry preserve pending marked liability",
+    "parent/source hashes and original manifest unchanged"
+  ],
+  "future_path_mutations": 192,
+  "cross_year_cases": 20,
+  "parent_files": 1421
+}
