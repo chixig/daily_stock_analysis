@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19.py", line 311, in <module>
+    try:run()
+        ^^^^^
+  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19.py", line 111, in run
+    for p,h in parents.items():assert b.sha(p)==h,p
+                                      ^^^^^^^^^^^
+AssertionError: research/foxconn_t0_20260922_b16/calculation.log

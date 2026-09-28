@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19.py\", line 311, in <module>\n    try:run()\n        ^^^^^\n  File \"/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19.py\", line 111, in run\n    for p,h in parents.items():assert b.sha(p)==h,p\n                                      ^^^^^^^^^^^\nAssertionError: research/foxconn_t0_20260922_b16/calculation.log\n",
+  "checks": []
+}
