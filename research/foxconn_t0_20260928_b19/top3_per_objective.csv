@@ -1,0 +1,13 @@
+line,objective,rank,id
+H00,profit,1,R121
+H00,profit,2,H00
+H00,profit,3,R122
+H00,win,1,R112
+H00,win,2,R110
+H00,win,3,R410
+H01,profit,1,W0122
+H01,profit,2,W0022
+H01,profit,3,W1122
+H01,win,1,W0022
+H01,win,2,W0122
+H01,win,3,W0021

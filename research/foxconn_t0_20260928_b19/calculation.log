@@ -1,10 +1,148 @@
-fatal: bad object 524c7cd31f8fc8200288bd85596c1c6806ec6f9d
-Traceback (most recent call last):
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19.py", line 319, in <module>
-    try:run()
-        ^^^^^
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b19.py", line 111, in run
-    subprocess.run(['git','diff','--exit-code','524c7cd31f8fc8200288bd85596c1c6806ec6f9d','--']+[str(p) for p in parent_folders],check=True)
-  File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['git', 'diff', '--exit-code', '524c7cd31f8fc8200288bd85596c1c6806ec6f9d', '--', 'research/foxconn_overnight_sell_20260921_b15', 'research/foxconn_t0_20260922_b16', 'research/foxconn_t0_20260923_b17', 'research/foxconn_t0_20260926_b18']' returned non-zero exit status 128.
+PASS 138 registered unique candidates; resource plans fixed across costs
+MAIN R000 10984.519753020868
+MAIN R001 8942.022833114606
+MAIN R002 9372.595384500804
+MAIN R010 16141.42649143227
+MAIN R011 12536.762557956215
+MAIN R012 14409.114351873199
+MAIN H00 18524.13183340282
+MAIN R021 14809.412602119759
+MAIN R022 16100.935488268966
+MAIN R100 18147.478309001395
+MAIN R101 17807.022987646196
+MAIN R102 17166.290192005807
+MAIN R110 18458.266558435193
+MAIN R111 19819.740892628994
+MAIN R112 19459.28429604601
+MAIN R120 20150.294700286788
+MAIN R121 21832.16514895318
+MAIN R122 20210.133824998164
+MAIN R200 -8239.958555980586
+MAIN R201 -9942.00015453156
+MAIN R202 -8870.694807504973
+MAIN R210 -3393.8400670029223
+MAIN R211 -8359.978334672778
+MAIN R212 -6127.169944172783
+MAIN R220 -2703.1628668839694
+MAIN R221 -8099.752546833333
+MAIN R222 -5186.198336729198
+MAIN R300 12247.526283334999
+MAIN R301 11576.743859423557
+MAIN R302 10966.00346116937
+MAIN R310 13329.208696591988
+MAIN R311 11757.256595252606
+MAIN R312 12758.47811077282
+MAIN R320 15181.373337039753
+MAIN R321 13509.344298028998
+MAIN R322 13749.570844875794
+MAIN R400 -2178.006530314102
+MAIN R401 -3549.721026308922
+MAIN R402 -2508.4080766685656
+MAIN R410 1897.2177948402823
+MAIN R411 -135.49403729636106
+MAIN R412 735.6362411004375
+MAIN R420 2427.758496363007
+MAIN R421 385.06830409084796
+MAIN R422 1436.36464339323
+MAIN R500 11234.715201610466
+MAIN R501 10894.259880255267
+MAIN R502 10253.527084614849
+MAIN R510 11545.503451044264
+MAIN R511 12906.977785238036
+MAIN R512 12546.521188655024
+MAIN R520 13237.53159289583
+MAIN R521 14919.402041562222
+MAIN R522 13297.370717607206
+MAIN R600 3545.284435755777
+MAIN R601 1843.2428372048016
+MAIN R602 2914.54818423136
+MAIN R610 8391.40292473347
+MAIN R611 3425.2646570636425
+MAIN R612 5658.073047563608
+MAIN R620 9082.080124852451
+MAIN R621 3685.490444903
+MAIN R622 6599.044655007223
+MAIN R700 11635.33226416519
+MAIN R701 10964.549840253778
+MAIN R702 10353.80944199959
+MAIN R710 12717.014677422208
+MAIN R711 11145.062576082797
+MAIN R712 12146.28409160301
+MAIN R720 14569.179317870003
+MAIN R721 12897.150278859219
+MAIN R722 13137.376825706015
+MAIN R800 3144.6673732010822
+MAIN R801 1772.9528772062913
+MAIN R802 2814.2658268466766
+MAIN R810 7219.891698355466
+MAIN R811 5187.179866218852
+MAIN R812 6058.310144615651
+MAIN R820 7750.432399878249
+MAIN R821 5707.742207606061
+MAIN R822 6759.038546908443
+MAIN W0000 11330.220700939884
+MAIN W0001 11270.15349961989
+MAIN W0002 11270.15349961989
+MAIN W0010 11670.686211490887
+MAIN H01 13102.459984098095
+MAIN W0012 13082.4374835481
+MAIN W0020 11250.167489164887
+MAIN W0021 13713.228409147909
+MAIN W0022 14374.041144451883
+MAIN W0100 11360.2550023699
+MAIN W0101 11360.253901159886
+MAIN W0102 11500.40900236988
+MAIN W0110 11700.720512920903
+MAIN W0111 13402.821953225503
+MAIN W0112 13703.183275642281
+MAIN W0120 11280.201790594903
+MAIN W0121 13913.479377175303
+MAIN W0122 14574.277356265287
+MAIN W1000 10799.72437617791
+MAIN W1001 10739.657174857915
+MAIN W1002 10739.657174857915
+MAIN W1010 11160.212287168892
+MAIN W1011 12591.9860597761
+MAIN W1012 12571.963559226104
+MAIN W1020 10829.792164402897
+MAIN W1021 13392.964485925884
+MAIN W1022 14213.95482298988
+MAIN W1100 10829.758677607897
+MAIN W1101 10829.757576397911
+MAIN W1102 10969.912677607907
+MAIN W1110 11190.246588598879
+MAIN W1111 12892.348028903478
+MAIN W1112 13192.709351320285
+MAIN W1120 10859.826465832914
+MAIN W1121 13593.215453953308
+MAIN W1122 14334.102233923273
+MAIN W2000 9738.524520978099
+MAIN W2001 9678.457319658075
+MAIN W2002 9678.457319658075
+MAIN W2010 10099.01243196908
+MAIN W2011 11530.786204576289
+MAIN W2012 11510.763704026263
+MAIN W2020 9768.592309203086
+MAIN W2021 12331.764630726073
+MAIN W2022 13152.754967790068
+MAIN W2100 9588.359020428092
+MAIN W2101 9728.513320758066
+MAIN W2102 9778.568520978093
+MAIN W2110 9948.846931419073
+MAIN W2111 11791.103773263661
+MAIN W2112 12001.365194690443
+MAIN W2120 9618.42680865308
+MAIN W2121 12491.971198313462
+MAIN W2122 13142.75807729343
+MAIN H02 3795.4798843454337
+MAIN H03 12361.499022618082
+MAIN C08 1606.7547367783845
+PASS all five B18 baseline accounts exactly reproduced and independently reconciled
+TRAIN 2024 [{'line': 'H00', 'objective': 'profit', 'test_year': 2024, 'cutoff': '2023-12-29', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}, {'line': 'H00', 'objective': 'win', 'test_year': 2024, 'cutoff': '2023-12-29', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}, {'line': 'H01', 'objective': 'profit', 'test_year': 2024, 'cutoff': '2023-12-29', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}, {'line': 'H01', 'objective': 'win', 'test_year': 2024, 'cutoff': '2023-12-29', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}]
+TRAIN 2025 [{'line': 'H00', 'objective': 'profit', 'test_year': 2025, 'cutoff': '2024-12-31', 'id': 'R122', 'eligible': 12, 'training_net': np.float64(1128.0199229500722), 'training_n': 41, 'training_win': np.float64(36.58536585365854), 'reason': 'highest eligible score; fixed ID tie break'}, {'line': 'H00', 'objective': 'win', 'test_year': 2025, 'cutoff': '2024-12-31', 'id': 'R112', 'eligible': 12, 'training_net': np.float64(407.65331965008227), 'training_n': 41, 'training_win': np.float64(46.34146341463415), 'reason': 'highest eligible score; fixed ID tie break'}, {'line': 'H01', 'objective': 'profit', 'test_year': 2025, 'cutoff': '2024-12-31', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}, {'line': 'H01', 'objective': 'win', 'test_year': 2025, 'cutoff': '2024-12-31', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}]
+TRAIN 2026 [{'line': 'H00', 'objective': 'profit', 'test_year': 2026, 'cutoff': '2025-12-31', 'id': 'R101', 'eligible': 63, 'training_net': np.float64(12222.65413829012), 'training_n': 51, 'training_win': np.float64(45.09803921568628), 'reason': 'highest eligible score; fixed ID tie break'}, {'line': 'H00', 'objective': 'win', 'test_year': 2026, 'cutoff': '2025-12-31', 'id': 'R112', 'eligible': 63, 'training_net': np.float64(10972.053308369097), 'training_n': 51, 'training_win': np.float64(49.01960784313725), 'reason': 'highest eligible score; fixed ID tie break'}, {'line': 'H01', 'objective': 'profit', 'test_year': 2026, 'cutoff': '2025-12-31', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}, {'line': 'H01', 'objective': 'win', 'test_year': 2026, 'cutoff': '2025-12-31', 'id': 'NONE', 'eligible': 0, 'training_net': 0, 'training_n': 0, 'training_win': None, 'reason': 'no positive candidate with >=40 completed trades'}]
+PASS gap observation, target/stop separate branches, lunch 11:25->13:00 /11:30->13:05, deadline priority, missing recovery
+PASS all 64 unique execution actions invariant to future data removal; cross-year exit attached to entry rule
+PASS all accounts cash/share and cost reconciliation; five baselines and all selected finalists independently FIFO verified
+PASS parent hashes unchanged
+COMPLETE 740

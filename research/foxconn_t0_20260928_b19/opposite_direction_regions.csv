@@ -1,0 +1,5 @@
+region,n,normal_cash,reverse_cash,normal_pct,reverse_pct,status
+r20_pos,65,14270.737630153244,-22479.72940915274,0.27794398566939404,-0.7558083522150814,nominal costed direction candidate; no continuous account or adoption
+r20_neg,90,-4740.117928813793,-3340.1128486857924,-0.24886626252390723,-0.2608201219003708,nominal costed direction candidate; no continuous account or adoption
+market20_pos,86,8177.2927435072725,-17695.497209006713,0.11416757787757476,-0.6047022327862329,nominal costed direction candidate; no continuous account or adoption
+market20_neg,69,1353.3269578321813,-8124.345048831819,-0.20507269936394878,-0.2985066934115598,nominal costed direction candidate; no continuous account or adoption

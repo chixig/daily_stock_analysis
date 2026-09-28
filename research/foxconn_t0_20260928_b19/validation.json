@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "checks": [
+    "138 registered unique candidates; resource plans fixed across costs",
+    "all five B18 baseline accounts exactly reproduced and independently reconciled",
+    "gap observation, target/stop separate branches, lunch 11:25->13:00 /11:30->13:05, deadline priority, missing recovery",
+    "all 64 unique execution actions invariant to future data removal; cross-year exit attached to entry rule",
+    "all accounts cash/share and cost reconciliation; five baselines and all selected finalists independently FIFO verified",
+    "parent hashes unchanged"
+  ],
+  "candidates": 135,
+  "fixed_extra_baselines": 3,
+  "accounts": 740,
+  "qualified_1m_days": 93,
+  "data_cutoff": "2026-09-11",
+  "parent_files": 1421
+}

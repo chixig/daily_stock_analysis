@@ -1,0 +1,13 @@
+line,objective,test_year,cutoff,id,eligible,training_net,training_n,training_win,reason
+H00,profit,2024,2023-12-29,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H00,win,2024,2023-12-29,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H01,profit,2024,2023-12-29,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H01,win,2024,2023-12-29,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H00,profit,2025,2024-12-31,R122,12,1128.0199229500722,41,36.58536585365854,highest eligible score; fixed ID tie break
+H00,win,2025,2024-12-31,R112,12,407.65331965008227,41,46.34146341463415,highest eligible score; fixed ID tie break
+H01,profit,2025,2024-12-31,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H01,win,2025,2024-12-31,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H00,profit,2026,2025-12-31,R101,63,12222.65413829012,51,45.09803921568628,highest eligible score; fixed ID tie break
+H00,win,2026,2025-12-31,R112,63,10972.053308369097,51,49.01960784313725,highest eligible score; fixed ID tie break
+H01,profit,2026,2025-12-31,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
+H01,win,2026,2025-12-31,NONE,0,0.0,0,,no positive candidate with >=40 completed trades
