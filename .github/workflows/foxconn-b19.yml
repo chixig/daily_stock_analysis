@@ -19,6 +19,7 @@ jobs:
       - name: Run bounded optimization
         run: |
           set -euo pipefail
+          git fetch --depth=1 origin 524c7cd31f8fc8200288bd85596c1c6806ec6f9d
           mkdir -p research/foxconn_t0_20260928_b19
           python -m py_compile scripts/research/foxconn_b19.py
           python -u scripts/research/foxconn_b19.py 2>&1 | tee research/foxconn_t0_20260928_b19/calculation.log

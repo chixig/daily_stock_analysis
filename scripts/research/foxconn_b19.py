@@ -108,8 +108,11 @@ def run():
   (R/'failures').mkdir(exist_ok=True);(R/'failure.json').rename(R/'failures'/('before_'+os.environ.get('GITHUB_RUN_ID','run')+'.json'))
  reg=registry();save('registry.csv',reg);js('registry.json',reg)
  parent_folders=[b.P,b.b16.R,b.b17.R,b.R]
+ raw_sources=[b.old.P/'source/601138-full-5min-history.zip',b.r1.B13/'tdx_recovered_1m.csv',b.old.B2/'source/sse_index.csv']
+ subprocess.run(['git','diff','--exit-code','524c7cd31f8fc8200288bd85596c1c6806ec6f9d','--']+[str(p) for p in raw_sources],check=True)
  subprocess.run(['git','diff','--exit-code','524c7cd31f8fc8200288bd85596c1c6806ec6f9d','--']+[str(p) for p in parent_folders],check=True)
  parents={str(p):b.sha(p) for folder in parent_folders for p in folder.rglob('*') if p.is_file()}
+ parents.update({str(p):b.sha(p) for p in raw_sources})
  # Historical manifests may include a pre-final tee log. Pin actual bytes at the requested commit.
  discrepancies=[]
  for folder in parent_folders:
