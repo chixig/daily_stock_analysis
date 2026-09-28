@@ -1,0 +1,32 @@
+name: Foxconn B19 report delivery
+on:
+  push:
+    branches: [research/foxconn-t0-20260928-b19]
+    paths: [scripts/research/foxconn_b19_deliver.py, .github/workflows/foxconn-b19-deliver.yml, research/foxconn_t0_20260928_b19/REPORT_TEMPLATE.md]
+permissions:
+  contents: write
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3
+      - name: Assemble and verify report
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/research/foxconn_b19_deliver.py
+          python -u scripts/research/foxconn_b19_deliver.py 2>&1 | tee research/foxconn_t0_20260928_b19/delivery.log
+      - name: Preserve report
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20260928_b19/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Submit B19 profit optimization report and evidence hashes'
+            git push origin HEAD:research/foxconn-t0-20260928-b19
+          fi
