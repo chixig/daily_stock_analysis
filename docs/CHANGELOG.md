@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-- [文档] 登记B19工业富联H00/H01盈利路径优化研究，限定135候选和独立研究分支。
+- [文档] 提交B19工业富联135候选盈利路径研究及账户证据；R121收益、W0022胜率改进与年度/成交反证并列，未自动采用。
 
 - [chore] Add isolated Foxconn B18 bounded strategy research and remote-only evidence workflow; no application behavior change.
 
