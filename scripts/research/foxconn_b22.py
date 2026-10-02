@@ -1,6 +1,7 @@
 """B22 fixed entry filters; all market computation is GitHub-only."""
 import os,sys,json,hashlib,subprocess,traceback
 from pathlib import Path
+from fractions import Fraction
 import numpy as np
 import pandas as pd
 import foxconn_b21 as q
@@ -52,7 +53,7 @@ def feature_day(g,cref):
     elif not ((g.high>=g[['open','close','low']].max(axis=1))&(g.low<=g[['open','close','high']].min(axis=1))).all():reason='invalid_prefix_ohlc'
     else:
         out['h50']=float(g.high.max());out['l50']=float(g.low.min());reason='ok' if out['h50']>out['l50'] else 'flat_range'
-    out['position_reason']=reason;out['position']=(p50-out['l50'])/(out['h50']-out['l50']) if reason=='ok' else np.nan
+    out['position_reason']=reason;out['position']=float((Fraction(str(p50))-Fraction(str(out['l50'])))/(Fraction(str(out['h50']))-Fraction(str(out['l50'])))) if reason=='ok' else np.nan
     for name in ['day','tail','position']:out[name+'_available']=bool(np.isfinite(out[name]))
     out['day_margin']=p50-cref;out['tail_margin']=p50-p30;out['position_margin']=p50-(out['l50']+.7*(out['h50']-out['l50']))
     return out

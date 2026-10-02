@@ -1,5 +1,6 @@
 """Independent B22 saved-ledger, prefix-feature and selection checks."""
 import os,json,functools,traceback
+from decimal import Decimal
 import numpy as np
 import pandas as pd
 import foxconn_b22 as z
@@ -16,7 +17,7 @@ def scalar_features(g,cref):
     if good:
         good=all(all(np.isfinite(v) and v>0 for v in [r.open,r.high,r.low,r.close]) and r.high>=max(r.open,r.close,r.low) and r.low<=min(r.open,r.close,r.high) for r in rows)
     if good:
-        hi=max(r.high for r in rows);lo=min(r.low for r in rows);position=(p50-lo)/(hi-lo) if hi>lo else np.nan
+        hi=max(r.high for r in rows);lo=min(r.low for r in rows);position=float((Decimal(str(p50))-Decimal(str(lo)))/(Decimal(str(hi))-Decimal(str(lo)))) if hi>lo else np.nan
     else:position=np.nan
     return dict(day=day,position=position,tail=tail)
 def clock_and_selection_tests():
@@ -24,6 +25,10 @@ def clock_and_selection_tests():
     f=z.feature_day(g,107.);assert f['day']==0 and f['position']==.7 and f['day_available'] and f['position_available']
     r=dict(scope='AB',feature='position',side='ge');fam=pd.Series(['A']);ff=pd.DataFrame([f]);assert z.decide(r,ff,fam)[0].iloc[0]
     assert not z.decide({**r,'side':'lt'},ff,fam)[0].iloc[0]
+    real=g.copy();real[['open','low']]=11.85;real['high']=12.05;real['close']=11.99
+    exact=z.feature_day(real,11.99);assert exact['position']==.7
+    assert scalar_features(real,11.99)['position']==.7
+    assert z.decide(r,pd.DataFrame([exact]),fam)[0].iloc[0]
     for name in ['day','tail']:
         equal=ff.copy();equal[name]=0.;assert z.decide(dict(scope='AB',feature=name,side='ge'),equal,fam)[0].iloc[0];assert not z.decide(dict(scope='AB',feature=name,side='lt'),equal,fam)[0].iloc[0]
     missing=g[~g.clock.eq('10:00')];a=z.feature_day(missing,107.);assert a['day_available'] and a['tail_available'] and not a['position_available']
