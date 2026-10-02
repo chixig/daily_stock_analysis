@@ -9,6 +9,8 @@
     "exit_failure_slot_retained",
     "dividend_receivable_FIFO_transfer",
     "external_flow_identity",
-    "initial_zero_drawdown"
+    "initial_zero_drawdown",
+    "paired_intent_zero_external_fee",
+    "FIFO_tax_exact_logical_seller"
   ]
 }
