@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "accounts": 84,
+  "independently_checked": 84,
+  "parent_alignments": 18,
+  "protected_results": 449,
+  "parent_files": 3512,
+  "report_sha256": "e77e92d91d099b93f4a6c22f763962c86f807416b50bfd48e74760f4e1672050",
+  "new_candidates": 0,
+  "scope": "B21 only; no main merge, trade or other-thread message"
+}
