@@ -151,12 +151,12 @@ def tests_prefix(d,ix):
 def ddmetric(values):
     a=np.r_[0,np.asarray(values,float)];return float(np.max(np.maximum.accumulate(a)-a))
 def durations(dates,values):
-    peak=0.;under=None;lag=None;longest=behind=0
+    peak=0.;peak_day=dates.iloc[0];under=None;lag=None;longest=behind=0
     for day,value in zip(dates,values):
         if value<peak-1e-7:
             if under is None:under=day
-            longest=max(longest,(day-under).days)
-        else:peak=max(peak,value);under=None
+            longest=max(longest,(day-peak_day).days)
+        else:peak=max(peak,value);peak_day=day;under=None
         if value< -1e-7:
             if lag is None:lag=day
             behind=max(behind,(day-lag).days)
@@ -238,6 +238,7 @@ def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
             for o in exits+news:
                 p=o['price'];reason='quote_unknown' if not np.isfinite(p) or p<=0 else 'untradeable' if not valid(p,row,o['side']) else None
                 if basis=='daily_close' and row.volume<=0:reason='untradeable'
+                if basis.startswith('bar_close_') and bars.get(day,{}).get(clock,{}).get('volume',0)<=0:reason='untradeable'
                 if reason:
                     why[o['tid']]=reason
                     if o['kind']=='exit':pending[o['tid']]['retry']=True
@@ -304,15 +305,13 @@ def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
         rr=dict(date=day,cash=cash,hold_cash=hc,shares=qty(),old_available=sum(l['q'] for l in lots if l['date']<day),receivable=sum(v for _,v in recv),hold_receivable=sum(v for _,v in hr),tax_reserve=res,fee=dayfee,tax=daytax,payment=daypaid,hold_payment=dayhp,deposit=dayin,external=external,equity=eq,hold_equity=he,relative=eq-he,absolute=eq-initial-external,hold_absolute=he-initial-external,pending_add=sum(t['direction']==1 for t in pending.values()),pending_reduce=sum(t['direction']==-1 for t in pending.values()),adjust=-res,adjust_pnl=-res-previous_adjust)
         for v in 'PNR':rr[v]=mods[v];rr[v+'_pnl']=mods[v]-previous_modules[v]
         previous_modules=mods;previous_adjust=-res;curve.append(rr)
-        for lot in lots:lotrows.append(dict(**lot,acquired=lot['date'])) # overridden below
-        # lot date is acquisition date; retain valuation date separately.
-        for lr in lotrows[-len(lots):]:lr['date']=day
+        for lot in lots:lotrows.append(dict(lot_id=lot['lot_id'],q=lot['q'],div=lot['div'],acquired=lot['date'],date=day))
     a=pd.DataFrame(curve);tt=pd.DataFrame(list(trades.values()));ss=pd.DataFrame(signals)
-    done=tt[tt.actual_exit_i.notna()] if len(tt) else tt;pn=done.realized if len(done) else pd.Series(dtype=float)
+    done=tt[tt.actual_exit_i.notna()].sort_values(['actual_exit_i','actual_exit_clock','tid']) if len(tt) else tt;pn=done.realized if len(done) else pd.Series(dtype=float)
     run=longest=0
     for v in pn:run=run+1 if v<0 else 0;longest=max(longest,run)
     recovery,behind=durations(a.date,a.relative)
-    meta=dict(**rule,stock=stock,bp=bp,increment=a.relative.iloc[-1],relative_mdd=ddmetric(a.relative),absolute_mdd=ddmetric(a.absolute),hold_mdd=ddmetric(a.hold_absolute),absolute_profit=a.absolute.iloc[-1],completed=len(done),pending=len(pending),signals=len(ss),accepted=len(tt),policy_rejected=int(ss.reason.eq('policy_rejected').sum()) if len(ss) else 0,inventory_rejected=int(ss.reason.eq('old_shares_insufficient').sum()) if len(ss) else 0,quote_unknown=int(ss.reason.eq('quote_unknown').sum()) if len(ss) else 0,untradeable=int(ss.reason.eq('untradeable').sum()) if len(ss) else 0,exit_failed=sum(e['kind']=='exit' and e['reason']!='filled' for e in events),inventory_exit_failed=sum(e['kind']=='exit' and e['reason']=='old_shares_insufficient' for e in events),win=100*(pn>0).mean() if len(pn) else np.nan,worst=pn.min() if len(pn) else 0,worst5=pn.nsmallest(5).sum(),avg_profit=pn[pn>0].mean(),avg_loss=pn[pn<0].mean(),longest_loss=longest,recovery_days=recovery,behind_days=behind,winning_day_pct=100*a.relative.diff().fillna(a.relative.iloc[0]).gt(0).mean(),deposits=external,max_deposit=max([v['deposit'] for v in funds],default=0),max_buy_cash=max([v['buy_cost'] for v in funds],default=0),buy_cash_total=sum(v['buy_cost'] for v in funds),deposit_yuan_days=sum(v['deposit']*(d.date.iloc[-1]-v['date']).days for v in funds),max_shares=maxstock,min_old_available=minsell,fee=fees,tax=taxes,terminal_reserve=a.tax_reserve.iloc[-1],dividend_relative=(a.payment-a.hold_payment).sum()+a.receivable.iloc[-1]-a.hold_receivable.iloc[-1],internal_pairs=len(pairs),external_orders=len(orders),event_relative_mdd=ddmetric([v['relative'] for v in stress]),event_absolute_mdd=ddmetric([v['absolute'] for v in stress]))
+    meta=dict(**rule,stock=stock,bp=bp,increment=a.relative.iloc[-1],relative_mdd=ddmetric(a.relative),absolute_mdd=ddmetric(a.absolute),hold_mdd=ddmetric(a.hold_absolute),absolute_profit=a.absolute.iloc[-1],completed=len(done),pending=len(pending),signals=len(ss),accepted=len(tt),policy_rejected=int(ss.reason.eq('policy_rejected').sum()) if len(ss) else 0,inventory_rejected=int(ss.reason.eq('old_shares_insufficient').sum()) if len(ss) else 0,quote_unknown=int(ss.reason.eq('quote_unknown').sum()) if len(ss) else 0,untradeable=int(ss.reason.eq('untradeable').sum()) if len(ss) else 0,exit_failed=sum(e['kind']=='exit' and e['reason']!='filled' for e in events),inventory_exit_failed=sum(e['kind']=='exit' and e['reason']=='old_shares_insufficient' for e in events),win=100*(pn>0).mean() if len(pn) else np.nan,worst=pn.min() if len(pn) else 0,worst5=pn.nsmallest(5).sum(),avg_profit=pn[pn>0].mean(),avg_loss=pn[pn<0].mean(),longest_loss=longest,recovery_days=recovery,behind_days=behind,winning_day_pct=100*a.relative.diff().fillna(a.relative.iloc[0]).gt(0).mean(),deposits=external,max_deposit=max([v['deposit'] for v in funds],default=0),max_buy_cash=max([v['buy_cost'] for v in funds],default=0),buy_cash_total=sum(v['buy_cost'] for v in funds),deposit_yuan_days=sum(v['deposit']*(d.date.iloc[-1]-v['date']).days for v in funds),max_shares=maxstock,min_old_available=minsell,fee=fees,tax=taxes,terminal_reserve=a.tax_reserve.iloc[-1],dividend_relative=(a.payment-a.hold_payment).sum()+a.receivable.iloc[-1]-a.hold_receivable.iloc[-1],internal_pairs=len(pairs),external_orders=len(orders),slippage=sum(v['slip'] for v in orders),reference_cash=sum((1 if v['side']=='SELL' else -1)*v['quantity']*v['reference'] for v in orders),pending_mark=(qty()-stock)*d.close.iloc[-1],max_batch_days=max([(pd.Timestamp(t['actual_exit']) if t['actual_exit'] else d.date.iloc[-1])-pd.Timestamp(t['entry']) for t in trades.values()],default=pd.Timedelta(0)).days,event_relative_mdd=ddmetric([v['relative'] for v in stress]),event_absolute_mdd=ddmetric([v['absolute'] for v in stress]))
     if persist:
         name=f"{rule['id']}_{stock}_{bp}"
         for folder,data in [('accounts',a),('trades',tt),('signals',ss),('events',events),('orders',orders),('pairs',pairs),('disposals',disposals),('lots',lotrows),('funds',funds),('stress',stress)]:save(folder+'/'+name+'.csv.gz',data)
@@ -325,13 +324,13 @@ def run():
     needs=[];K=3000
     for rule in reg:
         if rule['policy']!='F':continue
-        k=0
+        k=3000
         while True:
             met,_,_,_=simulate(d,bars,schedule,plans,rule,k,5)
             if met['inventory_rejected']==0 and met['inventory_exit_failed']==0:break
             k+=1000;assert k<=100000,'resource cannot resolve; retain failure for inspection'
-        K=max(K,k);needs.append(dict(combo=rule['combo'],minimum_initial_old_shares=k,inventory_rejected=met['inventory_rejected']))
-    save('resource_diagnostic.csv',needs);js('resource_lock.json',dict(K=K,determined_before_profit_rankings=True,algorithm='all44F whole-lot resource simulation from0 in1000 steps; common K floor3000',resources=[3000]+([K] if K>3000 else [])))
+        K=max(K,k);needs.append(dict(combo=rule['combo'],minimum_initial_old_shares=k-met['min_old_available'],diagnostic_stock=k,inventory_rejected=met['inventory_rejected']))
+    save('resource_diagnostic.csv',needs);js('resource_lock.json',dict(K=K,determined_before_profit_rankings=True,algorithm='all44F first3000; increase only if inventory blocked; minimum historical requirement inferred from actual old-share trough; no lower-resource account grid',resources=[3000]+([K] if K>3000 else [])))
     rows=[];cache={}
     for stock in [3000]+([K] if K>3000 else []):
         for rule in reg:
@@ -359,17 +358,17 @@ def tests():
     d=pd.DataFrame(dict(date=dates,open=[100]*4,close=[100]*4,limit_up=[110]*4,limit_down=[90]*4,volume=[100]*4,dividend_today=[0,1,0,0]))
     rule=dict(id='synthetic',P='Pall',N='N2',R='R1',policy='F',combo='synthetic',modules=3)
     plans={'Pall':[newplan('Pall',0,dates[0],100,'09:35','bar_open_0935','09:25',0,'15:00',100,'daily_close')],'N2':[newplan('N2',0,dates[0],100,'15:00','daily_close','previous_close',1,'10:05',100,'bar_close_1005')],'R1':[newplan('R1',0,dates[0],100,'15:00','daily_close','14:50',2,'09:25',100,'daily_open')]}
-    met,a,tt,_=simulate(d,{}, {dates[1]:1},plans,rule,1000,5)
+    met,a,tt,_=simulate(d,{dates[1]:{'10:05':dict(volume=100)}}, {dates[1]:1},plans,rule,1000,5)
     assert met['completed']==3 and met['internal_pairs']==1 and met['external_orders']==4
     assert a.shares.tolist()==[1000,0,1000,1000]
     assert abs(a.iloc[-1].relative-(tt.cash.sum()+tt.dividend.sum()-a.iloc[-1].tax_reserve))<1e-6
     # No old stock: P same-day close cannot externally sell its new purchase, retries day1.
     rr=dict(rule,P='Pall',N='-',R='-')
-    met,a,tt,ss=simulate(d,{}, {dates[1]:1},plans,rr,0,5)
+    met,a,tt,ss=simulate(d,{dates[1]:{'10:05':dict(volume=100)}}, {dates[1]:1},plans,rr,0,5)
     assert tt.actual_exit_i.iloc[0]==1 and met['exit_failed']==1
     # N/R pair opens with zero broker inventory, different dates exit: N must wait for R's bought shares to age.
     rr=dict(rule,P='-',N='N2',R='R1')
-    met,a,tt,ss=simulate(d,{}, {dates[1]:1},plans,rr,0,5)
+    met,a,tt,ss=simulate(d,{dates[1]:{'10:05':dict(volume=100)}}, {dates[1]:1},plans,rr,0,5)
     assert met['accepted']==2 and tt.set_index('module').loc['N','actual_exit_i']==2
     assert ddmetric([10,-5,5])==15
     js('synthetic_validation.json',dict(status='PASS',cases=['three_way_close_net','two_opposite_entries_distinct_future_exits','L1_full','L2_slot','Tplus1_new_shares_retry','exit_failure_slot_retained','dividend_receivable_FIFO_transfer','external_flow_identity','initial_zero_drawdown']))
@@ -391,7 +390,7 @@ def analyze(d,bars,schedule,plans,s,cache):
         for ref in dict.fromkeys([BASE,full.id,one.id]):
             br=by[ref,rr.stock,rr.bp];ba,bt,bs=cache[ref,rr.stock,rr.bp]
             ds=(a.relative-ba.relative).diff().fillna(a.relative.iloc[0]-ba.relative.iloc[0]);v=ds.sort_values(ascending=False)
-            rows.append(dict(id=rr.id,stock=rr.stock,bp=rr.bp,reference=ref,**{k:getattr(rr,k)-getattr(br,k) for k in metrics},fee_change=rr.fee-br.fee,tax_change=rr.tax-br.tax,reserve_change=rr.terminal_reserve-br.terminal_reserve,dividend_change=rr.dividend_relative-br.dividend_relative))
+            rows.append(dict(id=rr.id,stock=rr.stock,bp=rr.bp,reference=ref,**{k:getattr(rr,k)-getattr(br,k) for k in metrics},reference_cash_change=rr.reference_cash-br.reference_cash,slippage_change=rr.slippage-br.slippage,pending_mark_change=rr.pending_mark-br.pending_mark,fee_change=rr.fee-br.fee,tax_change=rr.tax-br.tax,reserve_change=rr.terminal_reserve-br.terminal_reserve,dividend_change=rr.dividend_relative-br.dividend_relative))
             concentrations.append(dict(id=rr.id,stock=rr.stock,bp=rr.bp,reference=ref,delta=rr.increment-br.increment,top1=v.head(1).sum(),top3=v.head(3).sum(),top5=v.head(5).sum(),without1=rr.increment-br.increment-v.head(1).sum(),without3=rr.increment-br.increment-v.head(3).sum(),without5=rr.increment-br.increment-v.head(5).sum()))
             for side,inds in [('gain',ds.nlargest(5).index),('loss',ds.nsmallest(5).index)]:
                 for ii in inds:gains.append(dict(id=rr.id,stock=rr.stock,bp=rr.bp,reference=ref,side=side,date=a.date.iloc[ii],change=ds.iloc[ii],P=a.P_pnl.iloc[ii]-ba.P_pnl.iloc[ii],N=a.N_pnl.iloc[ii]-ba.N_pnl.iloc[ii],R=a.R_pnl.iloc[ii]-ba.R_pnl.iloc[ii],adjustment=a.adjust_pnl.iloc[ii]-ba.adjust_pnl.iloc[ii]))
@@ -405,12 +404,12 @@ def analyze(d,bars,schedule,plans,s,cache):
         for other in s[(s.stock==rr.stock)&(s.bp==rr.bp)].itertuples():
             dims=[v for v in ['P','N','R','policy'] if getattr(rr,v)!=getattr(other,v)]
             if len(dims)==1:
-                edges.append(dict(from_id=rr.id,to_id=other.id,stock=rr.stock,bp=rr.bp,dimension=dims[0],**{k:getattr(other,k)-getattr(rr,k) for k in metrics},fee_change=other.fee-rr.fee,tax_change=other.tax-rr.tax,reserve_change=other.terminal_reserve-rr.terminal_reserve))
+                edges.append(dict(from_id=rr.id,to_id=other.id,stock=rr.stock,bp=rr.bp,dimension=dims[0],**{k:getattr(other,k)-getattr(rr,k) for k in metrics},reference_cash_change=other.reference_cash-rr.reference_cash,slippage_change=other.slippage-rr.slippage,pending_mark_change=other.pending_mark-rr.pending_mark,fee_change=other.fee-rr.fee,tax_change=other.tax-rr.tax,reserve_change=other.terminal_reserve-rr.terminal_reserve))
         # Full-account identity bridge to separately recomputed single modules, not old cash ledgers.
         singles=[]
         for mod in [rr.P,rr.N,rr.R]:
             if mod!='-':singles.append(by[mod+'_'+rr.policy,rr.stock,rr.bp])
-        rows.append(dict(id=rr.id,stock=rr.stock,bp=rr.bp,reference='sum_same_window_single_accounts',increment=rr.increment-sum(v.increment for v in singles),fee_change=rr.fee-sum(v.fee for v in singles),tax_change=rr.tax-sum(v.tax for v in singles),reserve_change=rr.terminal_reserve-sum(v.terminal_reserve for v in singles),dividend_change=rr.dividend_relative-sum(v.dividend_relative for v in singles),note='interaction; policy changes participation when modules share slots'))
+        rows.append(dict(id=rr.id,stock=rr.stock,bp=rr.bp,reference='sum_same_window_single_accounts',increment=rr.increment-sum(v.increment for v in singles),reference_cash_change=rr.reference_cash-sum(v.reference_cash for v in singles),slippage_change=rr.slippage-sum(v.slippage for v in singles),pending_mark_change=rr.pending_mark-sum(v.pending_mark for v in singles),fee_change=rr.fee-sum(v.fee for v in singles),tax_change=rr.tax-sum(v.tax for v in singles),reserve_change=rr.terminal_reserve-sum(v.terminal_reserve for v in singles),dividend_change=rr.dividend_relative-sum(v.dividend_relative for v in singles),note='interaction; policy changes participation when modules share slots'))
         if rr.bp==5 and len(t):
             for yr,g in t[t.actual_exit_i.notna()].groupby(pd.to_datetime(t[t.actual_exit_i.notna()].entry).dt.year):
                 if g.realized.sum()>=0:continue
@@ -429,6 +428,10 @@ def analyze(d,bars,schedule,plans,s,cache):
                         val=sv-bv-b.old.sf(bv,ed)-b.old.sf(sv,xd,True)-tr.dividend
                     vals.append(val)
                 mirrors.append(dict(id=rr.id,stock=rr.stock,year=yr,n=len(g),original=g.realized.sum(),opposite_price_fees_gross_dividend=sum(vals),status='candidate only; reverse shared FIFO account unverified, not included in pool'))
+    for v in rows:
+        bridge=v['reference_cash_change']-v['slippage_change']-v['fee_change']-v['tax_change']-v['reserve_change']+v['dividend_change']+v['pending_mark_change']
+        assert abs(bridge-v['increment'])<1e-5,(v['id'],v['reference'],bridge,v['increment'])
+        v['account_identity_error']=bridge-v['increment']
     save('comparisons.csv',rows);save('adjacent_rules.csv',edges);save('key_dates.csv',gains);save('concentration.csv',concentrations);save('periods.csv',periods);save('policy_opportunity_cost.csv',policy);save('opposite_direction_regions.csv',mirrors)
     # Exact multiobjective dominance: profit, two drawdowns, extra cash and peak shares.
     chosen={}
@@ -446,7 +449,7 @@ def analyze(d,bars,schedule,plans,s,cache):
         risk=improving.sort_values(['increment','modules','id'],ascending=[False,True,True]).iloc[0] if len(improving) else None
         simple=nd.sort_values(['modules','increment','id'],ascending=[True,False,True]).iloc[0]
         picks=list(dict.fromkeys([champion.id]+([risk.id] if risk is not None else [])+[simple.id]))
-        chosen[stock]=dict(profit=champion.id,risk=risk.id if risk is not None else None,simple=simple.id,focus=list(dict.fromkeys([BASE]+picks)))
+        chosen[int(stock)]=dict(profit=champion.id,risk=risk.id if risk is not None else None,simple=simple.id,focus=list(dict.fromkeys([BASE]+picks)))
     save('pareto.csv',front);js('focus.json',chosen)
     fine(d,bars,plans,s,cache,chosen)
     stressrows=[];co=[];corr=[]
