@@ -33,19 +33,24 @@ def run():
         cash=holdcash=flow=paid=hpaid=0.;recv=[];hr=[];initial=rr.stock*d.close.iloc[start]
         daily={day:g for day,g in o.groupby('date')} if len(o) else {}
         daily_ac={pd.Timestamp(row.date):row._asdict() for row in a.itertuples(index=False)}
-        daily_lots={day:g.set_index('lot_id').to_dict('index') for day,g in ls.groupby('date')}
-        assert all(len(daily_lots[day])==len(g) for day,g in ls.groupby('date'))
+        daily_lots=defaultdict(dict)
+        assert not ls.duplicated(['date','lot_id']).any()
+        ls['acquired']=pd.to_datetime(ls.acquired)
+        for lr in ls.itertuples(index=False):daily_lots[lr.date][lr.lot_id]=lr._asdict()
+        filled_by_order={oid:g for oid,g in ev[ev.reason.eq('filled')].groupby('order_id')} if len(ev) else {}
+        pairs_by_time={key:g for key,g in pa.groupby(['date','clock','basis'])} if len(pa) else {}
+        empty=pd.DataFrame()
         disp={(row.order_id,row.lot_id):row for row in dis.itertuples()} if len(dis) else {}
         daily_e={day:g for day,g in ev.groupby('date')} if len(ev) else {}
         logical={};lcash=defaultdict(float);ldiv=defaultdict(float);seen=set()
-        for i,row in d.iloc[start:].iterrows():
-            day=row.date;ac=daily_ac[day]
+        for row in d.iloc[start:].itertuples():
+            i=row.Index;day=row.date;ac=daily_ac[day]
             if row.dividend_today:
                 recv.append((schedule.get(day,len(d)+10),sum(l['q'] for l in lots)*row.dividend_today))
                 hr.append((schedule.get(day,len(d)+10),rr.stock*row.dividend_today))
                 for l in lots:l['div']+=row.dividend_today
                 for tid,v in logical.items():ldiv[tid]+=v*1000*row.dividend_today
-            oo=daily.get(day,pd.DataFrame());haspaid=False
+            oo=daily.get(day,empty);haspaid=False
             daypay=dayhpay=0.
             for order in oo.itertuples():
                 if order.clock=='15:00' and not haspaid:
@@ -55,7 +60,7 @@ def run():
                 side=order.side;quant=int(order.quantity);assert quant%1000==0 and quant>0
                 val=quant*order.reference*(1+(rr.bp/10000 if side=='BUY' else -rr.bp/10000))
                 f=fee(val,day,side=='SELL');assert abs(val-order.value)<1e-6 and abs(f-order.fee)<1e-6
-                tx=0.;res=sum(v['q']*v['div']*taxrate(v['date'],day) for v in lots)
+                tx=0.;sale_parts=[];res=sum(v['q']*v['div']*taxrate(v['date'],day) for v in lots)
                 if side=='BUY':
                     dep=max(0,val+f+res-cash)
                     assert abs(dep-order.deposit)<1e-6
@@ -67,6 +72,7 @@ def run():
                     for l in list(lots):
                         if l['date']>=day:continue
                         n=min(need,l['q']);dtax=n*l['div']*taxrate(l['date'],day);tx+=dtax
+                        sale_parts.append(dict(lot_id=l['id'],q=n,unit_tax=dtax/n))
                         dd=disp[(order.order_id,l['id'])]
                         assert int(dd.quantity)==n and abs(dd.tax-dtax)<1e-6
                         l['q']-=n;need-=n
@@ -76,14 +82,37 @@ def run():
                     cash+=val-f-tx
                 assert abs(tx-order.tax)<1e-6
                 assert abs(cash-order.cash)<1e-5 and sum(l['q'] for l in lots)==order.shares
-                filled=ev[(ev.reason=='filled')&(ev.order_id==order.order_id)]
+                filled=filled_by_order[order.order_id]
                 assert abs(filled.fee.sum()-f)<1e-6 and abs(filled.tax.sum()-tx)<1e-6
                 assert int(filled.side.sum()*1000)==quant*(1 if side=='BUY' else -1)
                 assert filled.basis.nunique()==1 and filled.clock.nunique()==1
+                paired=pairs_by_time.get((day,order.clock,order.basis),empty)
+                paired_ids=set(paired.buy_tid)|set(paired.sell_tid) if len(paired) else set()
+                ext=filled[(filled.side==(1 if side=='BUY' else -1))&~filled.tid.isin(paired_ids)]
+                assert len(ext)*1000==quant
+                expected_tax={};expected_lots={}
+                if side=='SELL':
+                    for ee in ext.itertuples():
+                        need=1000;ttax=0.;parts=[]
+                        while need:
+                            pp=sale_parts[0];n=min(need,pp['q']);amt=n*pp['unit_tax'];ttax+=amt
+                            parts.append(dict(lot_id=pp['lot_id'],quantity=n,tax=amt))
+                            pp['q']-=n;need-=n
+                            if pp['q']==0:sale_parts.pop(0)
+                        expected_tax[ee.tid]=ttax;expected_lots[ee.tid]=parts
+                    assert not sale_parts
+                for ee in filled.itertuples():
+                    share=1/len(ext) if ee.tid in set(ext.tid) else 0.
+                    assert abs(ee.external_share-share)<1e-12
+                    assert abs(ee.fee-f*share)<1e-6 and abs(ee.tax-expected_tax.get(ee.tid,0))<1e-6
+                    parts=json.loads(ee.fifo_lots)
+                    assert len(parts)==len(expected_lots.get(ee.tid,[]))
+                    for got,want in zip(parts,expected_lots.get(ee.tid,[])):
+                        assert got['lot_id']==want['lot_id'] and got['quantity']==want['quantity'] and abs(got['tax']-want['tax'])<1e-6
             if not haspaid:
                 daypay=sum(v for ix,v in recv if ix<=i);dayhpay=sum(v for ix,v in hr if ix<=i)
                 cash+=daypay;holdcash+=dayhpay;recv=[v for v in recv if v[0]>i];hr=[v for v in hr if v[0]>i]
-            gg=daily_e.get(day,pd.DataFrame())
+            gg=daily_e.get(day,empty)
             if len(gg):
                 fills=gg[gg.reason=='filled']
                 for e in fills.itertuples():
@@ -96,8 +125,12 @@ def run():
                     order=oo[(oo.clock==clock)&(oo.basis==basis)] if len(oo) else pd.DataFrame()
                     net=g.side.sum()*1000
                     assert (len(order)==1 and abs(order.quantity.iloc[0])==abs(net)) if net else len(order)==0
-                    paired=pa[(pa.date==day)&(pa.clock==clock)&(pa.basis==basis)] if len(pa) else pd.DataFrame()
+                    paired=pairs_by_time.get((day,clock,basis),empty)
                     assert len(paired)==min(int(g.side.eq(1).sum()),int(g.side.eq(-1).sum()))
+                    if len(paired):
+                        assert paired.quantity.eq(1000).all() and not paired.buy_tid.duplicated().any() and not paired.sell_tid.duplicated().any()
+                        internal=g[g.tid.isin(set(paired.buy_tid)|set(paired.sell_tid))]
+                        assert internal[['fee','tax','slip','external_share']].abs().to_numpy().max()<1e-8
                     # Policies are measured on unfinished logical batches, group exits before entries.
                 adds=sum(v==1 for v in logical.values());reds=sum(v==-1 for v in logical.values())
                 if rr.policy!='F':assert max(adds,reds)<=int(rr.policy[-1])

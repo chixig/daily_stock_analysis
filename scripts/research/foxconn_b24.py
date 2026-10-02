@@ -190,7 +190,7 @@ def resolve(pending,exits,news,cap,sellable):
     raise AssertionError('resource/policy resolution did not converge')
 def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
     start=int(d.index[d.date.ge(START)][0]);end=len(d)-1
-    lots=[dict(lot_id=0,q=stock,date=d.date.iloc[start]-pd.DateOffset(years=2),div=0.)];nextlot=1
+    lots=([dict(lot_id=0,q=stock,date=d.date.iloc[start]-pd.DateOffset(years=2),div=0.)] if stock else []);nextlot=1
     pending={};trades={};newby=defaultdict(list);events=[];orders=[];pairs=[];disposals=[];lotrows=[];signals=[];funds=[];curve=[];stress=[]
     for mod in [rule['P'],rule['N'],rule['R']]:
         for t in plans.get(mod,[]):newby[t['entry_i']].append(t)
@@ -263,6 +263,9 @@ def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
             buys=sorted([o for o in accepted if o['side']==1],key=priority);sells=sorted([o for o in accepted if o['side']==-1],key=priority)
             for buy,sell in zip(buys,sells):pairs.append(dict(date=day,clock=clock,basis=basis,buy_tid=buy['tid'],sell_tid=sell['tid'],quantity=1000,reference=price))
             net=1000*(len(buys)-len(sells));fee=tax=slipcost=deposit=0.;order_id=None
+            paired_n=min(len(buys),len(sells))
+            contributors=buys[paired_n:] if net>0 else sells[paired_n:] if net<0 else []
+            external_tids={v['tid'] for v in contributors};tax_by_tid=defaultdict(float);tax_lots_by_tid=defaultdict(list);tax_parts=[]
             if net:
                 oid+=1;order_id=oid;side=1 if net>0 else -1;quant=abs(net);value=quant*price*(1+side*bp/10000);slipcost=quant*price*bp/10000
                 fee=b.old.sf(value,day,side==-1)
@@ -277,24 +280,33 @@ def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
                         if lot['date']>=day:continue
                         n=min(need,lot['q']);lt=n*lot['div']*b.old.taxrate(lot['date'],day);tax+=lt
                         disposals.append(dict(order_id=oid,date=day,lot_id=lot['lot_id'],acquired=lot['date'],quantity=n,dividend_per_share=lot['div'],tax=lt))
+                        tax_parts.append(dict(lot_id=lot['lot_id'],quantity=n,per_share_tax=lt/n))
                         lot['q']-=n;need-=n
                         if lot['q']==0:lots.remove(lot)
                         if need==0:break
                     assert need==0
                     cash+=value-fee-tax
+                    for co in contributors:
+                        remaining=1000
+                        while remaining:
+                            part=tax_parts[0];qpart=min(remaining,part['quantity']);tx=qpart*part['per_share_tax']
+                            tax_by_tid[co['tid']]+=tx;tax_lots_by_tid[co['tid']].append(dict(lot_id=part['lot_id'],quantity=qpart,tax=tx))
+                            part['quantity']-=qpart;remaining-=qpart
+                            if part['quantity']==0:tax_parts.pop(0)
+                    assert not tax_parts and abs(sum(tax_by_tid.values())-tax)<1e-6
                 fees+=fee;taxes+=tax;dayfee+=fee;daytax+=tax
                 orders.append(dict(order_id=oid,date=day,clock=clock,basis=basis,side='BUY' if net>0 else 'SELL',quantity=quant,reference=price,value=value,fee=fee,tax=tax,slip=slipcost,deposit=deposit,cash=cash,shares=qty(),before_shares=beforeqty,old_available=sellable))
             # Gross logical reference cash cancels internal pairs; external costs only.
             external_side=1 if net>0 else -1 if net<0 else 0
-            contributors=[o for o in accepted if o['side']==external_side];den=len(contributors)
+            den=len(contributors)
             for o in sorted(accepted,key=priority):
                 if o['kind']=='entry':
                     t=copy.deepcopy(o['plan']);t.update(cash=0.,dividend=0.,fee=0.,tax=0.,slip=0.,retry=False,actual_exit_i=None,actual_exit=None,actual_exit_clock=None)
                     trades[t['tid']]=t;pending[t['tid']]=t
-                t=trades[o['tid']];fraction=(1/den if o['side']==external_side else 0.)
-                t['cash']+=-o['side']*1000*price-(fee+tax+slipcost)*fraction
-                t['fee']+=fee*fraction;t['tax']+=tax*fraction;t['slip']+=slipcost*fraction
-                events.append(dict(date=day,clock=clock,tid=o['tid'],module=o['module'],kind=o['kind'],side=o['side'],quantity=1000,basis=basis,reference=price,order_id=order_id,external_share=fraction,fee=fee*fraction,tax=tax*fraction,slip=slipcost*fraction,reason='filled',known=o['known']))
+                t=trades[o['tid']];fraction=(1/den if o['tid'] in external_tids else 0.);allocated_tax=tax_by_tid[o['tid']]
+                t['cash']+=-o['side']*1000*price-(fee+slipcost)*fraction-allocated_tax
+                t['fee']+=fee*fraction;t['tax']+=allocated_tax;t['slip']+=slipcost*fraction
+                events.append(dict(date=day,clock=clock,tid=o['tid'],module=o['module'],kind=o['kind'],side=o['side'],quantity=1000,basis=basis,reference=price,order_id=order_id,external_share=fraction,fee=fee*fraction,tax=allocated_tax,fifo_lots=json.dumps(tax_lots_by_tid[o['tid']]),slip=slipcost*fraction,reason='filled',known=o['known']))
                 if o['kind']=='exit':
                     t['actual_exit_i']=i;t['actual_exit']=str(day.date());t['actual_exit_clock']=clock
                     t['realized']=t['cash']+t['dividend'];pending.pop(t['tid']);t['retry']=False
@@ -323,6 +335,7 @@ def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
 def run():
     frozen=json.loads((R/'frozen_input_hashes.json').read_text())
     for p,h in {**frozen['files'],**frozen['code']}.items():assert sha(p)==h,p
+    prior_summary=pd.read_csv(R/'account_summary.csv') if (R/'account_summary.csv').exists() else None
     oldplans={p.name:sha(p) for p in (R/'plans').glob('*.csv')} if (R/'plans').exists() else {}
     d,m,bars,schedule,plans=load();reg=registry()
     if oldplans:
@@ -348,6 +361,13 @@ def run():
                 rows.append(met);cache[(rule['id'],stock,bp)]=(a,t,s)
                 print('ACCOUNT',rule['id'],stock,bp,round(met['increment'],4),flush=True)
     summary=save('account_summary.csv',rows)
+    if prior_summary is not None:
+        cols=['increment','relative_mdd','absolute_mdd','deposits','max_shares','fee','tax','terminal_reserve','absolute_profit']
+        aa=summary.set_index(['id','stock','bp']);bb=prior_summary.set_index(['id','stock','bp'])
+        assert aa.index.equals(bb.index)
+        np.testing.assert_allclose(aa[cols],bb[cols],atol=1e-5,rtol=0)
+        save('allocation_revision_bridge.csv',pd.DataFrame([dict(id=v.id,stock=v.stock,bp=v.bp,old_win=bb.loc[(v.id,v.stock,v.bp),'win'],new_win=v.win,old_worst=bb.loc[(v.id,v.stock,v.bp),'worst'],new_worst=v.worst,account_increment_unchanged=True) for v in summary.itertuples()]))
+        js('allocation_revision_validation.json',dict(status='PASS',accounts=len(summary),account_metrics_unchanged=cols,scope='logical attribution corrected; actual broker accounts unchanged'))
     analyze(d,bars,schedule,plans,summary,cache)
     for p,h in frozen['files'].items():assert sha(p)==h,p
     js('calculation_validation.json',dict(status='PASS',accounts=len(rows),registered=132,versions=44,K=K,parent_files=len(frozen['files']),end=str(d.date.max().date())))
@@ -369,6 +389,7 @@ def tests():
     plans={'Pall':[newplan('Pall',0,dates[0],100,'09:35','bar_open_0935','09:25',0,'15:00',100,'daily_close')],'N2':[newplan('N2',0,dates[0],100,'15:00','daily_close','previous_close',1,'10:05',100,'bar_close_1005')],'R1':[newplan('R1',0,dates[0],100,'15:00','daily_close','14:50',2,'09:25',100,'daily_open')]}
     met,a,tt,_=simulate(d,{dates[1]:{'10:05':dict(volume=100)}}, {dates[1]:1},plans,rule,1000,5)
     assert met['completed']==3 and met['internal_pairs']==1 and met['external_orders']==4
+    assert abs(tt.set_index('module').loc['P','fee']-b.old.sf(100000*1.0005,dates[0]))<1e-7,'paired P exit must bear no external sell fee'
     assert a.shares.tolist()==[1000,0,1000,1000]
     assert abs(a.iloc[-1].relative-(tt.cash.sum()+tt.dividend.sum()-a.iloc[-1].tax_reserve))<1e-6
     # No old stock: P same-day close cannot externally sell its new purchase, retries day1.
@@ -379,8 +400,14 @@ def tests():
     rr=dict(rule,P='-',N='N2',R='R1')
     met,a,tt,ss=simulate(d,{dates[1]:{'10:05':dict(volume=100)}}, {dates[1]:1},plans,rr,0,5)
     assert met['accepted']==2 and tt.set_index('module').loc['N','actual_exit_i']==2
+    fifo_d=d.copy();fifo_d['dividend_today']=[0,0,1,0];fifo_d.loc[1,'close']=90
+    fifo_rule=dict(rule,P='Pall',N='N2',R='-',policy='F',modules=2)
+    fifo_plans={'Pall':[newplan('Pall',1,dates[1],100,'09:35','bar_open_0935','09:25',1,'15:00',90,'daily_close')],
+                'N2':[newplan('N2',0,dates[0],100,'15:00','daily_close','previous_close',2,'09:25',100,'daily_open')]}
+    met,aa,tt,_=simulate(fifo_d,{}, {dates[2]:2},fifo_plans,fifo_rule,1000,5)
+    assert met['completed']==2 and tt.set_index('module').loc['N','tax']==0 and tt.set_index('module').loc['P','tax']==200
     assert ddmetric([10,-5,5])==15
-    js('synthetic_validation.json',dict(status='PASS',cases=['three_way_close_net','two_opposite_entries_distinct_future_exits','L1_full','L2_slot','Tplus1_new_shares_retry','exit_failure_slot_retained','dividend_receivable_FIFO_transfer','external_flow_identity','initial_zero_drawdown']))
+    js('synthetic_validation.json',dict(status='PASS',cases=['three_way_close_net','two_opposite_entries_distinct_future_exits','L1_full','L2_slot','Tplus1_new_shares_retry','exit_failure_slot_retained','dividend_receivable_FIFO_transfer','external_flow_identity','initial_zero_drawdown','paired_intent_zero_external_fee','FIFO_tax_exact_logical_seller']))
 
 def analyze(d,bars,schedule,plans,s,cache):
     rows=[];edges=[];gains=[];concentrations=[];periods=[];policy=[];mirrors=[];front=[]
