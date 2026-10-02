@@ -58,3 +58,7 @@
 
 - [B21研究报告](../research/foxconn_t0_20261002_b21/REPORT.md)：implemented本批执行，submitted待统筹；24组合+四对照、三成本84账户全量独立核算，未超过B20的39,241.20元。
 - [冻结协议](../research/foxconn_t0_20261002_b21/PROTOCOL.md)：implemented执行，冻结原文保留；[全量主表](../research/foxconn_t0_20261002_b21/REVIEW_DATA.md)、[单动作及细路径](../research/foxconn_t0_20261002_b21/DECISION_DETAILS.md)、[独立验证](../research/foxconn_t0_20261002_b21/independent_validation.json)。
+
+## B22 Entry Filter Research (2026-10-02)
+
+- implemented computation / submitted for review: [B22 report](../research/foxconn_t0_20261002_b22/REPORT.md). Frozen 38 core rules plus 18 availability controls, 168 independently verified accounts. Main result d224065; bounded details 790dae8. No adoption, main merge or trades.

@@ -1832,3 +1832,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ## 2026-10-02 Foxconn B21 bounded exit research
 
 Added B21 protocol, 24 fixed exit combinations and four controls, 84 complete cost accounts, independent ledger/causality checks, paired fine-path diagnostics and submitted Chinese report. No candidate beats B20 net 39,241.20 at the primary cost; higher win rate comes with lower net profit and greater tail loss. Parent snapshot and market inputs unchanged. Research branch only; no product changes, main merge, live trading or execution certification.
+
+## 2026-10-02 B22 Research Branch
+
+- Add frozen same-day 14:50 entry-filter research and 168 independently verified complete accounts.
+- Fix exact decimal 0.7 boundary semantics and retain superseded results/cancellation evidence.
+- Publish submitted Chinese report, cost/period/availability/FIFO bridges and sell-signal coverage. Research-only; no product behavior or main-branch change.

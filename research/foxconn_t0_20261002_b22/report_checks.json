@@ -1,0 +1,9 @@
+{
+  "T1_ALL": ["increment", "average_profit", "average_loss"],
+  "T05_ALL": ["increment", "average_profit", "average_loss"],
+  "T05_A_day_ge": ["increment", "trade_win", "average_profit"],
+  "T05_A_day_lt": ["increment", "trade_win", "average_profit"],
+  "T05_A_position_ge": ["increment", "trade_win"],
+  "T1_B_position_lt": ["increment", "trade_win"],
+  "T1_A_tail_lt": ["increment", "trade_win"]
+}

@@ -213,3 +213,7 @@ C（B10全历史发现的20日深跌阈值）61笔开盘均净+0.4734%，10:00�
 模型事实：本轮没有超过39,241.20元；三档成本利润前两名仍B20原两规则。第一类1%改2%少1,621.06元，取消提前上涨少1,680.86元；取消低开立即买12组相邻对照全部少赚。组合主成本最高胜率59.41%，为第一类2%/14:50、第二类低开即买否则跌0.5%/涨2%/14:50，净36,969.80元，较两父版少2,271.40/2,171.34元，最大单亏2,350.75元更差。观点：保留B20两版，不据胜率升级。
 
 主36961765781、细表36962105892/36962199811成功。前列各13/101笔细路径可重放；取消低开改变19笔仅3笔成对覆盖，2026-08-25新等待09:40参考价59.15与细分钟59.18不一致；真实成交仍未知。同一历史优化非独立OOS。状态submitted，由用户交统筹；未采用、未合main或交易。固定主278d3d7，细表e5588f1，全部source/work仍GitHub。
+
+## B22 Current Research Facts (2026-10-02)
+
+Fixed B21 parent e64b733 and data through 2026-09-11. Three completed-14:50 features, two sides, A/B/both scopes, two unchanged buyback targets: 38 core plus 18 diagnostic controls, 168 new complete accounts, all independently checked; six parent account alignments and 3976 protected parent files. No new entry filter exceeds the two baselines at any tested cost. Baseline net increments remain CNY 39,241.20 / 39,141.14. Highest main-cost win rate: filter only first family for nonnegative same-day 14:50 return, second-family 0.5% target unchanged; 62 trades, 66.13%, CNY 30,502.27, worst loss CNY 1,740.35. Availability effects zero. Only 13 of 101 baseline sell dates have qualified fine-minute signal coverage. Exact decimal equality was corrected and every account rerun; old floating-point rankings are superseded. Submitted report and limitations: research/foxconn_t0_20261002_b22/REPORT.md. No adoption or real execution certification.

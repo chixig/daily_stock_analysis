@@ -260,3 +260,7 @@ C（B10全历史发现的20日深跌阈值）61笔开盘均净+0.4734%，10:00�
 没有新收益冠军。第一类放宽上涨保护及取消低开立即买分别更差；最高组合胜率59.41%但净36,969.80、单亏2,350.75，均非全面改善。延长截止12组仅3组多赚，不能孤立谈午后好坏。保留39,241.20/39,141.14的B20两版，研究建议未采用。
 
 细表36962105892及补全单动作正反例36962199811成功，最终e5588f1；主/验证435结果文件及3512父文件字节不变。新增覆盖不是沿用旧时点：2026-08-25等待09:40原5分钟59.15、细分钟59.18，时钟一致而价格不一致。未覆盖、同历史选择、年度/成本/集中反证保留。本批无研究运行失败，无关银行工作流报错不修；不宣称仓库全CI通过。报告submitted、本地只结论与交接，由用户交统筹，无其他任务消息、main合并或交易。
+
+## 2026-10-02 B22 Completed and Submitted
+
+Executed the user-authorized fixed same-day entry-filter task without changing yesterday family priority, buyback rules or resources. Initial run 36972511769 passed ledger checks but boundary review found a decimal-equality classification defect. Recorded CORRECTION.md, retained a8e9335 history, cancelled interim 36972883324 to separate rerun manifests, and reran all 168 accounts with rational/Decimal independent feature calculations. Final main run 36972971024 succeeded (d224065), details 36973258057 succeeded (790dae8). No new profit winner; highest win-rate filter sacrifices CNY 8,738.93 versus the profit baseline. 112392 scalar decisions and 56 future/prefix checks passed. All market computation and full evidence stay in GitHub; local report and handoff only. Submitted for coordinating review, no main merge, trades or other-thread messages.
