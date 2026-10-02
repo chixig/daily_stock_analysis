@@ -1,0 +1,506 @@
+[
+  {
+    "id": "T1_ALL",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "none",
+    "feature": "none",
+    "side": "all"
+  },
+  {
+    "id": "T1_A_day_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "day",
+    "side": "ge"
+  },
+  {
+    "id": "T1_A_day_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "day",
+    "side": "lt"
+  },
+  {
+    "id": "T1_A_day_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "day",
+    "side": "avail"
+  },
+  {
+    "id": "T1_B_day_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "day",
+    "side": "ge"
+  },
+  {
+    "id": "T1_B_day_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "day",
+    "side": "lt"
+  },
+  {
+    "id": "T1_B_day_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "day",
+    "side": "avail"
+  },
+  {
+    "id": "T1_AB_day_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "day",
+    "side": "ge"
+  },
+  {
+    "id": "T1_AB_day_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "day",
+    "side": "lt"
+  },
+  {
+    "id": "T1_AB_day_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "day",
+    "side": "avail"
+  },
+  {
+    "id": "T1_A_position_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "position",
+    "side": "ge"
+  },
+  {
+    "id": "T1_A_position_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "position",
+    "side": "lt"
+  },
+  {
+    "id": "T1_A_position_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "position",
+    "side": "avail"
+  },
+  {
+    "id": "T1_B_position_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "position",
+    "side": "ge"
+  },
+  {
+    "id": "T1_B_position_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "position",
+    "side": "lt"
+  },
+  {
+    "id": "T1_B_position_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "position",
+    "side": "avail"
+  },
+  {
+    "id": "T1_AB_position_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "position",
+    "side": "ge"
+  },
+  {
+    "id": "T1_AB_position_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "position",
+    "side": "lt"
+  },
+  {
+    "id": "T1_AB_position_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "position",
+    "side": "avail"
+  },
+  {
+    "id": "T1_A_tail_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "tail",
+    "side": "ge"
+  },
+  {
+    "id": "T1_A_tail_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "tail",
+    "side": "lt"
+  },
+  {
+    "id": "T1_A_tail_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "A",
+    "feature": "tail",
+    "side": "avail"
+  },
+  {
+    "id": "T1_B_tail_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "tail",
+    "side": "ge"
+  },
+  {
+    "id": "T1_B_tail_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "tail",
+    "side": "lt"
+  },
+  {
+    "id": "T1_B_tail_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "B",
+    "feature": "tail",
+    "side": "avail"
+  },
+  {
+    "id": "T1_AB_tail_ge",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "tail",
+    "side": "ge"
+  },
+  {
+    "id": "T1_AB_tail_lt",
+    "group": "core",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "tail",
+    "side": "lt"
+  },
+  {
+    "id": "T1_AB_tail_avail",
+    "group": "availability",
+    "target": "T1",
+    "parent": "Q1010",
+    "scope": "AB",
+    "feature": "tail",
+    "side": "avail"
+  },
+  {
+    "id": "T05_ALL",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "none",
+    "feature": "none",
+    "side": "all"
+  },
+  {
+    "id": "T05_A_day_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "day",
+    "side": "ge"
+  },
+  {
+    "id": "T05_A_day_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "day",
+    "side": "lt"
+  },
+  {
+    "id": "T05_A_day_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "day",
+    "side": "avail"
+  },
+  {
+    "id": "T05_B_day_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "day",
+    "side": "ge"
+  },
+  {
+    "id": "T05_B_day_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "day",
+    "side": "lt"
+  },
+  {
+    "id": "T05_B_day_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "day",
+    "side": "avail"
+  },
+  {
+    "id": "T05_AB_day_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "day",
+    "side": "ge"
+  },
+  {
+    "id": "T05_AB_day_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "day",
+    "side": "lt"
+  },
+  {
+    "id": "T05_AB_day_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "day",
+    "side": "avail"
+  },
+  {
+    "id": "T05_A_position_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "position",
+    "side": "ge"
+  },
+  {
+    "id": "T05_A_position_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "position",
+    "side": "lt"
+  },
+  {
+    "id": "T05_A_position_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "position",
+    "side": "avail"
+  },
+  {
+    "id": "T05_B_position_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "position",
+    "side": "ge"
+  },
+  {
+    "id": "T05_B_position_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "position",
+    "side": "lt"
+  },
+  {
+    "id": "T05_B_position_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "position",
+    "side": "avail"
+  },
+  {
+    "id": "T05_AB_position_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "position",
+    "side": "ge"
+  },
+  {
+    "id": "T05_AB_position_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "position",
+    "side": "lt"
+  },
+  {
+    "id": "T05_AB_position_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "position",
+    "side": "avail"
+  },
+  {
+    "id": "T05_A_tail_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "tail",
+    "side": "ge"
+  },
+  {
+    "id": "T05_A_tail_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "tail",
+    "side": "lt"
+  },
+  {
+    "id": "T05_A_tail_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "A",
+    "feature": "tail",
+    "side": "avail"
+  },
+  {
+    "id": "T05_B_tail_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "tail",
+    "side": "ge"
+  },
+  {
+    "id": "T05_B_tail_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "tail",
+    "side": "lt"
+  },
+  {
+    "id": "T05_B_tail_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "B",
+    "feature": "tail",
+    "side": "avail"
+  },
+  {
+    "id": "T05_AB_tail_ge",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "tail",
+    "side": "ge"
+  },
+  {
+    "id": "T05_AB_tail_lt",
+    "group": "core",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "tail",
+    "side": "lt"
+  },
+  {
+    "id": "T05_AB_tail_avail",
+    "group": "availability",
+    "target": "T05",
+    "parent": "Q1000",
+    "scope": "AB",
+    "feature": "tail",
+    "side": "avail"
+  }
+]
