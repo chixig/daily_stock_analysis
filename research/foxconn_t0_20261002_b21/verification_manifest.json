@@ -1,0 +1,10 @@
+{
+  "files": {
+    "research/foxconn_t0_20261002_b21/fine_coverage_summary.csv": "6da1ab6e8af7da1d3251140ace9d641e6de9a64a94c838444cccb832d11431d2",
+    "research/foxconn_t0_20261002_b21/independent_accounts_verified.csv": "5b09ae549cc18d8b397a6282b08b365abf26e9b4a902891abf88e412f6379290",
+    "research/foxconn_t0_20261002_b21/REVIEW_DATA.md": "7af30f52532314d034a6a06b93c811398e3bbab37423a23d06445ea392ae8ada",
+    "research/foxconn_t0_20261002_b21/cross_year_bindings.csv": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "research/foxconn_t0_20261002_b21/independent_verifier_runtime.py.txt": "a0b690c972228e5eb48833c7788a0e85f112f6ba25e01aa158087cc0a888e782",
+    "research/foxconn_t0_20261002_b21/independent_validation.json": "aa06dd3275f44102a940151dd7154df3d7021eb95c926e99a313ec2adc016e77"
+  }
+}

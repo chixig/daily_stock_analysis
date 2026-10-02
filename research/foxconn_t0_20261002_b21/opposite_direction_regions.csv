@@ -1,0 +1,18 @@
+id,period,n,normal_episode_cash,reverse_price_cost_cash,reverse_price_cost_pct,dividend_entitlement,status
+Q1001,2020-2023,51,-193.17420559992212,-4081.010311899923,-0.44288488444058877,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q1011,2020-2023,51,-423.29380789992143,-3851.3847820999194,-0.4121553543682916,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q1100,2020-2023,51,-1353.7687128499238,-2922.984114649928,-0.32087864429571555,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q1101,2020-2023,51,-1783.9889154499233,-2493.464182049927,-0.26879655115446566,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q1110,2020-2023,51,-1653.9234151999262,-2623.398682299926,-0.2851784091731585,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q1111,2020-2023,51,-1994.0983176499249,-2283.8184573499243,-0.24008018081656599,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q2100,2020-2023,51,-903.5351085499224,-3372.300743949928,-0.38807111113548454,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q2101,2020-2023,51,-1333.755311149922,-2942.780811349926,-0.3359890179942346,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q2110,2020-2023,51,-1203.6898108999249,-3072.7153115999254,-0.3523708760129275,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q2111,2020-2023,51,-1543.8647133499235,-2733.1350866499242,-0.30727264765633494,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q0011,2020-2023,51,-73.1128048999181,-4200.853960099918,-0.46869861728433365,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q0100,2020-2023,51,-1003.5877098499204,-3272.453292649927,-0.37742190721175767,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q0101,2020-2023,51,-1433.80791244992,-2842.9333600499253,-0.32533981407050766,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q0110,2020-2023,51,-1303.742412199923,-2972.867860299925,-0.34172167208920057,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+Q0111,2020-2023,51,-1643.9173146499215,-2633.2876353499228,-0.296623443732608,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+CTRL_OLD,2020-2023,108,-1660.6311520498366,-6548.117535449842,-0.41046179065462485,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified
+CTRL_OPEN,2020-2023,51,-153.1541055499274,-4121.100156949924,-0.4409917081634433,0.0,same dates/clocks independently costed; reverse FIFO/dividend account unverified

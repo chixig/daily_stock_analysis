@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "new_saved_accounts": 84,
+  "reused_account_results": 0,
+  "scalar_decisions": 48168,
+  "prefix_actions": 11,
+  "future_path_mutations": 33,
+  "cross_year_cases": 0,
+  "parent_files": 3512,
+  "checks": [
+    "independent fees/FIFO/dividend/cash/shares on all saved accounts",
+    "six parent baselines x three costs aligned",
+    "all three costs same decisions",
+    "new low-gap cancellation cannot backfill opening",
+    "first completed close, 1pct/2pct/no-stop, deadline and lunch timing",
+    "inherited multi-pending/T+1/same-day/cross-year/missing/locked/unresolved cases",
+    "actual-path prefix removal and daily/post-fill future mutation",
+    "positive initial cash invariance",
+    "all fixed parent bytes and computed manifest unchanged"
+  ]
+}

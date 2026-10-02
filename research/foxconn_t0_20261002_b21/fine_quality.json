@@ -1,0 +1,5 @@
+{
+  "qualified_days": 93,
+  "cadence": "five minute completed-close; new and old paths each recalculated",
+  "uncovered_status": "unknown"
+}
