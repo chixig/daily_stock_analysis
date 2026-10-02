@@ -1,0 +1,12 @@
+{
+  "profit": "Pall_N0_Rprofit_F",
+  "risk": "PUR_N0_Rprofit_F",
+  "simple": "Rprofit_F",
+  "focus": [
+    "Pall_N2_R1_F",
+    "Pall_N0_Rprofit_F",
+    "PUR_N0_Rprofit_F",
+    "Rprofit_F"
+  ],
+  "selection": "profit maximum; highest-profit nondominated alternative lowering BOTH drawdowns versus that profit champion; simplest nondominated alternative; no extra candidates"
+}

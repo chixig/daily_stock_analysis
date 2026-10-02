@@ -1,0 +1,5 @@
+id,stock,bp,observed_5m_relative_mdd,observed_5m_absolute_mdd,coverage
+Pall_N2_R1_F,3000,5,9077.127209228958,80175.42879212784,available 5m close plus actual event reference; not unknown intrabar max
+Pall_N0_Rprofit_F,3000,5,8288.03182029596,79784.58746322594,available 5m close plus actual event reference; not unknown intrabar max
+Rprofit_F,3000,5,3734.2446984499984,88101.56086728294,available 5m close plus actual event reference; not unknown intrabar max
+PUR_N0_Rprofit_F,3000,5,5166.527100695996,79784.58746322594,"available 5m close plus event prices, not unknown intrabar max"

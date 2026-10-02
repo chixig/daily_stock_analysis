@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "cases": [
+    "same_close_L1_exit_then_new",
+    "failed_exit_does_not_release_L1",
+    "same_time_different_bases_not_netted",
+    "B03_original_matched_delay_exact",
+    "terminal_unclosed_batch_marked",
+    "cross_year_Tplus1",
+    "cash_injection_does_not_erase_account_drawdown"
+  ]
+}
