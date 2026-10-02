@@ -1,0 +1,11 @@
+{
+  "Q1010": ["increment", "trade_win", "average_profit", "average_loss"],
+  "Q1000": ["increment", "trade_win", "average_profit", "average_loss"],
+  "Q1001": ["increment", "trade_win", "average_profit", "average_loss"],
+  "Q2001": ["increment", "trade_win", "average_profit", "average_loss"],
+  "Q0001": ["increment", "trade_win", "average_profit", "average_loss"],
+  "CTRL_OPEN": ["increment", "trade_win", "average_profit", "average_loss"],
+  "CTRL_OLD": ["increment", "trade_win", "average_profit", "average_loss"],
+  "CTRL_W0": ["increment", "trade_win", "average_profit", "average_loss"],
+  "CTRL_W1": ["increment", "trade_win", "average_profit", "average_loss"]
+}

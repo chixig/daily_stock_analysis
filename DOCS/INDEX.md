@@ -53,3 +53,8 @@
 
 - [B20研究报告](../research/foxconn_t0_20261002_b20/REPORT.md)：submitted；24组合+6单线、三档成本共90完整账户独立核验。第一类20日非负/涨1%回补，第二类等跌1%或0.5%，重叠第一类优先，分别净39,241.20/39,141.14元；非未来最优。
 - [冻结协议](../research/foxconn_t0_20261002_b20/PROTOCOL.md)：implemented本批执行，原冻结内容保留；[全量主表](../research/foxconn_t0_20261002_b20/REVIEW_DATA.md)、[决策分解](../research/foxconn_t0_20261002_b20/DECISION_DATA.md)、[独立验证](../research/foxconn_t0_20261002_b20/independent_validation.json)。
+
+## B21 低开等待与上涨买回优化（2026-10-02）
+
+- [B21研究报告](../research/foxconn_t0_20261002_b21/REPORT.md)：implemented本批执行，submitted待统筹；24组合+四对照、三成本84账户全量独立核算，未超过B20的39,241.20元。
+- [冻结协议](../research/foxconn_t0_20261002_b21/PROTOCOL.md)：implemented执行，冻结原文保留；[全量主表](../research/foxconn_t0_20261002_b21/REVIEW_DATA.md)、[单动作及细路径](../research/foxconn_t0_20261002_b21/DECISION_DETAILS.md)、[独立验证](../research/foxconn_t0_20261002_b21/independent_validation.json)。

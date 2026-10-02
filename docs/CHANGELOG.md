@@ -1829,3 +1829,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 输入/收益复现/事件前缀与守恒/延迟价约束检查通过，补充3项摘要未改变首轮12输出哈希。本地结论《隔夜T执行压力与事件集中度检验.md》SHA256：5bebd274c019d6f425f89cb8e6e4c8e65895b22c2544b3327131c54f798e0d10。仅本研究工作流success，不认证其他工作流或真实成交。
 
+## 2026-10-02 Foxconn B21 bounded exit research
+
+Added B21 protocol, 24 fixed exit combinations and four controls, 84 complete cost accounts, independent ledger/causality checks, paired fine-path diagnostics and submitted Chinese report. No candidate beats B20 net 39,241.20 at the primary cost; higher win rate comes with lower net profit and greater tail loss. Parent snapshot and market inputs unchanged. Research branch only; no product changes, main merge, live trading or execution certification.
