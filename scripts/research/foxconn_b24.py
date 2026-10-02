@@ -85,7 +85,7 @@ def load():
     np.testing.assert_allclose((100*((d.close/d.preclose).cumprod().pct_change(20))).shift(),nf.prev_r20,equal_nan=True,atol=1e-10)
     allplans={};alignment=[dict(module='P',check='B03 exact original opportunity dates/cash',n=len(now),status='PASS')]
     differences=[];days=d.to_dict('records')
-    nbars={day:[dict(clock=clock,**v) for clock,v in bb.items()] for day,bb in bars.items() if list(bb)==z.x.ENDS}
+    nbars={day:[dict(clock=clock,**v) for clock,v in bb.items()] for day,bb in bars.items()}
     for module,mask in pm.items():
         pp=[]
         for i in d.index[mask&d.date.ge(START)]:
@@ -98,7 +98,11 @@ def load():
             row=d.iloc[i];xx=n11.morning_exit(row.close,days,nbars,i+1,'10:00',stop)
             exi=None;clock=None;price=np.nan;basis=None
             if pd.notna(xx.get('price')):
-                dt=xx['actual_exit'];future=[(c,v) for c,v in bars[dt].items() if c>xx['clock']]
+                dt=xx['actual_exit']
+                cutbars={day:[v for v in vv if day<dt or v['clock']<=xx['clock']] for day,vv in nbars.items() if day<=dt}
+                xxcut=n11.morning_exit(row.close,days[:int(d.index[d.date.eq(dt)][0])+1],cutbars,i+1,'10:00',stop)
+                assert xxcut==xx,('N future-bar availability changed earlier decision',module,row.date)
+                future=[(c,v) for c,v in bars[dt].items() if c>xx['clock']]
                 if future:
                     clock,bar=future[0];price=float(bar['close']);exi=int(d.index[d.date.eq(dt)][0]);basis='bar_close_'+clock.replace(':','')
                 if row.date in old.index:
@@ -319,7 +323,12 @@ def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
 def run():
     frozen=json.loads((R/'frozen_input_hashes.json').read_text())
     for p,h in {**frozen['files'],**frozen['code']}.items():assert sha(p)==h,p
+    oldplans={p.name:sha(p) for p in (R/'plans').glob('*.csv')} if (R/'plans').exists() else {}
     d,m,bars,schedule,plans=load();reg=registry()
+    if oldplans:
+        current={p.name:sha(p) for p in (R/'plans').glob('*.csv')}
+        assert oldplans==current,'historical path changed unexpectedly; retain outputs and investigate'
+        js('causal_revision_path_alignment.json',dict(status='PASS',unchanged_paths=len(current),scope='N driver no future-day completeness filter; all historical plan bytes unchanged'))
     tests()
     needs=[];K=3000
     for rule in reg:

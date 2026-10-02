@@ -2,6 +2,7 @@
 import os,json,hashlib,sys
 from pathlib import Path
 from collections import defaultdict
+from functools import lru_cache
 import numpy as np
 import pandas as pd
 import foxconn_b24 as c
@@ -12,6 +13,7 @@ def read(folder,name):
     except pd.errors.EmptyDataError:return pd.DataFrame()
 def fee(v,day,sell):
     return max(5,v*.0001354)+v*((.00002 if day<pd.Timestamp('2022-04-29') else .00001)+((.001 if day<pd.Timestamp('2023-08-28') else .0005) if sell else 0))
+@lru_cache(maxsize=None)
 def taxrate(acquired,sold):
     end=sold-pd.Timedelta(days=1)
     return .2 if end<acquired+pd.DateOffset(months=1) else .1 if end<acquired+pd.DateOffset(years=1) else 0.
@@ -30,10 +32,14 @@ def run():
         lots=[dict(q=rr.stock,date=d.date.iloc[start]-pd.DateOffset(years=2),div=0.,id=0)];nextid=1
         cash=holdcash=flow=paid=hpaid=0.;recv=[];hr=[];initial=rr.stock*d.close.iloc[start]
         daily={day:g for day,g in o.groupby('date')} if len(o) else {}
+        daily_ac={pd.Timestamp(row.date):row._asdict() for row in a.itertuples(index=False)}
+        daily_lots={day:g.set_index('lot_id').to_dict('index') for day,g in ls.groupby('date')}
+        assert all(len(daily_lots[day])==len(g) for day,g in ls.groupby('date'))
+        disp={(row.order_id,row.lot_id):row for row in dis.itertuples()} if len(dis) else {}
         daily_e={day:g for day,g in ev.groupby('date')} if len(ev) else {}
         logical={};lcash=defaultdict(float);ldiv=defaultdict(float);seen=set()
         for i,row in d.iloc[start:].iterrows():
-            day=row.date;ac=a[a.date.eq(day)].iloc[0]
+            day=row.date;ac=daily_ac[day]
             if row.dividend_today:
                 recv.append((schedule.get(day,len(d)+10),sum(l['q'] for l in lots)*row.dividend_today))
                 hr.append((schedule.get(day,len(d)+10),rr.stock*row.dividend_today))
@@ -61,8 +67,8 @@ def run():
                     for l in list(lots):
                         if l['date']>=day:continue
                         n=min(need,l['q']);dtax=n*l['div']*taxrate(l['date'],day);tx+=dtax
-                        dd=dis[(dis.order_id==order.order_id)&(dis.lot_id==l['id'])]
-                        assert len(dd)==1 and int(dd.quantity.iloc[0])==n and abs(dd.tax.iloc[0]-dtax)<1e-6
+                        dd=disp[(order.order_id,l['id'])]
+                        assert int(dd.quantity)==n and abs(dd.tax-dtax)<1e-6
                         l['q']-=n;need-=n
                         if l['q']==0:lots.remove(l)
                         if need==0:break
@@ -103,11 +109,11 @@ def run():
             assert qty==rr.stock+1000*sum(logical.values())
             marked=sum(lcash.values())+sum(ldiv.values())+1000*row.close*sum(logical.values())-res
             assert abs(marked-(eq-he))<1e-5
-            dl=ls[ls.date==day]
-            assert dl.q.sum()==qty and set(dl.lot_id)==set(l['id'] for l in lots)
+            dl=daily_lots.get(day,{})
+            assert sum(v['q'] for v in dl.values())==qty and set(dl)==set(l['id'] for l in lots)
             for l in lots:
-                v=dl[dl.lot_id==l['id']].iloc[0]
-                assert pd.Timestamp(v.acquired)==l['date'] and v.q==l['q'] and abs(v['div']-l['div'])<1e-10
+                v=dl[l['id']]
+                assert pd.Timestamp(v['acquired'])==l['date'] and v['q']==l['q'] and abs(v['div']-l['div'])<1e-10
         for t in tr.itertuples():
             assert abs(t.cash-lcash[t.tid])<1e-5 and abs(t.dividend-ldiv[t.tid])<1e-5
         def dd(x):
