@@ -1,13 +1,18 @@
 {
   "files": {
-    "research/foxconn_t0_20261002_b21/decision_details.json": "b159d8211497d7c7fda5eb1ab4be3f90999226f4bd1584e9c81864006c26a63f",
+    "research/foxconn_t0_20261002_b21/decision_details.json": "f27136645ec3756fc9a19aa48f2c451d53b67542c3ab4336b7e65ffd6997558a",
     "research/foxconn_t0_20261002_b21/details_validation.json": "0e3de6de7d99064fdb64af5bb8bb1f382438c7688f2944e63c5513a696dea66a",
     "research/foxconn_t0_20261002_b21/key_dates_with_coverage.csv": "d89b7054bb95a61886223347d55794440fddfdae778c4a8b89a42750e47f489e",
     "research/foxconn_t0_20261002_b21/neighbor_summary.csv": "4c315790f588b27e715bd99d2932639c94b07febf8e26b40bc6fded9174e9e74",
-    "research/foxconn_t0_20261002_b21/fine_replay_summary.csv": "d47f0b768d344b0f6ca3e2faadc1be2b5e50919c2385c4cf3abeaa39ff538bc9",
-    "research/foxconn_t0_20261002_b21/low_open_subgroups.csv": "8a401361bcccbe1aab3178cd121f945008ed43d40a89d5fd8e0b751b11a8ad12",
-    "research/foxconn_t0_20261002_b21/DECISION_DETAILS.md": "d23331ba6f16f5cc850cfd5d3a5cb50294835322912567c2827f8e3d2014e7db",
-    "research/foxconn_t0_20261002_b21/low_open_trades.csv": "8207f55390d52cd8e06ae36491858e847e0a8d99cb6a4f2ebf77a687d7a8f12c",
-    "research/foxconn_t0_20261002_b21/fine_changed_coverage.csv": "04a4a3dd87d636cf0817c958f0df037503f7b382f1a2db8eb93341d7af022a45"
+    "research/foxconn_t0_20261002_b21/fine_replay_summary.csv": "de674b5175846c4e5e2a6720867750c57e3551519492df2e478efa0f365a37bc",
+    "research/foxconn_t0_20261002_b21/diagnostic_paired_fine.csv": "daa351030b2e4a20a1ce087703fbb2187e06f0b24c4550c1d02731074fd7dd10",
+    "research/foxconn_t0_20261002_b21/low_open_subgroups.csv": "1098d52bfede35a6653ee9ca8ad87240c56224963696d264d3245005f4ccd15f",
+    "research/foxconn_t0_20261002_b21/DECISION_DETAILS.md": "116f59d2d7c8df373dc618ff1f4409251c627c939d08f6bde785ae4c2134a51a",
+    "research/foxconn_t0_20261002_b21/action_pair_summary.csv": "49019e15ce4e758000d081adca10719cf3a25757ec8ccd7e565298a05a1d2419",
+    "research/foxconn_t0_20261002_b21/action_pair_examples.csv": "333f33b235b7cd9d5ad5772a4c3bbb81f2abdf82aaf1fd1c04bc5ed93b244fc4",
+    "research/foxconn_t0_20261002_b21/action_pair_dates.csv": "169ec79f3383764d19323ebfed314d8d5f2a68ff082e84add68b72deb0a4839e",
+    "research/foxconn_t0_20261002_b21/diagnostic_fine_replay.csv": "f9679a3aa0ebdecd26b1e5fc5752cdbc4b3b78aa47a51c8d0945f2c0c35c87a3",
+    "research/foxconn_t0_20261002_b21/low_open_trades.csv": "a947132d36d51829c4c1f5467cbf09026dc8006541288676f3aedc575ed56139",
+    "research/foxconn_t0_20261002_b21/fine_changed_coverage.csv": "0382739682ec588c3a5ad67ba8eac21f70893dbfd8f54aa7c331ecc2e8b2d586"
   }
 }

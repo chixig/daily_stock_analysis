@@ -1,0 +1,2 @@
+/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b21_details.py:22: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  fine['both_supported']=fine.new_path_supported.fillna(False)&fine.old_path_supported.fillna(False)
