@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "head": "18d785638758113fb84367a51c0a39697ed90f67",
+  "report_sha256": "937eab2f28d1492f02df1d3f6b99f9c88dada481f2fae5cea5a7b90466eb7131",
+  "protected_result_files": 425,
+  "parent_files": 3073,
+  "account_files": {
+    "accounts": 90,
+    "orders": 90,
+    "trades": 90,
+    "funds": 90
+  },
+  "reported_metrics_match": true,
+  "report_status": "submitted",
+  "main_merged": false,
+  "trades_executed": false
+}
