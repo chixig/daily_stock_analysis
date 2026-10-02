@@ -6191,7 +6191,7 @@
   },
   "code": {
     "scripts/research/foxconn_b24_verify.py": "1bc8f7e7fd394b47c8d5f8070becbdeedb9bf82f0a1bc37b83c0b50b38270f25",
-    "scripts/research/foxconn_b24.py": "94d090f8a7297abb6b193c62dcce67beaecbc3c9025e9a095d4bdd17d5d6f8bc"
+    "scripts/research/foxconn_b24.py": "dbe545a8a236a3a79d2d835efb9fd4e00a26022d2ce0510b4b8d8ea545190374"
   },
   "protocol_sha256": "39a750387998f1d16af6b69aac815e981b24d549e84279588f7652388b0e652f",
   "registry_sha256": "eae1e644a4b919e8a29c6e3bb806692e6d447c003ac41f62d4cf65de646f6fab"
