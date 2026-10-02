@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "protected_results": 823,
+  "parent_files": 3976,
+  "new_accounts": 0,
+  "new_candidates": 0,
+  "precision_fix_changed_main_accounts": 8,
+  "fine_coverage_purpose": "sell signals, not buy fills; attribution uses T1_ALL reference"
+}

@@ -1,0 +1,11 @@
+id,cross_year,new_sale_with_pending,same_day_previous_buy_and_new_sale
+T1_ALL,0,0,6
+T05_ALL,0,0,6
+T1_B_position_lt,0,0,6
+T05_A_day_ge,0,0,1
+T05_A_position_ge,0,0,0
+T1_A_day_ge,0,0,1
+T1_A_position_ge,0,0,0
+T1_A_tail_lt,0,0,2
+T05_A_tail_lt,0,0,2
+T05_A_day_lt,0,0,1

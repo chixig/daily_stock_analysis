@@ -1,0 +1,11 @@
+{
+  "files": {
+    "research/foxconn_t0_20261002_b22/details_validation.json": "7d257fe6fe7c210d81ea710b41ea50db9ad2c214ba40de89379db7c316fe190c",
+    "research/foxconn_t0_20261002_b22/selected_key_dates.csv": "bb189c43ff602bd6b3fa9494a513db81799d1bc585efadf2f0f98c8fdb61c793",
+    "research/foxconn_t0_20261002_b22/exact_boundary_feature_changes.csv": "04a3153ff4a9c274eb8231f2c5a5dcaa4d9e0047ae846090563d945b7a3315ea",
+    "research/foxconn_t0_20261002_b22/exact_boundary_account_changes.csv": "96e4e104a5b75838a3ddc0f1859969118e5a2bf7168c8ba59f83d60766f5ba85",
+    "research/foxconn_t0_20261002_b22/real_execution_counts.csv": "fecee97aa626db526432d71d31c1b810705451ec0a4319cbde63cceaef55816d",
+    "research/foxconn_t0_20261002_b22/selected_fine_coverage.csv": "8fe25405e6dc18b37d7caefc6a0e2db394e403a34e8232152444569409b44777",
+    "research/foxconn_t0_20261002_b22/DETAILS.md": "5c67a2154ae5cc0e25d2eb5811462e89ef734aac0152b524f58efc575c21bde2"
+  }
+}
