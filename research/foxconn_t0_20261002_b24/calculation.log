@@ -2,7 +2,7 @@
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
 /home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:59: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
-/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:142: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '[6.32477187e+07 5.19810349e+07 4.40963172e+07 ... 1.30217466e+08
+/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:146: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '[6.32477187e+07 5.19810349e+07 4.40963172e+07 ... 1.30217466e+08
  9.70587057e+07 1.29786137e+08]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   alt=d.copy();alt.loc[cut+1:,['open','close','high','low','preclose','volume']]*=1.71
 /home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:59: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
@@ -11,7 +11,7 @@
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
 /home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:59: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
-/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:142: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '[7.26431239e+08 6.48325142e+08 5.11123494e+08 4.61191431e+08
+/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:146: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '[7.26431239e+08 6.48325142e+08 5.11123494e+08 4.61191431e+08
  4.45222447e+08 4.00093532e+08 4.21247999e+08 4.06350780e+08
  4.71346243e+08 2.89592390e+08 2.90607669e+08 2.63092739e+08
  3.02471146e+08 2.09284785e+08 2.34678316e+08 2.11456781e+08
@@ -170,7 +170,7 @@
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
 /home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:59: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
-/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:142: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '[1.29786137e+08]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:146: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value '[1.29786137e+08]' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
   alt=d.copy();alt.loc[cut+1:,['open','close','high','low','preclose','volume']]*=1.71
 /home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:59: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
