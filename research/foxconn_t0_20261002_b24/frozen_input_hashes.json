@@ -6190,9 +6190,9 @@
     "scripts/research/foxconn_b23.py": "b9351282bcea5ec97952dbe2ae8a3489e616c7bec17ef6a8abf270d77b8582bb"
   },
   "code": {
-    "scripts/research/foxconn_b24_verify.py": "1bc8f7e7fd394b47c8d5f8070becbdeedb9bf82f0a1bc37b83c0b50b38270f25",
-    "scripts/research/foxconn_b24.py": "dbe545a8a236a3a79d2d835efb9fd4e00a26022d2ce0510b4b8d8ea545190374"
+    "scripts/research/foxconn_b24_verify.py": "4c51d1d2715541322874420190dafb79ab48168803956594981e53a3caff2056",
+    "scripts/research/foxconn_b24.py": "41a154fe4f06cc33c478f9ec4a865b63952f666e15e169f14fc7dcfd5749b213"
   },
-  "protocol_sha256": "39a750387998f1d16af6b69aac815e981b24d549e84279588f7652388b0e652f",
+  "protocol_sha256": "8a4cb8f016e7323505551ee6b91f935d35ee869ec04fc7b16bb08f63e3ec814b",
   "registry_sha256": "eae1e644a4b919e8a29c6e3bb806692e6d447c003ac41f62d4cf65de646f6fab"
 }
