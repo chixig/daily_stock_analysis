@@ -1,0 +1,212 @@
+[
+  {
+    "id": "C00A",
+    "a": "H00",
+    "b": "H01",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C00B",
+    "a": "H00",
+    "b": "H01",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C00SKIP",
+    "a": "H00",
+    "b": "H01",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C01A",
+    "a": "H00",
+    "b": "W0022",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C01B",
+    "a": "H00",
+    "b": "W0022",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C01SKIP",
+    "a": "H00",
+    "b": "W0022",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C02A",
+    "a": "H00",
+    "b": "W0122",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C02B",
+    "a": "H00",
+    "b": "W0122",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C02SKIP",
+    "a": "H00",
+    "b": "W0122",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C03A",
+    "a": "H00",
+    "b": "H03",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C03B",
+    "a": "H00",
+    "b": "H03",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C03SKIP",
+    "a": "H00",
+    "b": "H03",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C10A",
+    "a": "R121",
+    "b": "H01",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C10B",
+    "a": "R121",
+    "b": "H01",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C10SKIP",
+    "a": "R121",
+    "b": "H01",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C11A",
+    "a": "R121",
+    "b": "W0022",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C11B",
+    "a": "R121",
+    "b": "W0022",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C11SKIP",
+    "a": "R121",
+    "b": "W0022",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C12A",
+    "a": "R121",
+    "b": "W0122",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C12B",
+    "a": "R121",
+    "b": "W0122",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C12SKIP",
+    "a": "R121",
+    "b": "W0122",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "C13A",
+    "a": "R121",
+    "b": "H03",
+    "policy": "A",
+    "group": "combo"
+  },
+  {
+    "id": "C13B",
+    "a": "R121",
+    "b": "H03",
+    "policy": "B",
+    "group": "combo"
+  },
+  {
+    "id": "C13SKIP",
+    "a": "R121",
+    "b": "H03",
+    "policy": "SKIP",
+    "group": "combo"
+  },
+  {
+    "id": "H00",
+    "a": "H00",
+    "b": null,
+    "policy": "single",
+    "group": "single"
+  },
+  {
+    "id": "R121",
+    "a": "R121",
+    "b": null,
+    "policy": "single",
+    "group": "single"
+  },
+  {
+    "id": "H01",
+    "a": null,
+    "b": "H01",
+    "policy": "single",
+    "group": "single"
+  },
+  {
+    "id": "W0022",
+    "a": null,
+    "b": "W0022",
+    "policy": "single",
+    "group": "single"
+  },
+  {
+    "id": "W0122",
+    "a": null,
+    "b": "W0122",
+    "policy": "single",
+    "group": "single"
+  },
+  {
+    "id": "H03",
+    "a": null,
+    "b": "H03",
+    "policy": "single",
+    "group": "single"
+  }
+]
