@@ -123,14 +123,14 @@
 
 ## 保留/删去/改路径
 
-| id    | effect       |   n |   changed_price_or_amount |   positive_change |   negative_change |      change |
-|:------|:-------------|----:|--------------------------:|------------------:|------------------:|------------:|
-| C12A  | changed_path | 101 |                        37 |         9698.7887 |        -3114.7414 |   6584.0473 |
-| C12A  | removed      |  80 |                        80 |        11128.2678 |        -8631.6908 |   2496.5771 |
-| C11A  | changed_path | 101 |                        33 |         9428.6361 |        -2944.6530 |   6483.9831 |
-| C11A  | removed      |  80 |                        80 |        11128.2678 |        -8631.6908 |   2496.5771 |
-| W0022 | changed_path |  41 |                        17 |         1714.0187 |         -746.1996 |    967.8190 |
-| W0022 | removed      | 140 |                       140 |        23666.0296 |       -38778.6336 | -15112.6040 |
+| id    | effect       |   n |   different_realized_fill |   changed_price_or_amount |   positive_change |   negative_change |      change |
+|:------|:-------------|----:|--------------------------:|--------------------------:|------------------:|------------------:|------------:|
+| C12A  | changed_path | 101 |                        38 |                        37 |         9698.7887 |        -3114.7414 |   6584.0473 |
+| C12A  | removed      |  80 |                         0 |                        80 |        11128.2678 |        -8631.6908 |   2496.5771 |
+| C11A  | changed_path | 101 |                        34 |                        33 |         9428.6361 |        -2944.6530 |   6483.9831 |
+| C11A  | removed      |  80 |                         0 |                        80 |        11128.2678 |        -8631.6908 |   2496.5771 |
+| W0022 | changed_path |  41 |                         9 |                        17 |         1714.0187 |         -746.1996 |    967.8190 |
+| W0022 | removed      | 140 |                         0 |                       140 |        23666.0296 |       -38778.6336 | -15112.6040 |
 
 ## 按参与分类的差额
 
@@ -174,40 +174,40 @@
 
 ## 主要增益与反例日期
 
-| id   | sign     |   rank | entry               | effect       | category   | selected_rule   | new_trigger   | old_trigger                       |     change | fine_covered   |    new_net |    old_net |
-|:-----|:---------|-------:|:--------------------|:-------------|:-----------|:----------------|:--------------|:----------------------------------|-----------:|:---------------|-----------:|-----------:|
-| C12A | positive |      1 | 2025-10-16 00:00:00 | changed_path | overlap    | R121            | deadline      | observed_gap_then_continuous_open |  2961.9106 | False          |  3438.4304 |   476.5198 |
-| C12A | positive |      2 | 2026-03-31 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1793.2390 | False          |     0.0000 | -1793.2390 |
-| C12A | positive |      3 | 2024-07-08 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  1520.7752 | False          |  -561.2326 | -2082.0078 |
-| C12A | positive |      4 | 2026-03-17 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1271.9007 | False          |     0.0000 | -1271.9007 |
-| C12A | positive |      5 | 2025-12-01 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1247.8286 | False          |     0.0000 | -1247.8286 |
-| C12A | positive |      6 | 2026-05-21 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   950.6132 | True           |  -877.7716 | -1828.3848 |
-| C12A | positive |      7 | 2025-12-15 00:00:00 | changed_path | only_B     | W0122           | deadline      | stop_close                        |   950.6132 | False          |    84.2295 |  -866.3837 |
-| C12A | positive |      8 | 2025-07-29 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   750.3825 | False          | -1187.9773 | -1938.3598 |
-| C12A | negative |      1 | 2026-07-10 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -2933.3089 | False          |     0.0000 |  2933.3089 |
-| C12A | negative |      2 | 2026-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -1244.3722 | False          |     0.0000 |  1244.3722 |
-| C12A | negative |      3 | 2026-08-27 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             | -1105.7552 | True           | -1740.3515 |  -634.5963 |
-| C12A | negative |      4 | 2026-03-25 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -570.3434 | False          |     0.0000 |   570.3434 |
-| C12A | negative |      5 | 2024-12-06 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -465.9138 | False          |     0.0000 |   465.9138 |
-| C12A | negative |      6 | 2020-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -406.5007 | False          |     0.0000 |   406.5007 |
-| C12A | negative |      7 | 2024-06-27 00:00:00 | changed_path | only_B     | W0122           | stop_close    | stop_close                        |  -300.1530 | False          |  -821.1372 |  -520.9842 |
-| C12A | negative |      8 | 2025-02-13 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  -300.1530 | False          |  -693.4469 |  -393.2939 |
-| C11A | positive |      1 | 2025-10-16 00:00:00 | changed_path | overlap    | R121            | deadline      | observed_gap_then_continuous_open |  2961.9106 | False          |  3438.4304 |   476.5198 |
-| C11A | positive |      2 | 2026-03-31 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1793.2390 | False          |     0.0000 | -1793.2390 |
-| C11A | positive |      3 | 2024-07-08 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  1520.7752 | False          |  -561.2326 | -2082.0078 |
-| C11A | positive |      4 | 2026-03-17 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1271.9007 | False          |     0.0000 | -1271.9007 |
-| C11A | positive |      5 | 2025-12-15 00:00:00 | changed_path | only_B     | W0022           | target_close  | stop_close                        |  1270.8198 | False          |   404.4361 |  -866.3837 |
-| C11A | positive |      6 | 2025-12-01 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1247.8286 | False          |     0.0000 | -1247.8286 |
-| C11A | positive |      7 | 2026-05-21 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   950.6132 | True           |  -877.7716 | -1828.3848 |
-| C11A | positive |      8 | 2025-07-29 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   750.3825 | False          | -1187.9773 | -1938.3598 |
-| C11A | negative |      1 | 2026-07-10 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -2933.3089 | False          |     0.0000 |  2933.3089 |
-| C11A | negative |      2 | 2026-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -1244.3722 | False          |     0.0000 |  1244.3722 |
-| C11A | negative |      3 | 2026-08-27 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             | -1105.7552 | True           | -1740.3515 |  -634.5963 |
-| C11A | negative |      4 | 2026-03-25 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -570.3434 | False          |     0.0000 |   570.3434 |
-| C11A | negative |      5 | 2024-12-06 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -465.9138 | False          |     0.0000 |   465.9138 |
-| C11A | negative |      6 | 2020-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -406.5007 | False          |     0.0000 |   406.5007 |
-| C11A | negative |      7 | 2024-06-27 00:00:00 | changed_path | only_B     | W0022           | stop_close    | stop_close                        |  -300.1530 | False          |  -821.1372 |  -520.9842 |
-| C11A | negative |      8 | 2025-02-13 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  -300.1530 | False          |  -693.4469 |  -393.2939 |
+| id   | sign     |   rank | entry               | effect       | category   | selected_rule   | new_trigger   | old_trigger                       |     change | new_fine_covered   | baseline_fine_covered   |    new_net |    old_net |
+|:-----|:---------|-------:|:--------------------|:-------------|:-----------|:----------------|:--------------|:----------------------------------|-----------:|:-------------------|:------------------------|-----------:|-----------:|
+| C12A | positive |      1 | 2025-10-16 00:00:00 | changed_path | overlap    | R121            | deadline      | observed_gap_then_continuous_open |  2961.9106 | False              | False                   |  3438.4304 |   476.5198 |
+| C12A | positive |      2 | 2026-03-31 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1793.2390 |                    | False                   |     0.0000 | -1793.2390 |
+| C12A | positive |      3 | 2024-07-08 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  1520.7752 | False              | False                   |  -561.2326 | -2082.0078 |
+| C12A | positive |      4 | 2026-03-17 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1271.9007 |                    | False                   |     0.0000 | -1271.9007 |
+| C12A | positive |      5 | 2025-12-01 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1247.8286 |                    | False                   |     0.0000 | -1247.8286 |
+| C12A | positive |      6 | 2026-05-21 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   950.6132 | True               | True                    |  -877.7716 | -1828.3848 |
+| C12A | positive |      7 | 2025-12-15 00:00:00 | changed_path | only_B     | W0122           | deadline      | stop_close                        |   950.6132 | False              | False                   |    84.2295 |  -866.3837 |
+| C12A | positive |      8 | 2025-07-29 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   750.3825 | False              | False                   | -1187.9773 | -1938.3598 |
+| C12A | negative |      1 | 2026-07-10 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -2933.3089 |                    | True                    |     0.0000 |  2933.3089 |
+| C12A | negative |      2 | 2026-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -1244.3722 |                    | False                   |     0.0000 |  1244.3722 |
+| C12A | negative |      3 | 2026-08-27 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             | -1105.7552 | True               | True                    | -1740.3515 |  -634.5963 |
+| C12A | negative |      4 | 2026-03-25 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -570.3434 |                    | False                   |     0.0000 |   570.3434 |
+| C12A | negative |      5 | 2024-12-06 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -465.9138 |                    | False                   |     0.0000 |   465.9138 |
+| C12A | negative |      6 | 2020-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -406.5007 |                    | False                   |     0.0000 |   406.5007 |
+| C12A | negative |      7 | 2024-06-27 00:00:00 | changed_path | only_B     | W0122           | stop_close    | stop_close                        |  -300.1530 | False              | False                   |  -821.1372 |  -520.9842 |
+| C12A | negative |      8 | 2025-02-13 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  -300.1530 | False              | False                   |  -693.4469 |  -393.2939 |
+| C11A | positive |      1 | 2025-10-16 00:00:00 | changed_path | overlap    | R121            | deadline      | observed_gap_then_continuous_open |  2961.9106 | False              | False                   |  3438.4304 |   476.5198 |
+| C11A | positive |      2 | 2026-03-31 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1793.2390 |                    | False                   |     0.0000 | -1793.2390 |
+| C11A | positive |      3 | 2024-07-08 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  1520.7752 | False              | False                   |  -561.2326 | -2082.0078 |
+| C11A | positive |      4 | 2026-03-17 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1271.9007 |                    | False                   |     0.0000 | -1271.9007 |
+| C11A | positive |      5 | 2025-12-15 00:00:00 | changed_path | only_B     | W0022           | target_close  | stop_close                        |  1270.8198 | False              | False                   |   404.4361 |  -866.3837 |
+| C11A | positive |      6 | 2025-12-01 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  1247.8286 |                    | False                   |     0.0000 | -1247.8286 |
+| C11A | positive |      7 | 2026-05-21 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   950.6132 | True               | True                    |  -877.7716 | -1828.3848 |
+| C11A | positive |      8 | 2025-07-29 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |   750.3825 | False              | False                   | -1187.9773 | -1938.3598 |
+| C11A | negative |      1 | 2026-07-10 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -2933.3089 |                    | True                    |     0.0000 |  2933.3089 |
+| C11A | negative |      2 | 2026-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             | -1244.3722 |                    | False                   |     0.0000 |  1244.3722 |
+| C11A | negative |      3 | 2026-08-27 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             | -1105.7552 | True               | True                    | -1740.3515 |  -634.5963 |
+| C11A | negative |      4 | 2026-03-25 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -570.3434 |                    | False                   |     0.0000 |   570.3434 |
+| C11A | negative |      5 | 2024-12-06 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -465.9138 |                    | False                   |     0.0000 |   465.9138 |
+| C11A | negative |      6 | 2020-03-11 00:00:00 | removed      | neither    | nan             | nan           | fixed                             |  -406.5007 |                    | False                   |     0.0000 |   406.5007 |
+| C11A | negative |      7 | 2024-06-27 00:00:00 | changed_path | only_B     | W0022           | stop_close    | stop_close                        |  -300.1530 | False              | False                   |  -821.1372 |  -520.9842 |
+| C11A | negative |      8 | 2025-02-13 00:00:00 | changed_path | only_A     | R121            | stop_close    | fixed                             |  -300.1530 | False              | False                   |  -693.4469 |  -393.2939 |
 
 ## 细分钟覆盖
 
