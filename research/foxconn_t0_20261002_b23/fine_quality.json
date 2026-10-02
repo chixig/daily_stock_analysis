@@ -1,0 +1,9 @@
+{
+  "qualified_days": 93,
+  "baseline_sell_days": 13,
+  "signal_days": 13,
+  "sell_state_flips": 0,
+  "auction": "daily open proxy only; not counted as minute-replayed execution",
+  "uncovered": "unknown",
+  "paths": "first next-day paths only; delayed recovery not certified by this replay"
+}

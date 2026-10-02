@@ -1,0 +1,12 @@
+{
+  "registered": 81,
+  "groups": {
+    "both": 36,
+    "B_only": 18,
+    "A_only": 18,
+    "constant": 9
+  },
+  "unique_paths": 81,
+  "new_accounts": 243,
+  "reused_accounts": 0
+}

@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "new_saved_accounts": 243,
+  "reused_accounts": 0,
+  "scalar_state_days": 2007,
+  "scalar_decisions": 162567,
+  "independent_participation_rules": 81,
+  "constant_state_invariance": 9,
+  "post1450_mutation_rules": 81,
+  "prefix_truncation_rules": 81,
+  "future_date_mutations": 243,
+  "main_cross_year_cases": 0,
+  "main_new_sale_with_pending_cases": 0,
+  "parent_files": 4821,
+  "checks": [
+    "independent saved ledgers fee/FIFO/cash/shares/dividends",
+    "scalar Decimal states and scalar choice for all rules",
+    "independent constrained participation and locked source paths",
+    "missing/duplicate/equality fallback, no silent sale filter",
+    "planned open versus observed low-gap open",
+    "inherited T+1/lunch/delay/locked/missing/multiple/cross-year/unresolved",
+    "late data and future days cannot change prior choices",
+    "full edge and parent account reconciliation"
+  ]
+}

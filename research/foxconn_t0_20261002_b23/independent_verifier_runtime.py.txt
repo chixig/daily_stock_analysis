@@ -1,0 +1,47 @@
+def verify(d,z,o,q,slip,initialcash,schedule):
+ """Separate scalar reconciliation including FIFO, fees, settlement, paired flow."""
+ indices=dict(zip(d.date,d.index))
+ cash=initialcash;holdcash=initialcash;lots=[[q,d.date[d.date.ge('2020-01-01')].iloc[0]-pd.DateOffset(years=2),0.]]
+ ar=[];hr=[];flow=0.;by={day:g for day,g in o.groupby('date')}
+ @functools.lru_cache(maxsize=None)
+ def rate(a,b):
+  e=b-pd.Timedelta(days=1)
+  return .2 if e<a+pd.DateOffset(months=1) else (.1 if e<a+pd.DateOffset(years=1) else 0.)
+ def fee(v,date,sell):
+  return max(5,v*.0001354)+v*((.00002 if date<pd.Timestamp('2022-04-29') else .00001)+((.001 if date<pd.Timestamp('2023-08-28') else .0005) if sell else 0))
+ for r,zr in zip(d[d.date.ge('2020-01-01')].itertuples(index=False),z.itertuples(index=False)):
+  day=r.date
+  if r.dividend_today:
+   ar.append([schedule.get(day,len(d)+10),sum(x[0] for x in lots)*r.dividend_today]);hr.append([schedule.get(day,len(d)+10),q*r.dividend_today])
+   for l in lots:l[2]+=r.dividend_today
+  dayorders=by.get(day,pd.DataFrame())
+  for x in dayorders.itertuples(index=False):
+   if x.side!='BUY':continue
+   assert x.quantity==1000
+   v=x.quantity*x.reference*(1+slip);f=fee(v,day,False)
+   assert abs(v-x.value)<1e-7 and abs(f-x.fee)<1e-7
+   cash+=x.deposit-v-f;holdcash+=x.deposit;flow+=x.deposit
+   lots.append([1000,day,0.]);assert abs(cash-x.cash)<1e-5
+  i=indices[day]
+  for a in list(ar):
+   if a[0]<=i:cash+=a[1];ar.remove(a)
+  for a in list(hr):
+   if a[0]<=i:holdcash+=a[1];hr.remove(a)
+  for x in dayorders.itertuples(index=False):
+   if x.side!='SELL':continue
+   assert x.quantity==1000
+   n=1000;tax=0.
+   for l in list(lots):
+    if l[1]>=day:continue
+    take=min(l[0],n);tax+=take*l[2]*rate(l[1],day);l[0]-=take;n-=take
+    if l[0]==0:lots.remove(l)
+    if n==0:break
+   assert n==0 and abs(tax-x.tax)<1e-7
+   v=1000*x.reference*(1-slip);f=fee(v,day,True);cash+=v-f-tax
+   assert abs(f-x.fee)<1e-7 and abs(cash-x.cash)<1e-5
+  qty=sum(l[0] for l in lots);res=sum(l[0]*l[2]*rate(l[1],day) for l in lots)
+  assert abs(cash-zr.cash)<1e-5 and qty==zr.shares and abs(res-zr.tax_reserve)<1e-5
+  assert abs(sum(a[1] for a in ar)-zr.receivable)<1e-5 and abs(holdcash-zr.hold_cash)<1e-5
+  assert abs(flow-zr.external)<1e-5
+  assert abs(cash+sum(a[1] for a in ar)+qty*r.close-res-zr.equity)<1e-5
+  assert abs(holdcash+sum(a[1] for a in hr)+q*r.close-zr.hold_equity)<1e-5

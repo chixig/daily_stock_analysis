@@ -1,0 +1,100 @@
+{
+  "AO": {
+    "parent_rule": "H03",
+    "source_path": "research/foxconn_t0_20260928_b19/paths/open.csv",
+    "sha256": "b5c04e818267aa2efe4af47d0581d8eda87e51cdc09752a9dfe791faf49fdaad",
+    "spec": {
+      "id": "H03",
+      "line": "H01",
+      "policy": "all",
+      "kind": "open",
+      "gap": null,
+      "tp": null,
+      "stop": null,
+      "deadline": null,
+      "path": "open",
+      "baseline_only": true
+    }
+  },
+  "A1": {
+    "parent_rule": "R121",
+    "source_path": "research/foxconn_t0_20260928_b19/paths/R21.csv",
+    "sha256": "92fb5014cf28b9691f4a703124bcd34fce2c933a2022b2ce0194f3e859f85900",
+    "spec": {
+      "id": "R121",
+      "line": "H00",
+      "policy": "filter_r20_pos",
+      "kind": "adaptive",
+      "gap": null,
+      "tp": null,
+      "stop": 0.01,
+      "deadline": "14:50",
+      "path": "R21"
+    }
+  },
+  "AT": {
+    "parent_rule": "H00",
+    "source_path": "research/foxconn_t0_20260928_b19/paths/R20.csv",
+    "sha256": "912e9f64655a63438dcc7ad3d0ce2f32ccb24a6fae346b9ab01bb4009b8b2523",
+    "spec": {
+      "id": "H00",
+      "line": "H00",
+      "policy": "all",
+      "kind": "adaptive",
+      "gap": null,
+      "tp": null,
+      "stop": null,
+      "deadline": "14:50",
+      "path": "R20"
+    }
+  },
+  "BO": {
+    "parent_rule": "H03",
+    "source_path": "research/foxconn_t0_20260928_b19/paths/open.csv",
+    "sha256": "b5c04e818267aa2efe4af47d0581d8eda87e51cdc09752a9dfe791faf49fdaad",
+    "spec": {
+      "id": "H03",
+      "line": "H01",
+      "policy": "all",
+      "kind": "open",
+      "gap": null,
+      "tp": null,
+      "stop": null,
+      "deadline": null,
+      "path": "open",
+      "baseline_only": true
+    }
+  },
+  "B05": {
+    "parent_rule": "W0022",
+    "source_path": "research/foxconn_t0_20260928_b19/paths/W0022.csv",
+    "sha256": "15e1f4fa8b33056d5a42ec56a67b07bddffd9931fcead67ef92401077e55b2e3",
+    "spec": {
+      "id": "W0022",
+      "line": "H01",
+      "policy": "all",
+      "kind": "adaptive",
+      "gap": 0.005,
+      "tp": 0.005,
+      "stop": 0.02,
+      "deadline": "11:00",
+      "path": "W0022"
+    }
+  },
+  "B1": {
+    "parent_rule": "W0122",
+    "source_path": "research/foxconn_t0_20260928_b19/paths/W0122.csv",
+    "sha256": "3b1fdbe3fbb662143184d032f91919f47fd8f7b0e9211c5e982d0b57911f488d",
+    "spec": {
+      "id": "W0122",
+      "line": "H01",
+      "policy": "all",
+      "kind": "adaptive",
+      "gap": 0.005,
+      "tp": 0.01,
+      "stop": 0.02,
+      "deadline": "11:00",
+      "path": "W0122"
+    }
+  }
+}
