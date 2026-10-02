@@ -1,0 +1,286 @@
+[
+  {
+    "id": "Q1000",
+    "group": "combo",
+    "a": "A1",
+    "b": "B000",
+    "stop": 0.01,
+    "gap": 0.005,
+    "tp": 0.005,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q1001",
+    "group": "combo",
+    "a": "A1",
+    "b": "B001",
+    "stop": 0.01,
+    "gap": 0.005,
+    "tp": 0.005,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q1010",
+    "group": "combo",
+    "a": "A1",
+    "b": "B010",
+    "stop": 0.01,
+    "gap": 0.005,
+    "tp": 0.01,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q1011",
+    "group": "combo",
+    "a": "A1",
+    "b": "B011",
+    "stop": 0.01,
+    "gap": 0.005,
+    "tp": 0.01,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q1100",
+    "group": "combo",
+    "a": "A1",
+    "b": "B100",
+    "stop": 0.01,
+    "gap": null,
+    "tp": 0.005,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q1101",
+    "group": "combo",
+    "a": "A1",
+    "b": "B101",
+    "stop": 0.01,
+    "gap": null,
+    "tp": 0.005,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q1110",
+    "group": "combo",
+    "a": "A1",
+    "b": "B110",
+    "stop": 0.01,
+    "gap": null,
+    "tp": 0.01,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q1111",
+    "group": "combo",
+    "a": "A1",
+    "b": "B111",
+    "stop": 0.01,
+    "gap": null,
+    "tp": 0.01,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q2000",
+    "group": "combo",
+    "a": "A2",
+    "b": "B000",
+    "stop": 0.02,
+    "gap": 0.005,
+    "tp": 0.005,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q2001",
+    "group": "combo",
+    "a": "A2",
+    "b": "B001",
+    "stop": 0.02,
+    "gap": 0.005,
+    "tp": 0.005,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q2010",
+    "group": "combo",
+    "a": "A2",
+    "b": "B010",
+    "stop": 0.02,
+    "gap": 0.005,
+    "tp": 0.01,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q2011",
+    "group": "combo",
+    "a": "A2",
+    "b": "B011",
+    "stop": 0.02,
+    "gap": 0.005,
+    "tp": 0.01,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q2100",
+    "group": "combo",
+    "a": "A2",
+    "b": "B100",
+    "stop": 0.02,
+    "gap": null,
+    "tp": 0.005,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q2101",
+    "group": "combo",
+    "a": "A2",
+    "b": "B101",
+    "stop": 0.02,
+    "gap": null,
+    "tp": 0.005,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q2110",
+    "group": "combo",
+    "a": "A2",
+    "b": "B110",
+    "stop": 0.02,
+    "gap": null,
+    "tp": 0.01,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q2111",
+    "group": "combo",
+    "a": "A2",
+    "b": "B111",
+    "stop": 0.02,
+    "gap": null,
+    "tp": 0.01,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q0000",
+    "group": "combo",
+    "a": "A0",
+    "b": "B000",
+    "stop": null,
+    "gap": 0.005,
+    "tp": 0.005,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q0001",
+    "group": "combo",
+    "a": "A0",
+    "b": "B001",
+    "stop": null,
+    "gap": 0.005,
+    "tp": 0.005,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q0010",
+    "group": "combo",
+    "a": "A0",
+    "b": "B010",
+    "stop": null,
+    "gap": 0.005,
+    "tp": 0.01,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q0011",
+    "group": "combo",
+    "a": "A0",
+    "b": "B011",
+    "stop": null,
+    "gap": 0.005,
+    "tp": 0.01,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q0100",
+    "group": "combo",
+    "a": "A0",
+    "b": "B100",
+    "stop": null,
+    "gap": null,
+    "tp": 0.005,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q0101",
+    "group": "combo",
+    "a": "A0",
+    "b": "B101",
+    "stop": null,
+    "gap": null,
+    "tp": 0.005,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "Q0110",
+    "group": "combo",
+    "a": "A0",
+    "b": "B110",
+    "stop": null,
+    "gap": null,
+    "tp": 0.01,
+    "deadline": "11:00",
+    "policy": "A"
+  },
+  {
+    "id": "Q0111",
+    "group": "combo",
+    "a": "A0",
+    "b": "B111",
+    "stop": null,
+    "gap": null,
+    "tp": 0.01,
+    "deadline": "14:50",
+    "policy": "A"
+  },
+  {
+    "id": "CTRL_OLD",
+    "group": "control",
+    "parent": "C00B"
+  },
+  {
+    "id": "CTRL_OPEN",
+    "group": "control",
+    "parent": "C13A"
+  },
+  {
+    "id": "CTRL_W0",
+    "group": "single",
+    "parent": "W0022"
+  },
+  {
+    "id": "CTRL_W1",
+    "group": "single",
+    "parent": "W0122"
+  }
+]

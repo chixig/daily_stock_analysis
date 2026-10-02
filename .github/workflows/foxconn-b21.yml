@@ -1,0 +1,52 @@
+name: Foxconn B21 exit research
+on:
+  push:
+    branches: [research/foxconn-t0-20261002-b21]
+    paths: [scripts/research/foxconn_b21.py, scripts/research/foxconn_b21_verify.py, .github/workflows/foxconn-b21.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-b21
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3
+      - name: Freeze inputs before research
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin ad66e34c1035a7685f7b526a688f9ef36d4afd73
+          python -m py_compile scripts/research/foxconn_b21.py scripts/research/foxconn_b21_verify.py
+          python scripts/research/foxconn_b21.py freeze
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261002_b21/frozen_input_hashes.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze B21 inputs before account calculations'
+            git push origin HEAD:research/foxconn-t0-20261002-b21
+          fi
+      - name: Compute 84 complete accounts
+        run: |
+          set -euo pipefail
+          python -u scripts/research/foxconn_b21.py run 2>&1 | tee research/foxconn_t0_20261002_b21/calculation.log
+      - name: Independent account and path checks
+        run: |
+          set -euo pipefail
+          python -u scripts/research/foxconn_b21_verify.py 2>&1 | tee research/foxconn_t0_20261002_b21/verification.log
+      - name: Preserve all evidence
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261002_b21/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve B21 exit research and independent verification'
+            git push origin HEAD:research/foxconn-t0-20261002-b21
+          fi
