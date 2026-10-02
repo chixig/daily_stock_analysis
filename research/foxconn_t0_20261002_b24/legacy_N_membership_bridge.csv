@@ -1,0 +1,5 @@
+module,date,old_missing_features,old_limit_proxy,old_next_open_missing,logical_profit,actual_exit
+N0,2023-10-24,prev_clv,False,False,-230.7098109999988,2023-10-25
+N0,2025-04-08,prev_clv,False,False,366.1311620000015,2025-04-09
+N2,2023-10-24,prev_clv,False,False,-230.7098109999988,2023-10-25
+N2,2025-04-08,prev_clv,False,False,106.39369570000052,2025-04-09
