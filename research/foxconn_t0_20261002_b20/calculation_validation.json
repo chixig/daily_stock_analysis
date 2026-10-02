@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "accounts": 90,
+  "parent_alignments": 24,
+  "parent_files": 3073,
+  "data_cutoff": "2026-09-11",
+  "inventory_max": 2000,
+  "aliases": 0
+}

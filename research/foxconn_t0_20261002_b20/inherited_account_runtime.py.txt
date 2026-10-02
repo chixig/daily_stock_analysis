@@ -1,0 +1,73 @@
+def account(d,t,q,slip,schedule,initialcash=0.):
+ """Execution of a causal stock plan; deposits only fund deficits, never alter orders."""
+ start=d.index[d.date.ge(ACCOUNT_START)][0]
+ lots=[dict(q=q,date=d.date.iloc[start]-pd.DateOffset(years=2),div=0.)]
+ cash=initialcash;hc=initialcash;recv=[];hr=[];external=0.;rows=[];orders=[];funds=[];payments=[]
+ tradecash=0.;paid=0.;hpaid=0.;taxsum=0.;fees=0.
+ sales={int(x.entry_i):k for k,x in t.iterrows()};buys={}
+ for k,x in t.iterrows():
+  if pd.notna(x.exit_i):buys.setdefault(int(x.exit_i),[]).append(k)
+ tt=t.copy();tt['sale_net']=np.nan;tt['buy_cost']=np.nan;tt['dividend_tax']=0.;tt['missed_dividend']=0.
+ def qty():return sum(l['q'] for l in lots)
+ def reserve(day):return sum(l['q']*l['div']*old.taxrate(l['date'],day) for l in lots)
+ for i,r in ((r.Index,r) for r in d.iloc[start:].itertuples()):
+  day=r.date;dayfee=0.;daytax=0.;dayin=0.;daypaid=0.;dayhpaid=0.
+  if r.dividend_today:
+   recv.append((schedule.get(day,len(d)+10),qty()*r.dividend_today))
+   hr.append((schedule.get(day,len(d)+10),q*r.dividend_today))
+   for l in lots:l['div']+=r.dividend_today
+   for k,x in tt.iterrows():
+    if x.entry_i<i and (pd.isna(x.exit_i) or x.exit_i>=i):tt.loc[k,'missed_dividend']+=1000*r.dividend_today
+  for k in buys.get(i,[]):
+   x=tt.loc[k];value=1000*x.buy_ref*(1+slip);fee=old.sf(value,day);cost=value+fee
+   res=reserve(day);gap=max(0.,cost+res-cash)
+   if gap>0:cash+=gap;hc+=gap;external+=gap;dayin+=gap
+   funds.append(dict(date=day,clock=x.buy_clock,entry=x.entry,buy_cost=cost,sale_net=tt.loc[k,'sale_net'],single_gap=max(0.,cost-tt.loc[k,'sale_net']),cash_before=cash-gap,tax_reserve=res,receivable=sum(a for _,a in recv),deposit=gap,cumulative_deposit=external,zero_capital_pool_before=cash-gap-external+gap))
+   cash-=cost;tradecash-=cost;fees+=fee;dayfee+=fee
+   lots.append(dict(q=1000,date=day,div=0.));tt.loc[k,'buy_cost']=cost
+   orders.append(dict(date=day,clock=x.buy_clock,side='BUY',quantity=1000,reference=x.buy_ref,value=value,fee=fee,tax=0.,deposit=gap,cash=cash,shares=qty(),entry=x.entry))
+  # Payment after morning attempts; identical entitlement clock as B16.
+  for due,amt in list(recv):
+   if due<=i:cash+=amt;paid+=amt;daypaid+=amt;recv.remove((due,amt))
+  for due,amt in list(hr):
+   if due<=i:hc+=amt;hpaid+=amt;dayhpaid+=amt;hr.remove((due,amt))
+  if daypaid or dayhpaid:payments.append(dict(date=day,strategy=daypaid,hold=dayhpaid))
+  if i in sales:
+   k=sales[i];need=1000;tax=0.
+   for l in list(lots):
+    if l['date']>=day:continue
+    n=min(need,l['q']);tax+=n*l['div']*old.taxrate(l['date'],day);l['q']-=n;need-=n
+    if l['q']==0:lots.remove(l)
+    if need==0:break
+   assert need==0,('insufficient actual stock',day,q)
+   value=1000*r.close*(1-slip);fee=old.sf(value,day,True);net=value-fee-tax
+   cash+=net;tradecash+=net;taxsum+=tax;fees+=fee;dayfee+=fee;daytax+=tax
+   tt.loc[k,'sale_net']=net;tt.loc[k,'dividend_tax']=tax
+   orders.append(dict(date=day,clock='15:00',side='SELL',quantity=1000,reference=r.close,value=value,fee=fee,tax=tax,deposit=0.,cash=cash,shares=qty(),entry=day))
+  ar=sum(a for _,a in recv);har=sum(a for _,a in hr);res=reserve(day)
+  eq=cash+ar+qty()*r.close-res;hold=hc+har+q*r.close
+  assert cash>=-1e-6
+  assert abs(cash-(initialcash+external+tradecash+paid))<1e-6
+  assert abs(hc-(initialcash+external+hpaid))<1e-6
+  rows.append(dict(date=day,cash=cash,hold_cash=hc,shares=qty(),receivable=ar,hold_receivable=har,tax_reserve=res,fee=dayfee,tax=daytax,payment=daypaid,hold_payment=dayhpaid,deposit=dayin,external=external,equity=eq,hold_equity=hold,relative=eq-hold,pool_ex_external=cash-external-initialcash,relative_cash_pool=cash-hc))
+ z=pd.DataFrame(rows);oo=pd.DataFrame(orders,columns=['date','clock','side','quantity','reference','value','fee','tax','deposit','cash','shares','entry']);ff=pd.DataFrame(funds,columns=['date','clock','entry','buy_cost','sale_net','single_gap','cash_before','tax_reserve','receivable','deposit','cumulative_deposit','zero_capital_pool_before'])
+ tt['cash_increment']=tt.sale_net-tt.buy_cost-tt.missed_dividend
+ tt['net_pct']=100*tt.cash_increment/(1000*tt.sell_ref)
+ # Uncompleted episode retains marked missing shares, never zeroes losses.
+ unfinished=tt[tt.exit_i.isna()]
+ marked=sum(x.sale_net-1000*d.close.iloc[-1]-x.missed_dividend for _,x in unfinished.iterrows())
+ assert abs(tt.cash_increment.sum()+marked-z.tax_reserve.iloc[-1]-z.relative.iloc[-1])<1e-5
+ k=ff.cumulative_deposit.idxmax() if len(ff) else None
+ peak=ff.loc[k] if k is not None else None
+ periods=[];on=None
+ # Economic cumulative deficit relative to HOLD, distinct from deposit retention.
+ for _,rr in ((r.Index,r) for r in z.itertuples()):
+  neg=rr.relative_cash_pool-rr.tax_reserve< -1e-7
+  if neg and on is None:on=rr.date
+  if not neg and on is not None:periods.append((on,rr.date,int((rr.date-on).days)));on=None
+ if on is not None:periods.append((on,z.date.iloc[-1],int((z.date.iloc[-1]-on).days)))
+ done=tt[tt.exit_i.notna()];maxgap=ff.loc[ff.single_gap.idxmax()] if len(ff) else None
+ # Hindsight capital requirement excluding both initial cash and all external flows.
+ minpool=min([0.]+[(x.cash_before-x.cumulative_deposit+x.deposit-x.tax_reserve-x.buy_cost-initialcash) for _,x in ((r.Index,r) for r in ff.itertuples())])
+ summary=dict(stock=q,initialcash=initialcash,slip_bp=slip*10000,sales=len(tt),completed=len(done),pending=len(unfinished),increment=z.relative.iloc[-1],completed_increment=done.cash_increment.sum(),mean_pct=done.net_pct.mean(),fees=fees,tax_paid=taxsum,terminal_tax_reserve=z.tax_reserve.iloc[-1],terminal_receivable=z.receivable.iloc[-1],terminal_missing=q-z.shares.iloc[-1],deposits=external,withdrawals=0.,unreturned=external,peak_requirement=-minpool,peak_date=peak.date if peak is not None else None,peak_pct_1000_value=100*external/(1000*d.loc[d.date.eq(peak.date),'close'].iloc[0]) if peak is not None else 0.,single_median=ff.single_gap.median(),single_p95=ff.single_gap.quantile(.95),single_max=maxgap.single_gap if maxgap is not None else 0.,single_max_date=maxgap.date if maxgap is not None else None,single_positive=int(ff.single_gap.gt(0).sum()),first_deposit=ff.loc[ff.deposit.gt(0),'date'].min(),deposit_yuan_days=float(sum(x.deposit*(d.date.iloc[-1]-x.date).days for _,x in ((r.Index,r) for r in ff.itertuples()))),longest_relative_deficit_calendar_days=max([p[2] for p in periods],default=0),relative_mdd=float((z.relative-z.relative.cummax().clip(lower=0)).min()),flow_adjusted_absolute_profit=z.equity.iloc[-1]-(q*d.close.iloc[start]+initialcash)-external,hold_flow_adjusted_absolute_profit=z.hold_equity.iloc[-1]-(q*d.close.iloc[start]+initialcash)-external)
+ return z,oo,tt,ff,summary

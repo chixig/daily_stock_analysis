@@ -1,0 +1,13 @@
+scope,objective,rank,id
+combo,profit,1,C12A
+combo,profit,2,C11A
+combo,profit,3,C10A
+combo,win,1,C11A
+combo,win,2,C11B
+combo,win,3,C12A
+all,profit,1,C12A
+all,profit,2,C11A
+all,profit,3,C10A
+all,win,1,W0022
+all,win,2,W0122
+all,win,3,H01

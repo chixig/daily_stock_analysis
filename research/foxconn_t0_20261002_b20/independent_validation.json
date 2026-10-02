@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "accounts": 90,
+  "decision_truth_table_cases": 60210,
+  "future_path_mutations": 6,
+  "parent_files": 3073,
+  "checks": [
+    "all 90 saved ledgers independently fee/FIFO/dividend/cash/share reconciled",
+    "full 30-rule scalar decision truth table",
+    "same-day one sale and T+1 resources",
+    "all three priorities; failed A filter preserves B",
+    "multiple pending and cross-year attached entry paths",
+    "5/11/20bp decisions unchanged",
+    "future daily and post-fill bars cannot change earlier decisions",
+    "positive initial cash invariance",
+    "parent 24 baseline accounts aligned",
+    "frozen input and output hashes unchanged"
+  ]
+}
