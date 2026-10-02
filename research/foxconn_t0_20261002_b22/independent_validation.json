@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "new_saved_accounts": 168,
+  "reused_account_results": 0,
+  "scalar_feature_days": 2007,
+  "scalar_rule_decisions": 112392,
+  "post1450_mutation_rules": 56,
+  "prefix_truncation_rules": 56,
+  "parent_files": 3976,
+  "checks": [
+    "independent saved-account fee/FIFO/dividend/cash/shares",
+    "fixed retained buy paths and no added dates",
+    "causal scalar endpoint and 46-bar prefix features",
+    "endpoint/equality/flat/duplicate/missing boundaries",
+    "original-family rejection without fallback",
+    "availability and market bridge",
+    "late quotes and final daily OHLCV cannot change 1450 features",
+    "inherited multiple pending, cross-year, T+1, lunch, missing, locked and unresolved tests"
+  ]
+}

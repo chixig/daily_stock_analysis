@@ -1,0 +1,7 @@
+{
+  "qualified_days": 93,
+  "price_tick": 0.01,
+  "observed_base_sell_days": 13,
+  "purpose": "new sell-day prefix signals, kept and removed original dates; no main replacement",
+  "uncovered": "unknown"
+}

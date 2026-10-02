@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "accounts": 168,
+  "parent_alignments": 6,
+  "parent_files": 3976,
+  "data_cutoff": "2026-09-11",
+  "core": 38,
+  "availability": 18,
+  "new_accounts": 168,
+  "reused_accounts": 0
+}

@@ -1,0 +1,2 @@
+feature,b18,common_days,maximum_difference,same_observed_information,changed_availability,new_claim
+position,S2_clv_ge_0p7 already studied,1620,1.1102230246251565e-16,True,"B22 per-feature endpoints, exact prefix clocks and OHLC; no volume gate","filter accepted two-family complete account, not new factor"

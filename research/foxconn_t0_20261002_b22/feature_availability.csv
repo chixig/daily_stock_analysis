@@ -1,0 +1,10 @@
+feature,family,original_signals,available,unknown,near_one_tick
+day,A,65,65,0,4
+day,B,37,37,0,0
+day,AB,102,102,0,4
+position,A,65,65,0,2
+position,B,37,37,0,2
+position,AB,102,102,0,4
+tail,A,65,65,0,20
+tail,B,37,37,0,2
+tail,AB,102,102,0,22
