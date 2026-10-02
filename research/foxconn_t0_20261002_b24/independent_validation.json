@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "accounts": 396,
+  "prefixes": [
+    {
+      "cut": 1000,
+      "status": "PASS",
+      "scope": "full shared account prefix, all three modules"
+    },
+    {
+      "cut": 1500,
+      "status": "PASS",
+      "scope": "full shared account prefix, all three modules"
+    },
+    {
+      "cut": 1977,
+      "status": "PASS",
+      "scope": "full shared account prefix, all three modules"
+    }
+  ],
+  "R_parent_alignments": 12,
+  "independent": "cash/shares/FIFO/fees/tax/receivable/payment/hold/flow-adjusted equity and drawdowns replay from persisted net orders",
+  "limitations": "market price proxy/exchange execution not certified; causal module source tests plus 3 account prefixes, not exhaustive all possible price paths"
+}

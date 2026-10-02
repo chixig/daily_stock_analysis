@@ -1,0 +1,12 @@
+{
+  "3000": {
+    "profit": "Pall_N0_Rprofit_F",
+    "risk": "Pall_N0_Rprofit_F",
+    "simple": "Rprofit_F",
+    "focus": [
+      "Pall_N2_R1_F",
+      "Pall_N0_Rprofit_F",
+      "Rprofit_F"
+    ]
+  }
+}

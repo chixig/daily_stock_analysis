@@ -1,0 +1,5 @@
+{
+  "qualified_days": 93,
+  "source": "research/foxconn_overnight_20260917_b13/tdx_recovered_1m.csv",
+  "interpretation": "date coverage is not fill certification; auction always unknown; P entry quote independently compared; R inherited path comparisons in B23; N B13 inherited9 paired paths"
+}

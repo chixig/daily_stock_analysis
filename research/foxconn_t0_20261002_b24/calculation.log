@@ -574,26 +574,7 @@ ACCOUNT PUR_N2_Rprofit_L1 3000 20 60165.9543
 ACCOUNT PUR_N2_Rprofit_L2 3000 5 80429.5429
 ACCOUNT PUR_N2_Rprofit_L2 3000 11 72785.4779
 ACCOUNT PUR_N2_Rprofit_L2 3000 20 61319.3805
-Traceback (most recent call last):
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py", line 531, in <module>
-    else:run()
-         ^^^^^
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py", line 343, in run
-    analyze(d,bars,schedule,plans,summary,cache)
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py", line 450, in analyze
-    save('pareto.csv',front);js('focus.json',chosen)
-                             ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py", line 24, in js
-    p.write_text(json.dumps(data,ensure_ascii=False,indent=2,default=str))
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/__init__.py", line 238, in dumps
-    **kw).encode(obj)
-          ^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/encoder.py", line 202, in encode
-    chunks = list(chunks)
-             ^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/encoder.py", line 432, in _iterencode
-    yield from _iterencode_dict(o, _current_indent_level)
-  File "/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/json/encoder.py", line 377, in _iterencode_dict
-    raise TypeError(f'keys must be str, int, float, bool or None, '
-TypeError: keys must be str, int, float, bool or None, not int64
+/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:2999: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/numpy/lib/_function_base_impl.py:3000: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
