@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "protected": {
+    "frozen_input_hashes.json": 4821,
+    "manifest.json": 1172,
+    "verification_manifest.json": 4
+  },
+  "picks": [
+    "R2112",
+    "R0211",
+    "R0112"
+  ],
+  "focus": [
+    "R2112",
+    "R0211",
+    "R0112",
+    "R1122",
+    "R1111"
+  ],
+  "details_sha256": "c81440b999bc87aae15163337258006cbc4a7d2ec34a4649f0872b14469a033f",
+  "code_sha256": "8e4776ffe6a1438dc97110b8be5d223e9a35c6f7422ae5ab64e2e15eba168cae"
+}
