@@ -1,0 +1,52 @@
+name: Foxconn B23 state-conditioned buybacks
+on:
+  push:
+    branches: [research/foxconn-t0-20261002-b23]
+    paths: [scripts/research/foxconn_b23.py, scripts/research/foxconn_b23_verify.py, .github/workflows/foxconn-b23.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-b23
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3
+      - name: Freeze inputs and all 81 rules before calculation
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin fa0a4da8fc7f64d3bded9f9d26c921fee01ebe95
+          python -m py_compile scripts/research/foxconn_b23.py scripts/research/foxconn_b23_verify.py
+          python scripts/research/foxconn_b23.py freeze
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261002_b23/registry.json research/foxconn_t0_20261002_b23/registry.csv research/foxconn_t0_20261002_b23/frozen_input_hashes.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze B23 registry and input hashes before computation'
+            git push origin HEAD:research/foxconn-t0-20261002-b23
+          fi
+      - name: Compute 243 full accounts and bounded diagnostics
+        run: |
+          set -euo pipefail
+          python -u scripts/research/foxconn_b23.py run 2>&1 | tee research/foxconn_t0_20261002_b23/calculation.log
+      - name: Independently verify every saved account and decision
+        run: |
+          set -euo pipefail
+          python -u scripts/research/foxconn_b23_verify.py 2>&1 | tee research/foxconn_t0_20261002_b23/verification.log
+      - name: Preserve results and failures
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261002_b23/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve B23 research and independent verification evidence'
+            git push origin HEAD:research/foxconn-t0-20261002-b23
+          fi
