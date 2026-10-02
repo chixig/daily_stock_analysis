@@ -1,0 +1,1190 @@
+[
+  {
+    "id": "R1_F",
+    "combo": "R1",
+    "P": "-",
+    "N": "-",
+    "R": "R1",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "R1_L1",
+    "combo": "R1",
+    "P": "-",
+    "N": "-",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "R1_L2",
+    "combo": "R1",
+    "P": "-",
+    "N": "-",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "R05_F",
+    "combo": "R05",
+    "P": "-",
+    "N": "-",
+    "R": "R05",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "R05_L1",
+    "combo": "R05",
+    "P": "-",
+    "N": "-",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "R05_L2",
+    "combo": "R05",
+    "P": "-",
+    "N": "-",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "Rsmall_F",
+    "combo": "Rsmall",
+    "P": "-",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "Rsmall_L1",
+    "combo": "Rsmall",
+    "P": "-",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "Rsmall_L2",
+    "combo": "Rsmall",
+    "P": "-",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "Rprofit_F",
+    "combo": "Rprofit",
+    "P": "-",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "Rprofit_L1",
+    "combo": "Rprofit",
+    "P": "-",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "Rprofit_L2",
+    "combo": "Rprofit",
+    "P": "-",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "N0_F",
+    "combo": "N0",
+    "P": "-",
+    "N": "N0",
+    "R": "-",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "N0_L1",
+    "combo": "N0",
+    "P": "-",
+    "N": "N0",
+    "R": "-",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "N0_L2",
+    "combo": "N0",
+    "P": "-",
+    "N": "N0",
+    "R": "-",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "N0_R1_F",
+    "combo": "N0_R1",
+    "P": "-",
+    "N": "N0",
+    "R": "R1",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N0_R1_L1",
+    "combo": "N0_R1",
+    "P": "-",
+    "N": "N0",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N0_R1_L2",
+    "combo": "N0_R1",
+    "P": "-",
+    "N": "N0",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N0_R05_F",
+    "combo": "N0_R05",
+    "P": "-",
+    "N": "N0",
+    "R": "R05",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N0_R05_L1",
+    "combo": "N0_R05",
+    "P": "-",
+    "N": "N0",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N0_R05_L2",
+    "combo": "N0_R05",
+    "P": "-",
+    "N": "N0",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N0_Rsmall_F",
+    "combo": "N0_Rsmall",
+    "P": "-",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N0_Rsmall_L1",
+    "combo": "N0_Rsmall",
+    "P": "-",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N0_Rsmall_L2",
+    "combo": "N0_Rsmall",
+    "P": "-",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N0_Rprofit_F",
+    "combo": "N0_Rprofit",
+    "P": "-",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N0_Rprofit_L1",
+    "combo": "N0_Rprofit",
+    "P": "-",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N0_Rprofit_L2",
+    "combo": "N0_Rprofit",
+    "P": "-",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N2_F",
+    "combo": "N2",
+    "P": "-",
+    "N": "N2",
+    "R": "-",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "N2_L1",
+    "combo": "N2",
+    "P": "-",
+    "N": "N2",
+    "R": "-",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "N2_L2",
+    "combo": "N2",
+    "P": "-",
+    "N": "N2",
+    "R": "-",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "N2_R1_F",
+    "combo": "N2_R1",
+    "P": "-",
+    "N": "N2",
+    "R": "R1",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N2_R1_L1",
+    "combo": "N2_R1",
+    "P": "-",
+    "N": "N2",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N2_R1_L2",
+    "combo": "N2_R1",
+    "P": "-",
+    "N": "N2",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N2_R05_F",
+    "combo": "N2_R05",
+    "P": "-",
+    "N": "N2",
+    "R": "R05",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N2_R05_L1",
+    "combo": "N2_R05",
+    "P": "-",
+    "N": "N2",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N2_R05_L2",
+    "combo": "N2_R05",
+    "P": "-",
+    "N": "N2",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N2_Rsmall_F",
+    "combo": "N2_Rsmall",
+    "P": "-",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N2_Rsmall_L1",
+    "combo": "N2_Rsmall",
+    "P": "-",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N2_Rsmall_L2",
+    "combo": "N2_Rsmall",
+    "P": "-",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "N2_Rprofit_F",
+    "combo": "N2_Rprofit",
+    "P": "-",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "N2_Rprofit_L1",
+    "combo": "N2_Rprofit",
+    "P": "-",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "N2_Rprofit_L2",
+    "combo": "N2_Rprofit",
+    "P": "-",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_F",
+    "combo": "Pall",
+    "P": "Pall",
+    "N": "-",
+    "R": "-",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "Pall_L1",
+    "combo": "Pall",
+    "P": "Pall",
+    "N": "-",
+    "R": "-",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "Pall_L2",
+    "combo": "Pall",
+    "P": "Pall",
+    "N": "-",
+    "R": "-",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "Pall_R1_F",
+    "combo": "Pall_R1",
+    "P": "Pall",
+    "N": "-",
+    "R": "R1",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "Pall_R1_L1",
+    "combo": "Pall_R1",
+    "P": "Pall",
+    "N": "-",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "Pall_R1_L2",
+    "combo": "Pall_R1",
+    "P": "Pall",
+    "N": "-",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_R05_F",
+    "combo": "Pall_R05",
+    "P": "Pall",
+    "N": "-",
+    "R": "R05",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "Pall_R05_L1",
+    "combo": "Pall_R05",
+    "P": "Pall",
+    "N": "-",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "Pall_R05_L2",
+    "combo": "Pall_R05",
+    "P": "Pall",
+    "N": "-",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_Rsmall_F",
+    "combo": "Pall_Rsmall",
+    "P": "Pall",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "Pall_Rsmall_L1",
+    "combo": "Pall_Rsmall",
+    "P": "Pall",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "Pall_Rsmall_L2",
+    "combo": "Pall_Rsmall",
+    "P": "Pall",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_Rprofit_F",
+    "combo": "Pall_Rprofit",
+    "P": "Pall",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "Pall_Rprofit_L1",
+    "combo": "Pall_Rprofit",
+    "P": "Pall",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "Pall_Rprofit_L2",
+    "combo": "Pall_Rprofit",
+    "P": "Pall",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N0_F",
+    "combo": "Pall_N0",
+    "P": "Pall",
+    "N": "N0",
+    "R": "-",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N0_L1",
+    "combo": "Pall_N0",
+    "P": "Pall",
+    "N": "N0",
+    "R": "-",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N0_L2",
+    "combo": "Pall_N0",
+    "P": "Pall",
+    "N": "N0",
+    "R": "-",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N0_R1_F",
+    "combo": "Pall_N0_R1",
+    "P": "Pall",
+    "N": "N0",
+    "R": "R1",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_R1_L1",
+    "combo": "Pall_N0_R1",
+    "P": "Pall",
+    "N": "N0",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_R1_L2",
+    "combo": "Pall_N0_R1",
+    "P": "Pall",
+    "N": "N0",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_R05_F",
+    "combo": "Pall_N0_R05",
+    "P": "Pall",
+    "N": "N0",
+    "R": "R05",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_R05_L1",
+    "combo": "Pall_N0_R05",
+    "P": "Pall",
+    "N": "N0",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_R05_L2",
+    "combo": "Pall_N0_R05",
+    "P": "Pall",
+    "N": "N0",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_Rsmall_F",
+    "combo": "Pall_N0_Rsmall",
+    "P": "Pall",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_Rsmall_L1",
+    "combo": "Pall_N0_Rsmall",
+    "P": "Pall",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_Rsmall_L2",
+    "combo": "Pall_N0_Rsmall",
+    "P": "Pall",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_Rprofit_F",
+    "combo": "Pall_N0_Rprofit",
+    "P": "Pall",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_Rprofit_L1",
+    "combo": "Pall_N0_Rprofit",
+    "P": "Pall",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N0_Rprofit_L2",
+    "combo": "Pall_N0_Rprofit",
+    "P": "Pall",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_F",
+    "combo": "Pall_N2",
+    "P": "Pall",
+    "N": "N2",
+    "R": "-",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N2_L1",
+    "combo": "Pall_N2",
+    "P": "Pall",
+    "N": "N2",
+    "R": "-",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N2_L2",
+    "combo": "Pall_N2",
+    "P": "Pall",
+    "N": "N2",
+    "R": "-",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "Pall_N2_R1_F",
+    "combo": "Pall_N2_R1",
+    "P": "Pall",
+    "N": "N2",
+    "R": "R1",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_R1_L1",
+    "combo": "Pall_N2_R1",
+    "P": "Pall",
+    "N": "N2",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_R1_L2",
+    "combo": "Pall_N2_R1",
+    "P": "Pall",
+    "N": "N2",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_R05_F",
+    "combo": "Pall_N2_R05",
+    "P": "Pall",
+    "N": "N2",
+    "R": "R05",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_R05_L1",
+    "combo": "Pall_N2_R05",
+    "P": "Pall",
+    "N": "N2",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_R05_L2",
+    "combo": "Pall_N2_R05",
+    "P": "Pall",
+    "N": "N2",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_Rsmall_F",
+    "combo": "Pall_N2_Rsmall",
+    "P": "Pall",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_Rsmall_L1",
+    "combo": "Pall_N2_Rsmall",
+    "P": "Pall",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_Rsmall_L2",
+    "combo": "Pall_N2_Rsmall",
+    "P": "Pall",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_Rprofit_F",
+    "combo": "Pall_N2_Rprofit",
+    "P": "Pall",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_Rprofit_L1",
+    "combo": "Pall_N2_Rprofit",
+    "P": "Pall",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "Pall_N2_Rprofit_L2",
+    "combo": "Pall_N2_Rprofit",
+    "P": "Pall",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_F",
+    "combo": "PUR",
+    "P": "PUR",
+    "N": "-",
+    "R": "-",
+    "policy": "F",
+    "modules": 1
+  },
+  {
+    "id": "PUR_L1",
+    "combo": "PUR",
+    "P": "PUR",
+    "N": "-",
+    "R": "-",
+    "policy": "L1",
+    "modules": 1
+  },
+  {
+    "id": "PUR_L2",
+    "combo": "PUR",
+    "P": "PUR",
+    "N": "-",
+    "R": "-",
+    "policy": "L2",
+    "modules": 1
+  },
+  {
+    "id": "PUR_R1_F",
+    "combo": "PUR_R1",
+    "P": "PUR",
+    "N": "-",
+    "R": "R1",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "PUR_R1_L1",
+    "combo": "PUR_R1",
+    "P": "PUR",
+    "N": "-",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "PUR_R1_L2",
+    "combo": "PUR_R1",
+    "P": "PUR",
+    "N": "-",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "PUR_R05_F",
+    "combo": "PUR_R05",
+    "P": "PUR",
+    "N": "-",
+    "R": "R05",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "PUR_R05_L1",
+    "combo": "PUR_R05",
+    "P": "PUR",
+    "N": "-",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "PUR_R05_L2",
+    "combo": "PUR_R05",
+    "P": "PUR",
+    "N": "-",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "PUR_Rsmall_F",
+    "combo": "PUR_Rsmall",
+    "P": "PUR",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "PUR_Rsmall_L1",
+    "combo": "PUR_Rsmall",
+    "P": "PUR",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "PUR_Rsmall_L2",
+    "combo": "PUR_Rsmall",
+    "P": "PUR",
+    "N": "-",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "PUR_Rprofit_F",
+    "combo": "PUR_Rprofit",
+    "P": "PUR",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "PUR_Rprofit_L1",
+    "combo": "PUR_Rprofit",
+    "P": "PUR",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "PUR_Rprofit_L2",
+    "combo": "PUR_Rprofit",
+    "P": "PUR",
+    "N": "-",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N0_F",
+    "combo": "PUR_N0",
+    "P": "PUR",
+    "N": "N0",
+    "R": "-",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N0_L1",
+    "combo": "PUR_N0",
+    "P": "PUR",
+    "N": "N0",
+    "R": "-",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N0_L2",
+    "combo": "PUR_N0",
+    "P": "PUR",
+    "N": "N0",
+    "R": "-",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N0_R1_F",
+    "combo": "PUR_N0_R1",
+    "P": "PUR",
+    "N": "N0",
+    "R": "R1",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_R1_L1",
+    "combo": "PUR_N0_R1",
+    "P": "PUR",
+    "N": "N0",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_R1_L2",
+    "combo": "PUR_N0_R1",
+    "P": "PUR",
+    "N": "N0",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_R05_F",
+    "combo": "PUR_N0_R05",
+    "P": "PUR",
+    "N": "N0",
+    "R": "R05",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_R05_L1",
+    "combo": "PUR_N0_R05",
+    "P": "PUR",
+    "N": "N0",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_R05_L2",
+    "combo": "PUR_N0_R05",
+    "P": "PUR",
+    "N": "N0",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_Rsmall_F",
+    "combo": "PUR_N0_Rsmall",
+    "P": "PUR",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_Rsmall_L1",
+    "combo": "PUR_N0_Rsmall",
+    "P": "PUR",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_Rsmall_L2",
+    "combo": "PUR_N0_Rsmall",
+    "P": "PUR",
+    "N": "N0",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_Rprofit_F",
+    "combo": "PUR_N0_Rprofit",
+    "P": "PUR",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_Rprofit_L1",
+    "combo": "PUR_N0_Rprofit",
+    "P": "PUR",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N0_Rprofit_L2",
+    "combo": "PUR_N0_Rprofit",
+    "P": "PUR",
+    "N": "N0",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_F",
+    "combo": "PUR_N2",
+    "P": "PUR",
+    "N": "N2",
+    "R": "-",
+    "policy": "F",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N2_L1",
+    "combo": "PUR_N2",
+    "P": "PUR",
+    "N": "N2",
+    "R": "-",
+    "policy": "L1",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N2_L2",
+    "combo": "PUR_N2",
+    "P": "PUR",
+    "N": "N2",
+    "R": "-",
+    "policy": "L2",
+    "modules": 2
+  },
+  {
+    "id": "PUR_N2_R1_F",
+    "combo": "PUR_N2_R1",
+    "P": "PUR",
+    "N": "N2",
+    "R": "R1",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_R1_L1",
+    "combo": "PUR_N2_R1",
+    "P": "PUR",
+    "N": "N2",
+    "R": "R1",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_R1_L2",
+    "combo": "PUR_N2_R1",
+    "P": "PUR",
+    "N": "N2",
+    "R": "R1",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_R05_F",
+    "combo": "PUR_N2_R05",
+    "P": "PUR",
+    "N": "N2",
+    "R": "R05",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_R05_L1",
+    "combo": "PUR_N2_R05",
+    "P": "PUR",
+    "N": "N2",
+    "R": "R05",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_R05_L2",
+    "combo": "PUR_N2_R05",
+    "P": "PUR",
+    "N": "N2",
+    "R": "R05",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_Rsmall_F",
+    "combo": "PUR_N2_Rsmall",
+    "P": "PUR",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_Rsmall_L1",
+    "combo": "PUR_N2_Rsmall",
+    "P": "PUR",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_Rsmall_L2",
+    "combo": "PUR_N2_Rsmall",
+    "P": "PUR",
+    "N": "N2",
+    "R": "Rsmall",
+    "policy": "L2",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_Rprofit_F",
+    "combo": "PUR_N2_Rprofit",
+    "P": "PUR",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "F",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_Rprofit_L1",
+    "combo": "PUR_N2_Rprofit",
+    "P": "PUR",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "L1",
+    "modules": 3
+  },
+  {
+    "id": "PUR_N2_Rprofit_L2",
+    "combo": "PUR_N2_Rprofit",
+    "P": "PUR",
+    "N": "N2",
+    "R": "Rprofit",
+    "policy": "L2",
+    "modules": 3
+  }
+]

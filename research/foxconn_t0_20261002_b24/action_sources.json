@@ -1,0 +1,34 @@
+{
+  "P": {
+    "code": "scripts/research/foxconn_t0_audit.py;foxconn_t0_b03.py",
+    "commit": "9c13b3e507e00b05222f8e332ebc38cae301f17b",
+    "entry": "09:40 labelled bar open =09:35 start",
+    "signal": "frozen exact prepare/stage plus B03 masks"
+  },
+  "N": {
+    "code": "scripts/research/foxconn_overnight_b11.py;foxconn_overnight_b12.py",
+    "commits": [
+      "087b33677618f6048ee5490bb2e155d253db382e",
+      "18b5840d86d075dc7a4499c3dcff94926a21eb09"
+    ],
+    "trigger": "B11 main-cost stop line, completed low trigger or opening gap",
+    "fill": "B12 next bar close"
+  },
+  "R": {
+    "code": "scripts/research/foxconn_b23.py",
+    "commit": "ac7759ea0d94948b3b0af837d3459d10ee2e34da",
+    "aliases": {
+      "R1": "R1122",
+      "R05": "R1111",
+      "Rsmall": "R0112",
+      "Rprofit": "R2112"
+    }
+  },
+  "account": {
+    "parent_runtime": "research/foxconn_t0_20261002_b23/inherited_account_runtime.py.txt",
+    "new": "scripts/research/foxconn_b24.py",
+    "fee": "B15 sf date schedule",
+    "tax": "B15 taxrate FIFO",
+    "dividends": "B16 verified_events plus B23 daily ledger"
+  }
+}
