@@ -6,6 +6,7 @@ import pandas as pd
 import foxconn_b24 as c
 R=c.R
 HEAD={'id':'核对编号','increment':'净增量(元)','relative_mdd':'做T回撤(元)','absolute_mdd':'全账户回撤(元)','hold_mdd':'持有回撤(元)','completed':'完成笔数','win':'逻辑胜率(%)','worst':'最大单笔损益(元)','worst5':'最差5笔合计(元)','deposits':'累计补款(元)','max_shares':'最高持股','bp':'每边滑点bp','stock':'初始旧股','policy_rejected':'政策拒绝数','longest_loss':'最长连亏笔数','recovery_days':'最长回撤恢复天数','reference':'对照','removed':'少做笔数','avoided_loss':'避免亏损(元)','missed_profit':'错失盈利(元)','actual_increment_change':'真实净增量变化(元)','remaining_interaction':'剩余交互变化(元)','period':'时期','absolute_profit':'全账户损益(元)','top1':'最大1日贡献','top3':'最大3日贡献','top5':'最大5日贡献','without1':'其余日合计(去1日)','without3':'其余日合计(去3日)','without5':'其余日合计(去5日)','delta':'相对主对照增量','date':'日期','module':'模块','kind':'动作','signals':'信号数','accepted':'已开笔数','pending':'未完成笔数','untradeable':'报价不可成交','quote_unknown':'报价未知','inventory_rejected':'旧股不足拒绝','exit_failed':'退出失败次数','max_deposit':'最大单次补款','max_buy_cash':'最大真实买单总款','max_batch_days':'最长批次日数','min_old_available':'最低可卖旧股','deposit_yuan_days':'补款留存元天','n':'笔数','step':'口径步骤','value':'金额(元)','correlation':'相关系数','both_loss_days':'同日俱亏天数','all_days':'全部交易日数','first':'方向一','second':'方向二','avg_profit':'盈利笔平均(元)','avg_loss':'亏损笔平均(元)','winning_day_pct':'盈利交易日占比(%)','behind_days':'最长落后持有天数','buy_cash_total':'累计真实买入总款(元)'}
+HEAD.update({'reference_cash_change':'参考价现金变化','slippage_change':'滑点变化','fee_change':'费用变化','tax_change':'FIFO税变化','reserve_change':'期末税准备变化','dividend_change':'权益差变化','pending_mark_change':'未完成估值变化','relative_day':'当日做T损益','absolute_day':'当日全账户损益','P':'正T贡献','N':'隔夜买贡献','R':'隔夜卖贡献','adjust':'税准备调整','combo':'版本组合','minimum_initial_old_shares':'历史最低旧股需要','diagnostic_stock':'诊断旧股数','observed_5m_relative_mdd':'离散观察做T回撤','observed_5m_absolute_mdd':'离散观察全账户回撤','date_covered':'细数据日期覆盖','quote_compared':'已比报价数','auction_unknown':'竞价未认证数','max_abs_price_difference':'最大绝对价差','state_flips':'状态翻转数','coverage':'覆盖说明'})
 def table(df,cols=None):
     return (df[cols] if cols else df).rename(columns=HEAD).to_markdown(index=False,floatfmt='.2f')
 def read(n):return pd.read_csv(R/n)
@@ -77,10 +78,25 @@ def run():
         current=sell-buy-c.b.old.fee(sell,ent,True)-c.b.old.fee(buy,ent)
         bridge.extend([dict(module=mod,step='新已执行且当日完成日期09:35/旧费用',n=len(matched),value=oldcash.sum()),dict(module=mod,step='相同日期09:35/历史日期费用',n=len(matched),value=current.sum()),dict(module=mod,step='连续账户含延期/FIFO/权益准备',n=int(main.loc[mod+'_F','completed']),value=main.loc[mod+'_F','increment'])])
     nold=pd.read_csv(c.n11.R/'exit_trades.csv');nlat=pd.read_csv('research/foxconn_overnight_20260917_b12/latency_trades.csv')
+    extras=[]
+    oldfeat=pd.read_csv(c.n11.P10/'features.csv')
+    oldledger=pd.read_csv(c.n11.b9.P8/'daily_ledger.csv',parse_dates=['date'])
     for mod,mode in [('N0','1000_S0'),('N2','1000_S2')]:
         for label,src in [('B11原价及固定20%股息税机会口径',nold),('B12下一bar收价及原费用机会口径',nlat[nlat.latency.eq('next_bar_close')])]:
             g=src[src.entry.eq('C')&src.exit_model.eq(mode)];bridge.append(dict(module=mod,step=label,n=len(g),value=g.cash.sum()))
+        tt=read('trades/'+mod+'_F_3000_5.csv.gz')
+        prior_dates=set(pd.to_datetime(nold.loc[nold.entry.eq('C')&nold.exit_model.eq(mode),'date']))
+        shared=pd.to_datetime(tt.entry).isin(prior_dates)
+        for label,pick in [('原61笔日期按新FIFO归属',shared),('新增完整信号日期按新FIFO归属',~shared)]:
+            part=tt[pick];bridge.append(dict(module=mod,step=label,n=len(part),value=(part.cash+part.dividend).sum()))
+        for t in tt[~shared].itertuples():
+            dt=pd.Timestamp(t.entry);ii=int(oldledger.index[oldledger.date.eq(dt)][0]);oldrow=oldledger.iloc[ii]
+            missing=list(oldfeat.columns[oldfeat.iloc[ii].isna()])
+            extras.append(dict(module=mod,date=t.entry,old_missing_features=';'.join(missing),old_limit_proxy=bool(oldrow.close>=oldrow.preclose*1.099 or oldrow.volume<=0),old_next_open_missing=bool(pd.isna(oldrow.next_open)),logical_profit=t.cash+t.dividend,actual_exit=t.actual_exit))
+        bridge.append(dict(module=mod,step='期末税准备从逻辑合计扣除',n=0,value=-main.loc[mod+'_F','terminal_reserve']))
         bridge.append(dict(module=mod,step='统一FIFO连续账户',n=int(main.loc[mod+'_F','completed']),value=main.loc[mod+'_F','increment']))
+        assert abs((tt.cash+tt.dividend).sum()-main.loc[mod+'_F','terminal_reserve']-main.loc[mod+'_F','increment'])<1e-5
+    c.save('legacy_N_membership_bridge.csv',extras)
     c.save('legacy_adjustment_bridge.csv',bridge)
     c.save('N_decision_prefix_evidence.csv',[dict(module=mod,tid=t['tid'],entry=t['entry'],observation_clock=t.get('observation_clock'),delayed_execution_clock=t.get('exit_clock'),status='PASS_asserted_in_load') for mod in ['N0','N2'] for t in plans[mod] if pd.notna(t.get('parent_price'))])
     # Qualified 1m coverage: actual entry/exit quotes and relevant R state, no source substitution.
@@ -188,7 +204,7 @@ def run():
     table(inter,['id','increment','reference_cash_change','slippage_change','fee_change','tax_change','reserve_change','dividend_change','pending_mark_change']),
     table(main.loc[selected].reset_index(),['id','avg_profit','avg_loss','winning_day_pct','behind_days']),
     '盈利交易日比例以共同窗口所有交易日为分母，包括无交易日；平均赚亏仅针对完成逻辑批次，与包含未完成估值和权益准备的账户日损益不是同一口径。',
-    '此表是组合减去同窗口、同资源、同政策各单方向账户之和的交互差。恒等式：净变化＝参考价现金变化−滑点变化−费用变化−FIFO税变化−期末准备变化＋权益差变化＋未完成持股市值变化。费用为负表示省费；F下主要反映内部净额及税的交互，L1还包括共享名额改变参与，不能全称为净额省费。',
+    '上方组合交互表是组合减去同窗口、同资源、同政策各单方向账户之和的交互差。恒等式：净变化＝参考价现金变化−滑点变化−费用变化−FIFO税变化−期末准备变化＋权益差变化＋未完成持股市值变化。费用为负表示省费；F下主要反映内部净额及税的交互，L1还包括共享名额改变参与，不能全称为净额省费。',
     table(read('daily_correlations.csv')),
     table(worst[worst.id.eq(c.BASE)].head(5)),
     '每日贡献包括无交易日和未完成批次的估值，税准备单列adjust；相关性只帮助解释，同日风险最终由完整账户验证。亏损分摊随内部配对方式变化，组合总账不随归属名称变化。',
@@ -212,11 +228,13 @@ def run():
     '细数据仅用于核对，没有替换为更有利价格。日期覆盖、报价比对、触发路径认证是三回事；收盘/开盘竞价代理仍未获成交保证。重点增益损失、共同大亏、净额和失败退出日期逐日覆盖见focus_date_coverage.csv；父R触发细路径见B23，父N双侧细路径仅9/61，不把覆盖日自动升级为真实可成交。',
     '## 七、规则、旧结果桥与验证',
     '本报告“前日/昨日”均指上一交易日，累计N日指N个交易日；P量比均值包含昨日，R量均值排除昨日，不能互换。',
-    'P全：冻结上升U、震荡R、下降D、修复C四阶段，每天只选一个阶段。U/D前日收盘位置<40%且今日较preclose低开至少1%；R截至昨日连跌≥3日且前日量比<0.8；C前日个股阴线、上证下跌且今日低开。P主仅U/R。09:25知道开盘条件后，09:35开始区间开价买1000，收盘卖1000可卖旧股；09:35缺价/不可买不新开，卖失败延续至后续合规开盘。',
+    'P全：冻结上升U、震荡R、下降D、修复C四阶段，每天只选一个阶段。U/D前日收盘在当天最高最低区间下方40%以内（严格<40%），且今日较昨收参考preclose低开至少1%；R截至昨日连跌≥3日且前日成交量/截至前日20日均量<0.8；C前日个股阴线、上证下跌且今日低开。P主仅U/R。09:25知道开盘条件后，09:35开始区间开价买1000，收盘卖1000可卖旧股；09:35缺价/不可买不新开，卖失败延续至后续合规开盘。',
     'N无/N2：前日20日累计收益≤−16.1565018%，今日收盘买1000；次日10:00截止，无止损或原2%止损触发。观察完成后按B12下一bar收价成交代理，通常10:05；2%不是净亏损上限。止损参考使用原主成本及当时已知权益调整，不用未来实际FIFO卖出税。',
     'R：A为昨日顶部20%、量≤昨日之前20日均量且20日累计涨幅≥0；否则B为昨日3日累计跌至少4%且顶部30%。今日收盘卖1000，重叠A优先，每天模块新卖最多1000。原版A次日涨1%触发否则14:50；B低开0.5%后最早09:30，否则跌1%/涨2%触发，11:00截止。近邻仅B等待改跌0.5%。小亏版：卖出日14:50未跌时A预定次日开盘、B等跌0.5%，已跌A仍涨1%/14:50、B等跌1%；利润版仅将A未跌改次日固定14:50。未跌为14:50完成价≥当日preclose。盘中触发额外完整间隔、截止优先、失败恢复均继承B23。',
     'F全参加；L1/L2同向最多一/两笔未完成逻辑批次，加股P/N与减股R分别计数，不净抵消。退出优先，失败不释放名额；新开按信号可知先后、完全同刻P/N/R。只有同刻同报价且此前确定的反向意图内部配对，真实残余成交才改变FIFO与T+1或承担费用税费。',
     table(pd.DataFrame(bridge)),
+    table(pd.DataFrame(extras)),
+    'N本轮63笔与旧61笔的差异明确列在上表。旧研究的全特征完整性、次日价格和近涨停代理参与筛选；本轮只按任务书冻结的前日20日收益条件形成意图，再用统一报价/涨跌停/T+1判断能否执行，不继承无关特征缺失过滤。该变化与FIFO口径桥分别保存，不能把新增日期冒充原61笔；原61笔父路径/费用精确复现仍通过。表内逻辑损益含该笔真实分配的费用税和权益，期末准备另扣。',
     '旧P的71笔同日期09:35压力已精确复现；旧2024窗口、旧费用、旧全日质量筛选只用于核对，未把未来全日质量筛选带入本轮09:35入场。本轮2022窗、完整账户、限价失败和FIFO不同，数值差异明确桥接，旧报告与SHA不改。',
     f'独立重放{iv["accounts"]}个账户的每日现金、股票、FIFO税龄/股息税、应收与付款、持有对照、补款剔除权益与回撤通过；原R四版三成本共12组在2022新起点对齐父账；3个共享账户截断重放通过。边界测试包含同刻三方向、同向名额、T+1、失败退出、同刻不同报价不配对及现金流恒等式。',
     '首轮完成396个账后在JSON整数键序列化失败；同时修正内部配对批次费用与真实外部剩余成交不一致的归属问题，FIFO税现在逐段关联实际卖出批次。所有账户总利润、两种回撤和资金需求与修正前逐项保持一致，旧单笔胜率/损益统计已被新版本替代，见allocation_revision_bridge.csv。后续去除N加载器对未来整天完整性的依赖并加入逐笔截断检验，全部8模块历史路径字节不变。中途取消的慢速验账未算通过，最后全396账户重新独立验账。修正及影响范围保存在IMPLEMENTATION_CORRECTIONS.md，首轮快照和失败未删除。最终结论只使用独立核验通过的修订结果。',
