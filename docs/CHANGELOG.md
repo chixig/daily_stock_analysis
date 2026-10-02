@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [文档] B20完成24组合与6单线的90完整账户比较，提交具体交易规则、资金需求和成交覆盖限制；仅研究分支。
+
 - [文档] 登记B19工业富联H00/H01盈利路径优化研究，限定135候选和独立研究分支。
 
 - [chore] Add isolated Foxconn B18 bounded strategy research and remote-only evidence workflow; no application behavior change.

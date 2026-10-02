@@ -48,3 +48,8 @@
 ## B19 盈利路径优化（2026-09-28）
 
 135个网格候选，H00收益/H01胜率双目标；继承B18，3000股比较资源、单次1000股、外部补钱同步持有。全部完整账户、逐年选择、较早历史与细路径复核。状态 active；仅研究分支。入口 [B19协议](../research/foxconn_t0_20260928_b19/PROTOCOL.md)。
+
+## B20 卖出条件与买回组合（2026-10-02）
+
+- [B20研究报告](../research/foxconn_t0_20261002_b20/REPORT.md)：submitted；24组合+6单线、三档成本共90完整账户独立核验。第一类20日非负/涨1%回补，第二类等跌1%或0.5%，重叠第一类优先，分别净39,241.20/39,141.14元；非未来最优。
+- [冻结协议](../research/foxconn_t0_20261002_b20/PROTOCOL.md)：implemented本批执行，原冻结内容保留；[全量主表](../research/foxconn_t0_20261002_b20/REVIEW_DATA.md)、[决策分解](../research/foxconn_t0_20261002_b20/DECISION_DATA.md)、[独立验证](../research/foxconn_t0_20261002_b20/independent_validation.json)。
