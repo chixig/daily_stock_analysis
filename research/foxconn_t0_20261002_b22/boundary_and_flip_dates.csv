@@ -1,13 +1,13 @@
 entry,entry_i,family,category,feature,day_qualified,old_value,new_value,raw_fine_value,old_available,new_available,old_ge,new_ge,raw_ge,flip,availability_flip,old_margin,new_margin,old_p30,new_p30,old_p50,new_p50,old_h50,new_h50,old_l50,new_l50,original_net
-2020-03-31,440,B,only_B,position,False,0.6666666666666689,,,True,False,False,False,False,False,False,-0.009000000000000341,,13.19,,13.21,,13.3,,13.03,,43.09980580000229
+2020-03-31,440,B,only_B,position,False,0.6666666666666666,,,True,False,False,False,False,False,False,-0.009000000000000341,,13.19,,13.21,,13.3,,13.03,,43.09980580000229
 2020-07-21,514,A,overlap,tail,False,0.0006493506493505663,,,True,False,True,False,False,False,False,0.009999999999999787,,15.4,,15.41,,15.49,,15.15,,18.572115800003303
 2020-08-28,542,A,only_A,tail,False,-0.0006775067750677266,,,True,False,False,False,False,False,False,-0.009999999999999787,,14.76,,14.75,,14.79,,14.41,,-290.20222730000023
 2020-10-21,574,A,only_A,tail,False,0.0007331378299120228,,,True,False,True,False,False,False,False,0.009999999999999787,,13.64,,13.65,,13.82,,13.61,,-77.83958039999925
 2020-10-28,579,A,only_A,tail,False,0.0,,,True,False,True,False,False,False,False,0.0,,13.92,,13.92,,14.03,,13.77,,-88.45663049999712
 2020-11-16,592,A,overlap,tail,False,-0.0007002801120448154,,,True,False,False,False,False,False,False,-0.009999999999999787,,14.28,,14.27,,14.48,,14.21,,70.93314110000028
-2020-12-02,604,A,only_A,position,False,0.6500000000000062,,,True,False,False,False,False,False,False,-0.00999999999999801,,14.08,,14.05,,14.12,,13.92,,121.4282265999991
+2020-12-02,604,A,only_A,position,False,0.65,,,True,False,False,False,False,False,False,-0.00999999999999801,,14.08,,14.05,,14.12,,13.92,,121.4282265999991
 2021-06-25,740,A,only_A,tail,False,-0.0007917656373714888,,,True,False,False,False,False,False,False,-0.010000000000001563,,12.63,,12.62,,12.81,,12.53,,-5.702494699999079
-2021-12-24,863,A,only_A,position,False,0.6999999999999991,,,True,False,False,False,False,False,False,0.0,,11.99,,11.99,,12.05,,11.85,,-159.48521099999925
+2021-12-24,863,A,only_A,position,False,0.7,,,True,False,True,False,False,False,False,0.0,,11.99,,11.99,,12.05,,11.85,,-159.48521099999925
 2021-12-24,863,A,only_A,tail,False,0.0,,,True,False,True,False,False,False,False,0.0,,11.99,,11.99,,12.05,,11.85,,-159.48521099999925
 2022-01-04,869,A,only_A,tail,False,0.0008312551953448821,,,True,False,True,False,False,False,False,0.009999999999999787,,12.03,,12.04,,12.1,,11.85,,-189.62318129999767
 2022-06-20,977,A,only_A,day,False,-0.0010319917440659854,,,True,False,False,False,False,False,False,-0.009999999999999787,,9.68,,9.68,,9.74,,9.6,,-139.62505554999916
@@ -25,6 +25,6 @@ entry,entry_i,family,category,feature,day_qualified,old_value,new_value,raw_fine
 2023-11-29,1330,A,only_A,tail,False,0.0,,,True,False,True,False,False,False,False,0.0,,14.97,,14.97,,15.18,,14.92,,-162.78656314999898
 2024-06-27,1468,B,only_B,tail,False,-0.000372995151062927,,,True,False,False,False,False,False,False,-0.00999999999999801,,26.81,,26.8,,27.25,,26.34,,-821.1372013499968
 2024-07-08,1475,A,only_A,tail,False,0.0,,,True,False,True,False,False,False,False,0.0,,27.02,,27.02,,27.42,,26.87,,-561.232562549998
-2025-03-05,1633,B,only_B,position,False,0.7105263157894744,,,True,False,True,False,False,False,False,0.004000000000001336,,20.96,,21.02,,21.13,,20.75,,-492.2050422499997
+2025-03-05,1633,B,only_B,position,False,0.7105263157894737,,,True,False,True,False,False,False,False,0.004000000000001336,,20.96,,21.02,,21.13,,20.75,,-492.2050422499997
 2025-04-10,1658,B,only_B,tail,False,0.0,,,True,False,True,False,False,False,False,0.0,,17.96,,17.96,,17.96,,17.53,,272.8633915499995
 2025-10-16,1783,A,overlap,day,False,-0.00015777847901554676,,,True,False,False,False,False,False,False,-0.010000000000005116,,63.42,,63.37,,64.29,,61.7,,3438.430353585005

@@ -862,7 +862,7 @@ date,family,category,applied,known,signal,reason
 2021-12-21,,neither,False,True,False,no_original_signal
 2021-12-22,,neither,False,True,False,no_original_signal
 2021-12-23,,neither,False,True,False,no_original_signal
-2021-12-24,A,only_A,True,True,True,keep
+2021-12-24,A,only_A,True,True,False,market_rejected
 2021-12-27,,neither,False,True,False,no_original_signal
 2021-12-28,,neither,False,True,False,no_original_signal
 2021-12-29,,neither,False,True,False,no_original_signal
