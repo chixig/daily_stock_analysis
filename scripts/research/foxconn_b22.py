@@ -126,7 +126,7 @@ def run():
     save('parent_baseline_alignment.csv',aligned);analyze(d,s,reg);fine_signals(d,f,family,category,reg)
     for p,h in frozen['files'].items():assert b.sha(p)==h,p
     js('calculation_validation.json',dict(status='PASS',accounts=168,parent_alignments=6,parent_files=len(frozen['files']),data_cutoff=str(d.date.max().date()),core=38,availability=18,new_accounts=168,reused_accounts=0))
-    js('manifest.json',dict(files={str(p):b.sha(p) for p in R.rglob('*') if p.is_file() and p.name not in ['manifest.json','calculation.log','verification.log','failure.json']}))
+    js('manifest.json',dict(files={str(p):b.sha(p) for p in R.rglob('*') if p.is_file() and p.name not in ['manifest.json','calculation.log','verification.log','failure.json','verification_manifest.json','independent_accounts_verified.csv','independent_validation.json','independent_verifier_runtime.py.txt','REVIEW_DATA.md']}))
 def bridge(d,t,ref,new_s,old_s):
     v=q.bridge(t,ref,d);v['terminal_reserve']=old_s.terminal_tax_reserve-new_s.terminal_tax_reserve
     delta=new_s.increment-old_s.increment
