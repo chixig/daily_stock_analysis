@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "cases": [
+    "three_way_close_net",
+    "two_opposite_entries_distinct_future_exits",
+    "L1_full",
+    "L2_slot",
+    "Tplus1_new_shares_retry",
+    "exit_failure_slot_retained",
+    "dividend_receivable_FIFO_transfer",
+    "external_flow_identity",
+    "initial_zero_drawdown"
+  ]
+}
