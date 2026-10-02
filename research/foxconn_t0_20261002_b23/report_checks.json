@@ -1,0 +1,125 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "id": "R2112",
+      "field": "increment",
+      "value": 39741.58123042734,
+      "shown": "39,741.58"
+    },
+    {
+      "id": "R2112",
+      "field": "trade_win",
+      "value": 56.43564356435643,
+      "shown": "56.44"
+    },
+    {
+      "id": "R2112",
+      "field": "trade_worst",
+      "value": -1938.3598118999944,
+      "shown": "1,938.36"
+    },
+    {
+      "id": "R2112",
+      "field": "relative_mdd",
+      "value": -3269.26213079998,
+      "shown": "3,269.26"
+    },
+    {
+      "id": "R0211",
+      "field": "increment",
+      "value": 32116.728753449308,
+      "shown": "32,116.73"
+    },
+    {
+      "id": "R0211",
+      "field": "trade_win",
+      "value": 59.4059405940594,
+      "shown": "59.41"
+    },
+    {
+      "id": "R0211",
+      "field": "trade_worst",
+      "value": -2082.0077701500013,
+      "shown": "2,082.01"
+    },
+    {
+      "id": "R0211",
+      "field": "relative_mdd",
+      "value": -3216.201582199996,
+      "shown": "3,216.20"
+    },
+    {
+      "id": "R0112",
+      "field": "increment",
+      "value": 34398.03385996129,
+      "shown": "34,398.03"
+    },
+    {
+      "id": "R0112",
+      "field": "trade_win",
+      "value": 57.42574257425742,
+      "shown": "57.43"
+    },
+    {
+      "id": "R0112",
+      "field": "trade_worst",
+      "value": -877.7715842519974,
+      "shown": "877.77"
+    },
+    {
+      "id": "R0112",
+      "field": "relative_mdd",
+      "value": -1696.4853255999042,
+      "shown": "1,696.49"
+    },
+    {
+      "id": "R1122",
+      "field": "increment",
+      "value": 39241.20276022432,
+      "shown": "39,241.20"
+    },
+    {
+      "id": "R1122",
+      "field": "trade_win",
+      "value": 56.43564356435643,
+      "shown": "56.44"
+    },
+    {
+      "id": "R1122",
+      "field": "trade_worst",
+      "value": -1740.351460411992,
+      "shown": "1,740.35"
+    },
+    {
+      "id": "R1122",
+      "field": "relative_mdd",
+      "value": -2518.879627049988,
+      "shown": "2,518.88"
+    },
+    {
+      "id": "R1111",
+      "field": "increment",
+      "value": 39141.13855912734,
+      "shown": "39,141.14"
+    },
+    {
+      "id": "R1111",
+      "field": "trade_win",
+      "value": 57.42574257425742,
+      "shown": "57.43"
+    },
+    {
+      "id": "R1111",
+      "field": "trade_worst",
+      "value": -1740.351460411992,
+      "shown": "1,740.35"
+    },
+    {
+      "id": "R1111",
+      "field": "relative_mdd",
+      "value": -2518.879627049988,
+      "shown": "2,518.88"
+    }
+  ]
+}

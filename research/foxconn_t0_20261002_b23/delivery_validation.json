@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "protected": {
+    "frozen_input_hashes.json": 4821,
+    "manifest.json": 1172,
+    "verification_manifest.json": 4
+  },
+  "report_sha256": "cc2b294c49cd8f575aa86c4da0c5cd4d8c9d5cbdad09898dde70f73a99ed1c7f",
+  "registry_sha256": "5bb3c7d25625e1e59b2f3d51bad81021d481e4102933b43f49e777fd63182b26",
+  "protocol_sha256": "1ac05450f15609adf0562422bc0381b65eaa63175aa600db791cdfb024f19724",
+  "accounts": 243,
+  "rules": 81,
+  "parent_alignments": 6,
+  "report_numeric_checks": 20,
+  "data_cutoff": "2026-09-11",
+  "run": "36979941726"
+}
