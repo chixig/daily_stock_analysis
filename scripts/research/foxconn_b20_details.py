@@ -12,6 +12,7 @@ for p,h in protected.items():assert b.sha(p)==h,p
 s=pd.read_csv(R/'comparison.csv');reg=json.loads((R/'registry.json').read_text())
 periods=pd.read_csv(R/'periods.csv');yearly=pd.read_csv(R/'yearly_trades.csv');equity=pd.read_csv(R/'annual_equity_changes.csv')
 det=pd.read_csv(R/'attribution_trades.csv',parse_dates=['entry']);fine=pd.read_csv(R/'leader_fine_coverage.csv',parse_dates=['entry'])
+parent_fine=pd.read_csv(y.x.R/'fine_path_replay.csv',parse_dates=['entry']).set_index(['id','entry'])
 keys=['C00B','C12A','C11A','W0022'];blocks=['# B20决策补充表（模型事实）']
 def add(title,f):blocks.extend(['## '+title,f.to_markdown(index=False,floatfmt='.4f') if len(f) else '无记录'])
 add('四个选择三档成本',s[s.id.isin(keys)][['id','bp','completed','trade_wins','trade_win','increment','delta_baseline','average_profit','average_loss','trade_worst','relative_mdd','terminal_tax_reserve','pending','deposits','max_buy_cash','single_max','max_single_deposit','minimum_old_shares_unconstrained']])
@@ -24,13 +25,20 @@ top=list(dict.fromkeys(pd.read_csv(R/'leaders.csv').id))
 summ=[];changed=[];pairs=[];overlap=[];tails=[]
 for key in top:
     dd=det[det.id.eq(key)&det.bp.eq(5)]
+    actual=pd.read_csv(R/f'trades/{key}_5.csv',parse_dates=['entry','exit']).set_index('entry')
+    baseline=pd.read_csv(R/'trades/C00B_5.csv',parse_dates=['entry','exit']).set_index('entry')
     for (cat,effect),g in dd.groupby(['category','effect']):summ.append(dict(id=key,category=cat,effect=effect,n=len(g),new_net=g.new_net.sum(),old_net=g.old_net.sum(),change=g.change.sum()))
     for effect,g in dd.groupby('effect'):
-        changed.append(dict(id=key,effect=effect,n=len(g),changed_price_or_amount=int(g.change.abs().gt(.00001).sum()),positive_change=g.change.clip(lower=0).sum(),negative_change=g.change.clip(upper=0).sum(),change=g.change.sum()))
+        shared=g[g.entry.isin(actual.index)&g.entry.isin(baseline.index)]
+        changed_fill=sum(actual.loc[date,'buy_clock']!=baseline.loc[date,'buy_clock'] or abs(actual.loc[date,'buy_ref']-baseline.loc[date,'buy_ref'])>1e-8 or actual.loc[date,'exit']!=baseline.loc[date,'exit'] for date in shared.entry)
+        changed.append(dict(id=key,effect=effect,n=len(g),different_realized_fill=changed_fill,changed_price_or_amount=int(g.change.abs().gt(.00001).sum()),positive_change=g.change.clip(lower=0).sum(),negative_change=g.change.clip(upper=0).sum(),change=g.change.sum()))
     for sign,g in [('positive',dd[dd.change.gt(.00001)].sort_values('change',ascending=False)),('negative',dd[dd.change.lt(-.00001)].sort_values('change'))]:
         for rank,tr in enumerate(g.head(8).itertuples(),1):
             ff=fine[fine.id.eq(key)&fine.entry.eq(tr.entry)]
-            pairs.append(dict(id=key,sign=sign,rank=rank,entry=tr.entry,effect=tr.effect,category=tr.category,selected_rule=tr.selected_rule,new_trigger=tr.new_trigger,old_trigger=tr.old_trigger,change=tr.change,fine_covered=bool(ff.covered.iloc[0]) if len(ff) else False,new_net=tr.new_net,old_net=tr.old_net))
+            old_index=(tr.baseline_rule,tr.entry)
+            baseline_covered=bool(parent_fine.loc[old_index,'covered']) if old_index in parent_fine.index else None
+            new_covered=bool(ff.covered.iloc[0]) if len(ff) else None
+            pairs.append(dict(id=key,sign=sign,rank=rank,entry=tr.entry,effect=tr.effect,category=tr.category,selected_rule=tr.selected_rule,new_trigger=tr.new_trigger,old_trigger=tr.old_trigger,change=tr.change,new_fine_covered=new_covered,baseline_fine_covered=baseline_covered,new_net=tr.new_net,old_net=tr.old_net))
     pos=dd.change.sort_values(ascending=False)
     net=s[s.id.eq(key)&s.bp.eq(5)].iloc[0].delta_baseline
     tails.append(dict(id=key,delta_baseline=net,largest_date_improvement=pos.iloc[0],top3_improvements=pos.head(3).sum(),delta_without_top1=net-pos.head(1).sum(),delta_without_top3=net-pos.head(3).sum(),delta_without_top5=net-pos.head(5).sum(),note='descriptive removal of attribution, not rerun account or a tradable selection'))
