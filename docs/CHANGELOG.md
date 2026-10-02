@@ -1838,3 +1838,8 @@ Added B21 protocol, 24 fixed exit combinations and four controls, 84 complete co
 - Add frozen same-day 14:50 entry-filter research and 168 independently verified complete accounts.
 - Fix exact decimal 0.7 boundary semantics and retain superseded results/cancellation evidence.
 - Publish submitted Chinese report, cost/period/availability/FIFO bridges and sell-signal coverage. Research-only; no product behavior or main-branch change.
+
+## B23 Research Branch (2026-10-02)
+
+- Added a frozen 81-rule, 243-account state-conditioned buyback experiment with nine constant controls, independent selection and ledger verification, causal mutation tests, full attribution and fine-minute coverage diagnostics.
+- Preserved all inputs and parent evidence; no production code or main-branch behavior changes. Submitted report distinguishes a small in-sample net gain from worse tail losses, selection bias and execution uncertainty.

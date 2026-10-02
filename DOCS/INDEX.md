@@ -62,3 +62,7 @@
 ## B22 Entry Filter Research (2026-10-02)
 
 - implemented computation / submitted for review: [B22 report](../research/foxconn_t0_20261002_b22/REPORT.md). Frozen 38 core rules plus 18 availability controls, 168 independently verified accounts. Main result d224065; bounded details 790dae8. No adoption, main merge or trades.
+
+## B23 State-Conditioned Buybacks (2026-10-02)
+
+- implemented computation / submitted for review: [B23 report](../research/foxconn_t0_20261002_b23/REPORT.md). Frozen 81 rules (nine constant controls), 243 independently verified new accounts. [Evidence details](../research/foxconn_t0_20261002_b23/DETAILS.md), [protocol](../research/foxconn_t0_20261002_b23/PROTOCOL.md), [independent verification](../research/foxconn_t0_20261002_b23/independent_validation.json). No adoption, main merge or trades.
