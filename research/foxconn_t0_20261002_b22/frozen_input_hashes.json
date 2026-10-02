@@ -3981,7 +3981,7 @@
   "registry_sha256": "95723ff53733c3b8a26a9eba467697fb8410fea0a89db6a5582c99d31697dc82",
   "protocol_sha256": "78bab7c02025a0107acd00a4d5a205e475d86853c63335fe52e13238436ca4ae",
   "code": {
-    "scripts/research/foxconn_b22.py": "a3f53867e28ce837f22c36df6d87074e65415ceb5334f5133a708fd7e1b00c93",
-    "scripts/research/foxconn_b22_verify.py": "a404549b264bb290e4d2bf9269588d0e6985f5d00ddce402fc218b1c67fbee16"
+    "scripts/research/foxconn_b22.py": "4d11915d2eed63ab9ebd4adede0489b8b4ab9d4ba27fe96b5ca86b84f2ff1d80",
+    "scripts/research/foxconn_b22_verify.py": "b41aaf711d451b53db35b2e647114eaddaae97978fb57a8375ef24b681704796"
   }
 }
