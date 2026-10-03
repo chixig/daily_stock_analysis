@@ -33,6 +33,7 @@ def run():
         if max(abs(g.open.iloc[0]-rr.open),abs(g.close.iloc[-1]-rr.close),abs(g.high.max()-rr.high),abs(g.low.min()-rr.low))>=.011:continue
         if not ((g.high>=g[['open','close','low']].max(axis=1))&(g.low<=g[['open','close','high']].min(axis=1))&(g.volume>=0)).all():continue
         fine[dt]=g.set_index('clock')
+    from decimal import Decimal
     features=pd.read_csv(R/'confirmation_features.csv',keep_default_na=False);fd=[];fq=[]
     for r in features.itertuples():
         dt=pd.Timestamp(r.date);g=fine.get(dt);bb={}
@@ -41,10 +42,12 @@ def run():
                 part=g.loc[[p.b.minutes_after(k,-j) for j in range(4,-1,-1)]]
                 bb[k]=dict(close=str(part.close.iloc[-1]),low=str(part.low.min()),volume=str(part.volume.sum()))
             ff=c.features(bb,r.O,r.mode)
+            cent={k:{field:str(Decimal(value).quantize(Decimal('0.01'))) if field in ['close','low'] else value for field,value in bar.items()} for k,bar in bb.items()}
+            cf=c.features(cent,r.O,r.mode)
             px=float(g.loc[p.b.minutes_after(r.target,1),'open'])
-        else:ff={};px=np.nan
+        else:ff={};cf={};px=np.nan
         oldprice=pd.to_numeric(r.entry_price,errors='coerce')
-        fd.append(dict(mode=r.mode,date=r.date,stage=r.stage,covered=g is not None,original_condition=r.condition,fine_condition=ff.get('condition'),changed=g is not None and ff.get('condition')!=r.condition,quote_difference=px-oldprice if np.isfinite(px) and np.isfinite(oldprice) else np.nan,old_price=oldprice,fine_price=px,auction_certified=False))
+        fd.append(dict(mode=r.mode,date=r.date,stage=r.stage,covered=g is not None,original_condition=r.condition,fine_condition=ff.get('condition'),changed=g is not None and ff.get('condition')!=r.condition,quote_difference=px-oldprice if np.isfinite(px) and np.isfinite(oldprice) else np.nan,old_price=oldprice,fine_price=px,auction_certified=False,fine_cent_condition=cf.get('condition'),**{field:getattr(r,field) for field in ['C_t','L_t','C_prev','L_prev','O']},**{'fine_'+field:ff.get(field) for field in ['C_t','L_t','C_prev','L_prev','O']}))
     for key in main.index:
         ev=c.read('events',key+'_3000_5')
         for e in ev[ev.reason.eq('filled')].itertuples():
@@ -169,6 +172,8 @@ def run():
       '旧15账户现金/净单/逻辑账保持；盘中改变如有来自新公共观察点，不能称经济改进。B24已发布5分钟桥和实际交易事件桥分开保留，不混用。',
       '## 9. 细数据、独立核验与限制',
       table(read('fine_confirmation_summary.csv')),
+      '【反证】2026-06-17两bar条件出现差异：09:40原5分钟不通过、细分钟通过；10:00原5分钟通过、细分钟不通过。当日09:45原参考买价71.28、细分钟约71.21，相差0.07元。下表保留字段，fine_cent_condition仅用于辨别二进制小数尾差，以分位规范化细证据的诊断，不改变主信号、阈值或任何成交。未覆盖51/57原信号仍未知。',
+      table(ff[ff.changed]),
       table(read('fine_quote_summary.csv')),
       f'合格细分钟{len(fine)}日。上表信号/决策覆盖与实际成交报价覆盖分开；关键增益、损失、拒绝、名额变化日期覆盖见focus_date_coverage.csv。即使同日覆盖也不认证竞价、分钟内先后或可成交数量。没有替换有利细报价。',
       f'独立核验{iv["accounts"]}账户，每账户{iv["intraday_points_per_account"]}共同点，合计{iv["total_intraday_points"]}点，{iv["prefixes"]}前缀通过。原始字符串特征/判断独立Fraction验证，实际P拒绝状态另重建；15旧账户逐日/净单/逻辑路径对齐。费用FIFO/应收到账/税准备/同流量持有/四回撤独立重建。独立程序不是第二行情商。',
