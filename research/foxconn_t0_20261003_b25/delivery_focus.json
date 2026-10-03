@@ -1,0 +1,11 @@
+{
+  "profit": "Pall_N0_Rprofit_F",
+  "risk": null,
+  "simple": "Pclose_N1000s2_F",
+  "rule": "profit among fixed27 incl anchors; highest-profit Pareto member improving both intraday drawdowns vs specified baseline; unchanged baseline is simplicity reference, not automatically nondominated",
+  "highlights": [
+    "Pall_N0_Rprofit_F",
+    "Pclose_N1000s2_F"
+  ],
+  "highest_win": "P1100_N1000none_L1"
+}

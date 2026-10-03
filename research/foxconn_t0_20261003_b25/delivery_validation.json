@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "accounts": 81,
+  "fine_days": 93,
+  "new_candidates": 0,
+  "tests": [
+    "lunch_first_next_complete_bar",
+    "post1450_cannot_trigger",
+    "strict_above2pct_no_trigger",
+    "all_sealed_result_hashes",
+    "matched_price_vs_allocated_profit_bridge",
+    "peak_trough_module_and_baseline_bridge"
+  ]
+}
