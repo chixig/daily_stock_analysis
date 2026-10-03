@@ -1,0 +1,52 @@
+name: Foxconn B26 shared portfolio research
+on:
+  push:
+    branches: [research/foxconn-t0-20261003-b26]
+    paths: [scripts/research/foxconn_b26.py, scripts/research/foxconn_b26_verify.py, .github/workflows/foxconn-b26.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-b26
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3 scikit-learn==1.6.1
+      - name: Freeze protocol registry and inherited bytes before computation
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin efb5e16ed8445f777a31c2ea493671474afdb0b9
+          python -m py_compile scripts/research/foxconn_b26.py scripts/research/foxconn_b26_verify.py
+          python scripts/research/foxconn_b26.py freeze
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261003_b26/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Freeze B26 complete registry and source hashes before computation'
+            git push origin HEAD:research/foxconn-t0-20261003-b26
+          fi
+      - name: Compute shared broker accounts
+        run: |
+          set -euo pipefail
+          python -u scripts/research/foxconn_b26.py run 2>&1 | tee research/foxconn_t0_20261003_b26/calculation.log
+      - name: Independently replay every broker and logical ledger
+        run: |
+          set -euo pipefail
+          python -u scripts/research/foxconn_b26_verify.py 2>&1 | tee research/foxconn_t0_20261003_b26/verification.log
+      - name: Preserve results and failures on research branch
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261003_b26/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve B26 portfolio results and validation evidence'
+            git push origin HEAD:research/foxconn-t0-20261003-b26
+          fi
