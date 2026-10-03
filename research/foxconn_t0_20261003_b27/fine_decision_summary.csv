@@ -1,0 +1,8 @@
+mode,raw_signals,covered,trigger_changed,armed_changed,cent_trigger_changed,cent_armed_changed
+PF105,57,6,0,0,0,0
+PF110,57,6,0,0,0,0
+PF205,57,6,0,0,0,0
+PF210,57,6,0,0,0,0
+PT1,57,6,0,0,0,0
+PT2,57,6,0,0,0,0
+Pclose,57,6,0,0,0,0

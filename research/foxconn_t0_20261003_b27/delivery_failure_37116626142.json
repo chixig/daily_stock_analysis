@@ -1,0 +1,3 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b27_delivery.py\", line 188, in <module>\n    try:run()\n        ^^^^^\n  File \"/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b27_delivery.py\", line 122, in run\n    for path,h in sealed['files'].items():assert c.sha(path)==h,path\n                                                 ^^^^^^^^^^^^^^\nAssertionError: research/foxconn_t0_20261003_b27/decision_trace.csv.gz\n"
+}
