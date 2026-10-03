@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "cut": 900,
+      "status": "PASS",
+      "scope": "P frozen stages and signals"
+    },
+    {
+      "cut": 1400,
+      "status": "PASS",
+      "scope": "P frozen stages and signals"
+    },
+    {
+      "cut": 2005,
+      "status": "PASS",
+      "scope": "P frozen stages and signals"
+    }
+  ],
+  "N": "inherited B11 future-bar/gap/locked/deadline tests",
+  "R": "frozen B23 inherited causality; additional decision prefix checked by B24 verifier"
+}

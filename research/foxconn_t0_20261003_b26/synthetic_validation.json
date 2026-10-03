@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "cases": [
+    "C_equals_open_pass",
+    "C_equals_prev_fail",
+    "L_equals_prev_pass",
+    "one_cent_edges",
+    "missing_prev_unknown_only_for_two_bar_rule",
+    "missing_current_unknown",
+    "zero_observation_volume_unknown",
+    "target_missing_quote",
+    "target_future_volume_not_gate",
+    "limit_up_no_buy",
+    "successful_observation_failed_execution",
+    "confirmation_reason_precedes_execution_and_policy",
+    "L1_prior_exit_release",
+    "L1_failed_exit_keeps_slot",
+    "different_basis_no_net",
+    "new_shares_Tplus1_cross_year",
+    "close_failure_recovery",
+    "terminal_pending",
+    "inherited_dividend_FIFO_flow_tests"
+  ]
+}

@@ -1,0 +1,16 @@
+id,parent,bp,days,status,scope
+P0935_N2_R1_F,Pclose_N1000s2_F,5,1138,PASS,daily and all net orders/logical attribution/lots
+P0935_N2_R1_F,Pclose_N1000s2_F,11,1138,PASS,daily and all net orders/logical attribution/lots
+P0935_N2_R1_F,Pclose_N1000s2_F,20,1138,PASS,daily and all net orders/logical attribution/lots
+P0935_N2_R1_L1,Pclose_N1000s2_L1,5,1138,PASS,daily and all net orders/logical attribution/lots
+P0935_N2_R1_L1,Pclose_N1000s2_L1,11,1138,PASS,daily and all net orders/logical attribution/lots
+P0935_N2_R1_L1,Pclose_N1000s2_L1,20,1138,PASS,daily and all net orders/logical attribution/lots
+Pall_N2_R1_F,Pall_N2_R1_F,5,1138,PASS,daily and all net orders/logical attribution/lots
+Pall_N2_R1_F,Pall_N2_R1_F,11,1138,PASS,daily and all net orders/logical attribution/lots
+Pall_N2_R1_F,Pall_N2_R1_F,20,1138,PASS,daily and all net orders/logical attribution/lots
+Pall_N0_Rprofit_F,Pall_N0_Rprofit_F,5,1138,PASS,daily and all net orders/logical attribution/lots
+Pall_N0_Rprofit_F,Pall_N0_Rprofit_F,11,1138,PASS,daily and all net orders/logical attribution/lots
+Pall_N0_Rprofit_F,Pall_N0_Rprofit_F,20,1138,PASS,daily and all net orders/logical attribution/lots
+PUR_N0_Rprofit_F,PUR_N0_Rprofit_F,5,1138,PASS,daily and all net orders/logical attribution/lots
+PUR_N0_Rprofit_F,PUR_N0_Rprofit_F,11,1138,PASS,daily and all net orders/logical attribution/lots
+PUR_N0_Rprofit_F,PUR_N0_Rprofit_F,20,1138,PASS,daily and all net orders/logical attribution/lots
