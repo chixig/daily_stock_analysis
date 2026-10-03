@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "cases": [
+    "exact_profit_threshold",
+    "strict_below_not_trigger",
+    "ignore_preentry_bar",
+    "zero_volume_unknown",
+    "unarmed_pullback_ignored",
+    "exact_pullback_equal",
+    "strict_above_pullback_no_trigger",
+    "running_completed_close_peak",
+    "high_low_ignored",
+    "last_trigger1450_target1455",
+    "lunch_next_complete_bar",
+    "missing_target_keep_intent",
+    "failed_target_retry_latched",
+    "limit_down_retry",
+    "same_day_newshares_Tplus1_crossyear",
+    "terminal_pending",
+    "inherited_netting_FIFO_dividend_L1_flow_tests"
+  ]
+}
