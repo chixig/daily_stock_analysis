@@ -1,0 +1,36 @@
+name: Foxconn B27 verified delivery
+on:
+  push:
+    branches: [research/foxconn-t0-20261003-b27]
+    paths: [scripts/research/foxconn_b27_delivery.py, .github/workflows/foxconn-b27-delivery.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-b27
+  cancel-in-progress: false
+jobs:
+  delivery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 tabulate==0.9.0 requests==2.32.3 scikit-learn==1.6.1
+      - name: Verify sealed accounts and prepare bounded delivery
+        run: |
+          set -euo pipefail
+          python -m py_compile scripts/research/foxconn_b27_delivery.py
+          python -u scripts/research/foxconn_b27_delivery.py 2>&1 | tee research/foxconn_t0_20261003_b27/delivery.log
+      - name: Preserve delivery and failures
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_t0_20261003_b27/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve B27 verified delivery and evidence'
+            git push origin HEAD:research/foxconn-t0-20261003-b27
+          fi
