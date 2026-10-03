@@ -1,0 +1,12 @@
+{
+  "profit": "Pall_N0_Rprofit_F",
+  "risk": null,
+  "simple": "P0935_N2_R1_F",
+  "highlights": [
+    "Pall_N0_Rprofit_F",
+    "P0935_N2_R1_F"
+  ],
+  "highest_win": "PL0940_N2_R1_F",
+  "risk_diagnostic": "PO0940_N2_R1_F",
+  "rule": "retain old profit anchor and specified baseline; new risk swaps are diagnostic because profit/deposit/full-account costs are material; all frontiers and costs retained"
+}

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "accounts": 51,
+  "fine_days": 93,
+  "new_candidates": 0,
+  "all_sealed_results_unchanged": true,
+  "feature_validation": {
+    "status": "PASS",
+    "decisions": 399,
+    "implementation": "independent Fraction raw CSV comparisons and exact entry quote labels"
+  },
+  "tests": [
+    "same_time_profit_bridge",
+    "all_costs_risk_changes",
+    "all_four_peak_trough_contribution_identities",
+    "separate_published5m_eventonly_grid_bridges",
+    "fine_data_diagnostic_only"
+  ]
+}

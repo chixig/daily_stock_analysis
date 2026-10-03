@@ -1,0 +1,4 @@
+id,stock,bp,B24_published_5m_relative,B25_common_relative,B24_published_5m_absolute,B25_common_absolute,source
+Pall_N2_R1_F,3000,5,9077.127209228958,9077.127209228958,80175.42879212784,80175.42879212784,"B24/delivery_sampled_intraday_stress.csv; old account_summary.event_* is event-only, not published5m"
+Pall_N0_Rprofit_F,3000,5,8288.03182029596,8288.03182029596,79784.58746322594,79784.58746322594,"B24/delivery_sampled_intraday_stress.csv; old account_summary.event_* is event-only, not published5m"
+PUR_N0_Rprofit_F,3000,5,5166.527100695996,5166.527100695996,79784.58746322594,79784.58746322594,"B24/delivery_sampled_intraday_stress.csv; old account_summary.event_* is event-only, not published5m"
