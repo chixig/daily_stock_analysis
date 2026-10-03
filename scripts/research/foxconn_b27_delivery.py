@@ -20,7 +20,13 @@ def run():
     for p,h in sealed['files'].items():assert c.sha(p)==h,p
     iv=json.loads((R/'independent_validation.json').read_text());assert iv['status']=='PASS'
     s=read('account_summary.csv');main=s.query('stock==3000 and bp==5').set_index('id');base=main.loc[c.BASE]
-    d,_,_,_,plans=c.load();p=c.c
+    # Read plans/features without rewriting sealed files (gzip headers carry timestamps).
+    saved=(c.save,c.js,c.c.save,c.c.js)
+    def no_write(name,data):return data if isinstance(data,pd.DataFrame) else pd.DataFrame(data)
+    c.save=c.c.save=no_write;c.js=c.c.js=lambda *args:None
+    try:d,_,_,_,plans=c.load()
+    finally:c.save,c.js,c.c.save,c.c.js=saved
+    p=c.c
     # Bounded diagnostic data, never changes source or any account.
     raw=pd.read_csv(p.b.r1.B13/'tdx_recovered_1m.csv',parse_dates=['date','datetime']);raw['clock']=raw.datetime.dt.strftime('%H:%M')
     expected=[p.b.minutes_after(st,k) for st in p.z.x.STARTS for k in range(1,6)];fine={}
