@@ -30,6 +30,7 @@ def run():
     highlights=list(dict.fromkeys([focus['profit']]+([focus['risk']] if focus['risk'] else [])+[focus['simple']]))
     focus['highlights']=highlights;focus['highest_win']=main.sort_values(['win','increment'],ascending=False).index[0]
     keys=list(dict.fromkeys([c.BASE,'Pclose_N1000s2_L1']+highlights))
+    evidence_keys=list(dict.fromkeys(keys+['Pstop2_N1000s2_F','P1100_N1000s2_F','Pclose_N0935s2_F','Pclose_N0935none_F']))
     c.js('delivery_focus.json',focus)
     # Common-entry reference-price attribution, actual logical allocation and accepted-set effects separate.
     attr=[];riskparts=[]
@@ -51,7 +52,7 @@ def run():
     c.save('matched_exit_price_attribution.csv',attr)
     agg=pd.DataFrame(attr).groupby(['id','module']).agg(matched=('key','size'),earlier=('earlier','sum'),price_change=('exit_price_cash_change','sum'),avoided_later_decline=('avoided_later_decline','sum'),missed_later_rebound=('missed_later_rebound','sum'),logical_change=('logical_change','sum'),cost_tax_attribution=('cost_tax_attribution','sum')).reset_index()
     c.save('matched_exit_price_summary.csv',agg)
-    for key in keys:
+    for key in evidence_keys:
         g=c.read('stress',key+'_3000_5')
         for curve in ['relative','absolute']:
             vals=np.r_[0,g[curve].values];dd=np.maximum.accumulate(vals)-vals;j=int(np.argmax(dd));i=int(np.argmax(vals[:j+1]))
@@ -114,7 +115,7 @@ def run():
     c.save('fine_quote_checks.csv',fq);c.save('fine_P_decision_checks.csv',fdec)
     qf=pd.DataFrame(fq);summary=qf.groupby(['id','module','kind']).agg(n=('date','size'),date_covered=('date_covered','sum'),quotes_compared=('quote_compared','sum'),auction_unknown=('auction_unknown','sum'),max_abs_difference=('difference',lambda x:x.abs().max())).reset_index();c.save('fine_quote_summary.csv',summary)
     kd=read('key_dates.csv');wk=read('worst_daily_contributions.csv');target=[]
-    for key in keys:
+    for key in evidence_keys:
         vals=set(pd.to_datetime(kd[kd.id.eq(key)&kd.bp.eq(5)].date))|set(pd.to_datetime(wk[wk.id.eq(key)].date))
         pairs=c.read('pairs',key+'_3000_5')
         if len(pairs):vals|=set(pd.to_datetime(pairs.date))
@@ -142,7 +143,7 @@ def run():
     '## 一、利润与四种回撤的直接取舍',
     table(main.loc[keys].reset_index(),cols,True),
     '比较中始终保留原重点基线及原L1；最多三个非重复突出取舍见delivery_focus.json。非支配同时考虑利润、四种回撤、补款和最高股数，没有自设利润代价阈值或加权总分。简单取舍以改动退出定义和参与限制较少者优先，不能凭简单名称保证风险更低。',
-    table(main.loc[keys].reset_index(),['id','completed','win','avg_profit','avg_loss','worst','worst5','longest_loss','recovery_days','winning_day_pct']),
+    table(main.loc[evidence_keys].reset_index(),['id','completed','win','avg_profit','avg_loss','worst','worst5','longest_loss','recovery_days','winning_day_pct']),
     f'最高逻辑胜率另看“{name(focus["highest_win"])}”：{main.loc[focus["highest_win"],"win"]:.2f}%，净{main.loc[focus["highest_win"],"increment"]:,.2f}、最大单笔{main.loc[focus["highest_win"],"worst"]:,.2f}。单笔盈亏受共享订单成本分配影响，完整账利润优先；高胜率不等于更值得采用。',
     '## 二、提前退出是否优于限制参与',
     table(main.loc[pnames].reset_index(),cols,True),
@@ -154,29 +155,30 @@ def run():
     table(read('policy_opportunity_cost.csv')[lambda x:x.stock.eq(3000)&x.bp.eq(5)]),
     '避损与错失盈利取各规则对应F账户被删逻辑批次，其余交互保留；同向名额与真实净额共同重算。政策从不阻止退出，失败不释放名额。',
     '## 三、早卖少亏与错失反弹从哪里来',
-    table(agg[agg.id.isin(keys)]),
+    '以下归因、年份、成本及覆盖表同时保留未获选的单项提前退出，以解释失败；这些诊断对照不是新增最终推荐。',
+    table(agg[agg.id.isin(evidence_keys)]),
     'matched_exit_price_attribution.csv逐笔用同入场日期/方向比较真实退出参考价；正的早卖价差是避免后续下跌，负值是错失随后较好价格。不是根据事后走势选择退出。实际逻辑利润变化减价差，保留费用/税与分摊交互；新增/拒绝的参与差另在exit_opportunity_cost.csv，不能只把匹配交易差额说成总账改变。',
-    table(comp[comp.stock.eq(3000)&comp.bp.eq(5)&comp.id.isin(keys)&comp.reference.eq(c.BASE)],['id','increment','reference_cash_change','slippage_change','fee_change','tax_change','terminal_reserve_change','dividend_relative_change','pending_mark_change']),
+    table(comp[comp.stock.eq(3000)&comp.bp.eq(5)&comp.id.isin(evidence_keys)&comp.reference.eq(c.BASE)],['id','increment','reference_cash_change','slippage_change','fee_change','tax_change','terminal_reserve_change','dividend_relative_change','pending_mark_change']),
     '桥接恒等式：净变化=参考价现金差−滑点差−费用差−FIFO税差−期末准备差＋权益差＋期末未完成估值差。配对减少也可能增加费用或补款，不以早卖必然省钱作前提。',
     '## 四、盘中亏损来源与共同观察网格',
     table(pd.DataFrame(riskparts)),
     '每行在该曲线自己的峰/谷之间分解。正值贡献回撤、负值抵消回撤；做T回撤等于P/N/R/税准备变化合计，全账户还加同流量持有底仓损益变化。不同曲线峰谷不必同日，不能混加不同峰谷损失。',
-    table(read('daily_correlations.csv')[lambda x:x.id.isin(keys)]),
-    table(read('worst_daily_contributions.csv')[lambda x:x.id.isin(keys)]),
+    table(read('daily_correlations.csv')[lambda x:x.id.isin(evidence_keys)]),
+    table(read('worst_daily_contributions.csv')[lambda x:x.id.isin(evidence_keys)]),
     table(read('B24_grid_bridge.csv')),
     '本轮所有账户采用同一组grid_id，包含无交易日及早卖后的全部观察点，按同刻同报价交易后的状态估值；完成bar收价在随后bar开价之前。日线开/收与分钟报价语义不同，均保留来源，不用高低价拼未知走势。覆盖见grid_coverage.json及grid_missing.csv；缺口不前填，日终账不删日。本轮重估锚点与旧B24离散口径桥单列，不能直接跨口径比较。离散最大回撤不是连续最大浮亏或真实成交上限。',
     json.dumps(json.loads((R/'grid_coverage.json').read_text()),ensure_ascii=False),
     '## 五、年份、成本和集中性',
-    table(s[s.stock.eq(3000)&s.id.isin(keys)],['id','bp']+cols[1:],True),
-    table(per[per.stock.eq(3000)&per.bp.eq(5)&per.id.isin(keys)]),
+    table(s[s.stock.eq(3000)&s.id.isin(evidence_keys)],['id','bp']+cols[1:],True),
+    table(per[per.stock.eq(3000)&per.bp.eq(5)&per.id.isin(evidence_keys)]),
     table(costleaders,cols+['bp'],True),
-    table(read('concentration.csv')[lambda x:x.stock.eq(3000)&x.bp.eq(5)&x.id.isin(keys)]),
+    table(read('concentration.csv')[lambda x:x.stock.eq(3000)&x.bp.eq(5)&x.id.isin(evidence_keys)]),
     '集中性以相对重点基线的每日贡献诊断，去最大1/3/5日后的其余合计不是删交易后重跑。所有规则各年和2022—2023/2024/2025/2026及三成本完整保存，不按每年事后冠军切换；同历史已反复查看，不称样本外。',
     '## 六、资源和细数据未知',
-    table(main.loc[keys].reset_index(),['id','signals','accepted','completed','pending','policy_rejected','inventory_rejected','quote_unknown','untradeable','exit_failed','deposits','max_deposit','max_buy_cash','max_shares','min_old_available','max_batch_days','deposit_yuan_days']),
+    table(main.loc[evidence_keys].reset_index(),['id','signals','accepted','completed','pending','policy_rejected','inventory_rejected','quote_unknown','untradeable','exit_failed','deposits','max_deposit','max_buy_cash','max_shares','min_old_available','max_batch_days','deposit_yuan_days']),
     json.dumps(json.loads((R/'resource_lock.json').read_text()),ensure_ascii=False),
     '补款不是全部本金，3000旧股底仓价值另在账中；卖出回款留存可用于买回。真实残余净卖检查旧股，内部配对不变税龄、不生成可卖股。所有资源候选公平，K测量先于利润排名。',
-    table(summary[summary.id.isin(keys)]),
+    table(summary[summary.id.isin(evidence_keys)]),
     table(pd.DataFrame(fdec).groupby('module').agg(n=('date','size'),covered=('covered','sum'),changed=('changed','sum')).reset_index()),
     table(pd.DataFrame(ndec).groupby('module').agg(n=('date','size'),covered=('covered','sum'),changed=('changed','sum')).reset_index()),
     '合格细数据仅使用继承93日，报价差、触发变化与未覆盖分开，未替换有利价格。入口/退出quote覆盖不自动等于竞价认证；N早退仍继承B11/B12低价触发及延迟代理，覆盖只说明相应字段可核对。关键增益/损失、共同大亏及净额日期见focus_date_coverage.csv。未覆盖区间、分钟内先后与竞价队列仍未知。',
