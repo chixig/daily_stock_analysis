@@ -6,7 +6,7 @@ import pandas as pd
 import foxconn_b25 as c
 R=c.R
 def read(name):return pd.read_csv(R/name)
-HEAD={'id':'核对编号','reference':'对照','P':'正T贡献','N':'隔夜买贡献','R':'隔夜卖贡献','increment':'净增量','relative_mdd':'收盘做T回撤','absolute_mdd':'收盘全账户回撤','intraday_relative_mdd':'离散盘中做T回撤','intraday_absolute_mdd':'离散盘中全账户回撤','deposits':'累计补款','max_shares':'最高持股','win':'逻辑胜率(%)','worst':'最大单笔损益','worst5':'最差五笔合计','longest_loss':'最长连亏','recovery_days':'最长收盘恢复天数','avg_profit':'盈利笔平均','avg_loss':'亏损笔平均','completed':'完成笔数','pending':'期末未完成','bp':'每边滑点bp','stock':'旧股','period':'年份/分期','delta':'净变化','top1':'最大一日贡献','top3':'最大三日贡献','top5':'最大五日贡献','without1':'其余日合计去一日','without3':'其余日合计去三日','without5':'其余日合计去五日','removed':'少做笔数','avoided_loss':'避免亏损','missed_profit':'错失盈利','actual_change':'实际账户变化','interaction':'其他交互','module':'模块','date':'日期','signals':'信号数','accepted':'已开笔数','policy_rejected':'政策拒绝','inventory_rejected':'库存拒绝','quote_unknown':'缺报价','untradeable':'不可成交','exit_failed':'失败退出次数','max_deposit':'最大单次补款','max_buy_cash':'最大真实买单总款','min_old_available':'最低可卖旧股','deposit_yuan_days':'补款留存元天','max_batch_days':'最长逻辑批次日数','relative_day':'当日做T损益','absolute_day':'当日全账户损益','adjust':'税准备调整','module1':'方向一','module2':'方向二','correlation':'日贡献相关性','both_negative':'同日俱亏天数','reference_cash_change':'参考价现金差','slippage_change':'滑点差','fee_change':'费用差','tax_change':'FIFO税差','terminal_reserve_change':'期末税准备差','dividend_relative_change':'股息权益差','pending_mark_change':'期末估值差','dimension':'变化维度'}
+HEAD={'earlier':'提前笔数','matched':'匹配笔数','price_change':'退出参考价现金差','avoided_later_decline':'避免后续下跌','missed_later_rebound':'错失后续回升','logical_change':'逻辑利润差','cost_tax_attribution':'费用税及归属差','winning_day_pct':'盈利交易日比例(%)','curve':'曲线','peak':'峰时刻','trough':'谷时刻','drawdown':'回撤金额','hold_absolute':'持有底仓贡献','date_covered':'日期覆盖','quotes_compared':'报价核对数','auction_unknown':'竞价未认证','max_abs_difference':'最大绝对价差','n':'笔数','covered':'细决策覆盖','changed':'细决策变化','id':'核对编号','reference':'对照','P':'正T贡献','N':'隔夜买贡献','R':'隔夜卖贡献','increment':'净增量','relative_mdd':'收盘做T回撤','absolute_mdd':'收盘全账户回撤','intraday_relative_mdd':'离散盘中做T回撤','intraday_absolute_mdd':'离散盘中全账户回撤','deposits':'累计补款','max_shares':'最高持股','win':'逻辑胜率(%)','worst':'最大单笔损益','worst5':'最差五笔合计','longest_loss':'最长连亏','recovery_days':'最长收盘恢复天数','avg_profit':'盈利笔平均','avg_loss':'亏损笔平均','completed':'完成笔数','pending':'期末未完成','bp':'每边滑点bp','stock':'旧股','period':'年份/分期','delta':'净变化','top1':'最大一日贡献','top3':'最大三日贡献','top5':'最大五日贡献','without1':'其余日合计去一日','without3':'其余日合计去三日','without5':'其余日合计去五日','removed':'少做笔数','avoided_loss':'避免亏损','missed_profit':'错失盈利','actual_change':'实际账户变化','interaction':'其他交互','module':'模块','date':'日期','signals':'信号数','accepted':'已开笔数','policy_rejected':'政策拒绝','inventory_rejected':'库存拒绝','quote_unknown':'缺报价','untradeable':'不可成交','exit_failed':'失败退出次数','max_deposit':'最大单次补款','max_buy_cash':'最大真实买单总款','min_old_available':'最低可卖旧股','deposit_yuan_days':'补款留存元天','max_batch_days':'最长逻辑批次日数','relative_day':'当日做T损益','absolute_day':'当日全账户损益','adjust':'税准备调整','module1':'方向一','module2':'方向二','correlation':'日贡献相关性','both_negative':'同日俱亏天数','reference_cash_change':'参考价现金差','slippage_change':'滑点差','fee_change':'费用差','tax_change':'FIFO税差','terminal_reserve_change':'期末税准备差','dividend_relative_change':'股息权益差','pending_mark_change':'期末估值差','dimension':'变化维度'}
 LABEL={'Pclose':'正T收盘卖','Pstop2':'正T完成收价跌2%后延迟卖','P1100':'正T11:00决定/11:05卖','N1000s2':'深跌2%触发/10:00截止','N1000none':'深跌无止损/10:00截止','N0935s2':'深跌2%触发/09:35截止','N0935none':'深跌无止损/09:35截止','F':'全参加','L1':'同向最多一笔','Pall':'四阶段正T','PUR':'上升震荡正T','N2':'深跌2%/10:00','N0':'深跌无止损/10:00','R1':'原隔夜卖回补','Rprofit':'状态切换买回锚点'}
 def name(key):return '＋'.join(LABEL[v] for v in key.split('_'))
 def table(f,cols=None,names=False):
@@ -31,6 +31,13 @@ def run():
     focus['highlights']=highlights;focus['highest_win']=main.sort_values(['win','increment'],ascending=False).index[0]
     keys=list(dict.fromkeys([c.BASE,'Pclose_N1000s2_L1']+highlights))
     evidence_keys=list(dict.fromkeys(keys+['Pstop2_N1000s2_F','P1100_N1000s2_F','Pclose_N0935s2_F','Pclose_N0935none_F']))
+    oldpub=pd.read_csv(c.OLD/'delivery_sampled_intraday_stress.csv')
+    pubbridge=[]
+    for key in c.ANCHORS:
+        old=oldpub[oldpub.id.eq(key)&oldpub.stock.eq(3000)&oldpub.bp.eq(5)].iloc[0]
+        cur=main.loc[key]
+        pubbridge.append(dict(id=key,stock=3000,bp=5,B24_published_5m_relative=old.observed_5m_relative_mdd,B25_common_relative=cur.intraday_relative_mdd,B24_published_5m_absolute=old.observed_5m_absolute_mdd,B25_common_absolute=cur.intraday_absolute_mdd,source='B24/delivery_sampled_intraday_stress.csv; old account_summary.event_* is event-only, not published5m'))
+    c.save('B24_published_grid_bridge.csv',pubbridge)
     c.js('delivery_focus.json',focus)
     # Common-entry reference-price attribution, actual logical allocation and accepted-set effects separate.
     attr=[];riskparts=[]
@@ -157,6 +164,7 @@ def run():
     '## 三、早卖少亏与错失反弹从哪里来',
     '以下归因、年份、成本及覆盖表同时保留未获选的单项提前退出，以解释失败；这些诊断对照不是新增最终推荐。',
     table(agg[agg.id.isin(evidence_keys)]),
+    '【模型事实／失败原因】正T2%收价退出实际提前13笔，按退出参考价合计避免后续下跌1,140元，却错失随后回升12,570元；固定11:00后退出提前56笔，分别11,510与20,690元。深跌含2%触发改09:35截止提前56笔，分别8,180与9,870元。以上为固定同入场交易的价格差归因，尚须加费用税与参与交互才等于账户净变化；它解释了本历史为何早卖反而少赚，不是事后择时方案。',
     'matched_exit_price_attribution.csv逐笔用同入场日期/方向比较真实退出参考价；正的早卖价差是避免后续下跌，负值是错失随后较好价格。不是根据事后走势选择退出。实际逻辑利润变化减价差，保留费用/税与分摊交互；新增/拒绝的参与差另在exit_opportunity_cost.csv，不能只把匹配交易差额说成总账改变。',
     table(comp[comp.stock.eq(3000)&comp.bp.eq(5)&comp.id.isin(evidence_keys)&comp.reference.eq(c.BASE)],['id','increment','reference_cash_change','slippage_change','fee_change','tax_change','terminal_reserve_change','dividend_relative_change','pending_mark_change']),
     '桥接恒等式：净变化=参考价现金差−滑点差−费用差−FIFO税差−期末准备差＋权益差＋期末未完成估值差。配对减少也可能增加费用或补款，不以早卖必然省钱作前提。',
@@ -165,8 +173,8 @@ def run():
     '每行在该曲线自己的峰/谷之间分解。正值贡献回撤、负值抵消回撤；做T回撤等于P/N/R/税准备变化合计，全账户还加同流量持有底仓损益变化。不同曲线峰谷不必同日，不能混加不同峰谷损失。',
     table(read('daily_correlations.csv')[lambda x:x.id.isin(evidence_keys)]),
     table(read('worst_daily_contributions.csv')[lambda x:x.id.isin(evidence_keys)]),
-    table(read('B24_grid_bridge.csv')),
-    '本轮所有账户采用同一组grid_id，包含无交易日及早卖后的全部观察点，按同刻同报价交易后的状态估值；完成bar收价在随后bar开价之前。日线开/收与分钟报价语义不同，均保留来源，不用高低价拼未知走势。覆盖见grid_coverage.json及grid_missing.csv；缺口不前填，日终账不删日。本轮重估锚点与旧B24离散口径桥单列，不能直接跨口径比较。离散最大回撤不是连续最大浮亏或真实成交上限。',
+    table(read('B24_published_grid_bridge.csv')),
+    '本轮所有账户采用同一组grid_id，包含无交易日及早卖后的全部观察点，按同刻同报价交易后的状态估值；完成bar收价在随后bar开价之前。日线开/收与分钟报价语义不同，均保留来源，不用高低价拼未知走势。覆盖见grid_coverage.json及grid_missing.csv；缺口不前填，日终账不删日。上表准确对照B24正式交付的主成本5分钟压力表。原B24账户摘要event_*只有交易事件点，另存B24_grid_bridge.csv作九组事件点对照，不能当作B24已发布的5分钟最大回撤；较高成本旧已发布完整5分钟值不存在，不伪造。离散最大回撤不是连续最大浮亏或真实成交上限。',
     json.dumps(json.loads((R/'grid_coverage.json').read_text()),ensure_ascii=False),
     '## 五、年份、成本和集中性',
     table(s[s.stock.eq(3000)&s.id.isin(evidence_keys)],['id','bp']+cols[1:],True),
