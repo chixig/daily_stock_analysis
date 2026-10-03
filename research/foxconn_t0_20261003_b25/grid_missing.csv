@@ -1,0 +1,12 @@
+date,clock,basis,reason
+2024-09-27,10:30,bar_close_1030,missing_or_invalid_completed_quote
+2024-09-27,10:35,bar_close_1035,missing_or_invalid_completed_quote
+2024-09-27,10:40,bar_close_1040,missing_or_invalid_completed_quote
+2024-09-27,10:45,bar_close_1045,missing_or_invalid_completed_quote
+2024-09-27,10:50,bar_close_1050,missing_or_invalid_completed_quote
+2024-09-27,10:55,bar_close_1055,missing_or_invalid_completed_quote
+2024-09-27,11:00,bar_close_1100,missing_or_invalid_completed_quote
+2024-09-27,11:05,bar_close_1105,missing_or_invalid_completed_quote
+2024-09-27,11:10,bar_close_1110,missing_or_invalid_completed_quote
+2024-09-27,11:15,bar_close_1115,missing_or_invalid_completed_quote
+2024-09-27,11:20,bar_close_1120,missing_or_invalid_completed_quote

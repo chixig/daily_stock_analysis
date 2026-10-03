@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "cases": [
+    "exact_decimal_stop",
+    "ignore_pre_entry_close",
+    "zero_volume_observation",
+    "missing_target_keeps_intent",
+    "next_bar_not_trigger_bar",
+    "no_lunch_fill",
+    "last_trigger1450_target1455",
+    "parent_shared_account_boundary_tests",
+    "new_stop_failed_target_then_next_bar",
+    "new_stop_Tplus1_cross_year_open_recovery",
+    "N0940_P0935_L1_slot",
+    "old_exit_releases_L1_before_new"
+  ]
+}

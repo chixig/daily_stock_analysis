@@ -1,0 +1,6 @@
+module,check,n,status
+P,B03 exact original opportunity dates/cash,72,PASS
+N0,B11 original prices/fees,61,PASS
+N0,B12 original prices/fees,61,PASS
+N2,B11 original prices/fees,61,PASS
+N2,B12 original prices/fees,61,PASS

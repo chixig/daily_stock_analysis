@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "accounts": 81,
+  "intraday_points_per_account": 57087,
+  "total_intraday_points": 4624047,
+  "prefixes": 6,
+  "scope": "independent broker/FIFO/receivable/payment/hold/flow and all daily/common-grid equities, module attribution and four drawdowns",
+  "limitations": "inherited execution proxies; not independently sourced market data"
+}

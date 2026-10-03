@@ -1,0 +1,144 @@
+def simulate(d,bars,schedule,plans,rule,stock,bp,persist=False,intraday=False):
+    start=int(d.index[d.date.ge(START)][0]);end=len(d)-1
+    lots=([dict(lot_id=0,q=stock,date=d.date.iloc[start]-pd.DateOffset(years=2),div=0.)] if stock else []);nextlot=1
+    pending={};trades={};newby=defaultdict(list);events=[];orders=[];pairs=[];disposals=[];lotrows=[];signals=[];funds=[];curve=[];stress=[]
+    for mod in [rule['P'],rule['N'],rule['R']]:
+        for t in plans.get(mod,[]):newby[t['entry_i']].append(t)
+    cash=hc=external=paid=hpaid=fees=taxes=0.;recv=[];hr=[];minsell=stock;maxstock=stock
+    initial=stock*d.close.iloc[start];previous_modules={v:0. for v in 'PNR'};previous_adjust=0.;oid=0
+    def qty():return sum(l['q'] for l in lots)
+    def reserve(day):return sum(l['q']*l['div']*b.old.taxrate(l['date'],day) for l in lots)
+    def mark(day,price):
+        eq=cash+sum(v for _,v in recv)+qty()*price-reserve(day)
+        hold=hc+sum(v for _,v in hr)+stock*price
+        return eq,hold
+    def intent(t,kind,price,clock,basis,known):
+        return dict(tid=t['tid'],module=t['module'],direction=t['direction'],kind=kind,side=t['direction']*(1 if kind=='entry' else -1),price=price,clock=clock,basis=basis,known=known,plan=t)
+    for i in range(start,len(d)):
+        row=d.iloc[i];day=row.date;dayin=dayfee=daytax=daypaid=dayhp=0.
+        if row.dividend_today:
+            recv.append((schedule.get(day,len(d)+10),qty()*row.dividend_today));hr.append((schedule.get(day,len(d)+10),stock*row.dividend_today))
+            for lot in lots:lot['div']+=row.dividend_today
+            for t in pending.values():t['dividend']+=t['direction']*1000*row.dividend_today
+        exby=defaultdict(list)
+        for t in list(pending.values()):
+            due=t['exit_i']
+            if t.get('retry') or (due is not None and due<i):
+                clock='09:25';price=float(row.open);basis='daily_open'
+            elif due==i:clock=t['exit_clock'];price=t['exit_price'];basis=t['exit_basis']
+            else:continue
+            exby[(clock,basis)].append(intent(t,'exit',price,clock,basis,'previous_close'))
+        # P entries schedule same-day close exit only after accepted.
+        groups=set(exby)|{(t['entry_clock'],t['entry_basis']) for t in newby[i]}
+        if any(t['module']=='P' for t in newby[i]):groups.add(('15:00','daily_close'))
+        if intraday:groups|={(c,'mark_close') for c in bars.get(day,{})}
+        groups.add(('15:00','daily_close'))
+        paid_today=False
+        for clock,basis in sorted(groups,key=lambda v:(v[0],0 if v[1].startswith('bar_close') else 1 if v[1]=='mark_close' else 2)):
+            if clock=='15:00' and not paid_today:
+                for due,amt in list(recv):
+                    if due<=i:cash+=amt;paid+=amt;daypaid+=amt;recv.remove((due,amt))
+                for due,amt in list(hr):
+                    if due<=i:hc+=amt;hpaid+=amt;dayhp+=amt;hr.remove((due,amt))
+                paid_today=True
+            if basis=='mark_close':
+                price=bars[day][clock]['close'];eq,he=mark(day,price)
+                stress.append(dict(date=day,clock=clock,basis=basis,relative=eq-he,absolute=eq-initial-external,hold_absolute=he-initial-external));continue
+            exits=exby.get((clock,basis),[]).copy()
+            if clock=='15:00' and basis=='daily_close':
+                exits += [intent(t,'exit',float(row.close),clock,basis,'09:35') for t in list(pending.values()) if t['module']=='P' and t['entry_i']==i]
+            news=[intent(t,'entry',t['entry_price'],clock,basis,t['known']) for t in newby[i] if t['entry_clock']==clock and t['entry_basis']==basis]
+            eligibleex=[];eligiblenew=[];why={}
+            for o in exits+news:
+                p=o['price'];reason='quote_unknown' if not np.isfinite(p) or p<=0 else 'untradeable' if not valid(p,row,o['side']) else None
+                if basis=='daily_close' and row.volume<=0:reason='untradeable'
+                if basis.startswith('bar_close_') and bars.get(day,{}).get(clock,{}).get('volume',0)<=0:reason='untradeable'
+                if reason:
+                    why[o['tid']]=reason
+                    if o['kind']=='exit':pending[o['tid']]['retry']=True
+                elif o['kind']=='exit':eligibleex.append(o)
+                else:eligiblenew.append(o)
+            sellable=sum(l['q'] for l in lots if l['date']<day)
+            cap={'F':10**9,'L1':1,'L2':2}[rule['policy']]
+            accepted,reasons=resolve(pending,eligibleex,eligiblenew,cap,sellable);why.update(reasons)
+            accepted_ids={(o['tid'],o['kind']) for o in accepted}
+            for o in exits:
+                if (o['tid'],'exit') not in accepted_ids:
+                    pending[o['tid']]['retry']=True
+                    events.append(dict(date=day,clock=clock,tid=o['tid'],kind='exit',reason=why.get(o['tid'],'old_shares_insufficient')))
+            for o in news:
+                signals.append(dict(date=day,clock=clock,tid=o['tid'],module=o['module'],reason='accepted' if (o['tid'],'entry') in accepted_ids else why.get(o['tid'],'policy_rejected'),known=o['known'],basis=basis,price=o['price']))
+            if not accepted:continue
+            price=accepted[0]['price'];assert all(abs(o['price']-price)<1e-8 for o in accepted)
+            buys=sorted([o for o in accepted if o['side']==1],key=priority);sells=sorted([o for o in accepted if o['side']==-1],key=priority)
+            for buy,sell in zip(buys,sells):pairs.append(dict(date=day,clock=clock,basis=basis,buy_tid=buy['tid'],sell_tid=sell['tid'],quantity=1000,reference=price))
+            net=1000*(len(buys)-len(sells));fee=tax=slipcost=deposit=0.;order_id=None
+            paired_n=min(len(buys),len(sells))
+            contributors=buys[paired_n:] if net>0 else sells[paired_n:] if net<0 else []
+            external_tids={v['tid'] for v in contributors};tax_by_tid=defaultdict(float);tax_lots_by_tid=defaultdict(list);tax_parts=[]
+            if net:
+                oid+=1;order_id=oid;side=1 if net>0 else -1;quant=abs(net);value=quant*price*(1+side*bp/10000);slipcost=quant*price*bp/10000
+                fee=b.old.sf(value,day,side==-1)
+                beforecash=cash;beforeqty=qty()
+                if side==1:
+                    cost=value+fee;deposit=max(0.,cost+reserve(day)-cash);cash+=deposit;hc+=deposit;external+=deposit;dayin+=deposit;cash-=cost
+                    funds.append(dict(date=day,clock=clock,order_id=oid,buy_cost=cost,deposit=deposit,external=external,cash_before=beforecash,tax_reserve=reserve(day)))
+                    lots.append(dict(lot_id=nextlot,q=quant,date=day,div=0.));nextlot+=1
+                else:
+                    need=quant
+                    for lot in list(lots):
+                        if lot['date']>=day:continue
+                        n=min(need,lot['q']);lt=n*lot['div']*b.old.taxrate(lot['date'],day);tax+=lt
+                        disposals.append(dict(order_id=oid,date=day,lot_id=lot['lot_id'],acquired=lot['date'],quantity=n,dividend_per_share=lot['div'],tax=lt))
+                        tax_parts.append(dict(lot_id=lot['lot_id'],quantity=n,per_share_tax=lt/n))
+                        lot['q']-=n;need-=n
+                        if lot['q']==0:lots.remove(lot)
+                        if need==0:break
+                    assert need==0
+                    cash+=value-fee-tax
+                    for co in contributors:
+                        remaining=1000
+                        while remaining:
+                            part=tax_parts[0];qpart=min(remaining,part['quantity']);tx=qpart*part['per_share_tax']
+                            tax_by_tid[co['tid']]+=tx;tax_lots_by_tid[co['tid']].append(dict(lot_id=part['lot_id'],quantity=qpart,tax=tx))
+                            part['quantity']-=qpart;remaining-=qpart
+                            if part['quantity']==0:tax_parts.pop(0)
+                    assert not tax_parts and abs(sum(tax_by_tid.values())-tax)<1e-6
+                fees+=fee;taxes+=tax;dayfee+=fee;daytax+=tax
+                orders.append(dict(order_id=oid,date=day,clock=clock,basis=basis,side='BUY' if net>0 else 'SELL',quantity=quant,reference=price,value=value,fee=fee,tax=tax,slip=slipcost,deposit=deposit,cash=cash,shares=qty(),before_shares=beforeqty,old_available=sellable))
+            # Gross logical reference cash cancels internal pairs; external costs only.
+            external_side=1 if net>0 else -1 if net<0 else 0
+            den=len(contributors)
+            for o in sorted(accepted,key=priority):
+                if o['kind']=='entry':
+                    t=copy.deepcopy(o['plan']);t.update(cash=0.,dividend=0.,fee=0.,tax=0.,slip=0.,retry=False,actual_exit_i=None,actual_exit=None,actual_exit_clock=None)
+                    trades[t['tid']]=t;pending[t['tid']]=t
+                t=trades[o['tid']];fraction=(1/den if o['tid'] in external_tids else 0.);allocated_tax=tax_by_tid[o['tid']]
+                t['cash']+=-o['side']*1000*price-(fee+slipcost)*fraction-allocated_tax
+                t['fee']+=fee*fraction;t['tax']+=allocated_tax;t['slip']+=slipcost*fraction
+                events.append(dict(date=day,clock=clock,tid=o['tid'],module=o['module'],kind=o['kind'],side=o['side'],quantity=1000,basis=basis,reference=price,order_id=order_id,external_share=fraction,fee=fee*fraction,tax=allocated_tax,fifo_lots=json.dumps(tax_lots_by_tid[o['tid']]),slip=slipcost*fraction,reason='filled',known=o['known']))
+                if o['kind']=='exit':
+                    t['actual_exit_i']=i;t['actual_exit']=str(day.date());t['actual_exit_clock']=clock
+                    t['realized']=t['cash']+t['dividend'];pending.pop(t['tid']);t['retry']=False
+            minsell=min(minsell,sum(l['q'] for l in lots if l['date']<day));maxstock=max(maxstock,qty())
+            assert qty()==stock+1000*sum(t['direction'] for t in pending.values())
+            assert cash>=-1e-6
+            eq,he=mark(day,price)
+            stress.append(dict(date=day,clock=clock,basis=basis,relative=eq-he,absolute=eq-initial-external,hold_absolute=he-initial-external))
+        eq,he=mark(day,float(row.close));res=reserve(day)
+        mods={v:sum(t['cash']+t['dividend']+(t['direction']*1000*row.close if tid in pending else 0.) for tid,t in trades.items() if t['module']==v) for v in 'PNR'}
+        assert abs(sum(mods.values())-res-(eq-he))<1e-5,(rule['id'],day,mods,res,eq-he)
+        rr=dict(date=day,cash=cash,hold_cash=hc,shares=qty(),old_available=sum(l['q'] for l in lots if l['date']<day),receivable=sum(v for _,v in recv),hold_receivable=sum(v for _,v in hr),tax_reserve=res,fee=dayfee,tax=daytax,payment=daypaid,hold_payment=dayhp,deposit=dayin,external=external,equity=eq,hold_equity=he,relative=eq-he,absolute=eq-initial-external,hold_absolute=he-initial-external,pending_add=sum(t['direction']==1 for t in pending.values()),pending_reduce=sum(t['direction']==-1 for t in pending.values()),adjust=-res,adjust_pnl=-res-previous_adjust)
+        for v in 'PNR':rr[v]=mods[v];rr[v+'_pnl']=mods[v]-previous_modules[v]
+        previous_modules=mods;previous_adjust=-res;curve.append(rr)
+        for lot in lots:lotrows.append(dict(lot_id=lot['lot_id'],q=lot['q'],div=lot['div'],acquired=lot['date'],date=day))
+    a=pd.DataFrame(curve);tt=pd.DataFrame(list(trades.values()));ss=pd.DataFrame(signals)
+    done=tt[tt.actual_exit_i.notna()].sort_values(['actual_exit_i','actual_exit_clock','tid']) if len(tt) else tt;pn=done.realized if len(done) else pd.Series(dtype=float)
+    run=longest=0
+    for v in pn:run=run+1 if v<0 else 0;longest=max(longest,run)
+    recovery,behind=durations(a.date,a.relative)
+    meta=dict(**rule,stock=stock,bp=bp,increment=a.relative.iloc[-1],relative_mdd=ddmetric(a.relative),absolute_mdd=ddmetric(a.absolute),hold_mdd=ddmetric(a.hold_absolute),absolute_profit=a.absolute.iloc[-1],completed=len(done),pending=len(pending),signals=len(ss),accepted=len(tt),policy_rejected=int(ss.reason.eq('policy_rejected').sum()) if len(ss) else 0,inventory_rejected=int(ss.reason.eq('old_shares_insufficient').sum()) if len(ss) else 0,quote_unknown=int(ss.reason.eq('quote_unknown').sum()) if len(ss) else 0,untradeable=int(ss.reason.eq('untradeable').sum()) if len(ss) else 0,exit_failed=sum(e['kind']=='exit' and e['reason']!='filled' for e in events),inventory_exit_failed=sum(e['kind']=='exit' and e['reason']=='old_shares_insufficient' for e in events),win=100*(pn>0).mean() if len(pn) else np.nan,worst=pn.min() if len(pn) else 0,worst5=pn.nsmallest(5).sum(),avg_profit=pn[pn>0].mean(),avg_loss=pn[pn<0].mean(),longest_loss=longest,recovery_days=recovery,behind_days=behind,winning_day_pct=100*a.relative.diff().fillna(a.relative.iloc[0]).gt(0).mean(),deposits=external,max_deposit=max([v['deposit'] for v in funds],default=0),max_buy_cash=max([v['buy_cost'] for v in funds],default=0),buy_cash_total=sum(v['buy_cost'] for v in funds),deposit_yuan_days=sum(v['deposit']*(d.date.iloc[-1]-v['date']).days for v in funds),max_shares=maxstock,min_old_available=minsell,fee=fees,tax=taxes,terminal_reserve=a.tax_reserve.iloc[-1],dividend_relative=(a.payment-a.hold_payment).sum()+a.receivable.iloc[-1]-a.hold_receivable.iloc[-1],internal_pairs=len(pairs),external_orders=len(orders),slippage=sum(v['slip'] for v in orders),reference_cash=sum((1 if v['side']=='SELL' else -1)*v['quantity']*v['reference'] for v in orders),pending_mark=(qty()-stock)*d.close.iloc[-1],max_batch_days=max([(pd.Timestamp(t['actual_exit']) if t['actual_exit'] else d.date.iloc[-1])-pd.Timestamp(t['entry']) for t in trades.values()],default=pd.Timedelta(0)).days,event_relative_mdd=ddmetric([v['relative'] for v in stress]),event_absolute_mdd=ddmetric([v['absolute'] for v in stress]))
+    if persist:
+        name=f"{rule['id']}_{stock}_{bp}"
+        for folder,data in [('accounts',a),('trades',tt),('signals',ss),('events',events),('orders',orders),('pairs',pairs),('disposals',disposals),('lots',lotrows),('funds',funds),('stress',stress)]:save(folder+'/'+name+'.csv.gz',data)
+    return meta,a,tt,ss
