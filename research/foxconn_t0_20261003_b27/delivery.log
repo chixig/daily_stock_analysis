@@ -178,11 +178,3 @@
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
 /home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b24.py:59: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
   a|=stage.eq('C')&(d.close<d.open).shift().fillna(False)&ix.pct_change().shift().lt(0)&gap.lt(0)
-Traceback (most recent call last):
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b27_delivery.py", line 188, in <module>
-    try:run()
-        ^^^^^
-  File "/home/runner/work/daily_stock_analysis/daily_stock_analysis/scripts/research/foxconn_b27_delivery.py", line 122, in run
-    for path,h in sealed['files'].items():assert c.sha(path)==h,path
-                                                 ^^^^^^^^^^^^^^
-AssertionError: research/foxconn_t0_20261003_b27/decision_trace.csv.gz

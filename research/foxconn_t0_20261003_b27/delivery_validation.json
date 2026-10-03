@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "accounts": 51,
+  "fine_days": 93,
+  "new_candidates": 0,
+  "all_sealed_results_unchanged": true,
+  "feature_validation": {
+    "status": "PASS",
+    "decisions": 399,
+    "implementation": "Fraction from original raw CSV; independent gain/pullback spec, peak/arming/first trigger and unknown counts"
+  },
+  "tests": [
+    "fixed_and_following_exit_total_account_bridge",
+    "all_cost_profit_attribution",
+    "all_four_risk_module_hold_bridge",
+    "fine_raw_and_cent_diagnostic_only",
+    "all15_parent_common_grid_bridge"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "profit": "Pall_N0_Rprofit_F",
+  "corebest": "Pclose_N2_R1_F",
+  "highest_win": "PT1_N2_R1_F",
+  "highlights": [
+    "Pall_N0_Rprofit_F",
+    "Pclose_N2_R1_F",
+    "PT2_N2_R1_F"
+  ],
+  "all_Pareto": [
+    "Pclose_N2_R1_F",
+    "Pclose_N2_R1_L1",
+    "PT2_N2_R1_F",
+    "PT2_N2_R1_L1",
+    "Pall_N0_Rprofit_F",
+    "PUR_N0_Rprofit_F"
+  ],
+  "risk_candidate": "PT2_N2_R1_F",
+  "rule": "old global profit and baseline plus fixed2pct limited risk/funding tradeoff; all3 Pareto; not profit upgrade or automatic adoption"
+}

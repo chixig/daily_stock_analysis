@@ -1,0 +1,8 @@
+mode,raw_signals,triggered,armed,unknown
+PF105,57,41,41,0
+PF110,57,38,41,0
+PF205,57,31,31,0
+PF210,57,29,31,0
+PT1,57,41,0,0
+PT2,57,31,0,0
+Pclose,57,0,0,0
