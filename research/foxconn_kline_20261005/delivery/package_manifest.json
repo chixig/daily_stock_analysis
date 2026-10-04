@@ -1,0 +1,22 @@
+{
+  "archive": "工业富联_上市以来_1分钟K线_5分钟K线_每日分时_截至20260930.zip",
+  "archive_sha256": "2e24500b3a4181a49c2cba925eae5dbbbacbbe7c2649da7b7dcfff4263e71355",
+  "archive_bytes": 30351682,
+  "files": {
+    "数据说明.md": "a947d9a42ae19374b9b0ad20c42573fc803f996644bd3e46857ad0e5c5bda74f",
+    "independent_verification.json": "c6edc5d8116ad8b5d9cbb567702ab2bb76dc4f8a41238ed539cca9d0a6a3cead",
+    "daily_quality.csv": "74e4224272e53311b29bc3a1ee45fdf66a21209588e019359cc0bc54d87ce4e4",
+    "chart_verification.json": "6b1b0bf77b3b4374dd7cd1409bc5d56ff9560c49427dc09751cef1196b73b57f",
+    "01_工业富联_1分钟K线.html": "5b6bc362e55dcf93b74abbfacc905ba8e263be08bdd8b086bda68db63ab1c085",
+    "03_工业富联_每日分时.html": "54588a53db453f05946354484feebf459dc656c71d0b290e46b0d261403525c7",
+    "snapshot_daily_quality.csv": "1f6d6e2e6365bca0d1af022afd3df30b3a790d10f878fba0e1c962c014dc4354",
+    "coverage.json": "616dd458b101b499ef0c83c4a4b5181de8049d8c5d251562e93bec5acfdd3dcb",
+    "02_工业富联_5分钟K线.html": "8f7d1f67bafd19f79321867644561d2654331568a99230b6ca6e593e9e9144cc",
+    "601138_1min.csv": "3f5578aa93f86656c5dc7d9f9688eb4d92e0fb3e71cbe731b050cc59c749e31d",
+    "601138_5min.csv": "38e5f9e4e49e5735b3b820a76966e5a604f92debb872922e30ebea34769cc437",
+    "601138_intraday.csv": "e87e5fb51643550cd31122c69408a05c4b4d949fdf2cfa71848ba542e36464e8",
+    "daily_reference.csv": "a249d484627d3ea944ad287245fdc4c6dc455b241a998f06baf321c32a97532f",
+    "opening_source_records.parquet": "c92e8f951726e5d32e27134d9308682d90fd1fcc679f333c8a1201376fa98c1f",
+    "HF_SOURCE_LICENSE.txt": "6ed198253803a723b9894a9a2963537a14a49eeacec0bdfdc5d933b6ea50459c"
+  }
+}

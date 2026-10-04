@@ -1,0 +1,44 @@
+[
+  {
+    "file": "01_工业富联_1分钟K线.html",
+    "status": "PASS",
+    "tested": [
+      "offline_load",
+      "latest_date",
+      "listing_date",
+      "next_trading_day",
+      "20_day_view",
+      "hover_tooltip",
+      "csv_download"
+    ],
+    "console_errors": []
+  },
+  {
+    "file": "02_工业富联_5分钟K线.html",
+    "status": "PASS",
+    "tested": [
+      "offline_load",
+      "latest_date",
+      "listing_date",
+      "next_trading_day",
+      "20_day_view",
+      "hover_tooltip",
+      "csv_download"
+    ],
+    "console_errors": []
+  },
+  {
+    "file": "03_工业富联_每日分时.html",
+    "status": "PASS",
+    "tested": [
+      "offline_load",
+      "latest_date",
+      "listing_date",
+      "next_trading_day",
+      "20_day_view",
+      "hover_tooltip",
+      "csv_download"
+    ],
+    "console_errors": []
+  }
+]

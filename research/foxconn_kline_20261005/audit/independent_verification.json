@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "rows_verified": {
+    "one_minute": 484560,
+    "five_minute": 96912,
+    "intraday": 484560
+  },
+  "trading_days": 2019,
+  "checks": [
+    "two_daily_calendars",
+    "all_session_grids",
+    "uniqueness_and_sort",
+    "finite_positive_ohlc",
+    "ohlc_bounds",
+    "independent_5m_reshape",
+    "selected_source_all_rows",
+    "native_snapshot_all_rows",
+    "csv_parquet_roundtrip",
+    "quality_counts"
+  ],
+  "scope": "Structural and source fidelity verification; disclosed source disagreements remain unresolved.",
+  "canonical_sha256": {
+    "canonical/601138_intraday.csv.gz": "e4f41eb132ab03a9b5959ba168fff9c05d8f6f062c92e1648bc274b84375df9e",
+    "canonical/601138_1min.csv.gz": "b233db8a9584c44afc3619d3e8f657eb9a92c201251ba7e50f314eeb9c771c39",
+    "canonical/opening_source_records.parquet": "c92e8f951726e5d32e27134d9308682d90fd1fcc679f333c8a1201376fa98c1f",
+    "canonical/daily_reference.csv": "a249d484627d3ea944ad287245fdc4c6dc455b241a998f06baf321c32a97532f",
+    "canonical/601138_1min.parquet": "58df38654d8cc0facbb0866395b5e253aa574481a71358226ccb908fbc700941",
+    "canonical/601138_5min.csv.gz": "c7f73711503863279842197c7656f2b396ea0140a56641ed912b12ffec3d0460",
+    "canonical/daily_quality.csv": "74e4224272e53311b29bc3a1ee45fdf66a21209588e019359cc0bc54d87ce4e4",
+    "canonical/601138_intraday.parquet": "aeb2c173a0773f03ee3e21d2b273870886898101cdecef98e2ab21233037e973",
+    "canonical/601138_5min.parquet": "8d8cac89c0bacce611067a7a423169e89353b6de03e201bf6f38086e256c7475",
+    "canonical/snapshot_daily_quality.csv": "1f6d6e2e6365bca0d1af022afd3df30b3a790d10f878fba0e1c962c014dc4354",
+    "canonical/coverage.json": "616dd458b101b499ef0c83c4a4b5181de8049d8c5d251562e93bec5acfdd3dcb"
+  }
+}

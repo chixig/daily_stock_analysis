@@ -1,0 +1,30 @@
+{
+  "status": "COMPLETE_COVERAGE_WITH_DISCLOSED_QUALITY_FLAGS",
+  "start": "2018-06-08",
+  "end": "2026-09-30",
+  "days": 2019,
+  "one_minute_rows": 484560,
+  "five_minute_rows": 96912,
+  "intraday_rows": 484560,
+  "missing_days": 0,
+  "missing_grid_points": 0,
+  "duplicate_timestamps": 0,
+  "invalid_ohlc": 0,
+  "strict_eligible_days": 1659,
+  "daily_ohlc_match_days": 1669,
+  "daily_extrema_mismatch_days": 332,
+  "legacy_close_definition_review_days": 18,
+  "other_close_mismatch_days": 0,
+  "volume_precision_warning_days": 0,
+  "amount_precision_warning_days": 0,
+  "source_conflict_bars": 591,
+  "snapshot_bar_price_conflict_points": 44431,
+  "old5m_price_conflict_bars": 15811,
+  "source_days": {
+    "hf_0930_fold": 1914,
+    "tdx_20261005": 94,
+    "b13_tdx": 11
+  },
+  "source_commit": "49d41b1965c9cea261f9a633d8683b097a25b995",
+  "tdx_daily_extrema_mismatch_days": 332
+}
