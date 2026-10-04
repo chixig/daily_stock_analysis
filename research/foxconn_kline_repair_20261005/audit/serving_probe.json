@@ -5,7 +5,7 @@
     "canonical_unique_exact_match": true,
     "canonical_raw_rows": 890734,
     "canonical_duplicate_rows": 445367,
-    "elapsed_seconds": 2.65614235999999,
+    "elapsed_seconds": 4.333463001999974,
     "groups": [
       {
         "path": "serving_v1/l2_trades/trade_date=2026-04-01/code_prefix=60/bucket=000/part-00000.parquet",
@@ -23,7 +23,7 @@
     "canonical_unique_exact_match": true,
     "canonical_raw_rows": 699600,
     "canonical_duplicate_rows": 349800,
-    "elapsed_seconds": 1.435573047000048,
+    "elapsed_seconds": 2.351480142000014,
     "groups": [
       {
         "path": "serving_v1/l2_trades/trade_date=2026-04-02/code_prefix=60/bucket=000/part-00000.parquet",
@@ -40,7 +40,7 @@
     "canonical_unique_exact_match": true,
     "canonical_raw_rows": 484866,
     "canonical_duplicate_rows": 242433,
-    "elapsed_seconds": 2.6013546560000123,
+    "elapsed_seconds": 4.291097804999993,
     "groups": [
       {
         "path": "serving_v1/l2_trades/trade_date=2026-04-03/code_prefix=60/bucket=000/part-00000.parquet",

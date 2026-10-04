@@ -1,0 +1,58 @@
+{
+  "01_逐笔重建_1分钟.html": {
+    "bytes": 713133,
+    "sha256": "e699f4a74acb39cc5f3c3b7f0a2b05fe087b9d57776ea0dd3d312db0475e660c"
+  },
+  "02_逐笔重建_5分钟.html": {
+    "bytes": 173733,
+    "sha256": "d5b252bf2fbc8b0e32b49df5d0106b20fdfe111d29c116cbdbeaa8005599d366"
+  },
+  "03_工业富联_每日分时.html": {
+    "bytes": 6221390,
+    "sha256": "56bd6208e6784ab793e8440b965e9bfdb5946d24facb7aedeebe98584f562335"
+  },
+  "601138_1min_trades.csv": {
+    "bytes": 3822228,
+    "sha256": "9dc24c7db5dcdb00bf88c1741dc021c0f801bd47a875620606b11ac3d6acdaf3"
+  },
+  "601138_5min_trades.csv": {
+    "bytes": 756277,
+    "sha256": "f297fd6f49ff95e91a1c17da78736d0ca9d78c18218c5c907167c4bbbb22d5ce"
+  },
+  "601138_intraday.csv": {
+    "bytes": 52901380,
+    "sha256": "e87e5fb51643550cd31122c69408a05c4b4d949fdf2cfa71848ba542e36464e8"
+  },
+  "chart_verification.json": {
+    "bytes": 501,
+    "sha256": "55de726cc1e39ec090accfc705c7a4a16384a0c3fe0ba83ff134139fd694db29"
+  },
+  "coverage.json": {
+    "bytes": 3343,
+    "sha256": "3c39244ce4c22dd0d8de381474a97a526353ee74db4b440b6fb99c2287e33649"
+  },
+  "daily_transaction_quality.csv": {
+    "bytes": 19503,
+    "sha256": "caea29378c5422c98013593072575112b61ad3b747a20ce37c7beec43f053d37"
+  },
+  "independent_verification.json": {
+    "bytes": 653,
+    "sha256": "7a8ab3ea7a027ad3842b6636024ac04dc40792dd0ed82e84d2b3fe36a9e2b87c"
+  },
+  "opening_auction.csv": {
+    "bytes": 12383,
+    "sha256": "d479077c1386804536d20e32f4c5c9dfc94f1de947c486f8c52a7867df04379d"
+  },
+  "publisher_row_count_comparison.csv": {
+    "bytes": 7311,
+    "sha256": "594a2889faa0736f0dd0377a11564421dcbba57b150d66eef686f7027bfdc7c5"
+  },
+  "数据说明.md": {
+    "bytes": 4153,
+    "sha256": "be197c1bed75df33f125b621853e7b966152a88259880af569e8cfedecc92160"
+  },
+  "工业富联_20260401至20260930_逐笔重建候选_附全历史分时.zip": {
+    "bytes": 13491168,
+    "sha256": "5ddcf6b32c012f95b9837ddfc6185e4e708f10914bfa1ad34ded414b78100dc5"
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "chart": "01_逐笔重建_1分钟.html",
+    "status": "PASS",
+    "date_navigation": true,
+    "multi_day_view": true,
+    "tooltip": true,
+    "csv_download": true,
+    "null_minute_tooltip_checked": true,
+    "javascript_errors": []
+  },
+  {
+    "chart": "02_逐笔重建_5分钟.html",
+    "status": "PASS",
+    "date_navigation": true,
+    "multi_day_view": true,
+    "tooltip": true,
+    "csv_download": true,
+    "null_minute_tooltip_checked": false,
+    "javascript_errors": []
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "unique_source_records_examined": 53479821,
+  "auction_days_verified": 125,
+  "nonempty_interval_groups_verified": 35740,
+  "one_minute_rows": 30000,
+  "five_minute_rows": 6000,
+  "checks": [
+    "all unique recorded regular trades contribute exactly once",
+    "opening auction OHLC, count, volume and amount independently match",
+    "numpy first/max/min/last match saved bars",
+    "integer transaction volume and amount match",
+    "empty intervals contain null OHLC and zero trade count",
+    "1m and 5m complete timestamp grids",
+    "CSV and Parquet roundtrip"
+  ],
+  "upstream_independent_completeness_certified": false
+}

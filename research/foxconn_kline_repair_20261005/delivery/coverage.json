@@ -1,0 +1,121 @@
+{
+  "missing_dates_against_daily_calendar": [],
+  "publisher_row_count_check": {
+    "publisher_revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "declared_days": 122,
+    "acquired_days": 122,
+    "all_declared_row_counts_match": true,
+    "failed_dates": [],
+    "independent_exchange_completeness_certified": false
+  },
+  "status": "TRANSACTION_RECONSTRUCTION_CANDIDATE_WITH_UPSTREAM_LIMITATIONS",
+  "days": 125,
+  "start": "2026-04-01 09:31:00",
+  "end": "2026-09-30 15:00:00",
+  "raw_trades": 56450349,
+  "unique_trades": 53479821,
+  "exact_duplicate_rows_removed": 2970528,
+  "session_trades": 53425742,
+  "one_minute_rows": 30000,
+  "five_minute_rows": 6000,
+  "no_recorded_trade_minutes": 260,
+  "daily_reconciliation_pass_days": 114,
+  "daily_reconciliation_failed_dates": [
+    "2026-04-20",
+    "2026-04-21",
+    "2026-05-13",
+    "2026-05-21",
+    "2026-06-01",
+    "2026-06-16",
+    "2026-06-25",
+    "2026-07-15",
+    "2026-08-05",
+    "2026-08-12",
+    "2026-09-11"
+  ],
+  "unassigned_session_trades": 0,
+  "duplicate_time_id": 0,
+  "previous_overlap_minutes": 30000,
+  "previous_price_conflicts": 28457,
+  "range_widening_minutes_excluding_open": 25562,
+  "range_examples": [
+    {
+      "datetime": "2026-04-01 09:33:00",
+      "high_trade": 52.88,
+      "high_previous": 52.86,
+      "low_trade": 52.58,
+      "low_previous": 52.6,
+      "close_trade": 52.67,
+      "close_previous": 52.68
+    },
+    {
+      "datetime": "2026-04-01 09:34:00",
+      "high_trade": 52.77,
+      "high_previous": 52.67,
+      "low_trade": 52.35,
+      "low_previous": 52.35,
+      "close_trade": 52.35,
+      "close_previous": 52.36
+    },
+    {
+      "datetime": "2026-04-01 09:35:00",
+      "high_trade": 52.58,
+      "high_previous": 52.55,
+      "low_trade": 52.35,
+      "low_previous": 52.35,
+      "close_trade": 52.56,
+      "close_previous": 52.55
+    },
+    {
+      "datetime": "2026-04-01 09:36:00",
+      "high_trade": 52.56,
+      "high_previous": 52.54,
+      "low_trade": 51.91,
+      "low_previous": 51.91,
+      "close_trade": 52.17,
+      "close_previous": 52.12
+    },
+    {
+      "datetime": "2026-04-01 09:37:00",
+      "high_trade": 52.19,
+      "high_previous": 52.11,
+      "low_trade": 51.75,
+      "low_previous": 51.75,
+      "close_trade": 51.95,
+      "close_previous": 52.0
+    },
+    {
+      "datetime": "2026-04-01 09:38:00",
+      "high_trade": 51.96,
+      "high_previous": 51.91,
+      "low_trade": 51.58,
+      "low_previous": 51.58,
+      "close_trade": 51.68,
+      "close_previous": 51.7
+    },
+    {
+      "datetime": "2026-04-01 09:39:00",
+      "high_trade": 51.82,
+      "high_previous": 51.79,
+      "low_trade": 51.47,
+      "low_previous": 51.47,
+      "close_trade": 51.82,
+      "close_previous": 51.78
+    },
+    {
+      "datetime": "2026-04-01 09:40:00",
+      "high_trade": 51.9,
+      "high_previous": 51.87,
+      "low_trade": 51.47,
+      "low_previous": 51.5,
+      "close_trade": 51.68,
+      "close_previous": 51.64
+    }
+  ],
+  "source_repo": "phields/a-share-l2-trades",
+  "source_revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+  "provider_provenance_disclosed": false,
+  "time_precision": "seconds; within a second sorted by source tran_id",
+  "opening_auction": "separate from regular minute bars",
+  "empty_minute_ohlc": "null, not interpolated or forward-filled"
+}
