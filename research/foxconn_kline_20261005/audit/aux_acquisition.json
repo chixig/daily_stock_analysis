@@ -1,0 +1,735 @@
+{
+  "missing_snapshot_dates_before": [
+    "2019-08-16",
+    "2026-09-14",
+    "2026-09-15",
+    "2026-09-16",
+    "2026-09-17",
+    "2026-09-18",
+    "2026-09-21",
+    "2026-09-22",
+    "2026-09-23",
+    "2026-09-24",
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "snapshot_requests": [
+    {
+      "date": "2018-06-08",
+      "rows": 240,
+      "first": [
+        {
+          "price": 19.829999923706055,
+          "vol": 755.0,
+          "avg_price": 18.058820724487305,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20180608,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 19.829999923706055,
+          "vol": 114.0,
+          "avg_price": 19.750049591064453,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20180608,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2019-01-02",
+      "rows": 240,
+      "first": [
+        {
+          "price": 11.670000076293945,
+          "vol": 2706.0,
+          "avg_price": 11.668987274169922,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20190102,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 11.600000381469727,
+          "vol": 1592.0,
+          "avg_price": 11.603438377380371,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20190102,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2019-08-16",
+      "rows": 240,
+      "first": [
+        {
+          "price": 14.289999961853027,
+          "vol": 19221.0,
+          "avg_price": 14.240045547485352,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20190816,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 14.359999656677246,
+          "vol": 12443.0,
+          "avg_price": 14.609764099121094,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20190816,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2020-01-02",
+      "rows": 240,
+      "first": [
+        {
+          "price": 18.25,
+          "vol": 26446.0,
+          "avg_price": 18.276832580566406,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20200102,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 18.3799991607666,
+          "vol": 4424.0,
+          "avg_price": 18.377391815185547,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20200102,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-04-30",
+      "rows": 240,
+      "first": [
+        {
+          "price": 65.87999725341797,
+          "vol": 63460.0,
+          "avg_price": 65.91211700439453,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260430,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 62.880001068115234,
+          "vol": 43900.0,
+          "avg_price": 63.71870040893555,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260430,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-08-17",
+      "rows": 240,
+      "first": [
+        {
+          "price": 67.05000305175781,
+          "vol": 46726.0,
+          "avg_price": 67.06239318847656,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260817,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 68.2300033569336,
+          "vol": 14948.0,
+          "avg_price": 67.67571258544922,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260817,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.279998779296875,
+          "vol": 15493.0,
+          "avg_price": 62.51163864135742,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260824,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 60.400001525878906,
+          "vol": 8767.0,
+          "avg_price": 60.5866584777832,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260824,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-08-25",
+      "rows": 240,
+      "first": [
+        {
+          "price": 59.279998779296875,
+          "vol": 30645.0,
+          "avg_price": 59.04271697998047,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260825,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 60.150001525878906,
+          "vol": 10708.0,
+          "avg_price": 59.8060188293457,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260825,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.79999923706055,
+          "vol": 27259.0,
+          "avg_price": 62.65776443481445,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260911,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 64.06999969482422,
+          "vol": 7524.0,
+          "avg_price": 63.58974075317383,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260911,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-14",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.56999969482422,
+          "vol": 21872.0,
+          "avg_price": 62.88341522216797,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260914,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 61.56999969482422,
+          "vol": 7604.0,
+          "avg_price": 61.96592712402344,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260914,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-15",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.15999984741211,
+          "vol": 21604.0,
+          "avg_price": 61.57109832763672,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260915,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 60.79999923706055,
+          "vol": 6261.0,
+          "avg_price": 61.363731384277344,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260915,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-16",
+      "rows": 240,
+      "first": [
+        {
+          "price": 60.7400016784668,
+          "vol": 11846.0,
+          "avg_price": 60.811588287353516,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260916,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 62.33000183105469,
+          "vol": 8209.0,
+          "avg_price": 61.9007682800293,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260916,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.099998474121094,
+          "vol": 16874.0,
+          "avg_price": 61.96250915527344,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260917,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 61.27000045776367,
+          "vol": 7363.0,
+          "avg_price": 61.812225341796875,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260917,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-18",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.68000030517578,
+          "vol": 32908.0,
+          "avg_price": 62.863346099853516,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260918,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 62.709999084472656,
+          "vol": 28487.0,
+          "avg_price": 62.864139556884766,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260918,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-21",
+      "rows": 240,
+      "first": [
+        {
+          "price": 64.55000305175781,
+          "vol": 73734.0,
+          "avg_price": 64.20970153808594,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260921,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 63.599998474121094,
+          "vol": 7885.0,
+          "avg_price": 63.50939178466797,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260921,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-22",
+      "rows": 240,
+      "first": [
+        {
+          "price": 64.80000305175781,
+          "vol": 45664.0,
+          "avg_price": 64.67743682861328,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260922,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 63.29999923706055,
+          "vol": 6578.0,
+          "avg_price": 64.03430938720703,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260922,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-23",
+      "rows": 240,
+      "first": [
+        {
+          "price": 63.099998474121094,
+          "vol": 18220.0,
+          "avg_price": 63.368499755859375,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260923,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 62.97999954223633,
+          "vol": 9188.0,
+          "avg_price": 63.11409378051758,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260923,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "rows": 240,
+      "first": [
+        {
+          "price": 62.45000076293945,
+          "vol": 14808.0,
+          "avg_price": 62.35380172729492,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260924,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 61.0,
+          "vol": 13685.0,
+          "avg_price": 61.282875061035156,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260924,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "rows": 240,
+      "first": [
+        {
+          "price": 60.41999816894531,
+          "vol": 17779.0,
+          "avg_price": 60.70097351074219,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260928,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 58.91999816894531,
+          "vol": 6150.0,
+          "avg_price": 59.18721389770508,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260928,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "rows": 240,
+      "first": [
+        {
+          "price": 59.060001373291016,
+          "vol": 14345.0,
+          "avg_price": 58.76829528808594,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260929,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 58.41999816894531,
+          "vol": 6737.0,
+          "avg_price": 58.47380447387695,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260929,
+          "fields": {}
+        }
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "rows": 240,
+      "first": [
+        {
+          "price": 59.15999984741211,
+          "vol": 29647.0,
+          "avg_price": 58.912376403808594,
+          "hour": 9,
+          "minute": 30,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260930,
+          "fields": {}
+        }
+      ],
+      "last": [
+        {
+          "price": 58.20000076293945,
+          "vol": 8977.0,
+          "avg_price": 58.586788177490234,
+          "hour": 14,
+          "minute": 59,
+          "symbol": "sh601138",
+          "market": 1,
+          "code": "601138",
+          "date": 20260930,
+          "fields": {}
+        }
+      ]
+    }
+  ],
+  "tdx_daily_fresh": {
+    "rows": 2019,
+    "columns": [
+      "market",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "vol",
+      "amount",
+      "year",
+      "month",
+      "day",
+      "hour",
+      "minute",
+      "symbol",
+      "datetime"
+    ],
+    "first": "2018-06-08 15:00:00",
+    "last": "2026-09-30 15:00:00"
+  },
+  "tdx_1m_fresh": {
+    "rows": 22560,
+    "columns": [
+      "market",
+      "code",
+      "open",
+      "high",
+      "low",
+      "close",
+      "vol",
+      "amount",
+      "year",
+      "month",
+      "day",
+      "hour",
+      "minute",
+      "symbol",
+      "datetime"
+    ],
+    "first": "2026-05-20 09:31:00",
+    "last": "2026-09-30 15:00:00"
+  }
+}
