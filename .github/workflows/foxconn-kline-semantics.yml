@@ -1,0 +1,42 @@
+name: Foxconn minute source semantics
+on:
+  push:
+    branches: [research/foxconn-kline-20261005]
+    paths: [scripts/research/foxconn_kline_semantics.py, .github/workflows/foxconn-kline-semantics.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: foxconn-kline-20261005
+  cancel-in-progress: false
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 pyarrow==19.0.1 requests==2.32.3
+      - name: Reconcile opening bars and snapshot time labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -u scripts/research/foxconn_kline_semantics.py
+      - name: Preserve acquired evidence on isolated research branch
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_kline_20261005/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve historical OHLC acquisition and validation evidence'
+            git push origin HEAD:research/foxconn-kline-20261005
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foxconn-kline-20261005
+          path: research/foxconn_kline_20261005/
+          retention-days: 90
