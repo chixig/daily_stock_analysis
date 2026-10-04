@@ -4,6 +4,7 @@ on:
     branches: [research/foxconn-kline-20261005]
     paths:
       - scripts/research/foxconn_kline_new_evidence.py
+      - scripts/research/foxconn_kline_alignment.py
       - .github/workflows/foxconn-kline-evidence.yml
   workflow_dispatch:
 permissions:
@@ -22,6 +23,7 @@ jobs:
           python-version: '3.11'
       - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 pytdxdata==0.6.1
       - run: python -u scripts/research/foxconn_kline_new_evidence.py
+      - run: python -u scripts/research/foxconn_kline_alignment.py
       - name: Preserve independent comparison evidence
         if: always()
         run: |
