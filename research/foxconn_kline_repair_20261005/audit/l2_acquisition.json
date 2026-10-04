@@ -2471,5 +2471,93 @@
       }
     ],
     "sha256": "2be5d918ca8d141cda3d9050c7967c090d5b3615e4b5d8d5b7f793d413084aec"
+  },
+  {
+    "date": "2026-04-30",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-30/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          4,
+          9,
+          10,
+          12,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-30/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    ],
+    "rows": 662770,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 18116,
+        "price_x10000": 659000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 18117,
+        "price_x10000": 659000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 18118,
+        "price_x10000": 659000,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 39956436,
+        "price_x10000": 628800,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 39956437,
+        "price_x10000": 628800,
+        "volume": 600
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 39956438,
+        "price_x10000": 628800,
+        "volume": 200
+      }
+    ],
+    "sha256": "a08629d54a5e49102d4abf7ea46c425572eed40ebcb48cac42069dde35418455"
   }
 ]
