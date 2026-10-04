@@ -1,0 +1,61 @@
+name: Foxconn complete minute dataset and offline charts
+on:
+  push:
+    branches: [research/foxconn-kline-20261005]
+    paths:
+      - scripts/research/foxconn_kline_finalize.py
+      - scripts/research/foxconn_kline_verify.py
+      - scripts/research/foxconn_kline_package.py
+      - scripts/research/foxconn_chart_template.html
+      - scripts/research/foxconn_chart_verify.py
+      - .github/workflows/foxconn-kline-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: foxconn-kline-20261005
+  cancel-in-progress: false
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 playwright==1.55.0
+      - name: Build canonical 1m, 5m and native intraday datasets
+        run: python -u scripts/research/foxconn_kline_finalize.py
+      - name: Independently verify every saved row and 5m aggregation
+        run: python -u scripts/research/foxconn_kline_verify.py
+      - name: Install browser for offline chart verification
+        run: python -m playwright install --with-deps chromium
+      - name: Exercise charts, date navigation, tooltips and CSV exports
+        run: python -u scripts/research/foxconn_chart_verify.py
+      - name: Package verified delivery and hashes
+        run: python -u scripts/research/foxconn_kline_package.py
+      - name: Preserve results on isolated research branch
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_kline_20261005/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve complete historical minute datasets and verification'
+            git push origin HEAD:research/foxconn-kline-20261005
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foxconn-final-delivery
+          path: research/foxconn_kline_20261005/delivery/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foxconn-chart-qa
+          path: /tmp/foxconn_chart_qa/
+          if-no-files-found: warn
+          retention-days: 30
