@@ -1,0 +1,68 @@
+[
+  {
+    "source": "tdx_direct_5m",
+    "period": "0",
+    "requested_count": 110000,
+    "rows": 20320,
+    "first": "2024-09-24 09:35:00",
+    "last": "2026-09-30 15:00:00",
+    "sha256": "0b9b289bdc6614255cb790dbc15c9c71978add62d3217b2d1df9d215e5e7d503",
+    "canonical_comparison": {
+      "overlap": 20320,
+      "conflicts": 3847,
+      "by_field": {
+        "open": 2657,
+        "high": 366,
+        "low": 332,
+        "close": 2610
+      }
+    },
+    "baostock_comparison": {
+      "overlap": 20320,
+      "conflicts": 5860,
+      "by_field": {
+        "open": 2249,
+        "high": 1607,
+        "low": 1630,
+        "close": 2761
+      }
+    },
+    "daily": {
+      "days": 426,
+      "by_field": {
+        "open": 4,
+        "high": 2,
+        "low": 3,
+        "close": 4
+      }
+    }
+  },
+  {
+    "source": "tdx_repeat_1m",
+    "period": "7",
+    "requested_count": 60000,
+    "rows": 22560,
+    "first": "2026-05-20 09:31:00",
+    "last": "2026-09-30 15:00:00",
+    "sha256": "8afba46a6ea6a5d23da4f544111f620730fdd9530e8c493c51dfc1e9fde9b2bb",
+    "canonical_comparison": {
+      "overlap": 22560,
+      "conflicts": 0,
+      "by_field": {
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "close": 0
+      }
+    },
+    "daily": {
+      "days": 94,
+      "by_field": {
+        "open": 0,
+        "high": 0,
+        "low": 0,
+        "close": 0
+      }
+    }
+  }
+]
