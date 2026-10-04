@@ -12,3 +12,6 @@ Frozen previous delivery: 9a51ba137149b3e40b6160f3ed8113302a307e15.
 4. Replace only observations supported by sufficient evidence, preserve old values and reasons, rebuild dependent outputs, and independently verify.
 
 No OHLC may be inferred from snapshots, interpolated, patched from daily extrema, or split from 5m. Passing daily reconciliation is insufficient to certify intraminute extrema. Unknown-provider mirrors are not independent sources. Remaining uncertainty must be explicit in the final delivery.
+
+
+2026-10-05阶段事实：近期125日逐笔候选计算/交付已完成，最终数据165ada69，流程37232378852。全历史真实性修复目标仍active：缺2018-06-08—2026-03-31完整逐笔权限；近期11日对账失败/盘后解释未知。不得标记全目标完成。
