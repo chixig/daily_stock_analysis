@@ -2,11 +2,137 @@
   {
     "version": "v2",
     "url": "https://github.com/SunsetWolf/qlib_dataset/releases/download/v2/qlib_data_cn_1min_latest.zip",
-    "error": "RemoteIOError('501 Server Error: Unsupported client range for url: https://release-assets.githubusercontent.com/github-production-release-asset/804192806/42914cd2-78d0-453d-9101-b0bbe67262b6?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-10-04T20%3A33%3A29Z&rscd=attachment%3B+filename%3Dqlib_data_cn_1min_latest.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-10-04T19%3A32%3A35Z&ske=2026-10-04T20%3A33%3A29Z&sks=b&skv=2018-11-09&sig=Q4Cz0cit0oKFXTZgye65WMKMLveTiMOeDTKHKp%2Bp9eg%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc5MTE0NzAwMSwibmJmIjoxNzkxMTQzNDAxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.7sQsy8xRLlnwdQzwrrFn8ty8l6KKwN7njoAKMRShfSo&response-content-disposition=attachment%3B%20filename%3Dqlib_data_cn_1min_latest.zip&response-content-type=application%2Foctet-stream')"
+    "member_count": 40677,
+    "matches": [
+      "features/sh601138/change.1min.bin",
+      "features/sh601138/paused_num.1min.bin",
+      "features/sh601138/open.1min.bin",
+      "features/sh601138/volume.1min.bin",
+      "features/sh601138/high.1min.bin",
+      "features/sh601138/close.1min.bin",
+      "features/sh601138/low.1min.bin",
+      "features/sh601138/paused.1min.bin",
+      "features/sh601138/factor.1min.bin"
+    ],
+    "calendar_files": [
+      "calendars/1min.txt"
+    ],
+    "saved": [
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/change.1min.bin",
+        "bytes": 171844,
+        "sha256": "a8397c5730a2d095015586551312d49e55cb09feb68a41869f524a0b65bc49f7"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/paused_num.1min.bin",
+        "bytes": 171844,
+        "sha256": "be62142c664316f683a200619da5a39d70ac3aef2dccd8446143102963b50494"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/open.1min.bin",
+        "bytes": 171844,
+        "sha256": "6c16733ba5bc6566bdbde327b90db08213b7d72efdf4ac6fe78eb1560f9d8f5b"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/volume.1min.bin",
+        "bytes": 171844,
+        "sha256": "b507ced52d50426dcc607fd878f8235978f229ab22c099586c2cd0a26b81b26a"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/high.1min.bin",
+        "bytes": 171844,
+        "sha256": "12c62a989265c6d275566536594595d8669baf4ea20540678366f401db3b6131"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/close.1min.bin",
+        "bytes": 171844,
+        "sha256": "2fae25bc706c0a0afd55dcf77d820df3c189433fa47a9d8f542650bb1cb6c3ae"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/low.1min.bin",
+        "bytes": 171844,
+        "sha256": "6e8e61abb1ab02ea5b8586439d3245cbd69a500215e22d68c13395a427645004"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/paused.1min.bin",
+        "bytes": 171844,
+        "sha256": "7605fe0242afa353a36f7956e3ce2de729d4091653eb99218ea985e593f351ee"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/features/sh601138/factor.1min.bin",
+        "bytes": 171844,
+        "sha256": "b81c7721645b14183c0ebb916d591e11eb14a5dcfcfc5f35d9ac9f1ba111a49c"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v2/calendars/1min.txt",
+        "bytes": 927360,
+        "sha256": "960a2398edbfa5001c972f42df436b54164abb118225bf57ec633fd8b51d4cb6"
+      }
+    ]
   },
   {
     "version": "v1",
     "url": "https://github.com/SunsetWolf/qlib_dataset/releases/download/v1/qlib_data_cn_1min_latest.zip",
-    "error": "RemoteIOError('501 Server Error: Unsupported client range for url: https://release-assets.githubusercontent.com/github-production-release-asset/804192806/42de84ab-9ea9-4b1a-b2e1-908ae5162918?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-10-04T20%3A50%3A19Z&rscd=attachment%3B+filename%3Dqlib_data_cn_1min_latest.zip&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-10-04T19%3A49%3A54Z&ske=2026-10-04T20%3A50%3A19Z&sks=b&skv=2018-11-09&sig=bv0DSfOw5iUnL7HAsVHzCtoqIy%2Bhpl2oQGKMb6I20QU%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc5MTE0NzAwMSwibmJmIjoxNzkxMTQzNDAxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.7sQsy8xRLlnwdQzwrrFn8ty8l6KKwN7njoAKMRShfSo&response-content-disposition=attachment%3B%20filename%3Dqlib_data_cn_1min_latest.zip&response-content-type=application%2Foctet-stream')"
+    "member_count": 35403,
+    "matches": [
+      "features/sh601138/open.1min.bin",
+      "features/sh601138/close.1min.bin",
+      "features/sh601138/low.1min.bin",
+      "features/sh601138/factor.1min.bin",
+      "features/sh601138/change.1min.bin",
+      "features/sh601138/volume.1min.bin",
+      "features/sh601138/high.1min.bin",
+      "features/sh601138/paused.1min.bin"
+    ],
+    "calendar_files": [
+      "calendars/1min.txt"
+    ],
+    "saved": [
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/open.1min.bin",
+        "bytes": 85444,
+        "sha256": "cadca2a4ed6c366c25fc7835a02834c9aee7d893bf12b6689732a3f243d42f29"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/close.1min.bin",
+        "bytes": 85444,
+        "sha256": "946872e9088097580395775fa7e1c4be09c5982770c0ae2050db612338d8914c"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/low.1min.bin",
+        "bytes": 85444,
+        "sha256": "38b1fff920c8b1eeb1f7d590ca86d0203525986aec3cd0aca636af1c07e6ee25"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/factor.1min.bin",
+        "bytes": 85444,
+        "sha256": "e78bd6e84930a1c4e155ee070eee44d50188205d75b8ff32b2af53e0989220b0"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/change.1min.bin",
+        "bytes": 85444,
+        "sha256": "dc2ee04645b0c0dc8f44dc93687099a3228db064be77ed17dee15962c83512da"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/volume.1min.bin",
+        "bytes": 85444,
+        "sha256": "6571d988bb764aaa48e68eb971ed1cca30f3c6413ec84f2bff47662f8af3a3ce"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/high.1min.bin",
+        "bytes": 85444,
+        "sha256": "a71577ca2b54fcc103ee4f4dec61a01351a20ba4e2a6bd5ce53b9fbb2dd8efd3"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/features/sh601138/paused.1min.bin",
+        "bytes": 85444,
+        "sha256": "56c6fef65b2141398dd671e522c2c08258fd6fd5b04ab397bc4bc011e96b74d2"
+      },
+      {
+        "path": "research/foxconn_kline_repair_20261005/raw/qlib/v1/calendars/1min.txt",
+        "bytes": 427200,
+        "sha256": "bb2dd8c514891617fda44b2cf5479b359c8da0f73f56b584cb53f7264642327d"
+      }
+    ]
   }
 ]

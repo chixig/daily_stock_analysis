@@ -1,0 +1,12 @@
+{
+  "publisher_revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+  "declared_days": 122,
+  "acquired_days": 119,
+  "all_declared_row_counts_match": false,
+  "failed_dates": [
+    "2026-07-01",
+    "2026-07-02",
+    "2026-07-23"
+  ],
+  "independent_exchange_completeness_certified": false
+}

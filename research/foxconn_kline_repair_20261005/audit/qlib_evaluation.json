@@ -1,0 +1,62 @@
+[
+  {
+    "version": "v1",
+    "rows": 21360,
+    "days": 89,
+    "start": "2020-09-14 09:30:00",
+    "end": "2021-01-25 14:59:00",
+    "first_times": [
+      "2020-09-14 09:30:00",
+      "2020-09-14 09:31:00",
+      "2020-09-14 09:32:00"
+    ],
+    "factor_range": [
+      0.0722021609544754,
+      0.0722021609544754
+    ],
+    "nan_price_rows": 2230,
+    "daily_extrema_mismatch_days": 76,
+    "daily_close_mismatch_days": 45,
+    "comparison_offsets_minutes": {
+      "0": {
+        "overlap": 21182,
+        "price_conflicts": 17996
+      },
+      "1": {
+        "overlap": 21360,
+        "price_conflicts": 2082
+      }
+    },
+    "declared_quality": "candidate; price factor restored; underlying collection and synthetic-fill lineage unverified"
+  },
+  {
+    "version": "v2",
+    "rows": 42960,
+    "days": 179,
+    "start": "2020-09-14 09:30:00",
+    "end": "2021-06-11 14:59:00",
+    "first_times": [
+      "2020-09-14 09:30:00",
+      "2020-09-14 09:31:00",
+      "2020-09-14 09:32:00"
+    ],
+    "factor_range": [
+      0.039515815675258636,
+      0.040363747626543045
+    ],
+    "nan_price_rows": 4132,
+    "daily_extrema_mismatch_days": 155,
+    "daily_close_mismatch_days": 97,
+    "comparison_offsets_minutes": {
+      "0": {
+        "overlap": 42602,
+        "price_conflicts": 36389
+      },
+      "1": {
+        "overlap": 42960,
+        "price_conflicts": 3958
+      }
+    },
+    "declared_quality": "candidate; price factor restored; underlying collection and synthetic-fill lineage unverified"
+  }
+]
