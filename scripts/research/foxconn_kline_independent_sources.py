@@ -42,10 +42,12 @@ def l2():
     paths=[x['rfilename'] for x in info.json()['siblings']]
     results=json.loads((AUDIT/'l2_acquisition.json').read_text()) if (AUDIT/'l2_acquisition.json').exists() else []
     days=sorted({p.split('trade_date=')[1].split('/')[0] for p in paths if p.startswith('data/l2_trades/trade_date=') and '/code_prefix=60/' in p})
-    pending=[d for d in days if not (dest/(d+'.parquet')).exists()][:20]
+    pending=[d for d in days if not (dest/(d+'.parquet')).exists() or pq.ParquetFile(dest/(d+'.parquet')).metadata.num_rows==0][:20]
     def fetch_day(day):
         item={'date':day,'repo':L2_REPO,'revision':L2_REV,'files':[]};frames=[]
         optimized=[p for p in paths if p.startswith(f'serving_v1/l2_trades/trade_date={day}/code_prefix=60/bucket=000/') and p.endswith('.parquet')]
+        prior=dest/(day+'.parquet')
+        if prior.exists() and pq.ParquetFile(prior).metadata.num_rows==0:optimized=[]
         targets=optimized or [p for p in paths if p.startswith(f'data/l2_trades/trade_date={day}/code_prefix=60/') and p.endswith('.parquet')]
         item['layout']='serving_v1_bucket_000' if optimized else 'canonical_data'
         try:
@@ -65,8 +67,9 @@ def l2():
                         frames.append(d[d.ticker.astype(str)=='601138'])
             if frames:
                 x=pd.concat(frames,ignore_index=True).sort_values(['time_s','tran_id'])
-                p=dest/(day+'.parquet');x.to_parquet(p,index=False)
-                item.update(rows=len(x),first=x.head(3).to_dict('records'),last=x.tail(3).to_dict('records'),sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+                p=dest/(day+'.parquet')
+                if len(x):x.to_parquet(p,index=False)
+                item.update(rows=len(x),first=x.head(3).to_dict('records'),last=x.tail(3).to_dict('records'),sha256=hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None)
             else:item['rows']=0
         except Exception as e:item['error']=repr(e)
         return item
