@@ -1,4 +1,5 @@
 """Acquire publicly accessible single-stock archive members and trade evidence on GitHub."""
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import hashlib
 import io
 import json
@@ -42,8 +43,7 @@ def l2():
     results=json.loads((AUDIT/'l2_acquisition.json').read_text()) if (AUDIT/'l2_acquisition.json').exists() else []
     days=sorted({p.split('trade_date=')[1].split('/')[0] for p in paths if p.startswith('data/l2_trades/trade_date=') and '/code_prefix=60/' in p})
     pending=[d for d in days if not (dest/(d+'.parquet')).exists()][:20]
-    for day in pending:
-        if (dest/(day+'.parquet')).exists():continue
+    def fetch_day(day):
         item={'date':day,'repo':L2_REPO,'revision':L2_REV,'files':[]};frames=[]
         targets=[p for p in paths if f'trade_date={day}/code_prefix=60/' in p and p.endswith('.parquet')]
         try:
@@ -67,7 +67,10 @@ def l2():
                 item.update(rows=len(x),first=x.head(3).to_dict('records'),last=x.tail(3).to_dict('records'),sha256=hashlib.sha256(p.read_bytes()).hexdigest())
             else:item['rows']=0
         except Exception as e:item['error']=repr(e)
-        results.append(item);save('l2_acquisition.json',results);print(json.dumps(item,ensure_ascii=False),flush=True)
+        return item
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        for future in as_completed([pool.submit(fetch_day,day) for day in pending]):
+            item=future.result();results.append(item);save('l2_acquisition.json',results);print(json.dumps(item,ensure_ascii=False),flush=True)
 
 if __name__=='__main__':
     for p in [RAW,AUDIT]:p.mkdir(parents=True,exist_ok=True)
