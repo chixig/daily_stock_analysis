@@ -1,5 +1,10 @@
 {
   "missing_dates_against_daily_calendar": [],
+  "publisher_unchecked_dates": [
+    "2026-05-07",
+    "2026-05-19",
+    "2026-06-12"
+  ],
   "publisher_row_count_check": {
     "publisher_revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
     "declared_days": 122,

@@ -18,5 +18,15 @@
     "csv_download": true,
     "null_minute_tooltip_checked": false,
     "javascript_errors": []
+  },
+  {
+    "chart": "03_工业富联_每日分时.html",
+    "status": "PASS",
+    "date_navigation": true,
+    "multi_day_view": true,
+    "tooltip": true,
+    "csv_download": true,
+    "null_minute_tooltip_checked": false,
+    "javascript_errors": []
   }
 ]
