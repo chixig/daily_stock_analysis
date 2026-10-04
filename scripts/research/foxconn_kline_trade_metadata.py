@@ -16,7 +16,9 @@ def main():
     rows=[]
     for row in x.to_dict('records'):
         p=ROOT/'raw/phields'/(row['trade_date']+'.parquet')
-        row['acquired_rows']=len(pd.read_parquet(p)) if p.exists() else 0
+        xraw=pd.read_parquet(p) if p.exists() else pd.DataFrame()
+        row['raw_downloaded_rows']=len(xraw)
+        row['acquired_rows']=len(xraw.drop_duplicates())
         row['row_count_match']=row['acquired_rows']==row['row_count']
         rows.append(row)
     pd.DataFrame(rows).to_csv(ROOT/'audit/publisher_row_count_comparison.csv',index=False)

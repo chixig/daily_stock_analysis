@@ -22,11 +22,13 @@ def main():
 
 ## 本批计算与验证事实
 
-- 取得公开逐笔源中工业富联{c['raw_trades']:,}条记录；1分钟{c['one_minute_rows']:,}个时间格点、5分钟{c['five_minute_rows']:,}个时间格点。
+- 取得公开逐笔源中工业富联{c['raw_trades']:,}条原下载行；剔除完全相同的重复行后为{c['unique_trades']:,}条唯一记录；1分钟{c['one_minute_rows']:,}个时间格点、5分钟{c['five_minute_rows']:,}个时间格点。
 - 发布方每日条数核对：{c['publisher_row_count_check']['all_declared_row_counts_match']}；这只认证提取没有遗漏发布方已存档的行，不能认证发布方收录了交易所全部成交。
 - 日线开高低收、股数和金额对账通过{c['daily_reconciliation_pass_days']}/{c['days']}日。失败日期：{c['daily_reconciliation_failed_dates']}。完整逐日差值见daily_transaction_quality.csv。
 - 独立numpy重算与保存结果一致；CSV/Parquet往返核验通过。图表验证见chart_verification.json。
 - 有{c['no_recorded_trade_minutes']}个分钟没有公开源成交记录，OHLC留空，不补造价格。并不据此断言交易所当时没有成交。
+
+采集过程曾把canonical与serving两种相同存储同时读取，产生{c['exact_duplicate_rows_removed']:,}个完全重复行。原下载文件保留，计算先按全部5个源字段去除完全重复；成交编号相同但其它字段不同不会静默去除，会被质量检查标记。后续采集只选择一种存储。
 
 ## 明确口径
 

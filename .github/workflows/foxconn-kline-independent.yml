@@ -35,6 +35,13 @@ jobs:
               git push origin HEAD:research/foxconn-kline-20261005
             fi
           done
+      - uses: actions/download-artifact@v4
+        with:
+          name: foxconn-qlib-source-scout
+          run-id: 37230852634
+          github-token: ${{ github.token }}
+          path: research/foxconn_kline_repair_20261005/
+      - run: python -u scripts/research/foxconn_kline_serving_probe.py
       - run: python -u scripts/research/foxconn_kline_trade_metadata.py
       - run: python -u scripts/research/foxconn_kline_trade_build.py
       - run: python -u scripts/research/foxconn_kline_trade_verify.py

@@ -45,7 +45,9 @@ def l2():
     pending=[d for d in days if not (dest/(d+'.parquet')).exists()][:20]
     def fetch_day(day):
         item={'date':day,'repo':L2_REPO,'revision':L2_REV,'files':[]};frames=[]
-        targets=[p for p in paths if f'trade_date={day}/code_prefix=60/' in p and p.endswith('.parquet')]
+        optimized=[p for p in paths if p.startswith(f'serving_v1/l2_trades/trade_date={day}/code_prefix=60/bucket=000/') and p.endswith('.parquet')]
+        targets=optimized or [p for p in paths if p.startswith(f'data/l2_trades/trade_date={day}/code_prefix=60/') and p.endswith('.parquet')]
+        item['layout']='serving_v1_bucket_000' if optimized else 'canonical_data'
         try:
             for path in targets:
                 record={'path':path};item['files'].append(record)

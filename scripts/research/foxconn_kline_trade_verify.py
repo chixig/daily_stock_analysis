@@ -13,7 +13,7 @@ def main():
     assert not one.datetime.duplicated().any() and not five.datetime.duplicated().any()
     verified=0;groups_checked=0
     for p in sorted(RAW.glob('*.parquet')):
-        t=pd.read_parquet(p).sort_values(['time_s','tran_id']);s=t.time_s.to_numpy();v=t.volume.to_numpy(dtype='int64');price=t.price_x10000.to_numpy(dtype='int64')
+        t=pd.read_parquet(p).drop_duplicates().sort_values(['time_s','tran_id']);s=t.time_s.to_numpy();v=t.volume.to_numpy(dtype='int64');price=t.price_x10000.to_numpy(dtype='int64')
         keep=(v>0)&(price>0)&(((s>=34200)&(s<=41400))|((s>=46800)&(s<=54000)))
         s=s[keep];v=v[keep];price=price[keep]
         k=(s//60+1)*60;k[s==41400]=41400;k[s==54000]=54000
@@ -33,7 +33,7 @@ def main():
     for name,x in [('601138_1min_trades',one),('601138_5min_trades',five)]:
         y=pd.read_csv(DELIVERY/(name+'.csv'));y['datetime']=pd.to_datetime(y.datetime)
         pd.testing.assert_frame_equal(x.reset_index(drop=True),y.reset_index(drop=True),check_dtype=False,rtol=0,atol=1e-6)
-    result={'status':'PASS','raw_records_examined':verified,'nonempty_interval_groups_verified':groups_checked,'one_minute_rows':len(one),'five_minute_rows':len(five),'checks':['all recorded regular trades contribute exactly once','numpy first/max/min/last match saved bars','integer transaction volume and amount match','empty intervals contain null OHLC and zero trade count','1m and 5m complete timestamp grids','CSV and Parquet roundtrip'],'upstream_independent_completeness_certified':False}
+    result={'status':'PASS','unique_source_records_examined':verified,'nonempty_interval_groups_verified':groups_checked,'one_minute_rows':len(one),'five_minute_rows':len(five),'checks':['all recorded regular trades contribute exactly once','numpy first/max/min/last match saved bars','integer transaction volume and amount match','empty intervals contain null OHLC and zero trade count','1m and 5m complete timestamp grids','CSV and Parquet roundtrip'],'upstream_independent_completeness_certified':False}
     (DELIVERY/'independent_verification.json').write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result,ensure_ascii=False,indent=2),flush=True)
 
 if __name__=='__main__':main()
