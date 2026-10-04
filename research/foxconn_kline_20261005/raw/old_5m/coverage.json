@@ -1,0 +1,57 @@
+{
+  "symbol": "601138",
+  "code": "sh.601138",
+  "frequency": "5min",
+  "adjustflag": "3_unadjusted",
+  "requested_start": "2018-06-08",
+  "requested_end": "2026-10-02",
+  "actual_start": "2020-01-02",
+  "actual_end": "2026-09-30",
+  "rows": 78528,
+  "trading_days": 1636,
+  "normal_48bar_days": 1636,
+  "hard_qc_ok_days": 1633,
+  "extreme_warning_days": 259,
+  "per_year": [
+    {
+      "year": 2020,
+      "rows": 11664,
+      "trading_days": 243
+    },
+    {
+      "year": 2021,
+      "rows": 11664,
+      "trading_days": 243
+    },
+    {
+      "year": 2022,
+      "rows": 11616,
+      "trading_days": 242
+    },
+    {
+      "year": 2023,
+      "rows": 11616,
+      "trading_days": 242
+    },
+    {
+      "year": 2024,
+      "rows": 11616,
+      "trading_days": 242
+    },
+    {
+      "year": 2025,
+      "rows": 11664,
+      "trading_days": 243
+    },
+    {
+      "year": 2026,
+      "rows": 8688,
+      "trading_days": 181
+    }
+  ],
+  "notes": [
+    "BaoStock does not provide 1-minute bars; this dataset is 5-minute.",
+    "High/Low differences versus daily bars are warnings only and are not deleted.",
+    "Actual coverage may be shorter than requested coverage because minute-history availability is vendor-limited."
+  ]
+}

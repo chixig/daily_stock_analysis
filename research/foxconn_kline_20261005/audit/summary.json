@@ -1,0 +1,158 @@
+{
+  "status": "ACQUIRED_PENDING_SEMANTIC_VALIDATION",
+  "target_start": "2018-06-08",
+  "target_end": "2026-09-30",
+  "sources": [
+    {
+      "name": "hf",
+      "rows": 477473,
+      "days": 1982,
+      "first": "2018-06-08 09:30:00",
+      "last": "2026-08-07 10:21:00",
+      "columns": [
+        "symbol",
+        "exchange",
+        "timestamp",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "turnover"
+      ],
+      "duplicate_timestamps": 0,
+      "invalid_ohlc": 0,
+      "daily_count_distribution": {
+        "241": 1981,
+        "52": 1
+      }
+    },
+    {
+      "name": "main",
+      "rows": 7680,
+      "days": 32,
+      "first": "2026-08-17 09:31:00",
+      "last": "2026-09-30 15:00:00",
+      "columns": [
+        "symbol",
+        "datetime",
+        "date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "source"
+      ],
+      "duplicate_timestamps": 0,
+      "invalid_ohlc": 0,
+      "daily_count_distribution": {
+        "240": 32
+      }
+    },
+    {
+      "name": "b13",
+      "rows": 22320,
+      "days": 93,
+      "first": "2026-04-30 09:31:00",
+      "last": "2026-09-11 15:00:00",
+      "columns": [
+        "symbol",
+        "datetime",
+        "date",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "source"
+      ],
+      "duplicate_timestamps": 0,
+      "invalid_ohlc": 0,
+      "daily_count_distribution": {
+        "240": 93
+      }
+    },
+    {
+      "name": "old5m",
+      "rows": 78528,
+      "days": 1636,
+      "first": "2020-01-02 09:35:00",
+      "last": "2026-09-30 15:00:00",
+      "columns": [
+        "date",
+        "time",
+        "code",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "amount",
+        "adjustflag",
+        "datetime"
+      ],
+      "duplicate_timestamps": 0,
+      "invalid_ohlc": 0,
+      "daily_count_distribution": {
+        "48": 1636
+      }
+    }
+  ],
+  "alignment_hypotheses": [
+    {
+      "hf_time_shift_minutes": -1,
+      "matched_rows": 15996,
+      "all_ohlc_within_0_005": 319,
+      "median_diffs": {
+        "open": 0.07999694824218295,
+        "high": 0.0599984741210875,
+        "low": 0.0500030517578125,
+        "close": 0.07999786376953466
+      },
+      "max_diffs": {
+        "open": 1.4100006103515597,
+        "high": 1.2100006103515568,
+        "low": 1.4100006103515597,
+        "close": 1.2100006103515568
+      }
+    },
+    {
+      "hf_time_shift_minutes": 0,
+      "matched_rows": 16131,
+      "all_ohlc_within_0_005": 16038,
+      "median_diffs": {
+        "open": 1.5258789005656581e-06,
+        "high": 1.5258789005656581e-06,
+        "low": 1.5258789005656581e-06,
+        "close": 1.5258789005656581e-06
+      },
+      "max_diffs": {
+        "open": 0.7300033569335938,
+        "high": 0.3499969482421932,
+        "low": 0.540003356933596,
+        "close": 0.0799999999999983
+      }
+    },
+    {
+      "hf_time_shift_minutes": 1,
+      "matched_rows": 16065,
+      "all_ohlc_within_0_005": 319,
+      "median_diffs": {
+        "open": 0.07999664306640852,
+        "high": 0.0599984741210875,
+        "low": 0.05000335693358693,
+        "close": 0.07999816894530909
+      },
+      "max_diffs": {
+        "open": 1.410003051757812,
+        "high": 1.3800015258789102,
+        "low": 1.4300033569335966,
+        "close": 1.4300033569335966
+      }
+    }
+  ],
+  "warning": "No merged dataset is certified by this acquisition step. No snapshots used."
+}

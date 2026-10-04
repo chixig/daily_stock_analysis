@@ -1,0 +1,13 @@
+{
+  "dataset": "china_a_share_1m_ohlcv",
+  "dataset_schema_version": 1,
+  "construction": "multi_source_async_cross_validation",
+  "frequency": "1m",
+  "session": "09:30-11:30 and 13:00-15:00",
+  "timezone": "Asia/Singapore",
+  "timestamp_storage": "timezone-naive",
+  "price_adjustment": "none",
+  "volume_unit": "shares",
+  "turnover_unit": "CNY",
+  "generated_at": "2026-08-21T14:31:54+08:00"
+}

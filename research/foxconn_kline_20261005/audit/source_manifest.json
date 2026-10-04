@@ -1,0 +1,62 @@
+[
+  {
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/resolve/ba589a11534825044fe5a6b84838f50ba8d8d188/data/stock_1m/SH/601138.parquet",
+    "path": "research/foxconn_kline_20261005/raw/hf_601138.parquet",
+    "sha256": "5bfaf612539495debbe441049112793ee455e33d8588f0d732e8cd9708675a43",
+    "bytes": 6776890
+  },
+  {
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/resolve/ba589a11534825044fe5a6b84838f50ba8d8d188/README.md",
+    "path": "research/foxconn_kline_20261005/raw/hf_metadata/README.md",
+    "sha256": "29a04448d500ccdc4c4acdd133c36b3502d399af1e0050a11208cdd48f9dc7ec",
+    "bytes": 18324
+  },
+  {
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/resolve/ba589a11534825044fe5a6b84838f50ba8d8d188/LICENSE",
+    "path": "research/foxconn_kline_20261005/raw/hf_metadata/LICENSE",
+    "sha256": "6ed198253803a723b9894a9a2963537a14a49eeacec0bdfdc5d933b6ea50459c",
+    "bytes": 11151
+  },
+  {
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/resolve/ba589a11534825044fe5a6b84838f50ba8d8d188/metadata/source_provenance.json",
+    "path": "research/foxconn_kline_20261005/raw/hf_metadata/metadata/source_provenance.json",
+    "sha256": "469021ac7fda54883cf8d0805894d1325dccf5e903d4c025979762d53e29faf6",
+    "bytes": 411
+  },
+  {
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/resolve/ba589a11534825044fe5a6b84838f50ba8d8d188/metadata/coverage_by_instrument.csv",
+    "path": "research/foxconn_kline_20261005/raw/hf_metadata/metadata/coverage_by_instrument.csv",
+    "sha256": "31a058c1019e1b097d99e862db68a028ec9d191adb09839c35365f4cb390dc32",
+    "bytes": 1052388
+  },
+  {
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/resolve/ba589a11534825044fe5a6b84838f50ba8d8d188/metadata/missing_intervals.csv",
+    "path": "research/foxconn_kline_20261005/raw/hf_metadata/metadata/missing_intervals.csv",
+    "sha256": "a84479cfd92ffa7fb0af698bc309a8871bf0b32c539d6965ccea27d536d1de9c",
+    "bytes": 360127
+  },
+  {
+    "url": "https://raw.githubusercontent.com/chixig/daily_stock_analysis/e428977626fa6575dc8f4a5b0693c11e93f9a4c2/data/601138_intraday/pytdxdata_1min/kline_yearly/601138_1m_kline_2026.csv",
+    "path": "research/foxconn_kline_20261005/raw/main_1m.csv",
+    "sha256": "3ccffef35c50a1e632e248649e65558e6f6f9d365b3f219b5ac7c99cc4745149",
+    "bytes": 1124905
+  },
+  {
+    "url": "https://raw.githubusercontent.com/chixig/daily_stock_analysis/fc832bce87c5963349bd9df9766fbf60089c385d/research/foxconn_overnight_20260917_b13/tdx_recovered_1m.csv",
+    "path": "research/foxconn_kline_20261005/raw/b13_1m.csv",
+    "sha256": "cc9a3d09b75626f2b6689eaa291c43f1aecac490bb23a9914c86e85f5ef99446",
+    "bytes": 3256897
+  },
+  {
+    "url": "https://raw.githubusercontent.com/chixig/daily_stock_analysis/e428977626fa6575dc8f4a5b0693c11e93f9a4c2/data/601138_intraday/pytdxdata_1min/daily_trade_calendar.csv",
+    "path": "research/foxconn_kline_20261005/raw/old_calendar.csv",
+    "sha256": "1ed516fadcffb3d213f98940730bdb57dbac940d2bc07ac22843811178d10e9c",
+    "bytes": 22214
+  },
+  {
+    "source": "GitHub Actions artifact",
+    "artifact_id": 11243418261,
+    "run_id": 37044085482,
+    "zip_sha256": "8f8720ceca1ba1d8eb3799ffd68adba3e40d51fd1701dd4771b7dfd34505c8d1"
+  }
+]
