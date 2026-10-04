@@ -18,9 +18,10 @@ def url(repo,rev,path):return f'https://huggingface.co/datasets/{repo}/resolve/{
 def save(name,obj):
     (AUDIT/name).write_text(json.dumps(obj,ensure_ascii=False,indent=2,default=str))
 def archives():
-    results=[]
+    results=json.loads((AUDIT/'archive_acquisition.json').read_text()) if (AUDIT/'archive_acquisition.json').exists() else []
     dest=RAW/'wind17';dest.mkdir(exist_ok=True)
     for year in range(2018,2027):
+        if list(dest.glob(f'{year}_*_sh601138.csv')):continue
         item={'year':year,'repo':ZIP_REPO,'revision':ZIP_REV}
         try:
             with RemoteZip(url(ZIP_REPO,ZIP_REV,f'{year}.zip'),timeout=60) as z:
@@ -38,8 +39,9 @@ def l2():
     dest=RAW/'phields';dest.mkdir(exist_ok=True)
     info=requests.get('https://huggingface.co/api/datasets/'+L2_REPO+'/revision/'+L2_REV,timeout=40);info.raise_for_status()
     paths=[x['rfilename'] for x in info.json()['siblings']]
-    results=[]
-    for day in ['2026-06-15','2026-08-17']:
+    results=json.loads((AUDIT/'l2_acquisition.json').read_text()) if (AUDIT/'l2_acquisition.json').exists() else []
+    for day in ['2026-06-15','2026-08-07','2026-08-12','2026-08-13','2026-08-17','2026-08-24','2026-08-25','2026-09-17','2026-09-23','2026-09-24']:
+        if (dest/(day+'.parquet')).exists():continue
         item={'date':day,'repo':L2_REPO,'revision':L2_REV,'files':[]};frames=[]
         targets=[p for p in paths if f'trade_date={day}/code_prefix=60/' in p and p.endswith('.parquet')]
         try:

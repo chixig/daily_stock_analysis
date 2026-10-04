@@ -4,6 +4,7 @@ on:
     branches: [research/foxconn-kline-20261005]
     paths:
       - scripts/research/foxconn_kline_independent_sources.py
+      - scripts/research/foxconn_kline_public_quotes.py
       - .github/workflows/foxconn-kline-independent.yml
   workflow_dispatch:
 permissions:
@@ -22,6 +23,7 @@ jobs:
           python-version: '3.11'
       - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 requests==2.32.3 remotezip==0.12.3 fsspec==2025.3.2 aiohttp==3.11.18
       - run: python -u scripts/research/foxconn_kline_independent_sources.py
+      - run: python -u scripts/research/foxconn_kline_public_quotes.py
       - name: Preserve actual source evidence and access outcomes
         if: always()
         run: |
