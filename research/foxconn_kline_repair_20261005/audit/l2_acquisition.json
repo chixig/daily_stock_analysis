@@ -714,5 +714,1762 @@
       }
     ],
     "sha256": "f168adb20c8a00192699fbc0cc31565627af2ebfca2f276fd59bbe49d9806dff"
+  },
+  {
+    "date": "2026-04-01",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-01/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-01/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-01/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          14,
+          15
+        ]
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-01/code_prefix=60/bucket=001/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          13
+        ]
+      }
+    ],
+    "rows": 890734,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 77106,
+        "price_x10000": 530000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 77106,
+        "price_x10000": 530000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 77107,
+        "price_x10000": 530000,
+        "volume": 800
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34594296,
+        "price_x10000": 533200,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34594297,
+        "price_x10000": 533200,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34594297,
+        "price_x10000": 533200,
+        "volume": 100
+      }
+    ],
+    "sha256": "e1ffcce6be8940a1b3017a6ef3d0cb743fc8ac2f514a7835846f00e58b3625db"
+  },
+  {
+    "date": "2026-04-02",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-02/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-02/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-02/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          14
+        ]
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-02/code_prefix=60/bucket=001/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          13
+        ]
+      }
+    ],
+    "rows": 699600,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 112791,
+        "price_x10000": 526600,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 112791,
+        "price_x10000": 526600,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 112792,
+        "price_x10000": 526600,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34271548,
+        "price_x10000": 520000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34271549,
+        "price_x10000": 520000,
+        "volume": 757
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34271549,
+        "price_x10000": 520000,
+        "volume": 757
+      }
+    ],
+    "sha256": "650401eb4aab9bfe9460ec49e26aae6058e176a81d59329033eed3039f1bc859"
+  },
+  {
+    "date": "2026-04-03",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-03/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-03/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-03/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          24,
+          25
+        ]
+      }
+    ],
+    "rows": 484866,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 15748,
+        "price_x10000": 526000,
+        "volume": 500
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 15748,
+        "price_x10000": 526000,
+        "volume": 500
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 15749,
+        "price_x10000": 526000,
+        "volume": 700
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 30307071,
+        "price_x10000": 521800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 30307072,
+        "price_x10000": 521800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 30307072,
+        "price_x10000": 521800,
+        "volume": 100
+      }
+    ],
+    "sha256": "491214b9084a511b53a32b2ee13bc1cacaded59e5aa02a67cfa709c19f0aa714"
+  },
+  {
+    "date": "2026-04-07",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-07/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-07/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-07/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          24,
+          25
+        ]
+      }
+    ],
+    "rows": 582278,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 90488,
+        "price_x10000": 529800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 90488,
+        "price_x10000": 529800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 90489,
+        "price_x10000": 529800,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 29149147,
+        "price_x10000": 525800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 29149148,
+        "price_x10000": 525800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 29149148,
+        "price_x10000": 525800,
+        "volume": 100
+      }
+    ],
+    "sha256": "ec53e682f9e6e1211c181ff83d0afbb2e4a22987b278de05764ead72ebd72fc4"
+  },
+  {
+    "date": "2026-04-08",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-08/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-08/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          2,
+          7
+        ]
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-08/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          16
+        ]
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-08/code_prefix=60/bucket=001/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          15
+        ]
+      }
+    ],
+    "rows": 1080200,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 66448,
+        "price_x10000": 541600,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 66448,
+        "price_x10000": 541600,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 66449,
+        "price_x10000": 541600,
+        "volume": 800
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 36620948,
+        "price_x10000": 566100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 36620949,
+        "price_x10000": 566100,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 36620949,
+        "price_x10000": 566100,
+        "volume": 200
+      }
+    ],
+    "sha256": "a0e0760ae728b4ea7ff7a6797a40d1ed4a2ac70c8e0dee2d818bd4f8236f875b"
+  },
+  {
+    "date": "2026-04-09",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-09/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-09/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-09/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          14
+        ]
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-09/code_prefix=60/bucket=001/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          13
+        ]
+      }
+    ],
+    "rows": 709332,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 225486,
+        "price_x10000": 550000,
+        "volume": 1200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 225486,
+        "price_x10000": 550000,
+        "volume": 1200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 225487,
+        "price_x10000": 550000,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33069575,
+        "price_x10000": 550200,
+        "volume": 190
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33069576,
+        "price_x10000": 550200,
+        "volume": 500
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33069576,
+        "price_x10000": 550200,
+        "volume": 500
+      }
+    ],
+    "sha256": "03cc714f5992e1b98f7ae98f7717eabf2029aa9b72c1b3813adc7c504601d1dd"
+  },
+  {
+    "date": "2026-04-10",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-10/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-10/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-10/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          14
+        ]
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-10/code_prefix=60/bucket=001/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          13
+        ]
+      }
+    ],
+    "rows": 856680,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 66220,
+        "price_x10000": 556000,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 66220,
+        "price_x10000": 556000,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 66221,
+        "price_x10000": 556000,
+        "volume": 400
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33378704,
+        "price_x10000": 565200,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33378705,
+        "price_x10000": 565200,
+        "volume": 1000
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33378705,
+        "price_x10000": 565200,
+        "volume": 1000
+      }
+    ],
+    "sha256": "c4fea07040c675e59b86d4421de301719e6d6ec80de69a23ff9786943a9eb54c"
+  },
+  {
+    "date": "2026-04-13",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-13/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-13/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      },
+      {
+        "path": "serving_v1/l2_trades/trade_date=2026-04-13/code_prefix=60/bucket=000/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          27
+        ]
+      }
+    ],
+    "rows": 637366,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 1,
+        "price_x10000": 560000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 1,
+        "price_x10000": 560000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 2,
+        "price_x10000": 560000,
+        "volume": 200
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 318682,
+        "price_x10000": 557000,
+        "volume": 78
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 318683,
+        "price_x10000": 557000,
+        "volume": 22
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 318683,
+        "price_x10000": 557000,
+        "volume": 22
+      }
+    ],
+    "sha256": "21bd3011d8caa3e8ca9d80364843649ae5e2bfb8b33bec5da41854ead716814b"
+  },
+  {
+    "date": "2026-04-14",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-14/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-14/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 557017,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 233134,
+        "price_x10000": 564700,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 233135,
+        "price_x10000": 564700,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 233136,
+        "price_x10000": 564700,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34010263,
+        "price_x10000": 589200,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34010264,
+        "price_x10000": 589200,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 34010265,
+        "price_x10000": 589200,
+        "volume": 400
+      }
+    ],
+    "sha256": "022f5fa96055ca41372b3308a04f4d7df358ee1af8318503fda66c1d0565b9d5"
+  },
+  {
+    "date": "2026-04-15",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-15/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-15/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 444545,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 1,
+        "price_x10000": 593600,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 2,
+        "price_x10000": 593600,
+        "volume": 2700
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 3,
+        "price_x10000": 593600,
+        "volume": 300
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 444543,
+        "price_x10000": 578200,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 444544,
+        "price_x10000": 578200,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 444545,
+        "price_x10000": 578200,
+        "volume": 100
+      }
+    ],
+    "sha256": "6a778731fd7439ad4f1930623d1326bbdddbdb7a993d27a3912edaf322308d60"
+  },
+  {
+    "date": "2026-04-16",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-16/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-16/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 405647,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 185506,
+        "price_x10000": 579900,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 185507,
+        "price_x10000": 579900,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 185508,
+        "price_x10000": 579900,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33053016,
+        "price_x10000": 593200,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33053017,
+        "price_x10000": 593200,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33053018,
+        "price_x10000": 593200,
+        "volume": 500
+      }
+    ],
+    "sha256": "7a6d4cb80ac723753baa0cfc256174dfc1499c513c3afed49de878f89da78d94"
+  },
+  {
+    "date": "2026-04-17",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-17/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-17/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 411748,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 112938,
+        "price_x10000": 596000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 112939,
+        "price_x10000": 596000,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 112940,
+        "price_x10000": 596000,
+        "volume": 200
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33943222,
+        "price_x10000": 609700,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33943223,
+        "price_x10000": 609700,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 33943224,
+        "price_x10000": 609700,
+        "volume": 100
+      }
+    ],
+    "sha256": "bf1a09abf1b8f11e0ceef727848f8f64ee1faa71bfc081c5aa363d521afa8f6c"
+  },
+  {
+    "date": "2026-04-20",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-20/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-20/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 482383,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 50711,
+        "price_x10000": 618900,
+        "volume": 800
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 50712,
+        "price_x10000": 618900,
+        "volume": 800
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 50713,
+        "price_x10000": 618900,
+        "volume": 200
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54001,
+        "tran_id": 35247658,
+        "price_x10000": 615100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54001,
+        "tran_id": 35247659,
+        "price_x10000": 615100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54001,
+        "tran_id": 35247660,
+        "price_x10000": 615100,
+        "volume": 900
+      }
+    ],
+    "sha256": "7b53393ccd972ddf5d00cca257f8cbc505911c4fe5104d474ead3ec4489e9405"
+  },
+  {
+    "date": "2026-04-21",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-21/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-21/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 335020,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 1,
+        "price_x10000": 609700,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 2,
+        "price_x10000": 609700,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 3,
+        "price_x10000": 609700,
+        "volume": 400
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54001,
+        "tran_id": 335018,
+        "price_x10000": 614100,
+        "volume": 23
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54001,
+        "tran_id": 335019,
+        "price_x10000": 614100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54001,
+        "tran_id": 335020,
+        "price_x10000": 614100,
+        "volume": 77
+      }
+    ],
+    "sha256": "cba090801b346905513d323adbbf97bb83def0b1cad06194ce976e5743c465ad"
+  },
+  {
+    "date": "2026-04-22",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-22/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-22/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": []
+      }
+    ],
+    "rows": 673686,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 1,
+        "price_x10000": 611900,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 2,
+        "price_x10000": 611900,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 3,
+        "price_x10000": 611900,
+        "volume": 200
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 673684,
+        "price_x10000": 668900,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 673685,
+        "price_x10000": 668900,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 673686,
+        "price_x10000": 668900,
+        "volume": 500
+      }
+    ],
+    "sha256": "061925d93330621d2ee7c9d62ff22435be5d1e68484c377e59e7cace7486c050"
+  },
+  {
+    "date": "2026-04-23",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-23/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          16,
+          17
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-23/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      }
+    ],
+    "rows": 587295,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 234564,
+        "price_x10000": 669800,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 234565,
+        "price_x10000": 669800,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 234566,
+        "price_x10000": 669800,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 39663122,
+        "price_x10000": 679200,
+        "volume": 300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 39663123,
+        "price_x10000": 679200,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 39663124,
+        "price_x10000": 679200,
+        "volume": 400
+      }
+    ],
+    "sha256": "4f8d48089d27e1722276060cb8d4e6919e322e6779687b3926d5dd1b6e85fcdd"
+  },
+  {
+    "date": "2026-04-24",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-24/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          1,
+          2,
+          3,
+          5,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-24/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          10
+        ]
+      }
+    ],
+    "rows": 581796,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 61419,
+        "price_x10000": 665700,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 61420,
+        "price_x10000": 665700,
+        "volume": 400
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 61421,
+        "price_x10000": 665700,
+        "volume": 200
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 37796987,
+        "price_x10000": 650100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 37796988,
+        "price_x10000": 650100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 37796989,
+        "price_x10000": 650100,
+        "volume": 241
+      }
+    ],
+    "sha256": "2d22841aa64ed36e095d0bc4df41cf75d5bdf123ed4fa6a7c71f4fa551c12b1b"
+  },
+  {
+    "date": "2026-04-27",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-27/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-27/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0
+        ]
+      }
+    ],
+    "rows": 525635,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 220513,
+        "price_x10000": 660100,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 220514,
+        "price_x10000": 660100,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 220515,
+        "price_x10000": 660100,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 36773123,
+        "price_x10000": 672500,
+        "volume": 1000
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 36773124,
+        "price_x10000": 672500,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 36773125,
+        "price_x10000": 672500,
+        "volume": 200
+      }
+    ],
+    "sha256": "e3fcbb816848e72389c4d06706fba4477ee7ff495190a4a358f2ad5b93093bd8"
+  },
+  {
+    "date": "2026-04-28",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-28/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          1,
+          3,
+          4,
+          5,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          15
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-28/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          3,
+          5,
+          6,
+          8,
+          11,
+          13
+        ]
+      }
+    ],
+    "rows": 525760,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 274032,
+        "price_x10000": 672500,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 274033,
+        "price_x10000": 672500,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 274034,
+        "price_x10000": 672500,
+        "volume": 100
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 38854793,
+        "price_x10000": 682000,
+        "volume": 96
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 38854794,
+        "price_x10000": 682000,
+        "volume": 4
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 38854795,
+        "price_x10000": 682000,
+        "volume": 100
+      }
+    ],
+    "sha256": "d419b71137eb7b373c8328cbd858f94dbe0a74da95b12c04af37349c53429a03"
+  },
+  {
+    "date": "2026-04-29",
+    "repo": "phields/a-share-l2-trades",
+    "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+    "files": [
+      {
+        "path": "data/l2_trades/trade_date=2026-04-29/code_prefix=60/part-00000.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          20
+        ]
+      },
+      {
+        "path": "data/l2_trades/trade_date=2026-04-29/code_prefix=60/part-00001.parquet",
+        "schema": "ticker: string\ntime_s: int32\ntran_id: int64\nprice_x10000: int64\nvolume: int64\nsale_order_volume: int64\nbuy_order_volume: int64\nside: string\nsale_order_id: int64\nsale_order_price_x10000: int64\nbuy_order_id: int64\nbuy_order_price_x10000: int64",
+        "selected_groups": [
+          0,
+          2
+        ]
+      }
+    ],
+    "rows": 605795,
+    "first": [
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 51900,
+        "price_x10000": 677700,
+        "volume": 1300
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 51901,
+        "price_x10000": 677700,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 33900,
+        "tran_id": 51902,
+        "price_x10000": 677700,
+        "volume": 900
+      }
+    ],
+    "last": [
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 37326418,
+        "price_x10000": 662600,
+        "volume": 100
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 37326419,
+        "price_x10000": 662600,
+        "volume": 200
+      },
+      {
+        "ticker": "601138",
+        "time_s": 54000,
+        "tran_id": 37326420,
+        "price_x10000": 662600,
+        "volume": 200
+      }
+    ],
+    "sha256": "2be5d918ca8d141cda3d9050c7967c090d5b3615e4b5d8d5b7f793d413084aec"
   }
 ]
