@@ -1,0 +1,152 @@
+{
+  "limitations": {
+    "archive_old_problem_days_resolved_daily_only": 205,
+    "archive_new_problem_days": 3,
+    "archive_remaining_old_problem_days": 127,
+    "archive_problem_years": {
+      "2019": 31,
+      "2020": 71,
+      "2021": 28
+    },
+    "archive_daily_mismatches": 130,
+    "archive_daily_volume_large_days": 380,
+    "archive_daily_amount_large_days": 45,
+    "tdx5_grid": {
+      "duplicates": 0,
+      "not_48_rows": {
+        "2024-10-09": 32,
+        "2024-11-01": 32,
+        "2024-12-18": 32,
+        "2025-01-13": 32,
+        "2025-03-07": 32,
+        "2025-04-01": 32,
+        "2025-05-22": 32,
+        "2025-06-17": 32
+      }
+    }
+  },
+  "best_offsets": [
+    {
+      "date": "2026-06-15",
+      "shift_seconds": 0,
+      "overlap": 238,
+      "ohlc_conflicts": 228,
+      "highlow_conflicts": 207,
+      "median_close_error": 0.0,
+      "volume_correlation": 0.9990247009232692,
+      "median_volume_absolute_error": 963.0
+    },
+    {
+      "date": "2026-06-15",
+      "shift_seconds": -6,
+      "overlap": 238,
+      "ohlc_conflicts": 229,
+      "highlow_conflicts": 211,
+      "median_close_error": 0.010000000000005116,
+      "volume_correlation": 0.9886757403724762,
+      "median_volume_absolute_error": 23250.0
+    },
+    {
+      "date": "2026-06-15",
+      "shift_seconds": -3,
+      "overlap": 238,
+      "ohlc_conflicts": 229,
+      "highlow_conflicts": 208,
+      "median_close_error": 0.010000000000005116,
+      "volume_correlation": 0.995256226713625,
+      "median_volume_absolute_error": 14412.0
+    },
+    {
+      "date": "2026-06-15",
+      "shift_seconds": 4,
+      "overlap": 239,
+      "ohlc_conflicts": 229,
+      "highlow_conflicts": 214,
+      "median_close_error": 0.010000000000005116,
+      "volume_correlation": 0.9948917540292733,
+      "median_volume_absolute_error": 16894.0
+    },
+    {
+      "date": "2026-06-15",
+      "shift_seconds": -2,
+      "overlap": 238,
+      "ohlc_conflicts": 230,
+      "highlow_conflicts": 206,
+      "median_close_error": 0.009999999999990905,
+      "volume_correlation": 0.9966696751207879,
+      "median_volume_absolute_error": 10550.0
+    },
+    {
+      "date": "2026-08-17",
+      "shift_seconds": 3,
+      "overlap": 239,
+      "ohlc_conflicts": 230,
+      "highlow_conflicts": 210,
+      "median_close_error": 0.009999999999990905,
+      "volume_correlation": 0.9977270595941418,
+      "median_volume_absolute_error": 12600.0
+    },
+    {
+      "date": "2026-08-17",
+      "shift_seconds": 5,
+      "overlap": 239,
+      "ohlc_conflicts": 230,
+      "highlow_conflicts": 211,
+      "median_close_error": 0.009999999999990905,
+      "volume_correlation": 0.9993629221641863,
+      "median_volume_absolute_error": 6047.0
+    },
+    {
+      "date": "2026-08-17",
+      "shift_seconds": 2,
+      "overlap": 239,
+      "ohlc_conflicts": 232,
+      "highlow_conflicts": 209,
+      "median_close_error": 0.009999999999990905,
+      "volume_correlation": 0.9964526653383728,
+      "median_volume_absolute_error": 16574.0
+    },
+    {
+      "date": "2026-08-17",
+      "shift_seconds": 4,
+      "overlap": 239,
+      "ohlc_conflicts": 232,
+      "highlow_conflicts": 209,
+      "median_close_error": 0.009999999999990905,
+      "volume_correlation": 0.9987297037917355,
+      "median_volume_absolute_error": 9500.0
+    },
+    {
+      "date": "2026-08-17",
+      "shift_seconds": -1,
+      "overlap": 238,
+      "ohlc_conflicts": 232,
+      "highlow_conflicts": 207,
+      "median_close_error": 0.010000000000005116,
+      "volume_correlation": 0.9761949317018875,
+      "median_volume_absolute_error": 30431.0
+    }
+  ],
+  "zero_offset": [
+    {
+      "date": "2026-06-15",
+      "shift_seconds": 0,
+      "overlap": 238,
+      "ohlc_conflicts": 228,
+      "highlow_conflicts": 207,
+      "median_close_error": 0.0,
+      "volume_correlation": 0.9990247009232692,
+      "median_volume_absolute_error": 963.0
+    },
+    {
+      "date": "2026-08-17",
+      "shift_seconds": 0,
+      "overlap": 238,
+      "ohlc_conflicts": 233,
+      "highlow_conflicts": 208,
+      "median_close_error": 0.010000000000005116,
+      "volume_correlation": 0.9778521923962388,
+      "median_volume_absolute_error": 20550.0
+    }
+  ]
+}

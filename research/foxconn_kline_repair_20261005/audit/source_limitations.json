@@ -1,0 +1,26 @@
+{
+  "archive_old_problem_days_resolved_daily_only": 205,
+  "archive_new_problem_days": 3,
+  "archive_remaining_old_problem_days": 127,
+  "archive_problem_years": {
+    "2019": 31,
+    "2020": 71,
+    "2021": 28
+  },
+  "archive_daily_mismatches": 130,
+  "archive_daily_volume_large_days": 380,
+  "archive_daily_amount_large_days": 45,
+  "tdx5_grid": {
+    "duplicates": 0,
+    "not_48_rows": {
+      "2024-10-09": 32,
+      "2024-11-01": 32,
+      "2024-12-18": 32,
+      "2025-01-13": 32,
+      "2025-03-07": 32,
+      "2025-04-01": 32,
+      "2025-05-22": 32,
+      "2025-06-17": 32
+    }
+  }
+}
