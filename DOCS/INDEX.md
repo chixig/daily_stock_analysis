@@ -11,4 +11,4 @@
 
 当前没有额外专项方案文档。
 
-- [工业富联历史分钟K线补齐](../research/foxconn_kline_20261005/PLAN.md)：active，本独立分支执行上市以来1m/5m和每日分时采集核验。
+- [工业富联历史分钟数据交付](FOXCONN_KLINE_DELIVERY.md)：implemented，上市以来1m/5m/原生分时已覆盖，保留价格差异与质量筛选条件。
