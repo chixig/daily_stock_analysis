@@ -1,0 +1,529 @@
+{
+  "hf_folded_b13": {
+    "overlap": 16131,
+    "ohlc_conflicts_gt_half_cent": 35,
+    "conflict_times": {
+      "09:32": 1,
+      "09:33": 1,
+      "09:36": 1,
+      "09:37": 1,
+      "09:56": 1,
+      "10:02": 1,
+      "10:03": 1,
+      "10:20": 1,
+      "10:21": 1,
+      "10:25": 1,
+      "10:26": 1,
+      "10:42": 1
+    },
+    "by_field": {
+      "open": {
+        "bad": 21,
+        "max": 0.0899972534179625,
+        "median": 1.5258789005656581e-06
+      },
+      "high": {
+        "bad": 8,
+        "max": 0.019997558593743747,
+        "median": 1.5258789005656581e-06
+      },
+      "low": {
+        "bad": 10,
+        "max": 0.0899972534179625,
+        "median": 1.5258789005656581e-06
+      },
+      "close": {
+        "bad": 15,
+        "max": 0.0799999999999983,
+        "median": 1.5258789005656581e-06
+      }
+    },
+    "volume_ratio_quantiles": {
+      "0.0": 0.8205715740563936,
+      "0.01": 1.0,
+      "0.5": 1.0,
+      "0.99": 1.0,
+      "1.0": 1.3978267005362688
+    },
+    "volume_exact_count": 16082,
+    "amount_ratio_quantiles": {
+      "0.0": 0.82095084898192,
+      "0.01": 0.9999998201793439,
+      "0.5": 1.0,
+      "0.99": 1.0000001740042739,
+      "1.0": 1.3973488791954767
+    },
+    "amount_exact_count": 16078
+  },
+  "hf_raw_b13": {
+    "overlap": 16131,
+    "ohlc_conflicts_gt_half_cent": 93,
+    "conflict_times": {
+      "09:31": 58,
+      "09:32": 1,
+      "09:33": 1,
+      "09:36": 1,
+      "09:37": 1,
+      "09:56": 1,
+      "10:02": 1,
+      "10:03": 1,
+      "10:20": 1,
+      "10:21": 1,
+      "10:25": 1,
+      "10:26": 1
+    },
+    "by_field": {
+      "open": {
+        "bad": 79,
+        "max": 0.7300033569335938,
+        "median": 1.5258789005656581e-06
+      },
+      "high": {
+        "bad": 17,
+        "max": 0.3499969482421932,
+        "median": 1.5258789005656581e-06
+      },
+      "low": {
+        "bad": 19,
+        "max": 0.540003356933596,
+        "median": 1.5258789005656581e-06
+      },
+      "close": {
+        "bad": 15,
+        "max": 0.0799999999999983,
+        "median": 1.5258789005656581e-06
+      }
+    },
+    "volume_ratio_quantiles": {
+      "0.0": 0.5055690175572843,
+      "0.01": 1.0,
+      "0.5": 1.0,
+      "0.99": 1.0,
+      "1.0": 1.3978267005362688
+    },
+    "volume_exact_count": 16014,
+    "amount_ratio_quantiles": {
+      "0.0": 0.5068576991018198,
+      "0.01": 0.9999998003805518,
+      "0.5": 1.0,
+      "0.99": 1.0000001739880502,
+      "1.0": 1.3973488791954767
+    },
+    "amount_exact_count": 16010
+  },
+  "hf_folded_fresh": {
+    "overlap": 13491,
+    "ohlc_conflicts_gt_half_cent": 34,
+    "conflict_times": {
+      "09:32": 2,
+      "09:33": 2,
+      "09:36": 1,
+      "09:37": 1,
+      "09:56": 1,
+      "10:02": 1,
+      "10:03": 1,
+      "10:36": 1,
+      "10:42": 1,
+      "11:17": 1,
+      "13:03": 1,
+      "13:04": 1
+    },
+    "by_field": {
+      "open": {
+        "bad": 17,
+        "max": 0.07999633789061988,
+        "median": 1.5258789005656581e-06
+      },
+      "high": {
+        "bad": 6,
+        "max": 0.060003662109380684,
+        "median": 1.5258789005656581e-06
+      },
+      "low": {
+        "bad": 6,
+        "max": 0.04000152587890682,
+        "median": 1.5258789005656581e-06
+      },
+      "close": {
+        "bad": 18,
+        "max": 0.07000122070311932,
+        "median": 1.5258789005656581e-06
+      }
+    },
+    "volume_ratio_quantiles": {
+      "0.0": 0.8257059396299903,
+      "0.01": 1.0,
+      "0.5": 1.0,
+      "0.99": 1.0,
+      "1.0": 1.230551262235961
+    },
+    "volume_exact_count": 13444,
+    "amount_ratio_quantiles": {
+      "0.0": 0.8260424581225624,
+      "0.01": 0.9999998202288591,
+      "0.5": 1.0,
+      "0.99": 1.0000001725202665,
+      "1.0": 1.2305484379969072
+    },
+    "amount_exact_count": 13441
+  },
+  "main_fresh": {
+    "overlap": 7680,
+    "ohlc_conflicts_gt_half_cent": 122,
+    "conflict_times": {
+      "13:28": 3,
+      "10:29": 2,
+      "11:06": 2,
+      "11:05": 2,
+      "10:00": 2,
+      "11:16": 2,
+      "13:41": 2,
+      "13:37": 2,
+      "14:54": 2,
+      "11:03": 2,
+      "14:51": 2,
+      "14:52": 2
+    },
+    "by_field": {
+      "open": {
+        "bad": 65,
+        "max": 0.09999847412108664,
+        "median": 0.0
+      },
+      "high": {
+        "bad": 17,
+        "max": 0.04999923706055398,
+        "median": 0.0
+      },
+      "low": {
+        "bad": 17,
+        "max": 0.049999237060546875,
+        "median": 0.0
+      },
+      "close": {
+        "bad": 66,
+        "max": 0.059997558593742895,
+        "median": 0.0
+      }
+    },
+    "volume_ratio_quantiles": {
+      "0.0": 0.5177052729240761,
+      "0.01": 0.9850115315264946,
+      "0.5": 1.0,
+      "0.99": 1.0155155614607239,
+      "1.0": 2.293797150041911
+    },
+    "volume_exact_count": 7489,
+    "amount_ratio_quantiles": {
+      "0.0": 0.5177322630221701,
+      "0.01": 0.9850062893575616,
+      "0.5": 1.0,
+      "0.99": 1.015523228135662,
+      "1.0": 2.2944223352523614
+    },
+    "amount_exact_count": 7489
+  },
+  "b13_fresh": {
+    "overlap": 19680,
+    "ohlc_conflicts_gt_half_cent": 495,
+    "conflict_times": {
+      "10:25": 4,
+      "10:47": 4,
+      "10:36": 4,
+      "10:26": 4,
+      "14:32": 4,
+      "13:33": 4,
+      "13:32": 4,
+      "11:10": 4,
+      "11:09": 4,
+      "13:02": 4,
+      "13:04": 4,
+      "13:31": 4
+    },
+    "by_field": {
+      "open": {
+        "bad": 345,
+        "max": 0.09999847412109375,
+        "median": 0.0
+      },
+      "high": {
+        "bad": 94,
+        "max": 0.0800018310546875,
+        "median": 0.0
+      },
+      "low": {
+        "bad": 114,
+        "max": 0.09000015258790484,
+        "median": 0.0
+      },
+      "close": {
+        "bad": 324,
+        "max": 0.2200012207031179,
+        "median": 0.0
+      }
+    },
+    "volume_ratio_quantiles": {
+      "0.0": 0.6142763588736084,
+      "0.01": 0.97800461776856,
+      "0.5": 1.0,
+      "0.99": 1.0230054164950209,
+      "1.0": 4.4
+    },
+    "volume_exact_count": 19023,
+    "amount_ratio_quantiles": {
+      "0.0": 0.6142760937977828,
+      "0.01": 0.978008854474003,
+      "0.5": 1.0,
+      "0.99": 1.0229584739738187,
+      "1.0": 4.40079054889373
+    },
+    "amount_exact_count": 19022
+  },
+  "hf_folded_daily": {
+    "days": 1982,
+    "ohlc_bad_days": 351,
+    "by_field": {
+      "open": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 3.051757815342171e-07,
+        "bad_days": 0
+      },
+      "high": {
+        "max_abs_diff": 0.14999946594238267,
+        "median_abs_diff": 3.051757815342171e-07,
+        "bad_days": 210
+      },
+      "low": {
+        "max_abs_diff": 0.1100001144409184,
+        "median_abs_diff": 3.433227533378158e-07,
+        "bad_days": 227
+      },
+      "close": {
+        "max_abs_diff": 0.3199999999999932,
+        "median_abs_diff": 3.051757815342171e-07,
+        "bad_days": 19
+      },
+      "volume": {
+        "max_abs_diff": 103958610.0,
+        "median_abs_diff": 0.0,
+        "bad_days": 107
+      },
+      "amount": {
+        "max_abs_diff": 7104604961.280001,
+        "median_abs_diff": 1.0,
+        "bad_days": 1672
+      }
+    }
+  },
+  "main_daily": {
+    "days": 32,
+    "ohlc_bad_days": 0,
+    "by_field": {
+      "open": {
+        "max_abs_diff": 3.051757815342171e-06,
+        "median_abs_diff": 9.155273410499376e-07,
+        "bad_days": 0
+      },
+      "high": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.5258789076710855e-06,
+        "bad_days": 0
+      },
+      "low": {
+        "max_abs_diff": 3.051757815342171e-06,
+        "median_abs_diff": 8.392333974427402e-07,
+        "bad_days": 0
+      },
+      "close": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 8.392333938900265e-07,
+        "bad_days": 0
+      },
+      "volume": {
+        "max_abs_diff": 50.0,
+        "median_abs_diff": 33.0,
+        "bad_days": 32
+      },
+      "amount": {
+        "max_abs_diff": 146.79999923706055,
+        "median_abs_diff": 24.31000018119812,
+        "bad_days": 32
+      }
+    }
+  },
+  "b13_daily": {
+    "days": 93,
+    "ohlc_bad_days": 0,
+    "by_field": {
+      "open": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.2207031261368684e-06,
+        "bad_days": 0
+      },
+      "high": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.5258789076710855e-06,
+        "bad_days": 0
+      },
+      "low": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 9.155273446026513e-07,
+        "bad_days": 0
+      },
+      "close": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.5258789005656581e-06,
+        "bad_days": 0
+      },
+      "volume": {
+        "max_abs_diff": 50.0,
+        "median_abs_diff": 27.0,
+        "bad_days": 93
+      },
+      "amount": {
+        "max_abs_diff": 409.11000061035156,
+        "median_abs_diff": 58.3700008392334,
+        "bad_days": 93
+      }
+    }
+  },
+  "fresh_daily": {
+    "days": 94,
+    "ohlc_bad_days": 0,
+    "by_field": {
+      "open": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.1444091754242436e-06,
+        "bad_days": 0
+      },
+      "high": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.5258789005656581e-06,
+        "bad_days": 0
+      },
+      "low": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.0681152318170462e-06,
+        "bad_days": 0
+      },
+      "close": {
+        "max_abs_diff": 3.662109378410605e-06,
+        "median_abs_diff": 1.3732910204566906e-06,
+        "bad_days": 0
+      },
+      "volume": {
+        "max_abs_diff": 50.0,
+        "median_abs_diff": 27.5,
+        "bad_days": 94
+      },
+      "amount": {
+        "max_abs_diff": 409.11000061035156,
+        "median_abs_diff": 43.139999866485596,
+        "bad_days": 94
+      }
+    }
+  },
+  "hf_0930": {
+    "rows": 1982,
+    "nonzero_volume": 1982,
+    "nonflat_ohlc": 235
+  },
+  "snapshot_alignment": [
+    {
+      "target": "hf",
+      "shift_minutes": 0,
+      "overlap": 473272,
+      "close_within_half_cent": 124784,
+      "median_price_diff": 0.010000228881835938,
+      "volume_ratio_quantiles": {
+        "0.01": 0.00098581130354486,
+        "0.5": 0.009758793969849246,
+        "0.99": 0.06870958878591743
+      }
+    },
+    {
+      "target": "hf",
+      "shift_minutes": 1,
+      "overlap": 475251,
+      "close_within_half_cent": 431549,
+      "median_price_diff": 0.0,
+      "volume_ratio_quantiles": {
+        "0.01": 0.008625063229571985,
+        "0.5": 0.01,
+        "0.99": 0.012103179913906447
+      }
+    },
+    {
+      "target": "folded",
+      "shift_minutes": 0,
+      "overlap": 471291,
+      "close_within_half_cent": 124674,
+      "median_price_diff": 0.010000228881835938,
+      "volume_ratio_quantiles": {
+        "0.01": 0.0009807497777274152,
+        "0.5": 0.009721918247962643,
+        "0.99": 0.067166785569449
+      }
+    },
+    {
+      "target": "folded",
+      "shift_minutes": 1,
+      "overlap": 475251,
+      "close_within_half_cent": 431549,
+      "median_price_diff": 0.0,
+      "volume_ratio_quantiles": {
+        "0.01": 0.008625063229571985,
+        "0.5": 0.01,
+        "0.99": 0.011577106107929891
+      }
+    },
+    {
+      "target": "b13",
+      "shift_minutes": 0,
+      "overlap": 22134,
+      "close_within_half_cent": 1446,
+      "median_price_diff": 0.06999969482421875,
+      "volume_ratio_quantiles": {
+        "0.01": 0.002073512243160986,
+        "0.5": 0.009726626571897212,
+        "0.99": 0.03425804100710025
+      }
+    },
+    {
+      "target": "b13",
+      "shift_minutes": 1,
+      "overlap": 22320,
+      "close_within_half_cent": 21911,
+      "median_price_diff": 0.0,
+      "volume_ratio_quantiles": {
+        "0.01": 0.009781074753640697,
+        "0.5": 0.01,
+        "0.99": 0.010184300266796021
+      }
+    },
+    {
+      "target": "main",
+      "shift_minutes": 0,
+      "overlap": 4760,
+      "close_within_half_cent": 334,
+      "median_price_diff": 0.04999923706055398,
+      "volume_ratio_quantiles": {
+        "0.01": 0.0017905953434944617,
+        "0.5": 0.00980261744129262,
+        "0.99": 0.03573275678168867
+      }
+    },
+    {
+      "target": "main",
+      "shift_minutes": 1,
+      "overlap": 4800,
+      "close_within_half_cent": 4742,
+      "median_price_diff": 0.0,
+      "volume_ratio_quantiles": {
+        "0.01": 0.009752076213260423,
+        "0.5": 0.01,
+        "0.99": 0.010214819120200657
+      }
+    }
+  ]
+}
