@@ -62,12 +62,15 @@ https://huggingface.co/datasets/phields/a-share-l2-trades/tree/2f4c13ee70cabf3f8
 原件、脚本及完整审计：https://github.com/chixig/daily_stock_analysis/tree/research/foxconn-kline-20261005/research/foxconn_kline_repair_20261005
 '''
     (D/'数据说明.md').write_text(note)
-    members=[p for p in sorted(D.iterdir()) if p.suffix in ['.csv','.html','.json','.md']]
+    members=[p for p in sorted(D.iterdir()) if p.suffix in ['.csv','.html','.json','.md'] and p.name!='package_manifest.json']
     archive=D/'工业富联_20260401至20260930_逐笔重建候选_附全历史分时.zip'
     with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
         for p in members:
             entry=zipfile.ZipInfo(p.name,date_time=(2026,10,5,0,0,0));entry.compress_type=zipfile.ZIP_DEFLATED
             z.writestr(entry,p.read_bytes())
+    with zipfile.ZipFile(archive) as z:
+        assert z.testzip() is None
+        for p in members:assert hashlib.sha256(z.read(p.name)).hexdigest()==hashlib.sha256(p.read_bytes()).hexdigest()
     manifest={p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in members+[archive]}
     (D/'package_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
     (D/'SHA256SUMS.txt').write_text('\n'.join(v['sha256']+'  '+k for k,v in manifest.items())+'\n')
