@@ -30,6 +30,6 @@
     "canonical/601138_intraday.parquet": "aeb2c173a0773f03ee3e21d2b273870886898101cdecef98e2ab21233037e973",
     "canonical/601138_5min.parquet": "8d8cac89c0bacce611067a7a423169e89353b6de03e201bf6f38086e256c7475",
     "canonical/snapshot_daily_quality.csv": "1f6d6e2e6365bca0d1af022afd3df30b3a790d10f878fba0e1c962c014dc4354",
-    "canonical/coverage.json": "616dd458b101b499ef0c83c4a4b5181de8049d8c5d251562e93bec5acfdd3dcb"
+    "canonical/coverage.json": "df2bc466ebf6d4851ccc7ba6d08065075b67cd39413719a4b0ccdb7d8e698fa5"
   }
 }
