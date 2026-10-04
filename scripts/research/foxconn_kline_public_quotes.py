@@ -11,7 +11,7 @@ def main():
     RAW.mkdir(exist_ok=True);results=[]
     probes=[]
     for scale in ['1','5']:
-        probes.append(('sina_'+scale,'https://quotes.sina.cn/cn/api/jsonp_v2.php/=/CN_MarketDataService.getKLineData',{'symbol':'sh601138','scale':scale,'ma':'no','datalen':'60000'}))
+        probes.append(('sina_'+scale,'https://quotes.sina.cn/cn/api/jsonp_v2.php/=/CN_MarketDataService.getKLineData',{'symbol':'sh601138','scale':scale,'ma':'no','datalen':'1970'}))
     probes.append(('eastmoney_1','https://push2his.eastmoney.com/api/qt/stock/trends2/get',{'fields1':'f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13','fields2':'f51,f52,f53,f54,f55,f56,f57,f58','ut':'7eea3edcaed734bea9cbfc24409ed989','ndays':'5','iscr':'0','secid':'1.601138'}))
     probes.append(('eastmoney_5','https://push2his.eastmoney.com/api/qt/stock/kline/get',{'fields1':'f1,f2,f3,f4,f5,f6','fields2':'f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61','ut':'7eea3edcaed734bea9cbfc24409ed989','klt':'5','fqt':'0','secid':'1.601138','beg':'0','end':'20500000'}))
     for name,url,params in probes:
@@ -21,7 +21,9 @@ def main():
             (RAW/(name+'.txt')).write_text(r.text)
             r.raise_for_status()
             if name.startswith('sina'):
-                data=json.loads(r.text.split('=(',1)[1].rsplit(');',1)[0]);d=pd.DataFrame(data).rename(columns={'day':'datetime'})
+                data=json.loads(r.text.split('=(',1)[1].rsplit(');',1)[0])
+                if not data:raise ValueError('Source returned no minute records')
+                d=pd.DataFrame(data).rename(columns={'day':'datetime'})
             else:
                 data=r.json()['data'];rows=data['trends' if name.endswith('1') else 'klines']
                 d=pd.DataFrame([a.split(',') for a in rows]);columns=['datetime','open','close','high','low','volume','amount']

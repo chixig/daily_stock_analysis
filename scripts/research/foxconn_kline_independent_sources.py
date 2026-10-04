@@ -40,7 +40,9 @@ def l2():
     info=requests.get('https://huggingface.co/api/datasets/'+L2_REPO+'/revision/'+L2_REV,timeout=40);info.raise_for_status()
     paths=[x['rfilename'] for x in info.json()['siblings']]
     results=json.loads((AUDIT/'l2_acquisition.json').read_text()) if (AUDIT/'l2_acquisition.json').exists() else []
-    for day in ['2026-06-15','2026-08-07','2026-08-12','2026-08-13','2026-08-17','2026-08-24','2026-08-25','2026-09-17','2026-09-23','2026-09-24']:
+    days=sorted({p.split('trade_date=')[1].split('/')[0] for p in paths if p.startswith('data/l2_trades/trade_date=') and '/code_prefix=60/' in p})
+    pending=[d for d in days if not (dest/(d+'.parquet')).exists()][:20]
+    for day in pending:
         if (dest/(day+'.parquet')).exists():continue
         item={'date':day,'repo':L2_REPO,'revision':L2_REV,'files':[]};frames=[]
         targets=[p for p in paths if f'trade_date={day}/code_prefix=60/' in p and p.endswith('.parquet')]
