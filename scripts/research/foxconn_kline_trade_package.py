@@ -15,6 +15,7 @@ def main():
     shutil.copyfile(ROOT/'audit/publisher_row_count_comparison.csv',D/'publisher_row_count_comparison.csv')
     with gzip.open(BASE/'canonical/601138_intraday.csv.gz','rb') as src:
         with (D/'601138_intraday.csv').open('wb') as dst:shutil.copyfileobj(src,dst)
+    remaining=json.loads((D/'remaining_evidence_audit.json').read_text())
     note=f'''# 工业富联逐笔成交重建候选与全历史分时
 
 整理于2026-10-05。本批1/5分钟数据覆盖{c['start']}—{c['end']}，{c['days']}个交易日。
@@ -23,6 +24,7 @@ def main():
 ## 本批计算与验证事实
 
 - 取得公开逐笔源中工业富联{c['raw_trades']:,}条原下载行；剔除完全相同的重复行后为{c['unique_trades']:,}条唯一记录；1分钟{c['one_minute_rows']:,}个时间格点、5分钟{c['five_minute_rows']:,}个时间格点。
+- 实际125日，发布方条数清单只有{remaining['publisher_declared_days']}日；另外{remaining['dates_without_publisher_count']}无发布方计数可核对。
 - 发布方每日条数核对：{c['publisher_row_count_check']['all_declared_row_counts_match']}；这只认证提取没有遗漏发布方已存档的行，不能认证发布方收录了交易所全部成交。
 - 日线开高低收、股数和金额对账通过{c['daily_reconciliation_pass_days']}/{c['days']}日。失败日期：{c['daily_reconciliation_failed_dates']}。完整逐日差值见daily_transaction_quality.csv。
 - 独立numpy重算与保存结果一致；CSV/Parquet往返核验通过。图表验证见chart_verification.json。
@@ -39,11 +41,13 @@ def main():
 每根OHLC取该区间已取得成交的首价、最高、最低、末价；不是从每天分时点推断。
 开盘竞价、原1分钟首根合并方式和秒边界口径不同，比较时需看具体定义。
 
+常规时段对账失败的11日中，{remaining['failed_dates_reconciling_only_when_post_close_included']}加入15:00以后记录后总体量额/收盘/极值相符；但这些记录的交易类型与正确成交时间尚未解释，仍按原时间保留，不改标到15:00。所有记录合计仍不符日期为{remaining['all_records_still_failed_dates']}。详见post_close_reconciliation.csv。
+
 ## 仍未完成的任务
 
 上市以来全部分钟真实极值尚未认证。旧332个异常日集中在2019—2021年，本批2026年逐笔不能修复这些日期。
 另取得2018—2026年公开年度分钟档案，可以使旧332日中205日的日线极值对账相符，但仍留下127日并增加3个新问题日，且底层供应商未披露；不能据此宣称修复或覆盖原件。
-旧591根版本冲突涉及的10个近期日期都已有逐笔记录，但新源也尚未获交易所独立完整性认证，所以不能宣称通过票数或优先级确定了交易所真值。
+旧591根版本冲突已有{remaining['original_disputed_minutes']}根与逐笔重建候选逐一对照，其中{remaining['disputed_minutes_different_from_previous']}根与旧优先级版本不同，见original_591_conflicts_transaction_comparison.csv。涉及的10个近期日期都已有逐笔记录，但新源也尚未获交易所独立完整性认证，所以不能宣称通过票数或优先级确定了交易所真值。
 公开逐笔源底层供应商未披露，time_s只有秒精度，同秒先后依赖提供者成交编号；日线对账相符仍不能证明每笔全收录、分秒顺序和全部分钟极值正确。
 本包是逐笔记录重建候选交付；2018-06-08—2026-03-31仍需有权访问的完整历史逐笔数据。旧全历史分钟包保留作候选证据，不能称最终全量干净数据。
 

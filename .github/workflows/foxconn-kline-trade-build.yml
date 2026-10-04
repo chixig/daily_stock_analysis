@@ -1,0 +1,56 @@
+name: Foxconn reconstruct minutes from acquired transactions
+on:
+  push:
+    branches: [research/foxconn-kline-20261005]
+    paths:
+      - scripts/research/foxconn_kline_trade_build.py
+      - scripts/research/foxconn_kline_trade_verify.py
+      - scripts/research/foxconn_kline_trade_remaining_audit.py
+      - scripts/research/foxconn_kline_trade_chart_verify.py
+      - scripts/research/foxconn_trade_chart_template.html
+      - .github/workflows/foxconn-kline-trade-build.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-kline-20261005
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 playwright==1.55.0
+      - run: python -u scripts/research/foxconn_kline_trade_metadata.py
+      - run: python -u scripts/research/foxconn_kline_trade_build.py
+      - run: python -u scripts/research/foxconn_kline_trade_verify.py
+      - run: python -m playwright install --with-deps chromium
+      - run: python -u scripts/research/foxconn_kline_trade_chart_verify.py
+      - run: python -u scripts/research/foxconn_kline_trade_remaining_audit.py
+      - run: python -u scripts/research/foxconn_kline_trade_package.py
+      - name: Preserve reconstructed bars and verification
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_kline_repair_20261005/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve transaction reconstructed minute bars and verification'
+            git push origin HEAD:research/foxconn-kline-20261005
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foxconn-transaction-reconstruction
+          path: research/foxconn_kline_repair_20261005/delivery/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foxconn-transaction-chart-qa
+          path: /tmp/foxconn_trade_chart_qa/
+          retention-days: 30
