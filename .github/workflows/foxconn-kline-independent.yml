@@ -1,0 +1,34 @@
+name: Foxconn independent historical source acquisition
+on:
+  push:
+    branches: [research/foxconn-kline-20261005]
+    paths:
+      - scripts/research/foxconn_kline_independent_sources.py
+      - .github/workflows/foxconn-kline-independent.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: foxconn-kline-20261005
+  cancel-in-progress: false
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 requests==2.32.3 remotezip==0.12.3 fsspec==2025.3.2 aiohttp==3.11.18
+      - run: python -u scripts/research/foxconn_kline_independent_sources.py
+      - name: Preserve actual source evidence and access outcomes
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f research/foxconn_kline_repair_20261005/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Preserve independently acquired historical source evidence'
+            git push origin HEAD:research/foxconn-kline-20261005
+          fi
