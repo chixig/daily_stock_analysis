@@ -1,0 +1,20 @@
+{
+  "public_share_url": "https://pan.baidu.com/s/1W2TMPTHLWblKy1gBwMCIEQ",
+  "password_source": "https://github.com/aitech17/A_history",
+  "file_downloaded": false,
+  "verify_http_status": 200,
+  "verify_result": {
+    "errno": 0,
+    "err_msg": ""
+  },
+  "list_errno": 0,
+  "root_files": [
+    {
+      "server_filename": "高频数据",
+      "path": "/高频数据",
+      "isdir": "1",
+      "size": "0",
+      "fs_id": "614124945103668"
+    }
+  ]
+}
