@@ -27,3 +27,18 @@ for name,url in sources:
  except Exception as e:a['error']=repr(e)
  res.append(a)
 (O/'source_documents.json').write_text(json.dumps(res,ensure_ascii=False,indent=2));print(json.dumps(res,ensure_ascii=False,indent=2))
+# Use only the publisher's publicly supplied extraction code. No login, CAPTCHA handling, or transfer.
+s=requests.Session();u='https://pan.baidu.com/s/1W2TMPTHLWblKy1gBwMCIEQ';attempt={'public_share_url':u,'password_source':'https://github.com/aitech17/A_history','file_downloaded':False}
+try:
+ page=s.get(u,timeout=25);shareid=re.search(r'shareid[\"\s]*:[\"\s]*(\d+)',page.text);uk=re.search(r'share_uk[\"\s]*:[\"\s]*(\d+)',page.text)
+ if not shareid or not uk:attempt['status']='public_share_identifiers_not_found'
+ else:
+  shareid=shareid.group(1);uk=uk.group(1)
+  r=s.post('https://pan.baidu.com/share/verify',params={'shareid':shareid,'uk':uk,'web':1,'clienttype':0},data={'pwd':'i4ru','vcode':'','vcode_str':''},headers={'Referer':u},timeout=25)
+  attempt['verify_http_status']=r.status_code
+  try:v=r.json();attempt['verify_result']={k:v[k] for k in ['errno','err_msg','show_msg'] if k in v}
+  except ValueError:v={};attempt['status']='verification_did_not_return_json'
+  if v.get('errno')==0:
+   r=s.get('https://pan.baidu.com/share/list',params={'shareid':shareid,'uk':uk,'root':1,'page':1,'num':100,'order':'name','desc':0,'web':1},headers={'Referer':u},timeout=25);v=r.json();attempt['list_errno']=v.get('errno');attempt['root_files']=[{k:a.get(k) for k in ['server_filename','path','isdir','size','fs_id']} for a in v.get('list',[])]
+except Exception as e:attempt['error']=repr(e)
+(O/'baidu_public_share_attempt.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2));print(json.dumps(attempt,ensure_ascii=False,indent=2))
