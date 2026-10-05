@@ -1,0 +1,60 @@
+[
+  {
+    "repo": "qfzcxdl/StockData",
+    "revision": "b1d13702003d7f084a9645c548caabbe74b82457",
+    "path": "data/train-00000-of-00002.parquet",
+    "name": "qfzcxdl_0",
+    "rows": 4149844,
+    "groups": 4150,
+    "columns": [
+      "code",
+      "open",
+      "close",
+      "volume",
+      "turnover",
+      "time",
+      "high",
+      "low"
+    ],
+    "matching_columns": [],
+    "metadata": {},
+    "selected_groups": [],
+    "target_rows": 0,
+    "head": [],
+    "tail": [],
+    "status": "ok"
+  },
+  {
+    "repo": "qfzcxdl/StockData",
+    "revision": "b1d13702003d7f084a9645c548caabbe74b82457",
+    "path": "data/train-00001-of-00002.parquet",
+    "name": "qfzcxdl_1",
+    "rows": 4149844,
+    "groups": 4150,
+    "columns": [
+      "code",
+      "open",
+      "close",
+      "volume",
+      "turnover",
+      "time",
+      "high",
+      "low"
+    ],
+    "matching_columns": [],
+    "metadata": {},
+    "selected_groups": [
+      2753
+    ],
+    "target_rows": 0,
+    "head": [],
+    "tail": [],
+    "status": "ok"
+  },
+  {
+    "repo": "Foxintohumanbeing/2022_Chinese_Stock_Market_Minbar_Data",
+    "revision": "8b9cc9779a1c6b09d93a2b03db44ee1ddc3e7441",
+    "files_total": 293,
+    "matches": []
+  }
+]
