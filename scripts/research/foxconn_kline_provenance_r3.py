@@ -65,10 +65,14 @@ if attempt.get('list_errno')==0:
   html=s.get(u,timeout=25).text
   sig=re.search(r'[\"\']sign[\"\']\s*:\s*[\"\']([^\"\']+)',html);ts=re.search(r'[\"\']timestamp[\"\']\s*:\s*[\"\']?(\d+)',html)
   result['page_has_sign']=bool(sig);result['page_has_timestamp']=bool(ts);result['page_title']=re.findall(r'<title[^>]*>(.*?)</title>',html,re.S)[:1]
-  if sig and ts:
+  sign_value=sig.group(1) if sig else None;stamp_value=ts.group(1) if ts else None
+  if not (sign_value and stamp_value):
+   r=s.get('https://pan.baidu.com/share/tplconfig',params={'surl':'1W2TMPTHLWblKy1gBwMCIEQ','shareid':shareid,'uk':uk,'fields':'sign,timestamp','channel':'chunlei','web':1,'app_id':250528,'clienttype':0},headers={'Referer':u},timeout=25)
+   a=r.json();result['tplconfig_http_status']=r.status_code;result['tplconfig_errno']=a.get('errno');d=a.get('data') or {};sign_value=d.get('sign');stamp_value=d.get('timestamp');result['tplconfig_has_parameters']=bool(sign_value and stamp_value)
+  if sign_value and stamp_value:
    files=[f for row in lists for f in row.get('files',[])];target=[f for f in files if f.get('server_filename','').endswith('.txt')]
    if target:
-    t=target[0];r=s.post('https://pan.baidu.com/api/sharedownload',params={'sign':sig.group(1),'timestamp':ts.group(1),'web':1,'clienttype':0,'app_id':250528},data={'encrypt':0,'extra':json.dumps({'sekey':unquote(s.cookies.get('BDCLND',''))}),'uk':uk,'primaryid':shareid,'product':'share','fid_list':json.dumps([int(t['fs_id'])])},headers={'Referer':u},timeout=25)
+    t=target[0];r=s.post('https://pan.baidu.com/api/sharedownload',params={'sign':sign_value,'timestamp':stamp_value,'web':1,'clienttype':0,'app_id':250528,'channel':'chunlei'},data={'encrypt':0,'extra':json.dumps({'sekey':unquote(s.cookies.get('BDCLND',''))}),'uk':uk,'primaryid':shareid,'product':'share','fid_list':json.dumps([int(t['fs_id'])])},headers={'Referer':u},timeout=25)
     v=r.json();result['download_api_errno']=v.get('errno');result['download_api_message']=v.get('err_msg',v.get('show_msg'))
     if v.get('errno')==0 and v.get('list'):
      url=v['list'][0].get('dlink')
