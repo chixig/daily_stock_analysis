@@ -3,6 +3,8 @@ from pathlib import Path
 src=Path('scripts/research/foxconn_kline_public_r2.py').read_text().split("for fld in ['open'")[0]
 src=src.replace("['601138','sh601138','601138.SH','SH601138']","['601138','sh601138','sh.601138','601138.SH','SH601138']")
 src=src.replace("d=p.read_row_groups(groups,columns=cols).to_pandas();d=d[d[key].astype(str).str.contains('601138',regex=False)]","frames=[]\n    for batch in p.iter_batches(batch_size=65536,row_groups=groups,columns=cols):\n     part=batch.to_pandas();part=part[part[key].astype(str).str.contains('601138',regex=False)]\n     if len(part):frames.append(part)\n    d=pd.concat(frames,ignore_index=True) if frames else pd.DataFrame(columns=cols)")
+src=src.replace("if not st or any(str(st.min)<=t<=str(st.max) for t in ['601138','sh601138','sh.601138','601138.SH','SH601138']):groups.append(i)","lo=__import__('re').findall(r'[0-9]{6}',str(st.min)) if st else [];hi=__import__('re').findall(r'[0-9]{6}',str(st.max)) if st else []\n     if not st or (lo and hi and lo[0]<='601138'<=hi[0]):groups.append(i)")
+src=src.replace("rec['selected_groups']=groups", "rec['selected_groups']=groups;rec['stock_bound_samples']=[{'min':str(p.metadata.row_group(i).column(j).statistics.min),'max':str(p.metadata.row_group(i).column(j).statistics.max)} for i in [0,min(1,p.metadata.num_row_groups-1),p.metadata.num_row_groups-1] if p.metadata.row_group(i).column(j).statistics]")
 exec(src)
 OUT=Path('research/foxconn_kline_repair_20261005/public_extra');OUT.mkdir(parents=True,exist_ok=True)
 for i in [0,1]:
@@ -13,7 +15,7 @@ r=dict(repo=repo,revision=rev);REPORT.append(r)
 try:
  with RemoteZip(f'https://huggingface.co/datasets/{repo}/resolve/{rev}/2022.zip',timeout=60) as z:
   matches=[v for v in z.infolist() if '601138' in v.filename and not v.is_dir()]
-  r['files_total']=len(z.infolist());r['matches']=[dict(path=v.filename,bytes=v.file_size,crc=v.CRC) for v in matches]
+  r['files_total']=len(z.infolist());r['members']=[dict(path=v.filename,bytes=v.file_size) for v in z.infolist()];r['matches']=[dict(path=v.filename,bytes=v.file_size,crc=v.CRC) for v in matches]
   for i,v in enumerate(matches):
    if v.file_size>50_000_000:continue
    b=z.read(v);p=OUT/(f'fox2022_{i}_'+Path(v.filename).name);p.write_bytes(b)
