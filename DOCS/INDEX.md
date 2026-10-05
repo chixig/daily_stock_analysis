@@ -13,4 +13,6 @@
 
 - [工业富联历史分钟数据交付](FOXCONN_KLINE_DELIVERY.md)：implemented，上市以来1m/5m/原生分时已覆盖，保留价格差异与质量筛选条件。
 
-- [工业富联分钟真实性修复](FOXCONN_KLINE_REPAIR.md)：active，近期125日逐笔候选已交付，11日对账失败保留，早期全历史尚未认证。
+- [工业富联分钟真实性修复](FOXCONN_KLINE_REPAIR.md)：active，近期收盘归属推定候选124/125日日线通过，7/15缺数保留，早期全历史尚未认证。
+
+- [公开数据扩展与验证](FOXCONN_PUBLIC_SOURCE_SEARCH_R2.md)：active，新2022档案146日及多来源反证，含最新时间阶段分类和独立交付入口。
