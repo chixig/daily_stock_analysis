@@ -2,7 +2,7 @@ name: Foxconn extra public archive probes
 on:
   push:
     branches: [research/foxconn-public-extra-20261005]
-    paths: [scripts/research/foxconn_kline_public_extra.py, .github/workflows/foxconn-public-extra.yml]
+    paths: [scripts/research/foxconn_kline_public_extra_evaluate.py, scripts/research/foxconn_kline_public_extra.py, .github/workflows/foxconn-public-extra.yml]
   workflow_dispatch:
 permissions:
   contents: write
@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 requests==2.32.3 fsspec==2025.3.2 aiohttp==3.11.16 remotezip==0.12.3
-      - run: python -u scripts/research/foxconn_kline_public_extra.py
+      - run: python -u scripts/research/foxconn_kline_public_extra_evaluate.py
       - name: Preserve source evidence
         if: always()
         run: |
