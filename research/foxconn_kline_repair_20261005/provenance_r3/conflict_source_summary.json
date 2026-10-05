@@ -1,0 +1,165 @@
+{
+  "distinct_conflict_minutes": 591,
+  "comparison_rows": 651,
+  "pairs": [
+    {
+      "selected": "tdx_20261005",
+      "other": "b13_tdx",
+      "rows": 495,
+      "unique_minutes": 495,
+      "dates": [
+        "2026-06-15",
+        "2026-08-07",
+        "2026-08-12",
+        "2026-08-13",
+        "2026-08-17",
+        "2026-08-24",
+        "2026-08-25"
+      ]
+    },
+    {
+      "selected": "tdx_20261005",
+      "other": "hf_0930_fold",
+      "rows": 34,
+      "unique_minutes": 34,
+      "dates": [
+        "2026-06-15",
+        "2026-08-07"
+      ]
+    },
+    {
+      "selected": "tdx_20261005",
+      "other": "main_tdx",
+      "rows": 122,
+      "unique_minutes": 122,
+      "dates": [
+        "2026-08-24",
+        "2026-09-17",
+        "2026-09-23",
+        "2026-09-24"
+      ]
+    }
+  ],
+  "by_day": [
+    {
+      "date": "2026-06-15",
+      "minutes": 47,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx",
+        "tdx_20261005 vs hf_0930_fold"
+      ]
+    },
+    {
+      "date": "2026-08-07",
+      "minutes": 22,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx",
+        "tdx_20261005 vs hf_0930_fold"
+      ]
+    },
+    {
+      "date": "2026-08-12",
+      "minutes": 3,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx"
+      ]
+    },
+    {
+      "date": "2026-08-13",
+      "minutes": 2,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx"
+      ]
+    },
+    {
+      "date": "2026-08-17",
+      "minutes": 156,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "minutes": 127,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx",
+        "tdx_20261005 vs main_tdx"
+      ]
+    },
+    {
+      "date": "2026-08-25",
+      "minutes": 187,
+      "pairs": [
+        "tdx_20261005 vs b13_tdx"
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "minutes": 32,
+      "pairs": [
+        "tdx_20261005 vs main_tdx"
+      ]
+    },
+    {
+      "date": "2026-09-23",
+      "minutes": 1,
+      "pairs": [
+        "tdx_20261005 vs main_tdx"
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "minutes": 14,
+      "pairs": [
+        "tdx_20261005 vs main_tdx"
+      ]
+    }
+  ],
+  "early_mismatch_days": 332,
+  "early_by_source": {
+    "hf_0930_fold": 332
+  },
+  "early_by_year": {
+    "2019": 156,
+    "2020": 129,
+    "2021": 47
+  },
+  "snapshot_diagnostic_columns": [
+    "ticker",
+    "exchange",
+    "time_ms",
+    "source_time",
+    "last_price_x10000",
+    "trade_volume",
+    "trade_value",
+    "trade_count",
+    "iopv_x10000",
+    "trade_flag",
+    "side",
+    "cumulative_volume",
+    "cumulative_value",
+    "high_price_x10000",
+    "low_price_x10000",
+    "open_price_x10000",
+    "prev_close_x10000",
+    "weighted_avg_ask_x10000",
+    "weighted_avg_bid_x10000",
+    "total_ask_volume",
+    "total_bid_volume",
+    "unweighted_index_x10000",
+    "instrument_count",
+    "up_count",
+    "down_count",
+    "flat_count",
+    "raw_cumulative_volume_plus_0s",
+    "volume_gap_plus_0s",
+    "raw_cumulative_volume_plus_1s",
+    "volume_gap_plus_1s",
+    "raw_cumulative_volume_plus_3s",
+    "volume_gap_plus_3s",
+    "raw_cumulative_volume_plus_10s",
+    "volume_gap_plus_10s",
+    "raw_cumulative_amount_plus_0s",
+    "amount_gap_plus_0s"
+  ]
+}

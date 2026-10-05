@@ -1,0 +1,86 @@
+{
+  "partition_columns": [
+    {
+      "name": "trade_date",
+      "type": "string",
+      "source": "Hive path"
+    },
+    {
+      "name": "code_prefix",
+      "type": "string",
+      "source": "Hive path, ticker[:2]"
+    }
+  ],
+  "columns": [
+    {
+      "name": "ticker",
+      "type": "string",
+      "description": "Six-digit ticker code, preserving leading zeroes."
+    },
+    {
+      "name": "time_s",
+      "type": "int32",
+      "description": "Seconds since midnight."
+    },
+    {
+      "name": "tran_id",
+      "type": "int64",
+      "description": "Transaction id."
+    },
+    {
+      "name": "price_x10000",
+      "type": "int64",
+      "description": "Trade price multiplied by 10000."
+    },
+    {
+      "name": "volume",
+      "type": "int64",
+      "description": "Trade volume."
+    },
+    {
+      "name": "sale_order_volume",
+      "type": "int64",
+      "description": "Remaining sell order volume."
+    },
+    {
+      "name": "buy_order_volume",
+      "type": "int64",
+      "description": "Remaining buy order volume."
+    },
+    {
+      "name": "side",
+      "type": "string",
+      "description": "Trade side from source Type column, usually B or S."
+    },
+    {
+      "name": "sale_order_id",
+      "type": "int64",
+      "description": "Sell order id."
+    },
+    {
+      "name": "sale_order_price_x10000",
+      "type": "int64",
+      "description": "Sell order price multiplied by 10000."
+    },
+    {
+      "name": "buy_order_id",
+      "type": "int64",
+      "description": "Buy order id."
+    },
+    {
+      "name": "buy_order_price_x10000",
+      "type": "int64",
+      "description": "Buy order price multiplied by 10000."
+    }
+  ],
+  "sort_order": [
+    "ticker",
+    "time_s",
+    "tran_id"
+  ],
+  "compression": "zstd",
+  "row_group_size_rows": 2000000,
+  "row_groups_per_file": 15,
+  "target_file_size": "300MB-800MB when row distribution allows it",
+  "generated_at": "2026-09-30T10:06:25+00:00"
+}

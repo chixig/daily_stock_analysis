@@ -1,0 +1,43 @@
+[
+  {
+    "name": "ifind_faq",
+    "url": "https://ftwc.51ifind.com/gwstatic/static/ds_web/quantapi-web/help-center/faq.html",
+    "http_status": 200,
+    "bytes": 33253,
+    "sha256": "153acf37e4d2f2a7454eb9ccad850087c3b633f90198c0b0b5bf43e9a0b7c5f6",
+    "title": [
+      "基础概念 | 同花顺数据接口"
+    ]
+  },
+  {
+    "name": "neigezhu_provenance",
+    "url": "https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/raw/ba589a11534825044fe5a6b84838f50ba8d8d188/metadata/source_provenance.json",
+    "http_status": 200,
+    "bytes": 411,
+    "sha256": "469021ac7fda54883cf8d0805894d1325dccf5e903d4c025979762d53e29faf6"
+  },
+  {
+    "name": "phields_schema",
+    "url": "https://huggingface.co/datasets/phields/a-share-l2-trades/raw/2f4c13ee70cabf3f8b831acf7e1686481a762eaa/metadata/schema.json",
+    "http_status": 200,
+    "bytes": 1938,
+    "sha256": "ec064117e283bd8940cc4c0e5cde600797e912463eac19e827c64d5150426af3"
+  },
+  {
+    "name": "baidu_public_share",
+    "url": "https://pan.baidu.com/s/1W2TMPTHLWblKy1gBwMCIEQ?pwd=i4ru",
+    "http_status": 200,
+    "bytes": 16006,
+    "sha256": "def2676f8ab150b90fed215ddd0d441e8305a1b01aee72acc8cfdaf4ad28d5e5",
+    "title": [
+      "百度网盘 请输入提取码"
+    ]
+  },
+  {
+    "name": "phields_SHA_inventory",
+    "url": "https://huggingface.co/api/datasets/phields/SHA/revision/6d0abf9fc6949a0906828faca690f56031d09549",
+    "http_status": 200,
+    "bytes": 354,
+    "sha256": "679e226dc37c42093f9f1dcab4006504c1149b61ce198e0bd8e42458904c3bb6"
+  }
+]
