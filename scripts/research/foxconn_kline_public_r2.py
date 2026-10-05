@@ -3,11 +3,13 @@ import json,hashlib,traceback
 from pathlib import Path
 import requests,fsspec,pyarrow.parquet as pq,pandas as pd
 OUT=Path('research/foxconn_kline_repair_20261005/public_r2');OUT.mkdir(parents=True,exist_ok=True)
-REPORT=[]
+REPORT=json.loads((OUT/'acquisition.json').read_text()) if (OUT/'acquisition.json').exists() else []
 def save():
  (OUT/'acquisition.json').write_text(json.dumps(REPORT,ensure_ascii=False,indent=2,default=str))
 def probe(repo,rev,path,name,mode):
- rec=dict(repo=repo,revision=rev,path=path,name=name);REPORT.append(rec)
+ if (OUT/(name+'.parquet')).exists():
+  print('reuse saved target '+name,flush=True);return
+ rec=dict(repo=repo,revision=rev,path=path,name=name);REPORT.append(rec);save();print('start '+name,flush=True)
  try:
   u=f'https://huggingface.co/datasets/{repo}/resolve/{rev}/{path}'
   with fsspec.open(u,'rb',block_size=1024*1024,cache_type='bytes') as f:
@@ -27,7 +29,11 @@ def probe(repo,rev,path,name,mode):
     rec['selected_groups']=groups
     if len(groups)>200:rec['status']='too_many_groups_for_probe';return
     cols=names if mode=='bars' else [n for n in names if not n.startswith(('bid','ask'))]
-    d=p.read_row_groups(groups,columns=cols).to_pandas();d=d[d[key].astype(str).str.contains('601138',regex=False)]
+    frames=[]
+    for batch in p.iter_batches(batch_size=32768,row_groups=groups,columns=cols):
+     part=batch.to_pandas();part=part[part[key].astype(str).str.contains('601138',regex=False)]
+     if len(part):frames.append(part)
+    d=pd.concat(frames,ignore_index=True) if frames else pd.DataFrame(columns=cols)
    rec.update(target_rows=len(d),head=d.head(2).reset_index().to_dict('records'),tail=d.tail(2).reset_index().to_dict('records'))
    if len(d):
     dest=OUT/(name+'.parquet');d.to_parquet(dest);rec['sha256']=hashlib.sha256(dest.read_bytes()).hexdigest();rec['bytes']=dest.stat().st_size
@@ -36,7 +42,8 @@ def probe(repo,rev,path,name,mode):
  finally:save();print(json.dumps(rec,ensure_ascii=False,default=str),flush=True)
 for fld in ['open','high','low','close','volume','amount']:
  probe('suncong/ashare_1min','c05c0da3940e167d689392852e9d490107a2c3e1',fld+'.parquet','suncong_'+fld,'wide')
-for year in [2021,2022,2023,2024,2025,2026]:
+# Existing 2021/2022 BaoStock-derived samples suffice for source-version comparison.
+for year in []:
  probe('ANTICH/traderharness-ashare-5y','3bf5151ab3e94851bb09dd8ade815563c44b15a6',f'5min_clean/year={year}/part-6.parquet',f'ANTICH_{year}','bars')
 repo='phields/a-share-l2-market-depth';rev='558381a6b22c9012ffcfa5c4f972eaa1633e2dcd'
 r=requests.get(f'https://huggingface.co/api/datasets/{repo}/revision/{rev}',timeout=60);r.raise_for_status()
