@@ -4,7 +4,12 @@
   "page_has_sign": false,
   "page_has_timestamp": false,
   "page_title": [
-    "高频数据_免费高速下载|百度网盘-分享无限制"
+    "百度网盘-分享文件"
   ],
-  "status": "standard_download_parameters_not_exposed_to_anonymous_share_view"
+  "tplconfig_http_status": 200,
+  "tplconfig_errno": 0,
+  "tplconfig_has_parameters": true,
+  "download_api_errno": 0,
+  "download_api_message": null,
+  "document_http_status": 403
 }
