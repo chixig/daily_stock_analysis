@@ -5,7 +5,7 @@
     {
       "source_other": "b13_tdx",
       "comparison_outcome": "neither_matches_trade",
-      "pair_rows": 462
+      "pair_rows": 461
     },
     {
       "source_other": "b13_tdx",
@@ -16,6 +16,11 @@
       "source_other": "b13_tdx",
       "comparison_outcome": "selected_matches_trade",
       "pair_rows": 14
+    },
+    {
+      "source_other": "b13_tdx",
+      "comparison_outcome": "trade_ohlc_unavailable",
+      "pair_rows": 1
     },
     {
       "source_other": "hf_0930_fold",
@@ -43,6 +48,11 @@
       "pair_rows": 10
     }
   ],
-  "unmatched_trade_rows": 1,
+  "trade_ohlc_unavailable_minutes": [
+    "2026-08-25 14:58:00"
+  ],
+  "available_but_selected_differs": 568,
+  "any_version_matches": 49,
+  "no_version_matches_available_trade": 541,
   "limit": "Agreement is corroboration, not proof of complete exchange trades. Raw upstream provenance remains unknown."
 }
