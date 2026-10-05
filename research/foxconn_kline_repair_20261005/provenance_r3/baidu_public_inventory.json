@@ -1,0 +1,70 @@
+{
+  "folders": [
+    {
+      "path": "/高频数据",
+      "depth": 0,
+      "errno": 0,
+      "has_more": null,
+      "files": [
+        {
+          "server_filename": "1min_2005-2021_hdf5.zip",
+          "path": "/高频数据/1min_2005-2021_hdf5.zip",
+          "isdir": 0,
+          "size": 10797742814,
+          "fs_id": 1032202364967189
+        },
+        {
+          "server_filename": "2014-2021csv.zip",
+          "path": "/高频数据/2014-2021csv.zip",
+          "isdir": 0,
+          "size": 15786195176,
+          "fs_id": 969952626357090
+        },
+        {
+          "server_filename": "new_tick2019-2021.zip",
+          "path": "/高频数据/new_tick2019-2021.zip",
+          "isdir": 0,
+          "size": 20304043228,
+          "fs_id": 959744057135860
+        },
+        {
+          "server_filename": "new_1min_csv_2005-2021.zip",
+          "path": "/高频数据/new_1min_csv_2005-2021.zip",
+          "isdir": 0,
+          "size": 26163724930,
+          "fs_id": 421018402287001
+        },
+        {
+          "server_filename": "new_1min_hdf5_2005-2021.zip",
+          "path": "/高频数据/new_1min_hdf5_2005-2021.zip",
+          "isdir": 0,
+          "size": 10797742756,
+          "fs_id": 819326646857593
+        },
+        {
+          "server_filename": "new_1min_hdf5_2005-2021.zip.torrent",
+          "path": "/高频数据/new_1min_hdf5_2005-2021.zip.torrent",
+          "isdir": 0,
+          "size": 103683,
+          "fs_id": 67198956475222
+        },
+        {
+          "server_filename": "tick2018.zip",
+          "path": "/高频数据/tick2018.zip",
+          "isdir": 0,
+          "size": 5946412406,
+          "fs_id": 125518128061573
+        },
+        {
+          "server_filename": "数据说明.txt",
+          "path": "/高频数据/数据说明.txt",
+          "isdir": 0,
+          "size": 1291,
+          "fs_id": 229158431161155
+        }
+      ]
+    }
+  ],
+  "remaining_folders": [],
+  "downloaded_data_files": 0
+}
