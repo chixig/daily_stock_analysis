@@ -1,0 +1,271 @@
+{
+  "suncong_invalid": {
+    "dates": {
+      "2023-11-29": 240
+    },
+    "examples": [
+      {
+        "datetime": "2023-11-29 09:31:00",
+        "open": 92235.07917174176,
+        "high": 15.19,
+        "low": 15.08,
+        "close": 15.14,
+        "volume": 961700.0,
+        "amount": 14567905.0,
+        "date": "2023-11-29"
+      },
+      {
+        "datetime": "2023-11-29 09:32:00",
+        "open": 92295.98051157125,
+        "high": 15.18,
+        "low": 15.11,
+        "close": 15.17,
+        "volume": 589600.0,
+        "amount": 8931341.0,
+        "date": "2023-11-29"
+      },
+      {
+        "datetime": "2023-11-29 09:33:00",
+        "open": 92235.07917174176,
+        "high": 15.16,
+        "low": 15.12,
+        "close": 15.13,
+        "volume": 458500.0,
+        "amount": 6941294.0,
+        "date": "2023-11-29"
+      },
+      {
+        "datetime": "2023-11-29 09:34:00",
+        "open": 92052.37515225333,
+        "high": 15.12,
+        "low": 15.08,
+        "close": 15.11,
+        "volume": 439100.0,
+        "amount": 6629250.0,
+        "date": "2023-11-29"
+      }
+    ],
+    "volume_non_100_multiple": 1,
+    "zero_volume_rows": 2360
+  },
+  "suncong_daily_quantity": {
+    "volume_diff_quantiles": {
+      "0.0": -19654983.0,
+      "0.25": -26.0,
+      "0.5": 3.0,
+      "0.75": 32.0,
+      "1.0": 730.0
+    },
+    "amount_diff_quantiles": {
+      "0.0": -296728639.45000005,
+      "0.25": -13.31999969482422,
+      "0.5": -0.1299999952316284,
+      "0.75": 4.869999885559082,
+      "1.0": 549.0
+    },
+    "volume_diff_below_1000": 1887,
+    "dates_missing_within_range": [
+      "2018-06-08",
+      "2026-03-16"
+    ]
+  },
+  "snapshot_diagnosis": [
+    {
+      "date": "2026-04-01",
+      "snapshot_rows": 5003,
+      "last_snapshot_time_ms": 54000000,
+      "last_snapshot_daily_differences": {
+        "volume": 0.0,
+        "amount": 0.15999984741210938,
+        "open": 0.0,
+        "high": 0.0,
+        "low": 0.0,
+        "close": 0.0
+      },
+      "all_raw_trade_volume_diff": 0,
+      "last_snapshot_vs_all_raw_volume_gap": 0,
+      "last_snapshot_vs_all_raw_count_gap": 0,
+      "positive_gap_after_10_second_allowance_rows": 0,
+      "first_positive_gap_examples": [],
+      "final_raw_trades": [
+        {
+          "ticker": "601138",
+          "time_s": 54000,
+          "tran_id": 34594296,
+          "price_x10000": 533200,
+          "volume": 200
+        },
+        {
+          "ticker": "601138",
+          "time_s": 54000,
+          "tran_id": 34594297,
+          "price_x10000": 533200,
+          "volume": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-14",
+      "snapshot_rows": 4867,
+      "last_snapshot_time_ms": 54000000,
+      "last_snapshot_daily_differences": {
+        "volume": 0.0,
+        "amount": -0.43000030517578125,
+        "open": 0.0,
+        "high": 0.0,
+        "low": 0.0,
+        "close": 0.0
+      },
+      "all_raw_trade_volume_diff": 0,
+      "last_snapshot_vs_all_raw_volume_gap": 0,
+      "last_snapshot_vs_all_raw_count_gap": 0,
+      "positive_gap_after_10_second_allowance_rows": 0,
+      "first_positive_gap_examples": [],
+      "final_raw_trades": [
+        {
+          "ticker": "601138",
+          "time_s": 54000,
+          "tran_id": 382863,
+          "price_x10000": 656000,
+          "volume": 90
+        },
+        {
+          "ticker": "601138",
+          "time_s": 54000,
+          "tran_id": 382864,
+          "price_x10000": 656000,
+          "volume": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-15",
+      "snapshot_rows": 5006,
+      "last_snapshot_time_ms": 54003000,
+      "last_snapshot_daily_differences": {
+        "volume": 0.0,
+        "amount": 0.3599996566772461,
+        "open": 0.0,
+        "high": 0.0,
+        "low": 0.0,
+        "close": 0.0
+      },
+      "all_raw_trade_volume_diff": -91600,
+      "last_snapshot_vs_all_raw_volume_gap": 91600,
+      "last_snapshot_vs_all_raw_count_gap": 280,
+      "positive_gap_after_10_second_allowance_rows": 3699,
+      "first_positive_gap_examples": [
+        {
+          "time_ms": 35502000,
+          "cumulative_volume": 23760819,
+          "volume_gap_plus_0s": 600,
+          "volume_gap_plus_10s": 600
+        },
+        {
+          "time_ms": 35505000,
+          "cumulative_volume": 23790019,
+          "volume_gap_plus_0s": 29800,
+          "volume_gap_plus_10s": 29800
+        },
+        {
+          "time_ms": 35508000,
+          "cumulative_volume": 23801919,
+          "volume_gap_plus_0s": 41700,
+          "volume_gap_plus_10s": 34400
+        },
+        {
+          "time_ms": 35523000,
+          "cumulative_volume": 23932219,
+          "volume_gap_plus_0s": 79400,
+          "volume_gap_plus_10s": 7700
+        },
+        {
+          "time_ms": 35526000,
+          "cumulative_volume": 23955419,
+          "volume_gap_plus_0s": 88800,
+          "volume_gap_plus_10s": 10800
+        },
+        {
+          "time_ms": 35529000,
+          "cumulative_volume": 23973819,
+          "volume_gap_plus_0s": 80400,
+          "volume_gap_plus_10s": 9600
+        },
+        {
+          "time_ms": 35532000,
+          "cumulative_volume": 23999019,
+          "volume_gap_plus_0s": 87300,
+          "volume_gap_plus_10s": 28200
+        },
+        {
+          "time_ms": 35535000,
+          "cumulative_volume": 24022019,
+          "volume_gap_plus_0s": 84800,
+          "volume_gap_plus_10s": 46100
+        },
+        {
+          "time_ms": 35538000,
+          "cumulative_volume": 24039319,
+          "volume_gap_plus_0s": 91300,
+          "volume_gap_plus_10s": 54500
+        },
+        {
+          "time_ms": 35541000,
+          "cumulative_volume": 24061019,
+          "volume_gap_plus_0s": 90700,
+          "volume_gap_plus_10s": 73300
+        }
+      ],
+      "final_raw_trades": [
+        {
+          "ticker": "601138",
+          "time_s": 54000,
+          "tran_id": 257057,
+          "price_x10000": 636200,
+          "volume": 200
+        },
+        {
+          "ticker": "601138",
+          "time_s": 54000,
+          "tran_id": 257058,
+          "price_x10000": 636200,
+          "volume": 100
+        }
+      ]
+    },
+    {
+      "date": "2026-07-16",
+      "snapshot_rows": 5006,
+      "last_snapshot_time_ms": 54001000,
+      "last_snapshot_daily_differences": {
+        "volume": 0.0,
+        "amount": 0.46000003814697266,
+        "open": 0.0,
+        "high": 0.0,
+        "low": 0.0,
+        "close": 0.0
+      },
+      "all_raw_trade_volume_diff": 86800,
+      "last_snapshot_vs_all_raw_volume_gap": -86800,
+      "last_snapshot_vs_all_raw_count_gap": -273,
+      "positive_gap_after_10_second_allowance_rows": 0,
+      "first_positive_gap_examples": [],
+      "final_raw_trades": [
+        {
+          "ticker": "601138",
+          "time_s": 55731,
+          "tran_id": 34629,
+          "price_x10000": 630200,
+          "volume": 1300
+        },
+        {
+          "ticker": "601138",
+          "time_s": 55752,
+          "tran_id": 35032,
+          "price_x10000": 630200,
+          "volume": 200
+        }
+      ]
+    }
+  ]
+}
