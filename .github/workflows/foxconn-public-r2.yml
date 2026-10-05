@@ -2,7 +2,7 @@ name: Foxconn additional public archive validation
 on:
   push:
     branches: [research/foxconn-kline-20261005]
-    paths: [scripts/research/foxconn_kline_public_r2_diagnose.py, scripts/research/foxconn_kline_public_r2_evaluate.py, scripts/research/foxconn_kline_public_r2.py, .github/workflows/foxconn-public-r2.yml]
+    paths: [scripts/research/foxconn_kline_canonical_trade_probe.py, scripts/research/foxconn_kline_public_r2_diagnose.py, scripts/research/foxconn_kline_public_r2_evaluate.py, scripts/research/foxconn_kline_public_r2.py, .github/workflows/foxconn-public-r2.yml]
   workflow_dispatch:
 permissions:
   contents: write
@@ -21,6 +21,7 @@ jobs:
       - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1 requests==2.32.3 fsspec==2025.3.2 aiohttp==3.11.16
       - run: python -u scripts/research/foxconn_kline_public_r2_evaluate.py
       - run: python -u scripts/research/foxconn_kline_public_r2_diagnose.py
+      - run: python -u scripts/research/foxconn_kline_canonical_trade_probe.py
       - name: Preserve source evidence
         if: always()
         run: |
