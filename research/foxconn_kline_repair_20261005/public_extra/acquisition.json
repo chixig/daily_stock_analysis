@@ -1,0 +1,1834 @@
+[
+  {
+    "repo": "qfzcxdl/StockData",
+    "revision": "b1d13702003d7f084a9645c548caabbe74b82457",
+    "path": "data/train-00000-of-00002.parquet",
+    "name": "qfzcxdl_0",
+    "rows": 4149844,
+    "groups": 4150,
+    "columns": [
+      "code",
+      "open",
+      "close",
+      "volume",
+      "turnover",
+      "time",
+      "high",
+      "low"
+    ],
+    "matching_columns": [],
+    "metadata": {},
+    "selected_groups": [],
+    "stock_bound_samples": [
+      {
+        "min": "A",
+        "max": "A"
+      },
+      {
+        "min": "A",
+        "max": "AA"
+      },
+      {
+        "min": "HYT",
+        "max": "HYT"
+      }
+    ],
+    "target_rows": 0,
+    "head": [],
+    "tail": [],
+    "status": "ok"
+  },
+  {
+    "repo": "qfzcxdl/StockData",
+    "revision": "b1d13702003d7f084a9645c548caabbe74b82457",
+    "path": "data/train-00001-of-00002.parquet",
+    "name": "qfzcxdl_1",
+    "rows": 4149844,
+    "groups": 4150,
+    "columns": [
+      "code",
+      "open",
+      "close",
+      "volume",
+      "turnover",
+      "time",
+      "high",
+      "low"
+    ],
+    "matching_columns": [],
+    "metadata": {},
+    "selected_groups": [],
+    "stock_bound_samples": [
+      {
+        "min": "HYT",
+        "max": "HYW"
+      },
+      {
+        "min": "HYW",
+        "max": "HYXF"
+      },
+      {
+        "min": "XFIN",
+        "max": "XFINW"
+      }
+    ],
+    "target_rows": 0,
+    "head": [],
+    "tail": [],
+    "status": "ok"
+  },
+  {
+    "repo": "Foxintohumanbeing/2022_Chinese_Stock_Market_Minbar_Data",
+    "revision": "8b9cc9779a1c6b09d93a2b03db44ee1ddc3e7441",
+    "files_total": 293,
+    "members": [
+      {
+        "path": "2022/",
+        "bytes": 0
+      },
+      {
+        "path": "2022/20220317_AllSymbols_1min.parquet",
+        "bytes": 210216865
+      },
+      {
+        "path": "__MACOSX/2022/._20220317_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220329_AllSymbols_1min.parquet",
+        "bytes": 222835977
+      },
+      {
+        "path": "__MACOSX/2022/._20220329_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220524_AllSymbols_1min.parquet",
+        "bytes": 206869866
+      },
+      {
+        "path": "__MACOSX/2022/._20220524_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220701_AllSymbols_1min.parquet",
+        "bytes": 213090514
+      },
+      {
+        "path": "__MACOSX/2022/._20220701_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220318_AllSymbols_1min.parquet",
+        "bytes": 227674152
+      },
+      {
+        "path": "__MACOSX/2022/._20220318_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220614_AllSymbols_1min.parquet",
+        "bytes": 209555525
+      },
+      {
+        "path": "__MACOSX/2022/._20220614_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220712_AllSymbols_1min.parquet",
+        "bytes": 215884703
+      },
+      {
+        "path": "__MACOSX/2022/._20220712_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220607_AllSymbols_1min.parquet",
+        "bytes": 235002783
+      },
+      {
+        "path": "__MACOSX/2022/._20220607_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220805_AllSymbols_1min.parquet",
+        "bytes": 221762152
+      },
+      {
+        "path": "__MACOSX/2022/._20220805_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220413_AllSymbols_1min.parquet",
+        "bytes": 199518955
+      },
+      {
+        "path": "__MACOSX/2022/._20220413_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220121_AllSymbols_1min.parquet",
+        "bytes": 199559766
+      },
+      {
+        "path": "__MACOSX/2022/._20220121_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220506_AllSymbols_1min.parquet",
+        "bytes": 199768020
+      },
+      {
+        "path": "__MACOSX/2022/._20220506_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220509_AllSymbols_1min.parquet",
+        "bytes": 194100005
+      },
+      {
+        "path": "__MACOSX/2022/._20220509_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220422_AllSymbols_1min.parquet",
+        "bytes": 202767677
+      },
+      {
+        "path": "__MACOSX/2022/._20220422_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220110_AllSymbols_1min.parquet",
+        "bytes": 198689673
+      },
+      {
+        "path": "__MACOSX/2022/._20220110_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220304_AllSymbols_1min.parquet",
+        "bytes": 200989242
+      },
+      {
+        "path": "__MACOSX/2022/._20220304_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220608_AllSymbols_1min.parquet",
+        "bytes": 221806451
+      },
+      {
+        "path": "__MACOSX/2022/._20220608_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220211_AllSymbols_1min.parquet",
+        "bytes": 200359131
+      },
+      {
+        "path": "__MACOSX/2022/._20220211_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220511_AllSymbols_1min.parquet",
+        "bytes": 205713849
+      },
+      {
+        "path": "__MACOSX/2022/._20220511_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220610_AllSymbols_1min.parquet",
+        "bytes": 215827484
+      },
+      {
+        "path": "__MACOSX/2022/._20220610_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220705_AllSymbols_1min.parquet",
+        "bytes": 223232589
+      },
+      {
+        "path": "__MACOSX/2022/._20220705_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220209_AllSymbols_1min.parquet",
+        "bytes": 197047207
+      },
+      {
+        "path": "__MACOSX/2022/._20220209_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220322_AllSymbols_1min.parquet",
+        "bytes": 201920821
+      },
+      {
+        "path": "__MACOSX/2022/._20220322_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220621_AllSymbols_1min.parquet",
+        "bytes": 228319956
+      },
+      {
+        "path": "__MACOSX/2022/._20220621_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220107_AllSymbols_1min.parquet",
+        "bytes": 218369767
+      },
+      {
+        "path": "__MACOSX/2022/._20220107_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220520_AllSymbols_1min.parquet",
+        "bytes": 228589297
+      },
+      {
+        "path": "__MACOSX/2022/._20220520_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220114_AllSymbols_1min.parquet",
+        "bytes": 201089910
+      },
+      {
+        "path": "__MACOSX/2022/._20220114_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220418_AllSymbols_1min.parquet",
+        "bytes": 202253643
+      },
+      {
+        "path": "__MACOSX/2022/._20220418_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220426_AllSymbols_1min.parquet",
+        "bytes": 207198897
+      },
+      {
+        "path": "__MACOSX/2022/._20220426_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220719_AllSymbols_1min.parquet",
+        "bytes": 214643058
+      },
+      {
+        "path": "__MACOSX/2022/._20220719_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220215_AllSymbols_1min.parquet",
+        "bytes": 196464203
+      },
+      {
+        "path": "__MACOSX/2022/._20220215_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220727_AllSymbols_1min.parquet",
+        "bytes": 212163416
+      },
+      {
+        "path": "__MACOSX/2022/._20220727_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220224_AllSymbols_1min.parquet",
+        "bytes": 211268044
+      },
+      {
+        "path": "__MACOSX/2022/._20220224_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220801_AllSymbols_1min.parquet",
+        "bytes": 218719945
+      },
+      {
+        "path": "__MACOSX/2022/._20220801_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220728_AllSymbols_1min.parquet",
+        "bytes": 216038947
+      },
+      {
+        "path": "__MACOSX/2022/._20220728_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220331_AllSymbols_1min.parquet",
+        "bytes": 209250370
+      },
+      {
+        "path": "__MACOSX/2022/._20220331_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220429_AllSymbols_1min.parquet",
+        "bytes": 206558515
+      },
+      {
+        "path": "__MACOSX/2022/._20220429_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220125_AllSymbols_1min.parquet",
+        "bytes": 203814781
+      },
+      {
+        "path": "__MACOSX/2022/._20220125_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220425_AllSymbols_1min.parquet",
+        "bytes": 206822455
+      },
+      {
+        "path": "__MACOSX/2022/._20220425_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220117_AllSymbols_1min.parquet",
+        "bytes": 199978482
+      },
+      {
+        "path": "__MACOSX/2022/._20220117_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220530_AllSymbols_1min.parquet",
+        "bytes": 225607881
+      },
+      {
+        "path": "__MACOSX/2022/._20220530_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220228_AllSymbols_1min.parquet",
+        "bytes": 197992054
+      },
+      {
+        "path": "__MACOSX/2022/._20220228_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220303_AllSymbols_1min.parquet",
+        "bytes": 199225647
+      },
+      {
+        "path": "__MACOSX/2022/._20220303_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220216_AllSymbols_1min.parquet",
+        "bytes": 193681710
+      },
+      {
+        "path": "__MACOSX/2022/._20220216_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220715_AllSymbols_1min.parquet",
+        "bytes": 218610353
+      },
+      {
+        "path": "__MACOSX/2022/._20220715_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220802_AllSymbols_1min.parquet",
+        "bytes": 226110503
+      },
+      {
+        "path": "__MACOSX/2022/._20220802_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220118_AllSymbols_1min.parquet",
+        "bytes": 200975410
+      },
+      {
+        "path": "__MACOSX/2022/._20220118_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220414_AllSymbols_1min.parquet",
+        "bytes": 199628066
+      },
+      {
+        "path": "__MACOSX/2022/._20220414_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220126_AllSymbols_1min.parquet",
+        "bytes": 197553289
+      },
+      {
+        "path": "__MACOSX/2022/._20220126_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220407_AllSymbols_1min.parquet",
+        "bytes": 201557458
+      },
+      {
+        "path": "__MACOSX/2022/._20220407_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220512_AllSymbols_1min.parquet",
+        "bytes": 200054148
+      },
+      {
+        "path": "__MACOSX/2022/._20220512_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220321_AllSymbols_1min.parquet",
+        "bytes": 203663558
+      },
+      {
+        "path": "__MACOSX/2022/._20220321_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220706_AllSymbols_1min.parquet",
+        "bytes": 220930270
+      },
+      {
+        "path": "__MACOSX/2022/._20220706_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220613_AllSymbols_1min.parquet",
+        "bytes": 219433938
+      },
+      {
+        "path": "__MACOSX/2022/._20220613_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220310_AllSymbols_1min.parquet",
+        "bytes": 216108816
+      },
+      {
+        "path": "__MACOSX/2022/._20220310_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220622_AllSymbols_1min.parquet",
+        "bytes": 241512044
+      },
+      {
+        "path": "__MACOSX/2022/._20220622_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220523_AllSymbols_1min.parquet",
+        "bytes": 212533087
+      },
+      {
+        "path": "__MACOSX/2022/._20220523_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220104_AllSymbols_1min.parquet",
+        "bytes": 206689811
+      },
+      {
+        "path": "__MACOSX/2022/._20220104_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220408_AllSymbols_1min.parquet",
+        "bytes": 200801582
+      },
+      {
+        "path": "__MACOSX/2022/._20220408_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220223_AllSymbols_1min.parquet",
+        "bytes": 198749928
+      },
+      {
+        "path": "__MACOSX/2022/._20220223_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220308_AllSymbols_1min.parquet",
+        "bytes": 210700973
+      },
+      {
+        "path": "__MACOSX/2022/._20220308_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220711_AllSymbols_1min.parquet",
+        "bytes": 216223505
+      },
+      {
+        "path": "__MACOSX/2022/._20220711_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220505_AllSymbols_1min.parquet",
+        "bytes": 199597003
+      },
+      {
+        "path": "__MACOSX/2022/._20220505_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220113_AllSymbols_1min.parquet",
+        "bytes": 201184064
+      },
+      {
+        "path": "__MACOSX/2022/._20220113_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220421_AllSymbols_1min.parquet",
+        "bytes": 206183471
+      },
+      {
+        "path": "__MACOSX/2022/._20220421_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220307_AllSymbols_1min.parquet",
+        "bytes": 202963915
+      },
+      {
+        "path": "__MACOSX/2022/._20220307_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220720_AllSymbols_1min.parquet",
+        "bytes": 213044132
+      },
+      {
+        "path": "__MACOSX/2022/._20220720_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220809_AllSymbols_1min.parquet",
+        "bytes": 216106244
+      },
+      {
+        "path": "__MACOSX/2022/._20220809_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220314_AllSymbols_1min.parquet",
+        "bytes": 202862611
+      },
+      {
+        "path": "__MACOSX/2022/._20220314_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220527_AllSymbols_1min.parquet",
+        "bytes": 201474213
+      },
+      {
+        "path": "__MACOSX/2022/._20220527_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220519_AllSymbols_1min.parquet",
+        "bytes": 195752940
+      },
+      {
+        "path": "__MACOSX/2022/._20220519_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220516_AllSymbols_1min.parquet",
+        "bytes": 224098515
+      },
+      {
+        "path": "__MACOSX/2022/._20220516_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220617_AllSymbols_1min.parquet",
+        "bytes": 227250079
+      },
+      {
+        "path": "__MACOSX/2022/._20220617_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220629_AllSymbols_1min.parquet",
+        "bytes": 230662829
+      },
+      {
+        "path": "__MACOSX/2022/._20220629_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220325_AllSymbols_1min.parquet",
+        "bytes": 201437053
+      },
+      {
+        "path": "__MACOSX/2022/._20220325_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220124_AllSymbols_1min.parquet",
+        "bytes": 196362591
+      },
+      {
+        "path": "__MACOSX/2022/._20220124_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220428_AllSymbols_1min.parquet",
+        "bytes": 203718777
+      },
+      {
+        "path": "__MACOSX/2022/._20220428_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220330_AllSymbols_1min.parquet",
+        "bytes": 210338355
+      },
+      {
+        "path": "__MACOSX/2022/._20220330_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220729_AllSymbols_1min.parquet",
+        "bytes": 219126550
+      },
+      {
+        "path": "__MACOSX/2022/._20220729_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220225_AllSymbols_1min.parquet",
+        "bytes": 213697743
+      },
+      {
+        "path": "__MACOSX/2022/._20220225_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220602_AllSymbols_1min.parquet",
+        "bytes": 212747125
+      },
+      {
+        "path": "__MACOSX/2022/._20220602_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220301_AllSymbols_1min.parquet",
+        "bytes": 197658281
+      },
+      {
+        "path": "__MACOSX/2022/._20220301_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220726_AllSymbols_1min.parquet",
+        "bytes": 211826922
+      },
+      {
+        "path": "__MACOSX/2022/._20220726_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220214_AllSymbols_1min.parquet",
+        "bytes": 197655504
+      },
+      {
+        "path": "__MACOSX/2022/._20220214_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220718_AllSymbols_1min.parquet",
+        "bytes": 216350429
+      },
+      {
+        "path": "__MACOSX/2022/._20220718_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220427_AllSymbols_1min.parquet",
+        "bytes": 209714431
+      },
+      {
+        "path": "__MACOSX/2022/._20220427_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220419_AllSymbols_1min.parquet",
+        "bytes": 195942283
+      },
+      {
+        "path": "__MACOSX/2022/._20220419_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220106_AllSymbols_1min.parquet",
+        "bytes": 216237662
+      },
+      {
+        "path": "__MACOSX/2022/._20220106_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220620_AllSymbols_1min.parquet",
+        "bytes": 226957409
+      },
+      {
+        "path": "__MACOSX/2022/._20220620_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220207_AllSymbols_1min.parquet",
+        "bytes": 195466872
+      },
+      {
+        "path": "__MACOSX/2022/._20220207_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220208_AllSymbols_1min.parquet",
+        "bytes": 200748784
+      },
+      {
+        "path": "__MACOSX/2022/._20220208_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220704_AllSymbols_1min.parquet",
+        "bytes": 217303463
+      },
+      {
+        "path": "__MACOSX/2022/._20220704_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220323_AllSymbols_1min.parquet",
+        "bytes": 200284439
+      },
+      {
+        "path": "__MACOSX/2022/._20220323_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220510_AllSymbols_1min.parquet",
+        "bytes": 201616732
+      },
+      {
+        "path": "__MACOSX/2022/._20220510_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220210_AllSymbols_1min.parquet",
+        "bytes": 197986200
+      },
+      {
+        "path": "__MACOSX/2022/._20220210_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220722_AllSymbols_1min.parquet",
+        "bytes": 218831298
+      },
+      {
+        "path": "__MACOSX/2022/._20220722_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220609_AllSymbols_1min.parquet",
+        "bytes": 239977805
+      },
+      {
+        "path": "__MACOSX/2022/._20220609_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220111_AllSymbols_1min.parquet",
+        "bytes": 201652109
+      },
+      {
+        "path": "__MACOSX/2022/._20220111_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220120_AllSymbols_1min.parquet",
+        "bytes": 204447607
+      },
+      {
+        "path": "__MACOSX/2022/._20220120_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220412_AllSymbols_1min.parquet",
+        "bytes": 202014036
+      },
+      {
+        "path": "__MACOSX/2022/._20220412_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220606_AllSymbols_1min.parquet",
+        "bytes": 237864917
+      },
+      {
+        "path": "__MACOSX/2022/._20220606_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220221_AllSymbols_1min.parquet",
+        "bytes": 195776719
+      },
+      {
+        "path": "__MACOSX/2022/._20220221_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220804_AllSymbols_1min.parquet",
+        "bytes": 221452218
+      },
+      {
+        "path": "__MACOSX/2022/._20220804_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220713_AllSymbols_1min.parquet",
+        "bytes": 239078267
+      },
+      {
+        "path": "__MACOSX/2022/._20220713_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220615_AllSymbols_1min.parquet",
+        "bytes": 225722372
+      },
+      {
+        "path": "__MACOSX/2022/._20220615_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220401_AllSymbols_1min.parquet",
+        "bytes": 209643649
+      },
+      {
+        "path": "__MACOSX/2022/._20220401_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220525_AllSymbols_1min.parquet",
+        "bytes": 199245479
+      },
+      {
+        "path": "__MACOSX/2022/._20220525_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220328_AllSymbols_1min.parquet",
+        "bytes": 223418262
+      },
+      {
+        "path": "__MACOSX/2022/._20220328_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220624_AllSymbols_1min.parquet",
+        "bytes": 220675977
+      },
+      {
+        "path": "__MACOSX/2022/._20220624_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220316_AllSymbols_1min.parquet",
+        "bytes": 215789933
+      },
+      {
+        "path": "__MACOSX/2022/._20220316_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220324_AllSymbols_1min.parquet",
+        "bytes": 199941299
+      },
+      {
+        "path": "__MACOSX/2022/._20220324_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220628_AllSymbols_1min.parquet",
+        "bytes": 222880651
+      },
+      {
+        "path": "__MACOSX/2022/._20220628_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220616_AllSymbols_1min.parquet",
+        "bytes": 227052950
+      },
+      {
+        "path": "__MACOSX/2022/._20220616_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220517_AllSymbols_1min.parquet",
+        "bytes": 194609209
+      },
+      {
+        "path": "__MACOSX/2022/._20220517_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220518_AllSymbols_1min.parquet",
+        "bytes": 212415340
+      },
+      {
+        "path": "__MACOSX/2022/._20220518_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220526_AllSymbols_1min.parquet",
+        "bytes": 202621666
+      },
+      {
+        "path": "__MACOSX/2022/._20220526_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220315_AllSymbols_1min.parquet",
+        "bytes": 213078531
+      },
+      {
+        "path": "__MACOSX/2022/._20220315_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220627_AllSymbols_1min.parquet",
+        "bytes": 222437267
+      },
+      {
+        "path": "__MACOSX/2022/._20220627_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220808_AllSymbols_1min.parquet",
+        "bytes": 216089256
+      },
+      {
+        "path": "__MACOSX/2022/._20220808_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220721_AllSymbols_1min.parquet",
+        "bytes": 215093452
+      },
+      {
+        "path": "__MACOSX/2022/._20220721_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220420_AllSymbols_1min.parquet",
+        "bytes": 200959594
+      },
+      {
+        "path": "__MACOSX/2022/._20220420_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220112_AllSymbols_1min.parquet",
+        "bytes": 197867168
+      },
+      {
+        "path": "__MACOSX/2022/._20220112_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220411_AllSymbols_1min.parquet",
+        "bytes": 202535305
+      },
+      {
+        "path": "__MACOSX/2022/._20220411_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220222_AllSymbols_1min.parquet",
+        "bytes": 198486316
+      },
+      {
+        "path": "__MACOSX/2022/._20220222_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220309_AllSymbols_1min.parquet",
+        "bytes": 214258591
+      },
+      {
+        "path": "__MACOSX/2022/._20220309_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220105_AllSymbols_1min.parquet",
+        "bytes": 229458213
+      },
+      {
+        "path": "__MACOSX/2022/._20220105_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220708_AllSymbols_1min.parquet",
+        "bytes": 215021726
+      },
+      {
+        "path": "__MACOSX/2022/._20220708_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220623_AllSymbols_1min.parquet",
+        "bytes": 217800532
+      },
+      {
+        "path": "__MACOSX/2022/._20220623_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220311_AllSymbols_1min.parquet",
+        "bytes": 221482497
+      },
+      {
+        "path": "__MACOSX/2022/._20220311_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220810_AllSymbols_1min.parquet",
+        "bytes": 219323218
+      },
+      {
+        "path": "__MACOSX/2022/._20220810_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220707_AllSymbols_1min.parquet",
+        "bytes": 215573010
+      },
+      {
+        "path": "__MACOSX/2022/._20220707_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220513_AllSymbols_1min.parquet",
+        "bytes": 197532812
+      },
+      {
+        "path": "__MACOSX/2022/._20220513_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220406_AllSymbols_1min.parquet",
+        "bytes": 209453379
+      },
+      {
+        "path": "__MACOSX/2022/._20220406_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220127_AllSymbols_1min.parquet",
+        "bytes": 200577394
+      },
+      {
+        "path": "__MACOSX/2022/._20220127_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220415_AllSymbols_1min.parquet",
+        "bytes": 205273038
+      },
+      {
+        "path": "__MACOSX/2022/._20220415_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220119_AllSymbols_1min.parquet",
+        "bytes": 213967066
+      },
+      {
+        "path": "__MACOSX/2022/._20220119_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220601_AllSymbols_1min.parquet",
+        "bytes": 210788097
+      },
+      {
+        "path": "__MACOSX/2022/._20220601_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220803_AllSymbols_1min.parquet",
+        "bytes": 225047249
+      },
+      {
+        "path": "__MACOSX/2022/._20220803_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220218_AllSymbols_1min.parquet",
+        "bytes": 194873572
+      },
+      {
+        "path": "__MACOSX/2022/._20220218_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220714_AllSymbols_1min.parquet",
+        "bytes": 214856352
+      },
+      {
+        "path": "__MACOSX/2022/._20220714_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220630_AllSymbols_1min.parquet",
+        "bytes": 223282055
+      },
+      {
+        "path": "__MACOSX/2022/._20220630_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220217_AllSymbols_1min.parquet",
+        "bytes": 197189688
+      },
+      {
+        "path": "__MACOSX/2022/._20220217_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220725_AllSymbols_1min.parquet",
+        "bytes": 235898058
+      },
+      {
+        "path": "__MACOSX/2022/._20220725_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220302_AllSymbols_1min.parquet",
+        "bytes": 197014960
+      },
+      {
+        "path": "__MACOSX/2022/._20220302_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220531_AllSymbols_1min.parquet",
+        "bytes": 213777792
+      },
+      {
+        "path": "__MACOSX/2022/._20220531_AllSymbols_1min.parquet",
+        "bytes": 220
+      },
+      {
+        "path": "2022/20220128_AllSymbols_1min.parquet",
+        "bytes": 201823269
+      },
+      {
+        "path": "__MACOSX/2022/._20220128_AllSymbols_1min.parquet",
+        "bytes": 220
+      }
+    ],
+    "matches": []
+  },
+  {
+    "repo": "Foxintohumanbeing/2022_Chinese_Stock_Market_Minbar_Data",
+    "revision": "8b9cc9779a1c6b09d93a2b03db44ee1ddc3e7441",
+    "member": "2022/20220104_AllSymbols_1min.parquet",
+    "member_sha256": "422671d1e6deb53432bcdf6b2b85ce734cf5e49562d0e9694a7c5b31041d200a",
+    "columns": [
+      "symbol",
+      "datetime",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "acc_volume",
+      "turnover",
+      "acc_turnover",
+      "vwap",
+      "sell_vol",
+      "buy_vol",
+      "first_weighted_ask_prc",
+      "first_weighted_bid_prc",
+      "first_total_ask_vol",
+      "first_total_bid_vol",
+      "first_ask_prc1",
+      "first_ask_vol1",
+      "first_bid_prc1",
+      "first_bid_vol1",
+      "first_ask_prc2",
+      "first_ask_vol2",
+      "first_bid_prc2",
+      "first_bid_vol2",
+      "first_ask_prc3",
+      "first_ask_vol3",
+      "first_bid_prc3",
+      "first_bid_vol3",
+      "first_ask_prc4",
+      "first_ask_vol4",
+      "first_bid_prc4",
+      "first_bid_vol4",
+      "first_ask_prc5",
+      "first_ask_vol5",
+      "first_bid_prc5",
+      "first_bid_vol5",
+      "first_ask_prc6",
+      "first_ask_vol6",
+      "first_bid_prc6",
+      "first_bid_vol6",
+      "first_ask_prc7",
+      "first_ask_vol7",
+      "first_bid_prc7",
+      "first_bid_vol7",
+      "first_ask_prc8",
+      "first_ask_vol8",
+      "first_bid_prc8",
+      "first_bid_vol8",
+      "first_ask_prc9",
+      "first_ask_vol9",
+      "first_bid_prc9",
+      "first_bid_vol9",
+      "first_ask_prc10",
+      "first_ask_vol10",
+      "first_bid_prc10",
+      "first_bid_vol10"
+    ],
+    "rows": 6726416,
+    "target_rows": 239,
+    "target_sha256": "9fd2ff3b2b11af58e4812e82d4a595c233d5bd0ff4e104735df1bd7cd87424c8",
+    "head": [
+      {
+        "symbol": "601138.SH",
+        "datetime": "2022-01-04 09:25:00",
+        "open": 11.93,
+        "high": 11.93,
+        "low": 11.93,
+        "close": 11.93,
+        "volume": 221700.0,
+        "acc_volume": 221700.0,
+        "turnover": 2644881.0,
+        "acc_turnover": 2644881.0,
+        "vwap": 11.93,
+        "sell_vol": 157700.0,
+        "buy_vol": 64000.0,
+        "first_weighted_ask_prc": 11.98940487496043,
+        "first_weighted_bid_prc": 11.8828030554633,
+        "first_total_ask_vol": 315900.0,
+        "first_total_bid_vol": 301100.0,
+        "first_ask_prc1": 11.93,
+        "first_ask_vol1": 2000.0,
+        "first_bid_prc1": 11.92,
+        "first_bid_vol1": 7700.0,
+        "first_ask_prc2": 11.94,
+        "first_ask_vol2": 3400.0,
+        "first_bid_prc2": 11.91,
+        "first_bid_vol2": 128100.0,
+        "first_ask_prc3": 11.95,
+        "first_ask_vol3": 4200.0,
+        "first_bid_prc3": 11.9,
+        "first_bid_vol3": 4000.0,
+        "first_ask_prc4": 11.96,
+        "first_ask_vol4": 4900.0,
+        "first_bid_prc4": 11.89,
+        "first_bid_vol4": 1900.0,
+        "first_ask_prc5": 11.97,
+        "first_ask_vol5": 22800.0,
+        "first_bid_prc5": 11.88,
+        "first_bid_vol5": 26300.0,
+        "first_ask_prc6": 11.98,
+        "first_ask_vol6": 46000.0,
+        "first_bid_prc6": 11.87,
+        "first_bid_vol6": 17000.0,
+        "first_ask_prc7": 11.99,
+        "first_ask_vol7": 115800.0,
+        "first_bid_prc7": 11.86,
+        "first_bid_vol7": 69400.0,
+        "first_ask_prc8": 12.0,
+        "first_ask_vol8": 106800.0,
+        "first_bid_prc8": 11.85,
+        "first_bid_vol8": 12800.0,
+        "first_ask_prc9": 12.01,
+        "first_ask_vol9": 3500.0,
+        "first_bid_prc9": 11.84,
+        "first_bid_vol9": 23100.0,
+        "first_ask_prc10": 12.02,
+        "first_ask_vol10": 6500.0,
+        "first_bid_prc10": 11.83,
+        "first_bid_vol10": 10800.0
+      }
+    ],
+    "tail": [
+      {
+        "symbol": "601138.SH",
+        "datetime": "2022-01-04 15:00:00",
+        "open": 12.04,
+        "high": 12.04,
+        "low": 12.04,
+        "close": 12.04,
+        "volume": 292638.0,
+        "acc_volume": 31624344.0,
+        "turnover": 3523361.52,
+        "acc_turnover": 379197117.01,
+        "vwap": 12.040000000000001,
+        "sell_vol": 126638.0,
+        "buy_vol": 166000.0,
+        "first_weighted_ask_prc": 12.04,
+        "first_weighted_bid_prc": 9.776252830188678,
+        "first_total_ask_vol": 292638.0,
+        "first_total_bid_vol": 360400.0,
+        "first_ask_prc1": 12.04,
+        "first_ask_vol1": 292638.0,
+        "first_bid_prc1": 12.04,
+        "first_bid_vol1": 292638.0,
+        "first_ask_prc2": 0.0,
+        "first_ask_vol2": 0.0,
+        "first_bid_prc2": 0.0,
+        "first_bid_vol2": 67762.0,
+        "first_ask_prc3": 0.0,
+        "first_ask_vol3": 0.0,
+        "first_bid_prc3": 0.0,
+        "first_bid_vol3": 0.0,
+        "first_ask_prc4": 0.0,
+        "first_ask_vol4": 0.0,
+        "first_bid_prc4": 0.0,
+        "first_bid_vol4": 0.0,
+        "first_ask_prc5": 0.0,
+        "first_ask_vol5": 0.0,
+        "first_bid_prc5": 0.0,
+        "first_bid_vol5": 0.0,
+        "first_ask_prc6": 0.0,
+        "first_ask_vol6": 0.0,
+        "first_bid_prc6": 0.0,
+        "first_bid_vol6": 0.0,
+        "first_ask_prc7": 0.0,
+        "first_ask_vol7": 0.0,
+        "first_bid_prc7": 0.0,
+        "first_bid_vol7": 0.0,
+        "first_ask_prc8": 0.0,
+        "first_ask_vol8": 0.0,
+        "first_bid_prc8": 0.0,
+        "first_bid_vol8": 0.0,
+        "first_ask_prc9": 0.0,
+        "first_ask_vol9": 0.0,
+        "first_bid_prc9": 0.0,
+        "first_bid_vol9": 0.0,
+        "first_ask_prc10": 0.0,
+        "first_ask_vol10": 0.0,
+        "first_bid_prc10": 0.0,
+        "first_bid_vol10": 0.0
+      }
+    ]
+  },
+  {
+    "repo": "Foxintohumanbeing/2022_Chinese_Stock_Market_Minbar_Data",
+    "revision": "8b9cc9779a1c6b09d93a2b03db44ee1ddc3e7441",
+    "member": "2022/20220426_AllSymbols_1min.parquet",
+    "member_sha256": "9bf82c426a7f0e592796d2805e1e13dd620dabc20fe9f9dac1cf850e83802069",
+    "columns": [
+      "symbol",
+      "datetime",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "acc_volume",
+      "turnover",
+      "acc_turnover",
+      "vwap",
+      "sell_vol",
+      "buy_vol",
+      "first_weighted_ask_prc",
+      "first_weighted_bid_prc",
+      "first_total_ask_vol",
+      "first_total_bid_vol",
+      "first_ask_prc1",
+      "first_ask_vol1",
+      "first_bid_prc1",
+      "first_bid_vol1",
+      "first_ask_prc2",
+      "first_ask_vol2",
+      "first_bid_prc2",
+      "first_bid_vol2",
+      "first_ask_prc3",
+      "first_ask_vol3",
+      "first_bid_prc3",
+      "first_bid_vol3",
+      "first_ask_prc4",
+      "first_ask_vol4",
+      "first_bid_prc4",
+      "first_bid_vol4",
+      "first_ask_prc5",
+      "first_ask_vol5",
+      "first_bid_prc5",
+      "first_bid_vol5",
+      "first_ask_prc6",
+      "first_ask_vol6",
+      "first_bid_prc6",
+      "first_bid_vol6",
+      "first_ask_prc7",
+      "first_ask_vol7",
+      "first_bid_prc7",
+      "first_bid_vol7",
+      "first_ask_prc8",
+      "first_ask_vol8",
+      "first_bid_prc8",
+      "first_bid_vol8",
+      "first_ask_prc9",
+      "first_ask_vol9",
+      "first_bid_prc9",
+      "first_bid_vol9",
+      "first_ask_prc10",
+      "first_ask_vol10",
+      "first_bid_prc10",
+      "first_bid_vol10"
+    ],
+    "rows": 7157094,
+    "target_rows": 239,
+    "target_sha256": "17caffafe4946a5e277d844fdcd4c1b8a68aab2ea4be8ca662b24d2fda1a532b",
+    "head": [
+      {
+        "symbol": "601138.SH",
+        "datetime": "2022-04-26 09:25:00",
+        "open": 9.17,
+        "high": 9.17,
+        "low": 9.17,
+        "close": 9.17,
+        "volume": 93800.0,
+        "acc_volume": 93800.0,
+        "turnover": 860146.0,
+        "acc_turnover": 860146.0,
+        "vwap": 9.17,
+        "sell_vol": 64900.0,
+        "buy_vol": 28900.0,
+        "first_weighted_ask_prc": 9.22002,
+        "first_weighted_bid_prc": 9.131659874027418,
+        "first_total_ask_vol": 100000.0,
+        "first_total_bid_vol": 269900.0,
+        "first_ask_prc1": 9.18,
+        "first_ask_vol1": 2000.0,
+        "first_bid_prc1": 9.17,
+        "first_bid_vol1": 37600.0,
+        "first_ask_prc2": 9.19,
+        "first_ask_vol2": 3600.0,
+        "first_bid_prc2": 9.16,
+        "first_bid_vol2": 62400.0,
+        "first_ask_prc3": 9.2,
+        "first_ask_vol3": 41100.0,
+        "first_bid_prc3": 9.15,
+        "first_bid_vol3": 29600.0,
+        "first_ask_prc4": 9.21,
+        "first_ask_vol4": 5100.0,
+        "first_bid_prc4": 9.14,
+        "first_bid_vol4": 2200.0,
+        "first_ask_prc5": 9.22,
+        "first_ask_vol5": 7000.0,
+        "first_bid_prc5": 9.13,
+        "first_bid_vol5": 4800.0,
+        "first_ask_prc6": 9.23,
+        "first_ask_vol6": 13800.0,
+        "first_bid_prc6": 9.12,
+        "first_bid_vol6": 23900.0,
+        "first_ask_prc7": 9.24,
+        "first_ask_vol7": 8000.0,
+        "first_bid_prc7": 9.11,
+        "first_bid_vol7": 13400.0,
+        "first_ask_prc8": 9.25,
+        "first_ask_vol8": 2100.0,
+        "first_bid_prc8": 9.1,
+        "first_bid_vol8": 87400.0,
+        "first_ask_prc9": 9.26,
+        "first_ask_vol9": 16300.0,
+        "first_bid_prc9": 9.09,
+        "first_bid_vol9": 1700.0,
+        "first_ask_prc10": 9.27,
+        "first_ask_vol10": 1000.0,
+        "first_bid_prc10": 9.08,
+        "first_bid_vol10": 6900.0
+      }
+    ],
+    "tail": [
+      {
+        "symbol": "601138.SH",
+        "datetime": "2022-04-26 15:00:00",
+        "open": 9.19,
+        "high": 9.19,
+        "low": 9.19,
+        "close": 9.19,
+        "volume": 300840.0,
+        "acc_volume": 30992396.0,
+        "turnover": 2764719.6,
+        "acc_turnover": 286422602.66,
+        "vwap": 9.19,
+        "sell_vol": 110074.0,
+        "buy_vol": 190766.0,
+        "first_weighted_ask_prc": NaN,
+        "first_weighted_bid_prc": NaN,
+        "first_total_ask_vol": 0.0,
+        "first_total_bid_vol": 0.0,
+        "first_ask_prc1": 0.0,
+        "first_ask_vol1": 0.0,
+        "first_bid_prc1": 0.0,
+        "first_bid_vol1": 0.0,
+        "first_ask_prc2": 0.0,
+        "first_ask_vol2": 0.0,
+        "first_bid_prc2": 0.0,
+        "first_bid_vol2": 0.0,
+        "first_ask_prc3": 0.0,
+        "first_ask_vol3": 0.0,
+        "first_bid_prc3": 0.0,
+        "first_bid_vol3": 0.0,
+        "first_ask_prc4": 0.0,
+        "first_ask_vol4": 0.0,
+        "first_bid_prc4": 0.0,
+        "first_bid_vol4": 0.0,
+        "first_ask_prc5": 0.0,
+        "first_ask_vol5": 0.0,
+        "first_bid_prc5": 0.0,
+        "first_bid_vol5": 0.0,
+        "first_ask_prc6": 0.0,
+        "first_ask_vol6": 0.0,
+        "first_bid_prc6": 0.0,
+        "first_bid_vol6": 0.0,
+        "first_ask_prc7": 0.0,
+        "first_ask_vol7": 0.0,
+        "first_bid_prc7": 0.0,
+        "first_bid_vol7": 0.0,
+        "first_ask_prc8": 0.0,
+        "first_ask_vol8": 0.0,
+        "first_bid_prc8": 0.0,
+        "first_bid_vol8": 0.0,
+        "first_ask_prc9": 0.0,
+        "first_ask_vol9": 0.0,
+        "first_bid_prc9": 0.0,
+        "first_bid_vol9": 0.0,
+        "first_ask_prc10": 0.0,
+        "first_ask_vol10": 0.0,
+        "first_bid_prc10": 0.0,
+        "first_bid_vol10": 0.0
+      }
+    ]
+  },
+  {
+    "repo": "Foxintohumanbeing/2022_Chinese_Stock_Market_Minbar_Data",
+    "revision": "8b9cc9779a1c6b09d93a2b03db44ee1ddc3e7441",
+    "member": "2022/20220810_AllSymbols_1min.parquet",
+    "member_sha256": "7f55888e561e8e45e3a99f08bd1ca8a8a7c390ab73814004a454a27fe061eabb",
+    "columns": [
+      "symbol",
+      "datetime",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "acc_volume",
+      "turnover",
+      "acc_turnover",
+      "vwap",
+      "sell_vol",
+      "buy_vol",
+      "first_weighted_ask_prc",
+      "first_weighted_bid_prc",
+      "first_total_ask_vol",
+      "first_total_bid_vol",
+      "first_ask_prc1",
+      "first_ask_vol1",
+      "first_bid_prc1",
+      "first_bid_vol1",
+      "first_ask_prc2",
+      "first_ask_vol2",
+      "first_bid_prc2",
+      "first_bid_vol2",
+      "first_ask_prc3",
+      "first_ask_vol3",
+      "first_bid_prc3",
+      "first_bid_vol3",
+      "first_ask_prc4",
+      "first_ask_vol4",
+      "first_bid_prc4",
+      "first_bid_vol4",
+      "first_ask_prc5",
+      "first_ask_vol5",
+      "first_bid_prc5",
+      "first_bid_vol5",
+      "first_ask_prc6",
+      "first_ask_vol6",
+      "first_bid_prc6",
+      "first_bid_vol6",
+      "first_ask_prc7",
+      "first_ask_vol7",
+      "first_bid_prc7",
+      "first_bid_vol7",
+      "first_ask_prc8",
+      "first_ask_vol8",
+      "first_bid_prc8",
+      "first_bid_vol8",
+      "first_ask_prc9",
+      "first_ask_vol9",
+      "first_bid_prc9",
+      "first_bid_vol9",
+      "first_ask_prc10",
+      "first_ask_vol10",
+      "first_bid_prc10",
+      "first_bid_vol10"
+    ],
+    "rows": 8113333,
+    "target_rows": 239,
+    "target_sha256": "3b80e0c5774fba6ad9d71ba5a4538a496702276f37c451b1f1bfe236804e8a47",
+    "head": [
+      {
+        "symbol": "601138.SH",
+        "datetime": "2022-08-10 09:25:00",
+        "open": 9.69,
+        "high": 9.69,
+        "low": 9.69,
+        "close": 9.69,
+        "volume": 87900.0,
+        "acc_volume": 87900.0,
+        "turnover": 851751.0,
+        "acc_turnover": 851751.0,
+        "vwap": 9.69,
+        "sell_vol": 35100.0,
+        "buy_vol": 52800.0,
+        "first_weighted_ask_prc": 9.728785547005687,
+        "first_weighted_bid_prc": 9.622720588235294,
+        "first_total_ask_vol": 298900.0,
+        "first_total_bid_vol": 54400.0,
+        "first_ask_prc1": 9.69,
+        "first_ask_vol1": 7500.0,
+        "first_bid_prc1": 9.68,
+        "first_bid_vol1": 1300.0,
+        "first_ask_prc2": 9.7,
+        "first_ask_vol2": 99700.0,
+        "first_bid_prc2": 9.67,
+        "first_bid_vol2": 300.0,
+        "first_ask_prc3": 9.71,
+        "first_ask_vol3": 9200.0,
+        "first_bid_prc3": 9.66,
+        "first_bid_vol3": 6000.0,
+        "first_ask_prc4": 9.72,
+        "first_ask_vol4": 40300.0,
+        "first_bid_prc4": 9.65,
+        "first_bid_vol4": 5200.0,
+        "first_ask_prc5": 9.73,
+        "first_ask_vol5": 31900.0,
+        "first_bid_prc5": 9.64,
+        "first_bid_vol5": 2300.0,
+        "first_ask_prc6": 9.74,
+        "first_ask_vol6": 16900.0,
+        "first_bid_prc6": 9.63,
+        "first_bid_vol6": 3300.0,
+        "first_ask_prc7": 9.75,
+        "first_ask_vol7": 31300.0,
+        "first_bid_prc7": 9.62,
+        "first_bid_vol7": 10400.0,
+        "first_ask_prc8": 9.76,
+        "first_ask_vol8": 13200.0,
+        "first_bid_prc8": 9.61,
+        "first_bid_vol8": 13000.0,
+        "first_ask_prc9": 9.77,
+        "first_ask_vol9": 12100.0,
+        "first_bid_prc9": 9.6,
+        "first_bid_vol9": 8800.0,
+        "first_ask_prc10": 9.78,
+        "first_ask_vol10": 36800.0,
+        "first_bid_prc10": 9.59,
+        "first_bid_vol10": 3800.0
+      }
+    ],
+    "tail": [
+      {
+        "symbol": "601138.SH",
+        "datetime": "2022-08-10 15:00:00",
+        "open": 9.57,
+        "high": 9.57,
+        "low": 9.57,
+        "close": 9.57,
+        "volume": 1066800.0,
+        "acc_volume": 24956839.0,
+        "turnover": 10209276.0,
+        "acc_turnover": 238916869.16,
+        "vwap": 9.57,
+        "sell_vol": 214200.0,
+        "buy_vol": 852600.0,
+        "first_weighted_ask_prc": 9.597785069131916,
+        "first_weighted_bid_prc": 9.52437039072878,
+        "first_total_ask_vol": 1181003.0,
+        "first_total_bid_vol": 2183100.0,
+        "first_ask_prc1": 9.57,
+        "first_ask_vol1": 205100.0,
+        "first_bid_prc1": 9.56,
+        "first_bid_vol1": 382500.0,
+        "first_ask_prc2": 9.58,
+        "first_ask_vol2": 191200.0,
+        "first_bid_prc2": 9.55,
+        "first_bid_vol2": 514200.0,
+        "first_ask_prc3": 9.59,
+        "first_ask_vol3": 181800.0,
+        "first_bid_prc3": 9.54,
+        "first_bid_vol3": 132700.0,
+        "first_ask_prc4": 9.6,
+        "first_ask_vol4": 274600.0,
+        "first_bid_prc4": 9.53,
+        "first_bid_vol4": 95700.0,
+        "first_ask_prc5": 9.61,
+        "first_ask_vol5": 96400.0,
+        "first_bid_prc5": 9.52,
+        "first_bid_vol5": 240500.0,
+        "first_ask_prc6": 9.62,
+        "first_ask_vol6": 92933.0,
+        "first_bid_prc6": 9.51,
+        "first_bid_vol6": 121800.0,
+        "first_ask_prc7": 9.63,
+        "first_ask_vol7": 36200.0,
+        "first_bid_prc7": 9.5,
+        "first_bid_vol7": 193700.0,
+        "first_ask_prc8": 9.64,
+        "first_ask_vol8": 31600.0,
+        "first_bid_prc8": 9.49,
+        "first_bid_vol8": 92100.0,
+        "first_ask_prc9": 9.65,
+        "first_ask_vol9": 26370.0,
+        "first_bid_prc9": 9.48,
+        "first_bid_vol9": 355400.0,
+        "first_ask_prc10": 9.66,
+        "first_ask_vol10": 44800.0,
+        "first_bid_prc10": 9.47,
+        "first_bid_vol10": 54500.0
+      }
+    ]
+  },
+  {
+    "repo": "submato/ashare-l2",
+    "error": "ReadTimeout(ReadTimeoutError(\"HTTPSConnectionPool(host='drive-pc.quark.cn', port=443): Read timed out. (read timeout=30)\"))"
+  }
+]

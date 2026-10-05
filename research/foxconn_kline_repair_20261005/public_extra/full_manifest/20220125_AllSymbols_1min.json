@@ -1,0 +1,10 @@
+{
+  "repo": "Foxintohumanbeing/2022_Chinese_Stock_Market_Minbar_Data",
+  "revision": "8b9cc9779a1c6b09d93a2b03db44ee1ddc3e7441",
+  "member": "2022/20220125_AllSymbols_1min.parquet",
+  "full_member_sha256": "8acd944a0682a7107c260dbd893fd175c06a7b21742ae2c850ceb79fe2212fde",
+  "full_member_bytes": 203814781,
+  "status": "extracted",
+  "target_rows": 239,
+  "target_sha256": "af0be1357d3687b2f4ce7f9405bfb83666b53cdd483e2418dd3c1ecacadde0cc"
+}
