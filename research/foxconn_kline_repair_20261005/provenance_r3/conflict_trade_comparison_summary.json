@@ -1,0 +1,48 @@
+{
+  "distinct_minutes": 591,
+  "matched_selected": 22,
+  "by_other_source": [
+    {
+      "source_other": "b13_tdx",
+      "comparison_outcome": "neither_matches_trade",
+      "pair_rows": 462
+    },
+    {
+      "source_other": "b13_tdx",
+      "comparison_outcome": "other_matches_trade",
+      "pair_rows": 19
+    },
+    {
+      "source_other": "b13_tdx",
+      "comparison_outcome": "selected_matches_trade",
+      "pair_rows": 14
+    },
+    {
+      "source_other": "hf_0930_fold",
+      "comparison_outcome": "neither_matches_trade",
+      "pair_rows": 32
+    },
+    {
+      "source_other": "hf_0930_fold",
+      "comparison_outcome": "other_matches_trade",
+      "pair_rows": 2
+    },
+    {
+      "source_other": "main_tdx",
+      "comparison_outcome": "neither_matches_trade",
+      "pair_rows": 103
+    },
+    {
+      "source_other": "main_tdx",
+      "comparison_outcome": "other_matches_trade",
+      "pair_rows": 9
+    },
+    {
+      "source_other": "main_tdx",
+      "comparison_outcome": "selected_matches_trade",
+      "pair_rows": 10
+    }
+  ],
+  "unmatched_trade_rows": 1,
+  "limit": "Agreement is corroboration, not proof of complete exchange trades. Raw upstream provenance remains unknown."
+}
