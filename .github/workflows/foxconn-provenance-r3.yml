@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install pandas==2.2.3 numpy==2.1.3 requests==2.32.3
-      - run: python -u scripts/research/foxconn_kline_provenance_r3.py
+      - run: python -u scripts/research/foxconn_kline_provenance_r3.py --comparison-only
       - name: Preserve provenance
         if: always()
         run: |

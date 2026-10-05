@@ -22,13 +22,17 @@ assert not trade.datetime.duplicated().any()
 fields=['open','high','low','close'];joined=x.merge(trade[['datetime']+fields].rename(columns={f:f+'_trade' for f in fields}),on='datetime',how='left',validate='many_to_one')
 for side in ['selected','other']:
  joined[side+'_ohlc_matches_trade']=np.isclose(joined[[f+'_'+side for f in fields]].to_numpy(float),joined[[f+'_trade' for f in fields]].to_numpy(float),atol=0.00001,rtol=0,equal_nan=False).all(axis=1)
-joined['comparison_outcome']=np.select([joined.selected_ohlc_matches_trade,joined.other_ohlc_matches_trade],['selected_matches_trade','other_matches_trade'],default='neither_matches_trade')
+joined['trade_ohlc_available']=joined[[f+'_trade' for f in fields]].notna().all(axis=1)
+joined['comparison_outcome']=np.select([~joined.trade_ohlc_available,joined.selected_ohlc_matches_trade,joined.other_ohlc_matches_trade],['trade_ohlc_unavailable','selected_matches_trade','other_matches_trade'],default='neither_matches_trade')
 assert not (joined.selected_ohlc_matches_trade & joined.other_ohlc_matches_trade).any()
 joined.to_csv(O/'conflicting_pairs_vs_trade_candidate.csv',index=False)
 outcomes=joined.groupby(['source_other','comparison_outcome']).size().reset_index(name='pair_rows').to_dict('records')
 selected_unique=joined.drop_duplicates('datetime');assert len(selected_unique)==591
-cross={'distinct_minutes':len(selected_unique),'matched_selected':int(selected_unique.selected_ohlc_matches_trade.sum()),'by_other_source':outcomes,'unmatched_trade_rows':int(joined.open_trade.isna().sum()),'limit':'Agreement is corroboration, not proof of complete exchange trades. Raw upstream provenance remains unknown.'}
+minute_outcomes=joined.groupby('datetime').agg(trade_ohlc_available=('trade_ohlc_available','all'),selected_matches=('selected_ohlc_matches_trade','any'),any_other_matches=('other_ohlc_matches_trade','any'))
+cross={'distinct_minutes':len(selected_unique),'matched_selected':int(selected_unique.selected_ohlc_matches_trade.sum()),'by_other_source':outcomes,'trade_ohlc_unavailable_minutes':[str(t) for t in minute_outcomes.index[~minute_outcomes.trade_ohlc_available]],'available_but_selected_differs':int((minute_outcomes.trade_ohlc_available & ~minute_outcomes.selected_matches).sum()),'any_version_matches':int((minute_outcomes.selected_matches | minute_outcomes.any_other_matches).sum()),'no_version_matches_available_trade':int((minute_outcomes.trade_ohlc_available & ~minute_outcomes.selected_matches & ~minute_outcomes.any_other_matches).sum()),'limit':'Agreement is corroboration, not proof of complete exchange trades. Raw upstream provenance remains unknown.'}
 (O/'conflict_trade_comparison_summary.json').write_text(json.dumps(cross,indent=2));print(json.dumps(cross,indent=2))
+import sys
+if '--comparison-only' in sys.argv:sys.exit(0)
 z=pd.read_csv(R/'public_r2/2026-07-15_snapshot_trade_cumulative.csv.gz');report['snapshot_diagnostic_columns']=list(z.columns)
 (O/'conflict_source_summary.json').write_text(json.dumps(report,ensure_ascii=False,indent=2));print(json.dumps(report,ensure_ascii=False,indent=2),flush=True)
 sources=[('ifind_faq','https://ftwc.51ifind.com/gwstatic/static/ds_web/quantapi-web/help-center/faq.html'),('neigezhu_provenance','https://huggingface.co/datasets/neigezhu/china-a-share-1min-ohlcv/raw/ba589a11534825044fe5a6b84838f50ba8d8d188/metadata/source_provenance.json'),('phields_schema','https://huggingface.co/datasets/phields/a-share-l2-trades/raw/2f4c13ee70cabf3f8b831acf7e1686481a762eaa/metadata/schema.json'),('baidu_public_share','https://pan.baidu.com/s/1W2TMPTHLWblKy1gBwMCIEQ?pwd=i4ru'),('phields_SHA_inventory','https://huggingface.co/api/datasets/phields/SHA/revision/6d0abf9fc6949a0906828faca690f56031d09549')]
