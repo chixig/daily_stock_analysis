@@ -1,0 +1,84 @@
+{
+  "date": "2026-04-21",
+  "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+  "files": [
+    {
+      "path": "data/l2_trades/trade_date=2026-04-21/code_prefix=60/part-00000.parquet",
+      "groups": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "path": "data/l2_trades/trade_date=2026-04-21/code_prefix=60/part-00001.parquet",
+      "groups": []
+    }
+  ],
+  "sha256": "84bf1f12ffcbac4d2e5079682c62d8d6c13e6a377da9802a9985fd850a1661b6",
+  "rows": 335020,
+  "canonical_only": 0,
+  "previous_only": 0,
+  "post_close_rows": 3127,
+  "post_close_exact_order_tuple_in_session": 0,
+  "post_close_order_tuple_volume_matched": 0,
+  "all_volume_diff": 0.0,
+  "session_volume_diff": -1832995.0,
+  "post_close_sample": [
+    {
+      "ticker": "601138",
+      "time_s": 54001,
+      "tran_id": 331894,
+      "price_x10000": 614100,
+      "volume": 500,
+      "sale_order_volume": 3300,
+      "buy_order_volume": 500,
+      "side": "B",
+      "sale_order_id": 21485145,
+      "sale_order_price_x10000": 553600,
+      "buy_order_id": 21492573,
+      "buy_order_price_x10000": 676600
+    },
+    {
+      "ticker": "601138",
+      "time_s": 54001,
+      "tran_id": 331895,
+      "price_x10000": 614100,
+      "volume": 100,
+      "sale_order_volume": 3300,
+      "buy_order_volume": 100,
+      "side": "B",
+      "sale_order_id": 21485145,
+      "sale_order_price_x10000": 553600,
+      "buy_order_id": 21495214,
+      "buy_order_price_x10000": 676600
+    },
+    {
+      "ticker": "601138",
+      "time_s": 54001,
+      "tran_id": 331896,
+      "price_x10000": 614100,
+      "volume": 100,
+      "sale_order_volume": 3300,
+      "buy_order_volume": 100,
+      "side": "B",
+      "sale_order_id": 21485145,
+      "sale_order_price_x10000": 553600,
+      "buy_order_id": 21498383,
+      "buy_order_price_x10000": 676600
+    }
+  ]
+}

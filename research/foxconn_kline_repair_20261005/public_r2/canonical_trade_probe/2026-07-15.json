@@ -1,0 +1,44 @@
+{
+  "date": "2026-07-15",
+  "revision": "2f4c13ee70cabf3f8b831acf7e1686481a762eaa",
+  "files": [
+    {
+      "path": "data/l2_trades/trade_date=2026-07-15/code_prefix=60/part-00000.parquet",
+      "groups": [
+        0,
+        1,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        13,
+        15,
+        18,
+        20,
+        23,
+        24
+      ]
+    },
+    {
+      "path": "data/l2_trades/trade_date=2026-07-15/code_prefix=60/part-00001.parquet",
+      "groups": [
+        0,
+        1,
+        2,
+        4
+      ]
+    }
+  ],
+  "sha256": "f03fc6db2acec1ad3443196df3978f190d291ff05cff570c2bb051282b56278d",
+  "rows": 257058,
+  "canonical_only": 0,
+  "previous_only": 0,
+  "post_close_rows": 0,
+  "post_close_exact_order_tuple_in_session": 0,
+  "post_close_order_tuple_volume_matched": 0,
+  "all_volume_diff": -91600.0,
+  "session_volume_diff": -91600.0,
+  "post_close_sample": []
+}
