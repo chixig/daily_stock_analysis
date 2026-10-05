@@ -2,7 +2,7 @@ name: Foxconn public sources final audit
 on:
   push:
     branches: [research/foxconn-kline-20261005]
-    paths: [scripts/research/foxconn_kline_public_final_audit.py, .github/workflows/foxconn-public-final.yml]
+    paths: [scripts/research/foxconn_kline_public_final_audit.py, scripts/research/foxconn_kline_close_revision.py, .github/workflows/foxconn-public-final.yml]
   workflow_dispatch:
 permissions:
   contents: write
@@ -17,6 +17,7 @@ jobs:
           python-version: '3.11'
       - run: pip install pandas==2.2.3 numpy==2.1.3 pyarrow==19.0.1
       - run: python -u scripts/research/foxconn_kline_public_final_audit.py
+      - run: python -u scripts/research/foxconn_kline_close_revision.py
       - name: Preserve audit and supplementary delivery
         run: |
           git config user.name github-actions[bot]
