@@ -595,15 +595,15 @@
         "date": "2026-07-15",
         "near_close_rows": 0,
         "near_close_volume": 0,
-        "near_close_min_s": NaN,
-        "near_close_max_s": NaN,
+        "near_close_min_s": null,
+        "near_close_max_s": null,
         "near_close_unique_prices": 0,
         "fixed_window_rows": 0,
         "fixed_window_volume": 0,
         "fixed_window_after_rule_start": true,
         "fixed_window_prices_equal_daily_close": true,
         "other_post_close_rows": 0,
-        "near_close_first_id": NaN,
+        "near_close_first_id": null,
         "session_last_id": 257058,
         "including_near_close_open_diff": 0.0,
         "including_near_close_high_diff": 0.0,
@@ -616,5 +616,20 @@
     ],
     "other_post_close_rows": 0,
     "timestamps_modified": false
+  },
+  "closing_assignment_candidate": {
+    "one_minute_rows": 30000,
+    "five_minute_rows": 6000,
+    "changed_one_minute_bars": 10,
+    "unchanged_one_minute_bars_verified": 29990,
+    "no_recorded_trade_minutes": 250,
+    "daily_pass_days": 124,
+    "failed_dates": [
+      "2026-07-15"
+    ],
+    "changed_1m_5m_direct_raw_checks": true,
+    "csv_roundtrip": true,
+    "source_times_preserved_in_classified_file": true,
+    "assignment_certified": false
   }
 }

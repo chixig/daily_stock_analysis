@@ -1,8 +1,14 @@
 {
+  "01_收盘归属推定候选_1分钟.html": "b9d749d975b95a3cb1cdf927bc6162dee64a392566bfb8b98d99346f56ecaa44",
+  "02_收盘归属推定候选_5分钟.html": "48a58ff447e43557f5997db2440f530804d81d19ce2d2bbaca1c56d26ff23ab9",
   "2022_daily_quality.csv": "c37897b10cc5a2c2e4d5e14f34b6aac58e36a1ee497a9ddd20115cb3c8e5dee1",
-  "2022_native_1min_ohlcv_candidate.csv.gz": "de6f55ed7992c4711629f8c5e9fad15d6f563ae8e7a3f62bb55a96b5b9ff8f37",
-  "2026_post_close_classified.csv.gz": "a831918580eb2f941ee7a232624e5537770f527cface4e4084bcf80392cc8d38",
+  "2022_native_1min_ohlcv_candidate.csv.gz": "8d8dfdb6407c207a907a3fc1280adb03a68b747a7e27374950749b2976f013c3",
+  "2026_1min_closing_assignment_candidate.csv": "2adee7f1f46366b10e16de361873a0da70f311bdc42720231d1b8dd924351034",
+  "2026_5min_closing_assignment_candidate.csv": "7097b63f151f1e843c44a46e7feecbde07ae0284ebc6c00d664f5adf9087d206",
+  "2026_closing_assignment_changes.csv": "c46721c0b163b6cd5ef4413df782f0a42a72fe60278b4013558ac44245c982dc",
+  "2026_post_close_classified.csv.gz": "a15906b4c783c2bf16bf97e6c5da1d35838b7abbfe9f77883a622c016382816b",
   "2026_session_classification.csv": "60e774a2f196e98131c80fea3d4263894d4105aff5e3386cdeeeda421be9f14e",
-  "README.md": "2b3c58042f8b801493b117e79a983936c5a36e36e80bb014a157781be05f74dd",
-  "summary.json": "70a0e213e6c53136e692879a55fc8dd8d20cc120186af908835abf38cfe1485b"
+  "README.md": "07e5c3b58ee864156c844c7139eb622d6394e67b873cdd89977607ab24d2b1a9",
+  "opening_auction.csv": "d479077c1386804536d20e32f4c5c9dfc94f1de947c486f8c52a7867df04379d",
+  "summary.json": "cebbb0193cde0d44597eddbf85c0dcaed9e31f07c718a6ce525d24d013c315e4"
 }
