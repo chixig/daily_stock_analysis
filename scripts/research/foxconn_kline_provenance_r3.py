@@ -42,3 +42,18 @@ try:
    r=s.get('https://pan.baidu.com/share/list',params={'shareid':shareid,'uk':uk,'root':1,'page':1,'num':100,'order':'name','desc':0,'web':1},headers={'Referer':u},timeout=25);v=r.json();attempt['list_errno']=v.get('errno');attempt['root_files']=[{k:a.get(k) for k in ['server_filename','path','isdir','size','fs_id']} for a in v.get('list',[])]
 except Exception as e:attempt['error']=repr(e)
 (O/'baidu_public_share_attempt.json').write_text(json.dumps(attempt,ensure_ascii=False,indent=2));print(json.dumps(attempt,ensure_ascii=False,indent=2))
+if attempt.get('list_errno')==0:
+ queue=[(a['path'],0) for a in attempt.get('root_files',[]) if str(a.get('isdir'))=='1'];seen=set();lists=[]
+ while queue and len(lists)<20:
+  path,depth=queue.pop(0)
+  if path in seen:continue
+  seen.add(path)
+  try:
+   r=s.get('https://pan.baidu.com/share/list',params={'shareid':shareid,'uk':uk,'dir':path,'page':1,'num':100,'order':'name','desc':0,'web':1},headers={'Referer':u},timeout=20);a=r.json();files=[{k:v.get(k) for k in ['server_filename','path','isdir','size','fs_id']} for v in a.get('list',[])]
+   lists.append({'path':path,'depth':depth,'errno':a.get('errno'),'has_more':a.get('has_more'),'files':files})
+   for v in files:
+    if str(v.get('isdir'))=='1' and depth<3:
+     name=v.get('server_filename','');years=re.findall(r'20\d{2}',name)
+     if not years or any(2018<=int(y)<=2026 for y in years):queue.append((v['path'],depth+1))
+  except Exception as e:lists.append({'path':path,'error':repr(e)})
+ (O/'baidu_public_inventory.json').write_text(json.dumps({'folders':lists,'remaining_folders':queue,'downloaded_data_files':0},ensure_ascii=False,indent=2));print(json.dumps({'baidu_folders_inspected':len(lists),'remaining':len(queue)}))
