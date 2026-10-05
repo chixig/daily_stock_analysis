@@ -57,3 +57,29 @@ if attempt.get('list_errno')==0:
      if not years or any(2018<=int(y)<=2026 for y in years):queue.append((v['path'],depth+1))
   except Exception as e:lists.append({'path':path,'error':repr(e)})
  (O/'baidu_public_inventory.json').write_text(json.dumps({'folders':lists,'remaining_folders':queue,'downloaded_data_files':0},ensure_ascii=False,indent=2));print(json.dumps({'baidu_folders_inspected':len(lists),'remaining':len(queue)}))
+# Read the archive's small published documentation before attempting any large download.
+if attempt.get('list_errno')==0:
+ from urllib.parse import unquote
+ result={'requested_file':'data documentation text','data_files_downloaded':0}
+ try:
+  html=s.get(u,timeout=25).text
+  sig=re.search(r'[\"\']sign[\"\']\s*:\s*[\"\']([^\"\']+)',html);ts=re.search(r'[\"\']timestamp[\"\']\s*:\s*[\"\']?(\d+)',html)
+  result['page_has_sign']=bool(sig);result['page_has_timestamp']=bool(ts);result['page_title']=re.findall(r'<title[^>]*>(.*?)</title>',html,re.S)[:1]
+  if sig and ts:
+   files=[f for row in lists for f in row.get('files',[])];target=[f for f in files if f.get('server_filename','').endswith('.txt')]
+   if target:
+    t=target[0];r=s.post('https://pan.baidu.com/api/sharedownload',params={'sign':sig.group(1),'timestamp':ts.group(1),'web':1,'clienttype':0,'app_id':250528},data={'encrypt':0,'extra':json.dumps({'sekey':unquote(s.cookies.get('BDCLND',''))}),'uk':uk,'primaryid':shareid,'product':'share','fid_list':json.dumps([int(t['fs_id'])])},headers={'Referer':u},timeout=25)
+    v=r.json();result['download_api_errno']=v.get('errno');result['download_api_message']=v.get('err_msg',v.get('show_msg'))
+    if v.get('errno')==0 and v.get('list'):
+     url=v['list'][0].get('dlink')
+     if url:
+      r=s.get(url,timeout=30,stream=True);result['document_http_status']=r.status_code
+      if r.status_code==200:
+       data=b''
+       for part in r.iter_content(8192):
+        data+=part
+        if len(data)>1048576:raise RuntimeError('document larger than expected; stopped')
+       (O/'baidu_archive_documentation.txt').write_bytes(data);result['document_bytes']=len(data);result['document_sha256']=hashlib.sha256(data).hexdigest()
+  else:result['status']='standard_download_parameters_not_exposed_to_anonymous_share_view'
+ except Exception as e:result['error']=repr(e)
+ (O/'baidu_document_access.json').write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result,ensure_ascii=False,indent=2))
