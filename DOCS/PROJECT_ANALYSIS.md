@@ -6,6 +6,8 @@
 
 ## 当前入口
 
+- 工业富联最新[来源追溯和逐分钟核验](FOXCONN_PROVENANCE_R3.md)：332异常日源neigezhu、上游未知；591分钟为TDX多版本及HF的651对。当前逐笔候选与至少一个旧版本相同49分钟、全不同541分钟，另1分钟无候选OHLC。公开早年档案目录可读、下载403；尚未增加认证覆盖。数据0020d076，流程37282949860。
+
 - 回测脚本：`scripts/research/dividend_pit_top10_v1.py`
 - GitHub Actions：`.github/workflows/chatgpt-dividend-pit-top10-v1.yml`
 - 触发方式：GitHub Actions 页面手动运行 `ChatGPT Dividend PIT Top10 V1`
