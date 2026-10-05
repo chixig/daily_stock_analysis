@@ -44,7 +44,7 @@ def main():
   else:results['suncong_status']='timestamp_mapping_needs_review'
  save()
  all5=[]
- for p in sorted(OUT.glob('ANTICH_*.parquet')):
+ for p in sorted(OUT.glob('ANTICH_20[0-9][0-9].parquet')):
   d=pd.read_parquet(p)
   if 'datetime' not in d:
    for c in ['timestamp','time','date']:
